@@ -1,10 +1,11 @@
 import logging
 import json
 import time
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Set
 from functools import wraps
 import traceback
 import os
+from fastapi import WebSocket
 
 # Create logs directory if it doesn't exist
 os.makedirs("logs", exist_ok=True)
@@ -27,8 +28,21 @@ class APIMetrics:
         self.failed_calls = 0
         self.total_tokens = 0
         self.total_latency = 0.0
+        self.active_connections: Set[WebSocket] = set()
 
-    def record_call(self, success: bool, tokens: int, latency: float):
+    async def connect(self, websocket: WebSocket):
+        """Handle new WebSocket connection"""
+        await websocket.accept()
+        self.active_connections.add(websocket)
+        # Send current metrics upon connection
+        await self.broadcast_metrics()
+
+    def disconnect(self, websocket: WebSocket):
+        """Handle WebSocket disconnection"""
+        self.active_connections.remove(websocket)
+
+    async def record_call(self, success: bool, tokens: int, latency: float, call_details: Dict):
+        """Record API call metrics and broadcast updates"""
         self.total_calls += 1
         if success:
             self.successful_calls += 1
@@ -36,6 +50,45 @@ class APIMetrics:
             self.failed_calls += 1
         self.total_tokens += tokens
         self.total_latency += latency
+
+        # Broadcast updates
+        await self.broadcast_call(call_details)
+        await self.broadcast_metrics()
+
+    async def broadcast_metrics(self):
+        """Broadcast current metrics to all connected clients"""
+        metrics = {
+            "type": "metrics",
+            "metrics": {
+                "total_calls": self.total_calls,
+                "successful_calls": self.successful_calls,
+                "failed_calls": self.failed_calls,
+                "success_rate": f"{self.success_rate:.2%}",
+                "total_tokens": self.total_tokens,
+                "average_latency": f"{self.average_latency:.2f}s"
+            }
+        }
+
+        for connection in self.active_connections.copy():
+            try:
+                await connection.send_json(metrics)
+            except Exception as e:
+                logger.error(f"Error broadcasting metrics: {str(e)}")
+                self.active_connections.remove(connection)
+
+    async def broadcast_call(self, call_details: Dict):
+        """Broadcast API call details to all connected clients"""
+        message = {
+            "type": "call",
+            "call": call_details
+        }
+
+        for connection in self.active_connections.copy():
+            try:
+                await connection.send_json(message)
+            except Exception as e:
+                logger.error(f"Error broadcasting call: {str(e)}")
+                self.active_connections.remove(connection)
 
     @property
     def success_rate(self) -> float:
@@ -73,8 +126,19 @@ def log_api_call(func):
                 f"Tokens: {tokens}, Model: {kwargs.get('model', 'unknown')}"
             )
 
-            # Record metrics
-            api_metrics.record_call(True, tokens, latency)
+            # Record and broadcast metrics
+            await api_metrics.record_call(
+                True,
+                tokens,
+                latency,
+                {
+                    "id": call_id,
+                    "status": "success",
+                    "latency": f"{latency:.2f}s",
+                    "tokens": tokens,
+                    "model": kwargs.get("model", "unknown")
+                }
+            )
 
             return response
 
@@ -93,8 +157,18 @@ def log_api_call(func):
                 f"Traceback: {error_trace}"
             )
 
-            # Record failed metrics
-            api_metrics.record_call(False, 0, latency)
+            # Record and broadcast failed metrics
+            await api_metrics.record_call(
+                False,
+                0,
+                latency,
+                {
+                    "id": call_id,
+                    "status": "error",
+                    "error": str(e),
+                    "latency": f"{latency:.2f}s"
+                }
+            )
 
             # Re-raise the exception
             raise

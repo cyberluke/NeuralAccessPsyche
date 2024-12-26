@@ -7,6 +7,7 @@ from core.llm_handler import LLMHandler
 from core.nram import NRAM
 from utils.validators import validate_request
 from utils.auth import get_current_user
+from utils.api_logger import api_metrics # Added import
 import logging
 
 logger = logging.getLogger(__name__)
@@ -91,3 +92,23 @@ async def list_models(current_user: dict = Depends(get_current_user)):
             }
         ]
     }
+
+@router.get("/visualize/api", response_class=HTMLResponse) #Added route
+async def visualize_api(request: Request):
+    """Serve the API visualization dashboard"""
+    return templates.TemplateResponse(
+        "api_visualization.html",
+        {"request": request}
+    )
+
+@router.websocket("/ws/api-viz") #Added route
+async def api_visualization_websocket(websocket: WebSocket):
+    """WebSocket endpoint for API visualization"""
+    await api_metrics.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()  # Keep connection alive
+    except Exception as e:
+        logger.error(f"WebSocket error: {str(e)}")
+    finally:
+        api_metrics.disconnect(websocket)
