@@ -24,7 +24,7 @@ class LLMHandler:
             "enlightened": 0.7,
             "transcendent": 0.9
         }
-        logger.info("LLMHandler initialized with OpenAI and Guidance integration")
+        logger.info("LLMHandler initialized with OpenAI, NRAM, and Guidance integration")
 
     async def generate_response(
         self,
@@ -33,18 +33,12 @@ class LLMHandler:
         max_tokens: int = 100
     ) -> Dict[str, Any]:
         try:
-            # Format messages for OpenAI API
-            formatted_messages = [
-                {"role": msg["role"], "content": msg["content"]}
-                for msg in messages
-            ]
-
-            # Get consciousness level
+            # Get consciousness level based on temperature
             consciousness_level = self._get_consciousness_level(temperature)
 
             # Process through Guidance for enhanced token manipulation
             enhanced_response = await self.guidance_handler.process_with_guidance(
-                formatted_messages,
+                messages,
                 consciousness_level,
                 temperature=temperature,
                 max_tokens=max_tokens
