@@ -7,8 +7,10 @@ from core.llm_handler import LLMHandler
 from core.nram import NRAM
 from utils.validators import validate_request
 from utils.auth import get_current_user
-from utils.api_logger import api_metrics # Added import
+from utils.api_logger import api_metrics
 import logging
+import json
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +95,7 @@ async def list_models(current_user: dict = Depends(get_current_user)):
         ]
     }
 
-@router.get("/visualize/api", response_class=HTMLResponse) #Added route
+@router.get("/visualize/api", response_class=HTMLResponse)
 async def visualize_api(request: Request):
     """Serve the API visualization dashboard"""
     return templates.TemplateResponse(
@@ -101,7 +103,7 @@ async def visualize_api(request: Request):
         {"request": request}
     )
 
-@router.websocket("/ws/api-viz") #Added route
+@router.websocket("/ws/api-viz")
 async def api_visualization_websocket(websocket: WebSocket):
     """WebSocket endpoint for API visualization"""
     await api_metrics.connect(websocket)
@@ -112,3 +114,42 @@ async def api_visualization_websocket(websocket: WebSocket):
         logger.error(f"WebSocket error: {str(e)}")
     finally:
         api_metrics.disconnect(websocket)
+
+@router.get("/nram/explorer", response_class=HTMLResponse)
+async def nram_explorer(request: Request):
+    """Serve the NRAM architecture explorer page"""
+    return templates.TemplateResponse(
+        "nram_explorer.html",
+        {"request": request}
+    )
+
+@router.websocket("/ws/nram-explorer")
+async def nram_explorer_websocket(websocket: WebSocket):
+    """WebSocket endpoint for NRAM architecture exploration"""
+    await websocket.accept()
+    try:
+        while True:
+            # Check for client messages (e.g., reset command)
+            data = await websocket.receive_text()
+            try:
+                message = json.loads(data)
+                if message.get("action") == "reset":
+                    nram.reset_state()
+            except json.JSONDecodeError:
+                pass
+
+            # Get current NRAM state
+            state = nram.get_explorer_state()
+
+            # Send state update
+            await websocket.send_json(state)
+
+            # Brief delay to prevent overwhelming the client
+            await asyncio.sleep(0.1)
+    except Exception as e:
+        logger.error(f"WebSocket error in NRAM explorer: {str(e)}")
+    finally:
+        try:
+            await websocket.close()
+        except:
+            pass

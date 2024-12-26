@@ -3,6 +3,7 @@ from typing import List, Dict, Set
 from fastapi import WebSocket
 import json
 import logging
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -210,3 +211,106 @@ class NRAM:
         except Exception as e:
             logger.error(f"Error determining consciousness level: {str(e)}")
             return "baseline"
+
+    def reset_state(self):
+        """Reset NRAM state to initial conditions"""
+        self.memory_state = np.random.randn(self.memory_size)
+        self.pattern_memory = np.zeros((self.memory_size, 8))
+        logger.info("NRAM state reset to initial conditions")
+
+    def get_explorer_state(self) -> Dict:
+        """Get current NRAM state for explorer visualization"""
+        try:
+            # Get base state values
+            memory_state = self.memory_state.tolist()
+            pattern_memory = self.pattern_memory.tolist()
+
+            # Calculate consciousness level
+            state_value = float(np.mean(np.abs(self.memory_state)))
+            consciousness_level = self._get_consciousness_level(state_value)
+
+            # Calculate pattern intensity
+            pattern_intensity = float(np.mean(np.abs(self.pattern_memory)))
+
+            # Generate network representation
+            network = self._generate_network_representation()
+
+            return {
+                "memory_state": memory_state,
+                "pattern_memory": pattern_memory,
+                "consciousness_level": consciousness_level,
+                "pattern_intensity": pattern_intensity,
+                "network": network
+            }
+        except Exception as e:
+            logger.error(f"Error getting explorer state: {str(e)}")
+            return {
+                "memory_state": [],
+                "pattern_memory": [],
+                "consciousness_level": "error",
+                "pattern_intensity": 0,
+                "network": {"nodes": [], "links": []}
+            }
+
+    def _generate_network_representation(self) -> Dict:
+        """Generate network representation of NRAM state"""
+        try:
+            # Create nodes for memory regions
+            nodes = []
+            links = []
+
+            # Add memory region nodes
+            num_regions = 10
+            region_size = self.memory_size // num_regions
+
+            for i in range(num_regions):
+                start_idx = i * region_size
+                end_idx = start_idx + region_size
+                region_value = float(np.mean(np.abs(self.memory_state[start_idx:end_idx])))
+
+                nodes.append({
+                    "id": f"region_{i}",
+                    "type": "memory",
+                    "value": region_value
+                })
+
+            # Add pattern nodes
+            for i in range(8):
+                pattern_value = float(np.mean(np.abs(self.pattern_memory[:, i])))
+                nodes.append({
+                    "id": f"pattern_{i}",
+                    "type": "pattern",
+                    "value": pattern_value
+                })
+
+            # Create links based on correlation
+            for i in range(num_regions):
+                # Link to patterns
+                for j in range(8):
+                    correlation = float(np.corrcoef(
+                        self.memory_state[i * region_size:(i + 1) * region_size],
+                        self.pattern_memory[i * region_size:(i + 1) * region_size, j]
+                    )[0, 1])
+
+                    if abs(correlation) > 0.3:  # Only show strong correlations
+                        links.append({
+                            "source": f"region_{i}",
+                            "target": f"pattern_{j}",
+                            "value": abs(correlation)
+                        })
+
+                # Link to neighboring regions
+                if i < num_regions - 1:
+                    links.append({
+                        "source": f"region_{i}",
+                        "target": f"region_{i + 1}",
+                        "value": 1
+                    })
+
+            return {
+                "nodes": nodes,
+                "links": links
+            }
+        except Exception as e:
+            logger.error(f"Error generating network representation: {str(e)}")
+            return {"nodes": [], "links": []}

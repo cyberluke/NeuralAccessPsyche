@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NRAM Architecture Explorer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: #2a2a2a;
+            padding: 20px;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .architecture-section {
+            background: #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            background: #444;
+            border-radius: 4px;
+        }
+
+        .section-content {
+            padding: 10px;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+            gap: 2px;
+            margin-top: 10px;
+        }
+
+        .memory-cell {
+            background: #2a2a2a;
+            aspect-ratio: 1;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .memory-cell:hover {
+            transform: scale(1.1);
+            background: #4CAF50;
+        }
+
+        .pattern-matrix {
+            margin-top: 15px;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+
+        .visualization {
+            width: 100%;
+            height: 400px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2em;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>NRAM Explorer</h2>
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('memory')">
+                    <span>Memory State</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="memory" class="section-content">
+                    <div class="memory-grid" id="memory-grid"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('patterns')">
+                    <span>Pattern Recognition</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="patterns" class="section-content">
+                    <div class="pattern-matrix" id="pattern-matrix"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('stats')">
+                    <span>Neural Statistics</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="stats" class="section-content">
+                    <div class="stats-panel">
+                        <div class="stat-card">
+                            <div>Consciousness Level</div>
+                            <div class="stat-value" id="consciousness-level">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Pattern Intensity</div>
+                            <div class="stat-value" id="pattern-intensity">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1>Neural Random Access Memory</h1>
+            <div class="visualization" id="network-visualization"></div>
+            <div class="controls">
+                <button onclick="pauseSimulation()">Pause</button>
+                <button onclick="resetSimulation()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isSimulationPaused = false;
+        const ws = new WebSocket(`ws://${window.location.host}/ws/nram-explorer`);
+        const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId);
+            content.classList.toggle('active');
+            const header = content.previousElementSibling;
+            const toggle = header.querySelector('.toggle');
+            toggle.textContent = content.classList.contains('active') ? '▼' : '▶';
+        }
+
+        function updateMemoryGrid(memoryState) {
+            const grid = d3.select('#memory-grid');
+            const cells = grid.selectAll('.memory-cell').data(memoryState);
+
+            cells.enter()
+                .append('div')
+                .attr('class', 'memory-cell')
+                .merge(cells)
+                .style('background-color', d => d3.interpolateViridis(Math.abs(d)))
+                .on('mouseover', function(event, d) {
+                    tooltip.transition().duration(200).style('opacity', .9);
+                    tooltip.html(`Value: ${d.toFixed(4)}`)
+                        .style('left', (event.pageX + 10) + 'px')
+                        .style('top', (event.pageY - 10) + 'px');
+                })
+                .on('mouseout', function() {
+                    tooltip.transition().duration(500).style('opacity', 0);
+                });
+
+            cells.exit().remove();
+        }
+
+        function updatePatternMatrix(patterns) {
+            const svg = d3.select('#pattern-matrix');
+            const width = 200;
+            const height = 200;
+            const cellSize = Math.min(width / patterns[0].length, height / patterns.length);
+
+            svg.selectAll('*').remove();
+
+            const matrix = svg.append('g')
+                .attr('transform', 'translate(10,10)');
+
+            patterns.forEach((row, i) => {
+                row.forEach((value, j) => {
+                    matrix.append('rect')
+                        .attr('x', j * cellSize)
+                        .attr('y', i * cellSize)
+                        .attr('width', cellSize - 1)
+                        .attr('height', cellSize - 1)
+                        .attr('fill', d3.interpolateViridis(value))
+                        .on('mouseover', function(event) {
+                            tooltip.transition().duration(200).style('opacity', .9);
+                            tooltip.html(`Pattern Strength: ${value.toFixed(4)}`)
+                                .style('left', (event.pageX + 10) + 'px')
+                                .style('top', (event.pageY - 10) + 'px');
+                        })
+                        .on('mouseout', function() {
+                            tooltip.transition().duration(500).style('opacity', 0);
+                        });
+                });
+            });
+        }
+
+        function updateStats(stats) {
+            document.getElementById('consciousness-level').textContent = stats.consciousness_level;
+            document.getElementById('pattern-intensity').textContent = 
+                typeof stats.pattern_intensity === 'number' 
+                    ? stats.pattern_intensity.toFixed(4) 
+                    : stats.pattern_intensity;
+        }
+
+        let simulation;
+        function initializeNetworkVisualization() {
+            const container = document.getElementById('network-visualization');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const svg = d3.select('#network-visualization')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            simulation = d3.forceSimulation()
+                .force('link', d3.forceLink().id(d => d.id).distance(50))
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('center', d3.forceCenter(width / 2, height / 2));
+
+            return svg;
+        }
+
+        function updateNetworkVisualization(data, svg) {
+            // Update nodes and links based on NRAM state
+            const nodes = data.nodes;
+            const links = data.links;
+
+            const link = svg.selectAll('.link')
+                .data(links)
+                .join('line')
+                .attr('class', 'link')
+                .style('stroke', '#666')
+                .style('stroke-opacity', 0.6);
+
+            const node = svg.selectAll('.node')
+                .data(nodes)
+                .join('circle')
+                .attr('class', 'node')
+                .attr('r', 5)
+                .style('fill', '#4CAF50')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+            simulation
+                .nodes(nodes)
+                .on('tick', () => {
+                    link
+                        .attr('x1', d => d.source.x)
+                        .attr('y1', d => d.source.y)
+                        .attr('x2', d => d.target.x)
+                        .attr('y2', d => d.target.y);
+
+                    node
+                        .attr('cx', d => d.x)
+                        .attr('cy', d => d.y);
+                });
+
+            simulation.force('link').links(links);
+            simulation.alpha(1).restart();
+        }
+
+        function dragstarted(event) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }
+
+        function dragged(event) {
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }
+
+        function dragended(event) {
+            if (!event.active) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }
+
+        function pauseSimulation() {
+            isSimulationPaused = !isSimulationPaused;
+            const button = document.querySelector('button');
+            button.textContent = isSimulationPaused ? 'Resume' : 'Pause';
+        }
+
+        function resetSimulation() {
+            ws.send(JSON.stringify({action: 'reset'}));
+        }
+
+        // Initialize visualizations
+        const networkSvg = initializeNetworkVisualization();
+
+        // WebSocket message handling
+        ws.onmessage = function(event) {
+            if (isSimulationPaused) return;
+            
+            const data = JSON.parse(event.data);
+            updateMemoryGrid(data.memory_state);
+            updatePatternMatrix(data.pattern_memory);
+            updateStats({
+                consciousness_level: data.consciousness_level,
+                pattern_intensity: data.pattern_intensity
+            });
+            updateNetworkVisualization(data.network, networkSvg);
+        };
+
+        // Open initial sections
+        toggleSection('memory');
+        toggleSection('stats');
+    </script>
+</body>
+</html>
