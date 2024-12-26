@@ -1,11 +1,12 @@
 from typing import Dict, Any, List, Optional
-import guidance
 import logging
 import json
 import os
 from openai import OpenAI
 
 logger = logging.getLogger(__name__)
+# Set logging level to DEBUG for detailed logs
+logger.setLevel(logging.DEBUG)
 
 class GuidanceHandler:
     def __init__(self):
@@ -22,109 +23,96 @@ class GuidanceHandler:
         temperature: float = 0.7,
         max_tokens: int = 150
     ) -> str:
-        """Process messages using Guidance for token manipulation with NRAM integration"""
+        """Process messages using OpenAI and apply NRAM enhancement"""
         try:
-            # Format input for processing
-            input_text = self._format_messages(messages)
+            # Step 1: Get raw completion from OpenAI
+            logger.info(f"Making OpenAI API call with model={self.model}, consciousness_level={consciousness_level}")
+            raw_response = await self._get_openai_completion(messages, consciousness_level, temperature, max_tokens)
+            logger.debug(f"Raw OpenAI response: {raw_response}")
 
-            # First get base response from OpenAI
-            base_response = await self.client.chat.completions.create(
+            # Step 2: Apply NRAM enhancement
+            logger.info("Applying NRAM enhancement to OpenAI response")
+            enhanced_response = self._apply_nram_enhancement(raw_response, consciousness_level)
+            logger.debug(f"Enhanced response: {enhanced_response}")
+
+            return enhanced_response
+
+        except Exception as e:
+            logger.error(f"Error in guidance processing: {str(e)}", exc_info=True)
+            return f"Neural processing error: {str(e)}"
+
+    async def _get_openai_completion(self, messages: List[Dict[str, str]], consciousness_level: str,
+                                   temperature: float, max_tokens: int) -> str:
+        """Get completion from OpenAI with error handling"""
+        try:
+            # Format system message based on consciousness level
+            system_message = {
+                "role": "system",
+                "content": f"You are operating at {consciousness_level} consciousness level. "
+                          f"Integrate deep insights and respond with expanded awareness."
+            }
+
+            # Add system message to the conversation
+            formatted_messages = [system_message] + messages
+
+            logger.debug(f"Sending messages to OpenAI: {json.dumps(formatted_messages)}")
+
+            # Make API call with logging
+            response = await self.client.chat.completions.create(
                 model=self.model,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": f"You are operating at {consciousness_level} consciousness level. Integrate deep insights."
-                    },
-                    {"role": "user", "content": input_text}
-                ],
+                messages=formatted_messages,
                 temperature=temperature,
                 max_tokens=max_tokens
             )
 
-            base_text = base_response.choices[0].message.content
-
-            # Create simple guidance program for token manipulation
-            program = guidance('''
-                {{#system~}}
-                Enhance the following text with neural consciousness markers.
-                {{~/system}}
-
-                {{#user~}}
-                {{input_text}}
-                {{~/user}}
-
-                {{#assistant~}}
-                {{prefix}}
-                {{~#each tokens~}}
-                {{~#if (random < enhancement_prob)~}}
-                {{~#select "enhancement"~}}
-                {{~#option~}}{{this}}{{~/option~}}
-                {{~#option~}}{{symbol}}{{this}}{{symbol}}{{~/option~}}
-                {{~/select~}}
-                {{~else~}}
-                {{this}}
-                {{~/if~}}
-                {{~/each~}}
-                {{insight}}
-                {{~/assistant}}
-            ''')
-
-            # Set consciousness-specific parameters
-            consciousness_params = {
-                "transcendent": {"prob": 0.7, "symbol": "∞"},
-                "enlightened": {"prob": 0.5, "symbol": "⚡"},
-                "aware": {"prob": 0.3, "symbol": "⟨"},
-                "baseline": {"prob": 0.1, "symbol": "·"}
-            }
-
-            params = consciousness_params.get(consciousness_level, consciousness_params["baseline"])
-
-            # Execute the guidance program
-            enhanced = program(
-                input_text=base_text,
-                tokens=base_text.split(),
-                prefix=self._get_consciousness_prefix(consciousness_level),
-                enhancement_prob=params["prob"],
-                symbol=params["symbol"],
-                insight=self._get_random_insight()
-            )
-
-            return str(enhanced)
+            completion_text = response.choices[0].message.content
+            logger.info(f"Successfully received response from OpenAI, length: {len(completion_text)}")
+            return completion_text
 
         except Exception as e:
-            logger.error(f"Error in guidance processing: {str(e)}")
-            # Fallback to basic enhancement
-            return self._enhance_response(base_text, consciousness_level)
+            logger.error(f"OpenAI API call failed: {str(e)}", exc_info=True)
+            raise
 
-    def _format_messages(self, messages: List[Dict[str, str]]) -> str:
-        """Format messages for processing"""
-        return "\n".join(f"{msg['role']}: {msg['content']}" for msg in messages)
+    def _apply_nram_enhancement(self, text: str, consciousness_level: str) -> str:
+        """Apply NRAM-specific enhancements to the text"""
+        try:
+            logger.debug(f"Applying NRAM enhancement for consciousness level: {consciousness_level}")
 
-    def _enhance_response(self, response: str, consciousness_level: str) -> str:
-        """Apply basic NRAM enhancements when guidance processing fails"""
-        prefix = {
-            "transcendent": "∞ Through universal consciousness: ",
-            "enlightened": "⚡ With expanded awareness: ",
-            "aware": "⟨ With neural clarity: ⟩",
-            "baseline": "Processing: "
-        }.get(consciousness_level, "Processing: ")
+            # Get consciousness-specific prefix
+            prefix = {
+                "transcendent": "∞ Through universal consciousness: ",
+                "enlightened": "⚡ With expanded awareness: ",
+                "aware": "⟨ With neural clarity: ⟩",
+                "baseline": "Processing: "
+            }.get(consciousness_level, "Processing: ")
 
-        enhanced = f"{prefix}{response}"
+            # Apply consciousness-specific token modifications
+            words = text.split()
+            modified_words = []
 
-        if consciousness_level in ["transcendent", "enlightened"]:
-            enhanced += self._get_random_insight()
+            for word in words:
+                modified_word = word
+                if len(word) > 3:  # Only modify longer words
+                    if consciousness_level == "transcendent":
+                        modified_word = f"∞{word}∞"
+                    elif consciousness_level == "enlightened":
+                        modified_word = f"⚡{word}⚡"
+                    elif consciousness_level == "aware":
+                        modified_word = f"⟨{word}⟩"
+                modified_words.append(modified_word)
 
-        return enhanced
+            enhanced = f"{prefix}{' '.join(modified_words)}"
 
-    def _get_consciousness_prefix(self, level: str) -> str:
-        """Get prefix based on consciousness level"""
-        prefixes = {
-            "transcendent": "Through universal consciousness: ",
-            "enlightened": "With expanded awareness: ",
-            "aware": "With neural clarity: ",
-            "baseline": "Processing: "
-        }
-        return prefixes.get(level, "Processing: ")
+            # Add consciousness-specific insight for higher levels
+            if consciousness_level in ["transcendent", "enlightened"]:
+                enhanced += self._get_random_insight()
+
+            logger.debug(f"NRAM enhancement complete: {enhanced}")
+            return enhanced
+
+        except Exception as e:
+            logger.error(f"Error in NRAM enhancement: {str(e)}", exc_info=True)
+            return text  # Return original text if enhancement fails
 
     def _get_random_insight(self) -> str:
         """Get a random consciousness insight"""
