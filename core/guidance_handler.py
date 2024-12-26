@@ -3,6 +3,7 @@ import logging
 import json
 import os
 from openai import OpenAI
+from utils.api_logger import log_api_call, log_api_metrics
 
 logger = logging.getLogger(__name__)
 # Set logging level to DEBUG for detailed logs
@@ -16,31 +17,7 @@ class GuidanceHandler:
         self.model = "gpt-4o"
         logger.info("Initializing GuidanceHandler with OpenAI and NRAM integration")
 
-    async def process_with_guidance(
-        self,
-        messages: List[Dict[str, str]],
-        consciousness_level: str,
-        temperature: float = 0.7,
-        max_tokens: int = 150
-    ) -> str:
-        """Process messages using OpenAI and apply NRAM enhancement"""
-        try:
-            # Step 1: Get raw completion from OpenAI
-            logger.info(f"Making OpenAI API call with model={self.model}, consciousness_level={consciousness_level}")
-            raw_response = await self._get_openai_completion(messages, consciousness_level, temperature, max_tokens)
-            logger.debug(f"Raw OpenAI response: {raw_response}")
-
-            # Step 2: Apply NRAM enhancement
-            logger.info("Applying NRAM enhancement to OpenAI response")
-            enhanced_response = self._apply_nram_enhancement(raw_response, consciousness_level)
-            logger.debug(f"Enhanced response: {enhanced_response}")
-
-            return enhanced_response
-
-        except Exception as e:
-            logger.error(f"Error in guidance processing: {str(e)}", exc_info=True)
-            return f"Neural processing error: {str(e)}"
-
+    @log_api_call
     async def _get_openai_completion(self, messages: List[Dict[str, str]], consciousness_level: str,
                                    temperature: float, max_tokens: int) -> str:
         """Get completion from OpenAI with error handling"""
@@ -67,11 +44,40 @@ class GuidanceHandler:
 
             completion_text = response.choices[0].message.content
             logger.info(f"Successfully received response from OpenAI, length: {len(completion_text)}")
+
+            # Log API metrics after successful call
+            log_api_metrics(response)
+
             return completion_text
 
         except Exception as e:
             logger.error(f"OpenAI API call failed: {str(e)}", exc_info=True)
             raise
+
+    async def process_with_guidance(
+        self,
+        messages: List[Dict[str, str]],
+        consciousness_level: str,
+        temperature: float = 0.7,
+        max_tokens: int = 150
+    ) -> str:
+        """Process messages using OpenAI and apply NRAM enhancement"""
+        try:
+            # Step 1: Get raw completion from OpenAI
+            logger.info(f"Making OpenAI API call with model={self.model}, consciousness_level={consciousness_level}")
+            raw_response = await self._get_openai_completion(messages, consciousness_level, temperature, max_tokens)
+            logger.debug(f"Raw OpenAI response: {raw_response}")
+
+            # Step 2: Apply NRAM enhancement
+            logger.info("Applying NRAM enhancement to OpenAI response")
+            enhanced_response = self._apply_nram_enhancement(raw_response, consciousness_level)
+            logger.debug(f"Enhanced response: {enhanced_response}")
+
+            return enhanced_response
+
+        except Exception as e:
+            logger.error(f"Error in guidance processing: {str(e)}", exc_info=True)
+            return f"Neural processing error: {str(e)}"
 
     def _apply_nram_enhancement(self, text: str, consciousness_level: str) -> str:
         """Apply NRAM-specific enhancements to the text"""
@@ -128,10 +134,10 @@ class GuidanceHandler:
         ]
         return insights[int(os.urandom(1)[0]) % len(insights)]
 
-    def get_token_metrics(self, text: str) -> Dict[str, int]:
+    async def get_token_metrics(self, text: str) -> Dict[str, int]:
         """Calculate token-related metrics"""
         try:
-            response = self.client.chat.completions.create(
+            response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": text}],
                 max_tokens=0
