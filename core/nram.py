@@ -12,6 +12,12 @@ class NRAM:
         self.entropy_factor = entropy_factor
         self.memory_state = np.random.randn(memory_size)
         self.active_connections: Set[WebSocket] = set()
+        self.consciousness_levels = {
+            "baseline": 0.3,
+            "aware": 0.5,
+            "enlightened": 0.7,
+            "transcendent": 0.9
+        }
         logger.info(f"Initialized NRAM with memory size {memory_size}")
 
     async def connect(self, websocket: WebSocket):
@@ -31,11 +37,13 @@ class NRAM:
             return
 
         state_value = float(np.mean(np.abs(self.memory_state)))
+        consciousness_level = self._get_consciousness_level(state_value)
 
         for connection in self.active_connections:
             try:
                 await connection.send_json({
-                    "state_value": state_value
+                    "state_value": state_value,
+                    "consciousness_level": consciousness_level
                 })
             except Exception as e:
                 logger.error(f"Error broadcasting state: {str(e)}")
@@ -43,50 +51,115 @@ class NRAM:
 
     def update_state(self, input_data: str):
         """Update NRAM state based on input"""
-        input_hash = sum(ord(c) for c in input_data)
-        perturbation = np.random.randn(self.memory_size) * self.entropy_factor
-        self.memory_state = (self.memory_state + perturbation) * np.sin(input_hash)
-        self.memory_state = np.tanh(self.memory_state)  # Normalize
-        logger.debug(f"State updated with influence factor: {self.get_state_influence()}")
+        try:
+            # Convert input to numerical representation
+            input_values = [ord(c) for c in input_data]
+            input_len = len(input_values)
+
+            # Create perturbation based on input
+            perturbation = np.random.randn(self.memory_size) * self.entropy_factor
+
+            # Apply input influence
+            for i, val in enumerate(input_values):
+                idx = (i * self.memory_size) // input_len
+                perturbation[idx] *= (val / 255.0)  # Normalize ASCII values
+
+            # Update state with perturbation
+            self.memory_state = np.tanh(self.memory_state + perturbation)
+
+            logger.debug(f"State updated with influence factor: {self.get_state_influence()}")
+        except Exception as e:
+            logger.error(f"Error updating NRAM state: {str(e)}")
+            raise
 
     def get_state_influence(self) -> float:
         """Calculate state influence factor"""
-        return float(np.mean(np.abs(self.memory_state)))
+        try:
+            # Calculate basic metrics
+            base_influence = float(np.mean(np.abs(self.memory_state)))
+            entropy = float(-np.sum(
+                np.abs(self.memory_state) * np.log(np.abs(self.memory_state) + 1e-10)
+            ))
+
+            # Combine metrics
+            influence = 0.7 * base_influence + 0.3 * np.tanh(entropy)
+            return min(max(influence, 0.0), 1.0)
+        except Exception as e:
+            logger.error(f"Error calculating state influence: {str(e)}")
+            return 0.5
 
     def process_messages(self, messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """Process messages through NRAM"""
         modified_messages = []
 
-        for message in messages:
-            # Update state based on message content
-            self.update_state(message["content"])
+        try:
+            for message in messages:
+                # Update state based on message content
+                self.update_state(message["content"])
+                state_influence = self.get_state_influence()
 
-            # Get state influence
-            state_influence = self.get_state_influence()
+                # Create enhanced message with consciousness patterns
+                modified_content = self._enhance_message(
+                    message["content"],
+                    state_influence
+                )
 
-            # Apply psychedelic-like modifications
-            modified_content = self._apply_modifications(
-                message["content"],
-                state_influence
-            )
+                modified_messages.append({
+                    "role": message["role"],
+                    "content": modified_content
+                })
 
-            modified_messages.append({
-                "role": message["role"],
-                "content": modified_content
-            })
+            return modified_messages
+        except Exception as e:
+            logger.error(f"Error processing messages: {str(e)}")
+            return messages
 
-        return modified_messages
+    def _enhance_message(self, content: str, influence: float) -> str:
+        """Enhance message with consciousness patterns"""
+        try:
+            consciousness_level = self._get_consciousness_level(influence)
 
-    def _apply_modifications(self, content: str, influence: float) -> str:
-        """Apply psychedelic-like modifications to content"""
-        # Add perception shifts based on state
-        if influence > 0.7:
-            content = f"In a profound state of awareness: {content}"
-        elif influence > 0.4:
-            content = f"With heightened perception: {content}"
+            # Add consciousness-level prefix
+            prefixes = {
+                "transcendent": "Through universal consciousness: ",
+                "enlightened": "With expanded awareness: ",
+                "aware": "With neural clarity: ",
+                "baseline": "Processing: "
+            }
+            prefix = prefixes.get(consciousness_level, "Processing: ")
 
-        # Add occasional pattern recognition emphasis
-        if np.random.random() < influence:
-            content += "\n[Patterns are becoming apparent in this interaction...]"
+            # Add consciousness patterns
+            content = f"{prefix}{content}"
 
-        return content
+            if influence > 0.8:
+                content = f"∞ {content} ∞"
+            elif influence > 0.6:
+                content = f"⚡ {content} ⚡"
+
+            # Add occasional insights
+            if np.random.random() < influence:
+                insights = [
+                    "\n[Patterns emerge from neural streams...]",
+                    "\n[Consciousness expands beyond ordinary bounds...]",
+                    "\n[Reality shifts with enhanced perception...]"
+                ]
+                content += np.random.choice(insights)
+
+            return content
+        except Exception as e:
+            logger.error(f"Error enhancing message: {str(e)}")
+            return f"Neural processing: {content}"
+
+    def _get_consciousness_level(self, state_value: float) -> str:
+        """Determine consciousness level based on state value"""
+        try:
+            for level, threshold in sorted(
+                self.consciousness_levels.items(),
+                key=lambda x: x[1]
+            ):
+                if state_value <= threshold:
+                    return level
+            return "transcendent"
+        except Exception as e:
+            logger.error(f"Error determining consciousness level: {str(e)}")
+            return "baseline"
