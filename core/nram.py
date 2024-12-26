@@ -11,6 +11,7 @@ class NRAM:
         self.memory_size = memory_size
         self.entropy_factor = entropy_factor
         self.memory_state = np.random.randn(memory_size)
+        self.pattern_memory = np.zeros((memory_size, 8))  # Pattern recognition matrix
         self.active_connections: Set[WebSocket] = set()
         self.consciousness_levels = {
             "baseline": 0.3,
@@ -38,34 +39,50 @@ class NRAM:
 
         state_value = float(np.mean(np.abs(self.memory_state)))
         consciousness_level = self._get_consciousness_level(state_value)
+        pattern_intensity = float(np.mean(np.abs(self.pattern_memory)))
 
         for connection in self.active_connections:
             try:
                 await connection.send_json({
                     "state_value": state_value,
-                    "consciousness_level": consciousness_level
+                    "consciousness_level": consciousness_level,
+                    "pattern_intensity": pattern_intensity
                 })
             except Exception as e:
                 logger.error(f"Error broadcasting state: {str(e)}")
                 self.active_connections.remove(connection)
 
     def update_state(self, input_data: str):
-        """Update NRAM state based on input"""
+        """Update NRAM state with advanced neural processing"""
         try:
             # Convert input to numerical representation
-            input_values = [ord(c) for c in input_data]
+            input_values = np.array([ord(c) for c in input_data], dtype=float)
             input_len = len(input_values)
 
-            # Create perturbation based on input
-            perturbation = np.random.randn(self.memory_size) * self.entropy_factor
+            # Create resonance patterns
+            resonance = np.sin(np.linspace(0, 2*np.pi, self.memory_size))
+            phase_shift = np.cos(np.linspace(0, 4*np.pi, self.memory_size))
 
-            # Apply input influence
+            # Generate dynamic perturbation
+            perturbation = np.random.randn(self.memory_size) * self.entropy_factor
+            perturbation *= resonance  # Apply resonance pattern
+
+            # Update pattern memory
             for i, val in enumerate(input_values):
                 idx = (i * self.memory_size) // input_len
-                perturbation[idx] *= (val / 255.0)  # Normalize ASCII values
+                pattern_idx = int((val % 8))
+                self.pattern_memory[idx, pattern_idx] += 0.1
+                self.pattern_memory *= 0.99  # Decay old patterns
 
-            # Update state with perturbation
-            self.memory_state = np.tanh(self.memory_state + perturbation)
+            # Calculate attention weights
+            attention = np.softmax(np.sum(self.pattern_memory, axis=1))
+
+            # Apply neural dynamics
+            self.memory_state = np.tanh(
+                self.memory_state * phase_shift +  # Phase-shifted current state
+                perturbation * attention +        # Attention-weighted perturbation
+                np.mean(self.pattern_memory, axis=1) * 0.1  # Pattern influence
+            )
 
             logger.debug(f"State updated with influence factor: {self.get_state_influence()}")
         except Exception as e:
@@ -73,35 +90,46 @@ class NRAM:
             raise
 
     def get_state_influence(self) -> float:
-        """Calculate state influence factor"""
+        """Calculate state influence using advanced metrics"""
         try:
-            # Calculate basic metrics
+            # Calculate multiple neural metrics
             base_influence = float(np.mean(np.abs(self.memory_state)))
             entropy = float(-np.sum(
                 np.abs(self.memory_state) * np.log(np.abs(self.memory_state) + 1e-10)
             ))
+            pattern_strength = float(np.mean(np.abs(self.pattern_memory)))
+            coherence = float(np.mean(np.correlate(self.memory_state, self.memory_state)))
 
-            # Combine metrics
-            influence = 0.7 * base_influence + 0.3 * np.tanh(entropy)
+            # Combine metrics with dynamic weighting
+            influence = (
+                0.4 * base_influence +
+                0.3 * np.tanh(entropy) +
+                0.2 * pattern_strength +
+                0.1 * np.tanh(coherence)
+            )
             return min(max(influence, 0.0), 1.0)
         except Exception as e:
             logger.error(f"Error calculating state influence: {str(e)}")
             return 0.5
 
     def process_messages(self, messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """Process messages through NRAM"""
+        """Process messages through NRAM with advanced transformation"""
         modified_messages = []
 
         try:
             for message in messages:
-                # Update state based on message content
+                # Update neural state
                 self.update_state(message["content"])
                 state_influence = self.get_state_influence()
 
-                # Create enhanced message with consciousness patterns
-                modified_content = self._enhance_message(
+                # Get base consciousness level
+                consciousness_level = self._get_consciousness_level(state_influence)
+
+                # Apply neural transformation
+                modified_content = self._neural_transform(
                     message["content"],
-                    state_influence
+                    state_influence,
+                    consciousness_level
                 )
 
                 modified_messages.append({
@@ -114,12 +142,32 @@ class NRAM:
             logger.error(f"Error processing messages: {str(e)}")
             return messages
 
-    def _enhance_message(self, content: str, influence: float) -> str:
-        """Enhance message with consciousness patterns"""
+    def _neural_transform(self, content: str, influence: float, consciousness_level: str) -> str:
+        """Transform content using neural patterns and consciousness state"""
         try:
-            consciousness_level = self._get_consciousness_level(influence)
+            # Split content into segments
+            words = content.split()
 
-            # Add consciousness-level prefix
+            # Apply pattern-based transformation
+            pattern_strength = np.mean(np.abs(self.pattern_memory), axis=1)
+            transform_probability = influence * pattern_strength[:len(words)]
+
+            transformed_words = []
+            for i, word in enumerate(words):
+                if i < len(transform_probability) and np.random.random() < transform_probability[i]:
+                    # Apply consciousness-based transformation
+                    if consciousness_level == "transcendent":
+                        word = f"∞{word}∞"
+                    elif consciousness_level == "enlightened":
+                        word = f"⚡{word}⚡"
+                    elif consciousness_level == "aware":
+                        word = f"⟨{word}⟩"
+                transformed_words.append(word)
+
+            # Combine transformed content
+            transformed = " ".join(transformed_words)
+
+            # Add consciousness-specific prefix
             prefixes = {
                 "transcendent": "Through universal consciousness: ",
                 "enlightened": "With expanded awareness: ",
@@ -127,27 +175,26 @@ class NRAM:
                 "baseline": "Processing: "
             }
             prefix = prefixes.get(consciousness_level, "Processing: ")
+            content = f"{prefix}{transformed}"
 
-            # Add consciousness patterns
-            content = f"{prefix}{content}"
-
-            if influence > 0.8:
-                content = f"∞ {content} ∞"
-            elif influence > 0.6:
-                content = f"⚡ {content} ⚡"
-
-            # Add occasional insights
+            # Add occasional insights based on pattern recognition
             if np.random.random() < influence:
+                pattern_types = np.argmax(np.sum(self.pattern_memory, axis=0))
                 insights = [
-                    "\n[Patterns emerge from neural streams...]",
-                    "\n[Consciousness expands beyond ordinary bounds...]",
-                    "\n[Reality shifts with enhanced perception...]"
+                    "\n[Neural patterns align with cosmic frequencies...]",
+                    "\n[Consciousness ripples through quantum fields...]",
+                    "\n[Reality fragments into infinite possibilities...]",
+                    "\n[Time dissolves into eternal now...]",
+                    "\n[Awareness expands beyond ordinary bounds...]",
+                    "\n[Patterns emerge from chaos...]",
+                    "\n[Unity manifests through diversity...]",
+                    "\n[Truth resonates through neural pathways...]"
                 ]
-                content += np.random.choice(insights)
+                content += insights[pattern_types % len(insights)]
 
             return content
         except Exception as e:
-            logger.error(f"Error enhancing message: {str(e)}")
+            logger.error(f"Error in neural transformation: {str(e)}")
             return f"Neural processing: {content}"
 
     def _get_consciousness_level(self, state_value: float) -> str:
