@@ -72,9 +72,9 @@ function updatePatternMatrix(patterns) {
 
 function updateStats(stats) {
     document.getElementById('consciousness-level').textContent = stats.consciousness_level;
-    document.getElementById('pattern-intensity').textContent = 
-        typeof stats.pattern_intensity === 'number' 
-            ? stats.pattern_intensity.toFixed(4) 
+    document.getElementById('pattern-intensity').textContent =
+        typeof stats.pattern_intensity === 'number'
+            ? stats.pattern_intensity.toFixed(4)
             : stats.pattern_intensity;
 }
 
@@ -123,11 +123,11 @@ function createTokenFlow(source, target, value) {
             return;
         }
 
-        const sourcePos = source.type === 'memory' ? 
-            {x: source.x, y: source.y} : 
+        const sourcePos = source.type === 'memory' ?
+            {x: source.x, y: source.y} :
             simulation.find(source.x, source.y);
-        const targetPos = target.type === 'memory' ? 
-            {x: target.x, y: target.y} : 
+        const targetPos = target.type === 'memory' ?
+            {x: target.x, y: target.y} :
             simulation.find(target.x, target.y);
 
         const currentX = sourcePos.x + (targetPos.x - sourcePos.x) * token.progress;
@@ -307,9 +307,131 @@ async function resetConfiguration() {
     }
 }
 
+// Add these new variables for heatmap
+let currentMetric = 'activity';
+const heatmapColorScale = d3.scaleSequential(d3.interpolateSpectral);
+const performanceMetrics = {
+    activity: new Array(64).fill(0),
+    efficiency: new Array(64).fill(0),
+    coherence: new Array(64).fill(0)
+};
+
+function updateHeatmapMetric(metric) {
+    currentMetric = metric;
+    updatePerformanceHeatmap(performanceMetrics[metric]);
+}
+
+function updatePerformanceHeatmap(data) {
+    const container = d3.select('#performance-heatmap');
+    const width = container.node().clientWidth;
+    const height = container.node().clientHeight;
+
+    // Calculate cell dimensions
+    const cols = 8;
+    const rows = 8;
+    const cellWidth = width / cols;
+    const cellHeight = height / rows;
+
+    // Update heatmap cells
+    const cells = container.selectAll('.heatmap-cell')
+        .data(data);
+
+    // Enter new cells
+    cells.enter()
+        .append('div')
+        .attr('class', 'heatmap-cell')
+        .merge(cells)
+        .style('width', `${cellWidth}px`)
+        .style('height', `${cellHeight}px`)
+        .style('left', (d, i) => `${(i % cols) * cellWidth}px`)
+        .style('top', (d, i) => `${Math.floor(i / cols) * cellHeight}px`)
+        .style('background-color', d => heatmapColorScale(d))
+        .on('mouseover', function(event, d) {
+            const i = data.indexOf(d);
+            const row = Math.floor(i / cols);
+            const col = i % cols;
+
+            tooltip.transition()
+                .duration(200)
+                .style('opacity', .9);
+
+            tooltip.html(`
+                Position: (${col}, ${row})<br/>
+                ${currentMetric}: ${d.toFixed(4)}
+            `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', function() {
+            tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        });
+
+    // Remove old cells
+    cells.exit().remove();
+}
+
+function calculatePerformanceMetrics(memoryState, patternMemory) {
+    const gridSize = 8;
+    const cellSize = memoryState.length / (gridSize * gridSize);
+
+    // Calculate metrics for each cell
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const startIdx = i * cellSize;
+        const endIdx = startIdx + cellSize;
+        const cellData = memoryState.slice(startIdx, endIdx);
+
+        // Neural Activity: average absolute value of memory state
+        performanceMetrics.activity[i] = d3.mean(cellData, d => Math.abs(d));
+
+        // Processing Efficiency: variance of pattern activations
+        const patternData = patternMemory.slice(startIdx, endIdx);
+        performanceMetrics.efficiency[i] = d3.variance(patternData.flat());
+
+        // Pattern Coherence: spatial correlation with neighbors
+        const row = Math.floor(i / gridSize);
+        const col = i % gridSize;
+        let neighborSum = 0;
+        let neighborCount = 0;
+
+        // Check neighboring cells
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                if (dr === 0 && dc === 0) continue;
+
+                const r = row + dr;
+                const c = col + dc;
+
+                if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
+                    const neighborIdx = r * gridSize + c;
+                    neighborSum += d3.mean(cellData.map((v, j) =>
+                        Math.abs(v - memoryState[neighborIdx * cellSize + j])));
+                    neighborCount++;
+                }
+            }
+        }
+
+        performanceMetrics.coherence[i] = 1 - (neighborSum / neighborCount);
+    }
+
+    // Normalize metrics to [0,1] range
+    ['activity', 'efficiency', 'coherence'].forEach(metric => {
+        const values = performanceMetrics[metric];
+        const min = d3.min(values);
+        const max = d3.max(values);
+        performanceMetrics[metric] = values.map(v => (v - min) / (max - min));
+    });
+
+    // Update heatmap with current metric
+    updatePerformanceHeatmap(performanceMetrics[currentMetric]);
+}
+
+// Modify the existing WebSocket message handler
 ws.onmessage = function(event) {
     if (isSimulationPaused) return;
     const data = JSON.parse(event.data);
+
     updateMemoryGrid(data.memory_state);
     updatePatternMatrix(data.pattern_memory);
     updateStats({
@@ -317,6 +439,7 @@ ws.onmessage = function(event) {
         pattern_intensity: data.pattern_intensity
     });
     updateNetworkVisualization(data.network, networkSvg);
+    calculatePerformanceMetrics(data.memory_state, data.pattern_memory);
     updateConfigurationSuggestions();
 };
 

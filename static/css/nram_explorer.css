@@ -241,3 +241,70 @@ button:hover {
 .token-layer {
     pointer-events: none;
 }
+
+/* Performance Heatmap styles */
+#performance-heatmap {
+    width: 100%;
+    height: 200px;
+    margin: 10px 0;
+    background: #2a2a2a;
+    border-radius: 4px;
+    position: relative;
+}
+
+.heatmap-controls {
+    margin-bottom: 10px;
+}
+
+#metric-selector {
+    width: 100%;
+    padding: 8px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    outline: none;
+}
+
+#metric-selector option {
+    background: #333;
+    color: #fff;
+}
+
+.heatmap-legend {
+    height: 20px;
+    margin-top: 5px;
+    border-radius: 2px;
+    background: linear-gradient(to right,
+        #313695,
+        #4575b4,
+        #74add1,
+        #abd9e9,
+        #e0f3f8,
+        #fee090,
+        #fdae61,
+        #f46d43,
+        #d73027
+    );
+}
+
+.heatmap-cell {
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.1);
+    z-index: 1;
+}
+
+.heatmap-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+}

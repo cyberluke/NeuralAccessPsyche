@@ -20,6 +20,24 @@
             </div>
 
             <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('heatmap')">
+                    <span>Performance Heatmap</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="heatmap" class="section-content">
+                    <div class="heatmap-controls">
+                        <select id="metric-selector" onchange="updateHeatmapMetric(this.value)">
+                            <option value="activity">Neural Activity</option>
+                            <option value="efficiency">Processing Efficiency</option>
+                            <option value="coherence">Pattern Coherence</option>
+                        </select>
+                    </div>
+                    <div id="performance-heatmap"></div>
+                    <div class="heatmap-legend"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
                 <div class="section-header" onclick="toggleSection('patterns')">
                     <span>Pattern Recognition</span>
                     <span class="toggle">▼</span>
