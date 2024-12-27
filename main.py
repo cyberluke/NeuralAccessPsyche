@@ -2,9 +2,12 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from api.middleware import TokenAuthMiddleware, RateLimitMiddleware
 from api.routes import router
 import logging
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -19,7 +22,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS middleware
+# CORS middleware with WebSocket support
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,6 +34,11 @@ app.add_middleware(
 # Custom middleware
 app.add_middleware(TokenAuthMiddleware)
 app.add_middleware(RateLimitMiddleware)
+
+# Mount templates directory
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 # Exception handlers
 @app.exception_handler(HTTPException)
@@ -50,7 +58,7 @@ async def general_exception_handler(request, exc):
     )
 
 # Routes
-app.include_router(router, prefix="/v1")
+app.include_router(router)
 
 # Root endpoint
 @app.get("/")

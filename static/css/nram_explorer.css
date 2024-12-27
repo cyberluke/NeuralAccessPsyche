@@ -1,0 +1,171 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 100vh;
+}
+
+.sidebar {
+    background: #2a2a2a;
+    padding: 20px;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+}
+
+.main-content {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.architecture-section {
+    background: #333;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    background: #444;
+    border-radius: 4px;
+}
+
+.section-content {
+    padding: 10px;
+    display: none;
+}
+
+.section-content.active {
+    display: block;
+}
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.memory-cell {
+    background: #2a2a2a;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.memory-cell:hover {
+    transform: scale(1.1);
+    background: #4CAF50;
+}
+
+.pattern-matrix {
+    margin-top: 15px;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-card {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    color: #4CAF50;
+    margin: 10px 0;
+}
+
+.visualization {
+    width: 100%;
+    height: 400px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.controls {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    color: #4CAF50;
+}
+
+.config-panel {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.suggestion-card {
+    background: #333;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.suggestion-group {
+    margin-bottom: 15px;
+}
+
+.suggestion-group h4 {
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.suggestion-group pre {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}

@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 from core.llm_handler import LLMHandler
 from core.nram import NRAM
+from core.config_suggester import NRAMConfigSuggester
 from utils.validators import validate_request
 from utils.auth import get_current_user
 from utils.api_logger import api_metrics
@@ -14,10 +15,11 @@ import asyncio
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(prefix="/v1")
 llm_handler = LLMHandler()
 nram = NRAM()
 templates = Jinja2Templates(directory="templates")
+config_suggester = NRAMConfigSuggester()
 
 class ChatCompletionRequest(BaseModel):
     model: str
@@ -118,10 +120,14 @@ async def api_visualization_websocket(websocket: WebSocket):
 @router.get("/nram/explorer", response_class=HTMLResponse)
 async def nram_explorer(request: Request):
     """Serve the NRAM architecture explorer page"""
-    return templates.TemplateResponse(
-        "nram_explorer.html",
-        {"request": request}
-    )
+    try:
+        return templates.TemplateResponse(
+            "nram_explorer.html",
+            {"request": request}
+        )
+    except Exception as e:
+        logger.error(f"Error serving NRAM explorer: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.websocket("/ws/nram-explorer")
 async def nram_explorer_websocket(websocket: WebSocket):
@@ -153,3 +159,36 @@ async def nram_explorer_websocket(websocket: WebSocket):
             await websocket.close()
         except:
             pass
+
+@router.get("/nram/config/analyze")
+async def analyze_nram_config(current_user: dict = Depends(get_current_user)):
+    """Get NRAM configuration analysis and suggestions"""
+    try:
+        # Get current state from NRAM
+        state = nram.get_explorer_state()
+
+        # Analyze performance and get suggestions
+        analysis = await config_suggester.analyze_performance(state)
+
+        return analysis
+    except Exception as e:
+        logger.error(f"Error analyzing NRAM configuration: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/nram/config/update")
+async def update_nram_config(
+    config: Dict[str, Any],
+    current_user: dict = Depends(get_current_user)
+):
+    """Update NRAM configuration based on suggestions"""
+    try:
+        # Update config suggester
+        new_config = config_suggester.update_config(config)
+
+        # Update NRAM with new configuration
+        nram.update_configuration(new_config)
+
+        return {"message": "Configuration updated successfully", "config": new_config}
+    except Exception as e:
+        logger.error(f"Error updating NRAM configuration: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))

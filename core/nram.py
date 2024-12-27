@@ -1,5 +1,5 @@
 import numpy as np
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Any
 from fastapi import WebSocket
 import json
 import logging
@@ -314,3 +314,31 @@ class NRAM:
         except Exception as e:
             logger.error(f"Error generating network representation: {str(e)}")
             return {"nodes": [], "links": []}
+
+    def update_configuration(self, config: Dict[str, Any]):
+        """Update NRAM configuration with new parameters"""
+        try:
+            if "memory_size" in config and config["memory_size"] != self.memory_size:
+                # Resize memory state
+                new_state = np.random.randn(config["memory_size"])
+                new_pattern = np.zeros((config["memory_size"], 8))
+
+                # Copy existing state if possible
+                min_size = min(self.memory_size, config["memory_size"])
+                new_state[:min_size] = self.memory_state[:min_size]
+                new_pattern[:min_size] = self.pattern_memory[:min_size]
+
+                self.memory_size = config["memory_size"]
+                self.memory_state = new_state
+                self.pattern_memory = new_pattern
+
+            if "entropy_factor" in config:
+                self.entropy_factor = config["entropy_factor"]
+
+            if "consciousness_levels" in config:
+                self.consciousness_levels.update(config["consciousness_levels"])
+
+            logger.info(f"NRAM configuration updated: {json.dumps(config, indent=2)}")
+        except Exception as e:
+            logger.error(f"Error updating NRAM configuration: {str(e)}")
+            raise
