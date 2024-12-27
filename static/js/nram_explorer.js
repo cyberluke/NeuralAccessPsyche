@@ -1,6 +1,12 @@
 let isSimulationPaused = false;
+let animationSpeed = 1.0;
 const ws = new WebSocket(`ws://${window.location.host}/v1/ws/nram-explorer`);
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+
+// Token flow animation settings
+let tokenFlowAnimations = [];
+const tokenRadius = 4;
+const tokenColors = d3.scaleSequential(d3.interpolateInferno);
 
 function toggleSection(sectionId) {
     const content = document.getElementById(sectionId);
@@ -83,6 +89,9 @@ function initializeNetworkVisualization() {
         .attr('width', width)
         .attr('height', height);
 
+    // Add token flow layer
+    svg.append('g').attr('class', 'token-layer');
+
     simulation = d3.forceSimulation()
         .force('link', d3.forceLink().id(d => d.id).distance(50))
         .force('charge', d3.forceManyBody().strength(-100))
@@ -91,28 +100,90 @@ function initializeNetworkVisualization() {
     return svg;
 }
 
+function createTokenFlow(source, target, value) {
+    const token = {
+        id: `token-${Date.now()}-${Math.random()}`,
+        source,
+        target,
+        value,
+        progress: 0
+    };
+
+    const duration = 2000 / animationSpeed;
+    const animation = d3.select('.token-layer')
+        .append('circle')
+        .attr('class', 'token')
+        .attr('r', tokenRadius)
+        .attr('fill', tokenColors(value))
+        .attr('opacity', 0.7);
+
+    const animate = () => {
+        if (token.progress >= 1) {
+            animation.remove();
+            return;
+        }
+
+        const sourcePos = source.type === 'memory' ? 
+            {x: source.x, y: source.y} : 
+            simulation.find(source.x, source.y);
+        const targetPos = target.type === 'memory' ? 
+            {x: target.x, y: target.y} : 
+            simulation.find(target.x, target.y);
+
+        const currentX = sourcePos.x + (targetPos.x - sourcePos.x) * token.progress;
+        const currentY = sourcePos.y + (targetPos.y - sourcePos.y) * token.progress;
+
+        animation
+            .attr('cx', currentX)
+            .attr('cy', currentY);
+
+        token.progress += (1000 / 60) / duration;
+        if (!isSimulationPaused) {
+            requestAnimationFrame(animate);
+        }
+    };
+
+    animate();
+    return token;
+}
+
 function updateNetworkVisualization(data, svg) {
     const nodes = data.nodes;
     const links = data.links;
 
+    // Update links
     const link = svg.selectAll('.link')
         .data(links)
         .join('line')
         .attr('class', 'link')
         .style('stroke', '#666')
-        .style('stroke-opacity', 0.6);
+        .style('stroke-opacity', 0.6)
+        .style('stroke-width', d => Math.sqrt(d.value) * 2);
 
+    // Update nodes
     const node = svg.selectAll('.node')
         .data(nodes)
         .join('circle')
         .attr('class', 'node')
-        .attr('r', 5)
-        .style('fill', '#4CAF50')
+        .attr('r', d => d.type === 'memory' ? 6 : 4)
+        .style('fill', d => d.type === 'memory' ? '#4CAF50' : '#2196F3')
         .call(d3.drag()
             .on('start', dragstarted)
             .on('drag', dragged)
             .on('end', dragended));
 
+    // Create token flows for active connections
+    links.forEach(link => {
+        if (Math.random() < 0.1 * animationSpeed) {  // Adjust flow frequency
+            createTokenFlow(
+                nodes.find(n => n.id === link.source),
+                nodes.find(n => n.id === link.target),
+                link.value
+            );
+        }
+    });
+
+    // Update simulation
     simulation
         .nodes(nodes)
         .on('tick', () => {
@@ -148,10 +219,19 @@ function dragended(event) {
     event.subject.fy = null;
 }
 
-function pauseSimulation() {
+function updateAnimationSpeed(speed) {
+    animationSpeed = speed;
+    document.getElementById('speed-value').textContent = speed.toFixed(1);
+}
+
+function toggleSimulation() {
     isSimulationPaused = !isSimulationPaused;
-    const button = document.querySelector('button');
+    const button = document.getElementById('pause-button');
     button.textContent = isSimulationPaused ? 'Resume' : 'Pause';
+
+    if (!isSimulationPaused) {
+        simulation.alpha(0.1).restart();
+    }
 }
 
 function resetSimulation() {
