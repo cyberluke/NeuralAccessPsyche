@@ -68,7 +68,7 @@
 
             <div class="architecture-section">
                 <div class="section-header" onclick="toggleSection('animation-controls')">
-                    <span>Animation Controls</span>
+                    <span>Neural Controls</span>
                     <span class="toggle">▼</span>
                 </div>
                 <div id="animation-controls" class="section-content">
@@ -78,6 +78,13 @@
                             <input type="range" min="0.1" max="3" step="0.1" value="1.0" 
                                    onchange="updateAnimationSpeed(this.value)" 
                                    class="slider">
+                        </div>
+                        <div class="control-group">
+                            <label>Network Complexity: <span id="complexity-value">1.0</span>x</label>
+                            <input type="range" min="0.1" max="2" step="0.1" value="1.0" 
+                                   onchange="updateNetworkComplexity(this.value)" 
+                                   class="slider">
+                            <div class="complexity-info">Adjusts neural network depth and interconnections</div>
                         </div>
                     </div>
                 </div>

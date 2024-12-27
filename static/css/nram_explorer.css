@@ -308,3 +308,31 @@ button:hover {
     pointer-events: none;
     z-index: 1000;
 }
+
+/* Complexity control styles */
+.complexity-info {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+#complexity-value {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Update slider colors for complexity */
+.slider.complexity {
+    background: linear-gradient(to right,
+        #1a237e,  /* Deep neural connections */
+        #4CAF50,  /* Optimal complexity */
+        #f44336   /* High complexity */
+    );
+}

@@ -8,6 +8,10 @@ let tokenFlowAnimations = [];
 const tokenRadius = 4;
 const tokenColors = d3.scaleSequential(d3.interpolateInferno);
 
+// Add complexity control variables
+let networkComplexity = 1.0;
+let complexityUpdateTimeout;
+
 function toggleSection(sectionId) {
     const content = document.getElementById(sectionId);
     content.classList.toggle('active');
@@ -147,34 +151,60 @@ function createTokenFlow(source, target, value) {
     return token;
 }
 
+function updateNetworkComplexity(value) {
+    networkComplexity = parseFloat(value);
+    document.getElementById('complexity-value').textContent = value;
+
+    // Visual feedback on complexity change
+    updateNetworkVisualization(currentNetworkData, networkSvg);
+
+    // Debounce server updates to prevent flooding
+    clearTimeout(complexityUpdateTimeout);
+    complexityUpdateTimeout = setTimeout(() => {
+        ws.send(JSON.stringify({
+            action: 'update_complexity',
+            value: networkComplexity
+        }));
+    }, 300);
+}
+
+// Store network data for complexity updates
+let currentNetworkData = null;
+
+// Update visualization function to consider complexity
 function updateNetworkVisualization(data, svg) {
+    currentNetworkData = data;
     const nodes = data.nodes;
     const links = data.links;
 
-    // Update links
+    // Adjust link strength based on complexity
+    simulation.force('link').strength(d => d.value * networkComplexity);
+    simulation.force('charge').strength(-100 * networkComplexity);
+
+    // Update links with complexity-based width
     const link = svg.selectAll('.link')
         .data(links)
         .join('line')
         .attr('class', 'link')
         .style('stroke', '#666')
         .style('stroke-opacity', 0.6)
-        .style('stroke-width', d => Math.sqrt(d.value) * 2);
+        .style('stroke-width', d => Math.sqrt(d.value * networkComplexity) * 2);
 
-    // Update nodes
+    // Update nodes with complexity-based size
     const node = svg.selectAll('.node')
         .data(nodes)
         .join('circle')
         .attr('class', 'node')
-        .attr('r', d => d.type === 'memory' ? 6 : 4)
+        .attr('r', d => (d.type === 'memory' ? 6 : 4) * Math.sqrt(networkComplexity))
         .style('fill', d => d.type === 'memory' ? '#4CAF50' : '#2196F3')
         .call(d3.drag()
             .on('start', dragstarted)
             .on('drag', dragged)
             .on('end', dragended));
 
-    // Create token flows for active connections
+    // Create token flows with complexity-adjusted frequency
     links.forEach(link => {
-        if (Math.random() < 0.1 * animationSpeed) {  // Adjust flow frequency
+        if (Math.random() < 0.1 * animationSpeed * networkComplexity) {
             createTokenFlow(
                 nodes.find(n => n.id === link.source),
                 nodes.find(n => n.id === link.target),
@@ -183,7 +213,7 @@ function updateNetworkVisualization(data, svg) {
         }
     });
 
-    // Update simulation
+    // Update simulation with complexity-adjusted parameters
     simulation
         .nodes(nodes)
         .on('tick', () => {
@@ -199,7 +229,7 @@ function updateNetworkVisualization(data, svg) {
         });
 
     simulation.force('link').links(links);
-    simulation.alpha(1).restart();
+    simulation.alpha(networkComplexity).restart();
 }
 
 function dragstarted(event) {
@@ -376,26 +406,24 @@ function calculatePerformanceMetrics(memoryState, patternMemory) {
     const gridSize = 8;
     const cellSize = memoryState.length / (gridSize * gridSize);
 
-    // Calculate metrics for each cell
+    // Calculate metrics with complexity influence
     for (let i = 0; i < gridSize * gridSize; i++) {
         const startIdx = i * cellSize;
         const endIdx = startIdx + cellSize;
         const cellData = memoryState.slice(startIdx, endIdx);
 
-        // Neural Activity: average absolute value of memory state
-        performanceMetrics.activity[i] = d3.mean(cellData, d => Math.abs(d));
+        // Apply complexity factor to metrics
+        performanceMetrics.activity[i] = d3.mean(cellData, d => Math.abs(d)) * networkComplexity;
 
-        // Processing Efficiency: variance of pattern activations
         const patternData = patternMemory.slice(startIdx, endIdx);
-        performanceMetrics.efficiency[i] = d3.variance(patternData.flat());
+        performanceMetrics.efficiency[i] = d3.variance(patternData.flat()) * (1 / networkComplexity);
 
-        // Pattern Coherence: spatial correlation with neighbors
+        // Calculate coherence with complexity weighting
         const row = Math.floor(i / gridSize);
         const col = i % gridSize;
         let neighborSum = 0;
         let neighborCount = 0;
 
-        // Check neighboring cells
         for (let dr = -1; dr <= 1; dr++) {
             for (let dc = -1; dc <= 1; dc++) {
                 if (dr === 0 && dc === 0) continue;
@@ -412,10 +440,10 @@ function calculatePerformanceMetrics(memoryState, patternMemory) {
             }
         }
 
-        performanceMetrics.coherence[i] = 1 - (neighborSum / neighborCount);
+        performanceMetrics.coherence[i] = (1 - (neighborSum / neighborCount)) * networkComplexity;
     }
 
-    // Normalize metrics to [0,1] range
+    // Normalize metrics considering complexity
     ['activity', 'efficiency', 'coherence'].forEach(metric => {
         const values = performanceMetrics[metric];
         const min = d3.min(values);
@@ -423,7 +451,6 @@ function calculatePerformanceMetrics(memoryState, patternMemory) {
         performanceMetrics[metric] = values.map(v => (v - min) / (max - min));
     });
 
-    // Update heatmap with current metric
     updatePerformanceHeatmap(performanceMetrics[currentMetric]);
 }
 
