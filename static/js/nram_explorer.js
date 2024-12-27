@@ -171,7 +171,19 @@ function updateNetworkComplexity(value) {
 // Store network data for complexity updates
 let currentNetworkData = null;
 
-// Update visualization function to consider complexity
+// Add node expansion tracking
+let expandedNodes = new Set();
+
+function toggleNodeExpansion(nodeId) {
+    if (expandedNodes.has(nodeId)) {
+        expandedNodes.delete(nodeId);
+    } else {
+        expandedNodes.add(nodeId);
+    }
+    updateNetworkVisualization(currentNetworkData, networkSvg);
+}
+
+// Update visualization function to consider complexity and expansion
 function updateNetworkVisualization(data, svg) {
     currentNetworkData = data;
     const nodes = data.nodes;
@@ -181,39 +193,118 @@ function updateNetworkVisualization(data, svg) {
     simulation.force('link').strength(d => d.value * networkComplexity);
     simulation.force('charge').strength(-100 * networkComplexity);
 
-    // Update links with complexity-based width
+    // Update links with complexity-based width and gradients
     const link = svg.selectAll('.link')
         .data(links)
         .join('line')
         .attr('class', 'link')
-        .style('stroke', '#666')
+        .style('stroke', d => d3.interpolateViridis(d.value))
         .style('stroke-opacity', 0.6)
-        .style('stroke-width', d => Math.sqrt(d.value * networkComplexity) * 2);
+        .style('stroke-width', d => Math.sqrt(d.value * networkComplexity) * 2)
+        .on('mouseover', function(event, d) {
+            tooltip.transition()
+                .duration(200)
+                .style('opacity', .9);
+            tooltip.html(`
+                Connection Strength: ${d.value.toFixed(3)}<br/>
+                Source: ${d.source.id}<br/>
+                Target: ${d.target.id}
+            `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', function() {
+            tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        });
 
-    // Update nodes with complexity-based size
-    const node = svg.selectAll('.node')
+    // Create node groups for better organization
+    const nodeGroups = svg.selectAll('.node-group')
         .data(nodes)
-        .join('circle')
-        .attr('class', 'node')
-        .attr('r', d => (d.type === 'memory' ? 6 : 4) * Math.sqrt(networkComplexity))
-        .style('fill', d => d.type === 'memory' ? '#4CAF50' : '#2196F3')
+        .join('g')
+        .attr('class', 'node-group')
         .call(d3.drag()
             .on('start', dragstarted)
             .on('drag', dragged)
             .on('end', dragended));
 
-    // Create token flows with complexity-adjusted frequency
-    links.forEach(link => {
-        if (Math.random() < 0.1 * animationSpeed * networkComplexity) {
-            createTokenFlow(
-                nodes.find(n => n.id === link.source),
-                nodes.find(n => n.id === link.target),
-                link.value
-            );
+    // Update main nodes
+    nodeGroups.selectAll('circle')
+        .data(d => [d])
+        .join('circle')
+        .attr('class', 'node')
+        .attr('r', d => {
+            const baseSize = (d.type === 'memory' ? 6 : 4);
+            const expansionBonus = expandedNodes.has(d.id) ? 2 : 1;
+            return baseSize * Math.sqrt(networkComplexity) * expansionBonus;
+        })
+        .style('fill', d => {
+            const baseColor = d.type === 'memory' ? '#4CAF50' : '#2196F3';
+            return expandedNodes.has(d.id) ? d3.color(baseColor).brighter(0.5) : baseColor;
+        })
+        .style('stroke', '#fff')
+        .style('stroke-width', '1.5px')
+        .on('click', function(event, d) {
+            event.stopPropagation();
+            toggleNodeExpansion(d.id);
+        })
+        .on('mouseover', function(event, d) {
+            tooltip.transition()
+                .duration(200)
+                .style('opacity', .9);
+            tooltip.html(`
+                Node ID: ${d.id}<br/>
+                Type: ${d.type}<br/>
+                Value: ${d.value?.toFixed(3) || 'N/A'}<br/>
+                Connections: ${links.filter(l => l.source.id === d.id || l.target.id === d.id).length}<br/>
+                ${expandedNodes.has(d.id) ? 'Click to collapse' : 'Click to expand'}
+            `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', function() {
+            tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        });
+
+    // Add node type indicators
+    nodeGroups.selectAll('.node-type')
+        .data(d => [d])
+        .join('text')
+        .attr('class', 'node-type')
+        .attr('dy', -10)
+        .style('text-anchor', 'middle')
+        .style('font-size', '10px')
+        .style('fill', '#fff')
+        .text(d => d.type === 'memory' ? 'M' : 'P');
+
+    // Create and update neural activity indicators for expanded nodes
+    nodeGroups.each(function(d) {
+        if (expandedNodes.has(d.id)) {
+            const group = d3.select(this);
+            const numIndicators = 5;
+            const radius = (d.type === 'memory' ? 6 : 4) * Math.sqrt(networkComplexity) * 2;
+
+            // Create activity indicators
+            const indicators = Array.from({length: numIndicators}, (_, i) => ({
+                angle: (i / numIndicators) * 2 * Math.PI,
+                value: Math.random() // Replace with actual neural activity data
+            }));
+
+            group.selectAll('.activity-indicator')
+                .data(indicators)
+                .join('circle')
+                .attr('class', 'activity-indicator')
+                .attr('r', 2)
+                .attr('cx', ind => radius * Math.cos(ind.angle))
+                .attr('cy', ind => radius * Math.sin(ind.angle))
+                .style('fill', ind => d3.interpolateInferno(ind.value));
         }
     });
 
-    // Update simulation with complexity-adjusted parameters
+    // Update simulation with new parameters
     simulation
         .nodes(nodes)
         .on('tick', () => {
@@ -223,9 +314,7 @@ function updateNetworkVisualization(data, svg) {
                 .attr('x2', d => d.target.x)
                 .attr('y2', d => d.target.y);
 
-            node
-                .attr('cx', d => d.x)
-                .attr('cy', d => d.y);
+            nodeGroups.attr('transform', d => `translate(${d.x},${d.y})`);
         });
 
     simulation.force('link').links(links);
