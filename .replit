@@ -14,29 +14,34 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "LLM API Server"
+args = "NRAM Token Stream UI"
 
 [[workflows.workflow]]
-name = "LLM API Server"
+name = "NRAM Token Stream UI"
 author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
-waitForPort = 8000
+args = "streamlit run streamlit_token_stream.py --server.port 5000 --server.address 0.0.0.0 --server.headless true"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
 
 [[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
 localPort = 8000
 externalPort = 80
+
+[[ports]]
+localPort = 41259
+externalPort = 3000
 
 [agent]
 expertMode = true
