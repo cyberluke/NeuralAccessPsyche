@@ -39,10 +39,6 @@ externalPort = 80
 localPort = 33003
 externalPort = 3000
 
-[[ports]]
-localPort = 34337
-externalPort = 3001
-
 [agent]
 expertMode = true
 integrations = ["python_openrouter_ai_integrations:1.0.0"]
