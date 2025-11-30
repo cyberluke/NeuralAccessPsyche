@@ -4,26 +4,19 @@ import json
 import os
 import random
 from pydantic import BaseModel, Field
-from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-GUIDANCE_AVAILABLE = False
-guidance_models = None
-guidance_gen = None
-guidance_select = None
-
 try:
     import guidance
-    from guidance import models as gd_models, gen as gd_gen, select as gd_select
-    guidance_models = gd_models
-    guidance_gen = gd_gen
-    guidance_select = gd_select
-    GUIDANCE_AVAILABLE = True
+    from guidance.models._openai import OpenAI as GuidanceOpenAI
+    from guidance import gen as guidance_gen, select as guidance_select
     logger.info("Microsoft Guidance library loaded successfully")
 except ImportError as e:
-    logger.warning(f"Guidance library not available: {e}")
+    error_msg = f"CRITICAL: Microsoft Guidance library is REQUIRED but not available: {e}"
+    logger.critical(error_msg)
+    raise ImportError(error_msg) from e
 
 
 class NRAMResponse(BaseModel):
@@ -63,18 +56,20 @@ class GuidanceHandler:
     
     def __init__(self):
         self.api_key = os.environ.get("OPENAI_API_KEY")
-        self.model_name = "gpt-4o"
-        self.openai_client = OpenAI(api_key=self.api_key)
-        self.guidance_model = None
+        if not self.api_key:
+            error_msg = "CRITICAL: OPENAI_API_KEY environment variable is REQUIRED but not set"
+            logger.critical(error_msg)
+            raise EnvironmentError(error_msg)
         
-        if GUIDANCE_AVAILABLE and guidance_models is not None:
-            try:
-                self.guidance_model = guidance_models.OpenAI(self.model_name, api_key=self.api_key)
-                logger.info(f"Initialized Microsoft Guidance with model: {self.model_name}")
-            except Exception as e:
-                logger.warning(f"Failed to initialize Guidance model: {e}. Falling back to standard OpenAI.")
-        else:
-            logger.info("Using standard OpenAI API (Guidance not available).")
+        self.model_name = "gpt-4o"
+        
+        try:
+            self.guidance_model = GuidanceOpenAI(self.model_name, api_key=self.api_key)
+            logger.info(f"Initialized Microsoft Guidance with model: {self.model_name}")
+        except Exception as e:
+            error_msg = f"CRITICAL: Failed to initialize Microsoft Guidance model: {e}"
+            logger.critical(error_msg)
+            raise RuntimeError(error_msg) from e
 
     def _map_consciousness_level(self, level: str) -> str:
         """Map Czech consciousness names to internal levels"""
@@ -93,31 +88,14 @@ class GuidanceHandler:
         max_tokens: int = 150
     ) -> Dict[str, Any]:
         """Synchronous processing using Microsoft Guidance for structured output"""
-        try:
-            consciousness_prompt = self._get_consciousness_prompt(consciousness_level)
-            internal_level = self._map_consciousness_level(consciousness_level)
-            
-            logger.info(f"Processing with Guidance: level={internal_level}, query_len={len(query)}")
-            
-            if self.guidance_model is not None and GUIDANCE_AVAILABLE:
-                return self._process_with_guidance_library(
-                    query, consciousness_prompt, internal_level, temperature, max_tokens
-                )
-            else:
-                return self._process_with_openai_fallback_sync(
-                    query, consciousness_prompt, internal_level, temperature, max_tokens
-                )
-                
-        except Exception as e:
-            logger.error(f"Error in guidance processing: {str(e)}", exc_info=True)
-            return {
-                "main_response": f"Neural processing error: {str(e)}",
-                "consciousness_level": consciousness_level,
-                "neural_insight": None,
-                "token_phenomena": [],
-                "coherence_score": 0.0,
-                "raw_tokens": []
-            }
+        consciousness_prompt = self._get_consciousness_prompt(consciousness_level)
+        internal_level = self._map_consciousness_level(consciousness_level)
+        
+        logger.info(f"Processing with Microsoft Guidance: level={internal_level}, query_len={len(query)}")
+        
+        return self._process_with_guidance_library(
+            query, consciousness_prompt, internal_level, temperature, max_tokens
+        )
 
     def _process_with_guidance_library(
         self,
@@ -128,11 +106,6 @@ class GuidanceHandler:
         max_tokens: int
     ) -> Dict[str, Any]:
         """Process using the actual Microsoft Guidance library with structured output"""
-        if guidance_gen is None or guidance_select is None or self.guidance_model is None:
-            return self._process_with_openai_fallback_sync(
-                query, consciousness_prompt, consciousness_level, temperature, max_tokens
-            )
-            
         try:
             lm = self.guidance_model
             
@@ -204,51 +177,9 @@ Coherence (0.0-1.0): """
             }
             
         except Exception as e:
-            logger.error(f"Guidance library processing failed: {e}", exc_info=True)
-            return self._process_with_openai_fallback_sync(
-                query, consciousness_prompt, consciousness_level, temperature, max_tokens
-            )
-
-    def _process_with_openai_fallback_sync(
-        self,
-        query: str,
-        consciousness_prompt: str,
-        consciousness_level: str,
-        temperature: float,
-        max_tokens: int
-    ) -> Dict[str, Any]:
-        """Fallback to standard OpenAI API when Guidance is unavailable"""
-        try:
-            response = self.openai_client.chat.completions.create(
-                model=self.model_name,
-                messages=[
-                    {"role": "system", "content": consciousness_prompt},
-                    {"role": "user", "content": query}
-                ],
-                temperature=temperature,
-                max_tokens=max_tokens
-            )
-            
-            main_response = response.choices[0].message.content or ""
-            
-            primary_phenomenon = self._detect_phenomenon(main_response, consciousness_level)
-            coherence_score = self._calculate_coherence(main_response)
-            neural_insight = self._generate_insight(consciousness_level)
-            tokens = self._tokenize_response(main_response, consciousness_level, primary_phenomenon)
-            
-            return {
-                "main_response": main_response,
-                "consciousness_level": consciousness_level,
-                "neural_insight": neural_insight,
-                "token_phenomena": [primary_phenomenon],
-                "coherence_score": coherence_score,
-                "raw_tokens": tokens,
-                "guidance_used": False
-            }
-            
-        except Exception as e:
-            logger.error(f"OpenAI fallback failed: {e}", exc_info=True)
-            raise
+            error_msg = f"CRITICAL: Microsoft Guidance processing failed: {e}"
+            logger.critical(error_msg, exc_info=True)
+            raise RuntimeError(error_msg) from e
 
     def _tokenize_response(
         self, 

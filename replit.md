@@ -47,7 +47,7 @@ Preferred communication style: Simple, everyday language.
 - **Select Constraints**: Uses `select()` for constrained phenomenon type selection
 - **Consciousness Mapping**: Maps Czech UI states to internal consciousness levels (baseline, aware, enlightened, transcendent, psychedelic, dissociative)
 
-**Fallback Behavior**: When Guidance library is unavailable, automatically falls back to standard OpenAI API with simulated phenomena detection.
+**Critical Requirement**: Microsoft Guidance library is REQUIRED - no fallback allowed. If Guidance is unavailable or fails to initialize, the application raises a critical exception and halts.
 
 **Key Features**:
 - Consciousness-aware system prompts for each awareness level

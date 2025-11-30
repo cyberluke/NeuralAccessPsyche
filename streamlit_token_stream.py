@@ -4,7 +4,7 @@ import numpy as np
 import random
 import os
 from typing import List, Dict, Tuple, Any
-from core.guidance_handler import GuidanceHandler, GUIDANCE_AVAILABLE
+from core.guidance_handler import GuidanceHandler
 
 st.set_page_config(
     page_title="NRAM Token Stream v4",
@@ -171,8 +171,6 @@ def initialize_session_state():
         st.session_state.show_original = False
     if "neural_insight" not in st.session_state:
         st.session_state.neural_insight = None
-    if "guidance_used" not in st.session_state:
-        st.session_state.guidance_used = False
 
 def tokenize_with_phenomena(text: str, intensity: float, state: str) -> List[Dict]:
     words = text.split()
@@ -224,15 +222,8 @@ def generate_nram_response(prompt: str, intensity: float, temperature: float, co
         
         return result
     except Exception as e:
-        return {
-            "main_response": f"Chyba při generování odpovědi: {str(e)}",
-            "consciousness_level": consciousness_state,
-            "neural_insight": None,
-            "token_phenomena": [],
-            "coherence_score": 0.0,
-            "raw_tokens": [],
-            "guidance_used": False
-        }
+        st.error(f"KRITICKÁ CHYBA: Microsoft Guidance je vyžadováno. {str(e)}")
+        raise RuntimeError(f"Microsoft Guidance processing failed: {str(e)}") from e
 
 def update_nram_state(intensity: float, temperature: float):
     st.session_state.nram_state["consciousness"] = intensity
@@ -407,7 +398,6 @@ def main():
             response_text = result.get("main_response", "")
             st.session_state.original_text = response_text
             st.session_state.neural_insight = result.get("neural_insight")
-            st.session_state.guidance_used = result.get("guidance_used", False)
             
             if result.get("raw_tokens"):
                 tokens = []
@@ -467,8 +457,7 @@ def main():
         st.session_state.show_original = not st.session_state.show_original
     
     if st.session_state.neural_insight:
-        guidance_badge = "🎯 MS Guidance" if st.session_state.guidance_used else "⚡ OpenAI"
-        st.info(f"{guidance_badge} | **Neurální vhled:** {st.session_state.neural_insight}")
+        st.info(f"🎯 MS Guidance | **Neurální vhled:** {st.session_state.neural_insight}")
     
     st.markdown('<div class="token-container">', unsafe_allow_html=True)
     st.markdown("#### 🧠 NRAM-modulovaný výstup:")
