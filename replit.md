@@ -33,10 +33,27 @@ Preferred communication style: Simple, everyday language.
 
 **Solution:** Multi-layered handler architecture:
 - `LLMHandler`: Primary interface for chat completions
-- `GuidanceHandler`: Enhanced token manipulation and consciousness-aware processing
+- `GuidanceHandler`: Microsoft Guidance-powered structured generation with consciousness-aware processing
 - `NRAMConfigSuggester`: AI-powered configuration optimization using GPT-4o
 
 **Design Pattern:** Handler pattern with dependency injection, allowing each layer to focus on specific responsibilities (routing → LLM processing → guidance → NRAM state management).
+
+## Microsoft Guidance Integration
+**Problem:** Need structured LLM output control with token-level phenomena detection.
+
+**Solution:** `core/guidance_handler.py` integrates Microsoft Guidance library for:
+- **Structured Generation**: Uses `gen()` for controlled text generation with regex constraints
+- **Variable Capture**: Named captures for main_response, neural_insight, primary_phenomenon, coherence
+- **Select Constraints**: Uses `select()` for constrained phenomenon type selection
+- **Consciousness Mapping**: Maps Czech UI states to internal consciousness levels (baseline, aware, enlightened, transcendent, psychedelic, dissociative)
+
+**Fallback Behavior**: When Guidance library is unavailable, automatically falls back to standard OpenAI API with simulated phenomena detection.
+
+**Key Features**:
+- Consciousness-aware system prompts for each awareness level
+- Token-level phenomena weighting based on consciousness state
+- Neural insight generation with consciousness-appropriate messages
+- Pydantic schema for structured response validation (NRAMResponse)
 
 ## Authentication & Rate Limiting
 **Problem:** Secure API access while preventing abuse.

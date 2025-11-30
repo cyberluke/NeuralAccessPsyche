@@ -4,7 +4,7 @@ import numpy as np
 import random
 import os
 from typing import List, Dict, Tuple, Any
-from openai import OpenAI
+from core.guidance_handler import GuidanceHandler, GUIDANCE_AVAILABLE
 
 st.set_page_config(
     page_title="NRAM Token Stream v4",
@@ -141,6 +141,11 @@ CONSCIOUSNESS_STATES = {
     "Disociativní": {"intensity_range": (0.9, 1.0), "color": "#06b6d4"},
 }
 
+@st.cache_resource
+def get_guidance_handler():
+    """Get or create the GuidanceHandler instance"""
+    return GuidanceHandler()
+
 def initialize_session_state():
     if "nram_state" not in st.session_state:
         st.session_state.nram_state = {
@@ -164,6 +169,10 @@ def initialize_session_state():
         st.session_state.phenomena_counts = {cat: 0 for cat in TOKEN_CATEGORIES}
     if "show_original" not in st.session_state:
         st.session_state.show_original = False
+    if "neural_insight" not in st.session_state:
+        st.session_state.neural_insight = None
+    if "guidance_used" not in st.session_state:
+        st.session_state.guidance_used = False
 
 def tokenize_with_phenomena(text: str, intensity: float, state: str) -> List[Dict]:
     words = text.split()
@@ -201,31 +210,29 @@ def tokenize_with_phenomena(text: str, intensity: float, state: str) -> List[Dic
     
     return tokens, phenomena_counts
 
-def generate_nram_response(prompt: str, intensity: float, temperature: float) -> str:
+def generate_nram_response(prompt: str, intensity: float, temperature: float, consciousness_state: str) -> Dict:
+    """Generate response using Microsoft Guidance with consciousness-aware processing"""
     try:
-        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        handler = get_guidance_handler()
         
-        system_prompt = f"""You are an advanced AI with NRAM (Neural Random Access Memory) capabilities.
-Current consciousness intensity: {intensity:.2f}
-Temperature setting: {temperature:.2f}
-
-Respond naturally but incorporate subtle variations based on the intensity level.
-At higher intensities, you may include more creative, abstract, or stream-of-consciousness elements.
-Respond in the same language as the user's input."""
-        
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
-            ],
+        result = handler.process_with_guidance_sync(
+            query=prompt,
+            consciousness_level=consciousness_state,
             temperature=temperature,
             max_tokens=500
         )
         
-        return response.choices[0].message.content
+        return result
     except Exception as e:
-        return f"Chyba při generování odpovědi: {str(e)}"
+        return {
+            "main_response": f"Chyba při generování odpovědi: {str(e)}",
+            "consciousness_level": consciousness_state,
+            "neural_insight": None,
+            "token_phenomena": [],
+            "coherence_score": 0.0,
+            "raw_tokens": [],
+            "guidance_used": False
+        }
 
 def update_nram_state(intensity: float, temperature: float):
     st.session_state.nram_state["consciousness"] = intensity
@@ -394,19 +401,60 @@ def main():
         show_original_btn = st.button("👁 Ukázat originál", use_container_width=True)
     
     if generate_btn and user_input:
-        with st.spinner("Generuji odpověď..."):
-            response = generate_nram_response(user_input, intensity, temperature)
-            st.session_state.original_text = response
+        with st.spinner("Generuji odpověď s Microsoft Guidance..."):
+            result = generate_nram_response(user_input, intensity, temperature, selected_state)
             
-            current_state = get_current_state_name(intensity)
-            tokens, phenomena_counts = tokenize_with_phenomena(response, intensity, current_state)
-            st.session_state.token_stream = tokens
-            st.session_state.phenomena_counts = phenomena_counts
+            response_text = result.get("main_response", "")
+            st.session_state.original_text = response_text
+            st.session_state.neural_insight = result.get("neural_insight")
+            st.session_state.guidance_used = result.get("guidance_used", False)
+            
+            if result.get("raw_tokens"):
+                tokens = []
+                phenomena_counts = {cat: 0 for cat in TOKEN_CATEGORIES}
+                phenomenon_mapping = {
+                    "coherent": "claude_ai",
+                    "overlap": "overlap",
+                    "forgotten": "forgotten",
+                    "looping": "loop",
+                    "jumping": "jump",
+                    "synesthetic": "synesthesia",
+                    "dissolution": "dissolution",
+                    "fragmentation": "fragmentation",
+                    "echo": "echo",
+                    "tangent": "tangent",
+                    "insight": "insight"
+                }
+                
+                for raw_token in result["raw_tokens"]:
+                    phenomenon = raw_token.get("phenomenon", "coherent")
+                    category = phenomenon_mapping.get(phenomenon, "claude_ai")
+                    is_phenomenon = phenomenon != "coherent"
+                    
+                    if is_phenomenon:
+                        phenomena_counts[category] = phenomena_counts.get(category, 0) + 1
+                    
+                    tokens.append({
+                        "text": raw_token.get("text", ""),
+                        "category": category if is_phenomenon else None,
+                        "is_phenomenon": is_phenomenon,
+                    })
+                
+                st.session_state.token_stream = tokens
+                st.session_state.phenomena_counts = phenomena_counts
+            else:
+                current_state = get_current_state_name(intensity)
+                tokens, phenomena_counts = tokenize_with_phenomena(response_text, intensity, current_state)
+                st.session_state.token_stream = tokens
+                st.session_state.phenomena_counts = phenomena_counts
+            
+            if result.get("coherence_score"):
+                st.session_state.nram_state["coherence"] = result["coherence_score"]
             
             st.session_state.statistics["api_calls"] += 1
-            st.session_state.statistics["total_tokens"] += len(tokens)
-            st.session_state.statistics["claude_tokens"] += len([t for t in tokens if t["is_phenomenon"]])
-            st.session_state.statistics["phenomena_count"] = sum(phenomena_counts.values())
+            st.session_state.statistics["total_tokens"] += len(st.session_state.token_stream)
+            st.session_state.statistics["claude_tokens"] += len([t for t in st.session_state.token_stream if t["is_phenomenon"]])
+            st.session_state.statistics["phenomena_count"] = sum(st.session_state.phenomena_counts.values())
     
     if reset_btn:
         st.session_state.token_stream = []
@@ -417,6 +465,10 @@ def main():
     
     if show_original_btn:
         st.session_state.show_original = not st.session_state.show_original
+    
+    if st.session_state.neural_insight:
+        guidance_badge = "🎯 MS Guidance" if st.session_state.guidance_used else "⚡ OpenAI"
+        st.info(f"{guidance_badge} | **Neurální vhled:** {st.session_state.neural_insight}")
     
     st.markdown('<div class="token-container">', unsafe_allow_html=True)
     st.markdown("#### 🧠 NRAM-modulovaný výstup:")
