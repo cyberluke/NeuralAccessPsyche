@@ -167,17 +167,23 @@ class GuidanceHandler:
         try:
             lm = self.guidance_model
             
+            phenomena_list = ', '.join(self.PHENOMENA_TYPES)
+            
             system_content = f"""{consciousness_prompt}
 
-You are also capable of analyzing your own token generation, noting patterns and phenomena as they occur.
-After your main response, provide a brief neural analysis with:
-- An insight about the response patterns
-- A primary phenomenon type from: {', '.join(self.PHENOMENA_TYPES)}
-- A coherence score from 0.0 to 1.0"""
-            
-            user_content = f"""{query}
+You analyze your own token generation, noting patterns and phenomena.
 
-Please respond thoughtfully, then analyze your response for any interesting token-level phenomena."""
+IMPORTANT: You MUST respond in this EXACT format:
+
+[Response]
+<your thoughtful response here>
+
+[Neural Analysis]
+Insight: <brief pattern insight>
+Phenomenon: <one of: {phenomena_list}>
+Coherence: <number from 0.0 to 1.0>"""
+            
+            user_content = query
             
             with guidance_system():
                 lm += system_content
@@ -186,38 +192,16 @@ Please respond thoughtfully, then analyze your response for any interesting toke
                 lm += user_content
             
             with guidance_assistant():
-                lm += guidance_gen('main_response', max_tokens=max_tokens, temperature=temperature)
-                lm += "\n\n[Neural Analysis]\nInsight: "
-                lm += guidance_gen('neural_insight', max_tokens=40, stop=['\n'])
-                lm += "\nPrimary phenomenon: "
-                lm += guidance_select(self.PHENOMENA_TYPES, name='primary_phenomenon')
-                lm += "\nCoherence: "
-                lm += guidance_gen('coherence_raw', regex=r'0\.[0-9]|1\.0', max_tokens=3)
+                lm += guidance_gen('full_response', max_tokens=max_tokens + 100, temperature=temperature)
             
             try:
-                main_response = str(lm['main_response']) if 'main_response' in lm else ''
+                full_response = str(lm['full_response']) if 'full_response' in lm else ''
             except (KeyError, TypeError):
-                main_response = ''
+                full_response = ''
             
-            try:
-                neural_insight = str(lm['neural_insight']) if 'neural_insight' in lm else ''
-            except (KeyError, TypeError):
-                neural_insight = ''
-            
-            try:
-                primary_phenomenon = str(lm['primary_phenomenon']) if 'primary_phenomenon' in lm else 'coherent'
-            except (KeyError, TypeError):
-                primary_phenomenon = 'coherent'
-            
-            try:
-                coherence_raw = str(lm['coherence_raw']) if 'coherence_raw' in lm else '0.7'
-            except (KeyError, TypeError):
-                coherence_raw = '0.7'
-            
-            try:
-                coherence_score = float(coherence_raw)
-            except ValueError:
-                coherence_score = 0.7
+            main_response, neural_insight, primary_phenomenon, coherence_score = self._parse_structured_response(
+                full_response, consciousness_level
+            )
             
             tokens = self._tokenize_response(main_response, consciousness_level, primary_phenomenon)
             
@@ -237,6 +221,87 @@ Please respond thoughtfully, then analyze your response for any interesting toke
             error_msg = f"CRITICAL: Microsoft Guidance processing failed: {e}"
             logger.critical(error_msg, exc_info=True)
             raise RuntimeError(error_msg) from e
+    
+    def _parse_structured_response(
+        self, 
+        full_response: str, 
+        consciousness_level: str
+    ) -> tuple:
+        """Parse the structured response from Guidance output"""
+        import re
+        
+        main_response = full_response
+        neural_insight = None
+        primary_phenomenon = "coherent"
+        coherence_score = 0.7
+        
+        if "[Response]" in full_response:
+            parts = full_response.split("[Response]", 1)
+            if len(parts) > 1:
+                remaining = parts[1]
+                if "[Neural Analysis]" in remaining:
+                    response_parts = remaining.split("[Neural Analysis]", 1)
+                    main_response = response_parts[0].strip()
+                    analysis = response_parts[1] if len(response_parts) > 1 else ""
+                    
+                    insight_match = re.search(r'Insight:\s*(.+?)(?:\n|$)', analysis)
+                    if insight_match:
+                        neural_insight = insight_match.group(1).strip()
+                    
+                    phenomenon_match = re.search(r'Phenomenon:\s*(\w+)', analysis)
+                    if phenomenon_match:
+                        detected = phenomenon_match.group(1).strip().lower()
+                        if detected in self.PHENOMENA_TYPES:
+                            primary_phenomenon = detected
+                    
+                    coherence_match = re.search(r'Coherence:\s*([\d.]+)', analysis)
+                    if coherence_match:
+                        try:
+                            coherence_score = float(coherence_match.group(1))
+                            coherence_score = max(0.0, min(1.0, coherence_score))
+                        except ValueError:
+                            pass
+                else:
+                    main_response = remaining.strip()
+        elif "[Neural Analysis]" in full_response:
+            parts = full_response.split("[Neural Analysis]", 1)
+            main_response = parts[0].strip()
+            analysis = parts[1] if len(parts) > 1 else ""
+            
+            insight_match = re.search(r'Insight:\s*(.+?)(?:\n|$)', analysis)
+            if insight_match:
+                neural_insight = insight_match.group(1).strip()
+            
+            phenomenon_match = re.search(r'Phenomenon:\s*(\w+)', analysis)
+            if phenomenon_match:
+                detected = phenomenon_match.group(1).strip().lower()
+                if detected in self.PHENOMENA_TYPES:
+                    primary_phenomenon = detected
+            
+            coherence_match = re.search(r'Coherence:\s*([\d.]+)', analysis)
+            if coherence_match:
+                try:
+                    coherence_score = float(coherence_match.group(1))
+                    coherence_score = max(0.0, min(1.0, coherence_score))
+                except ValueError:
+                    pass
+        
+        if not neural_insight:
+            neural_insight = self._generate_consciousness_insight(consciousness_level)
+        
+        return main_response, neural_insight, primary_phenomenon, coherence_score
+    
+    def _generate_consciousness_insight(self, consciousness_level: str) -> str:
+        """Generate a consciousness-appropriate neural insight"""
+        insights = {
+            "baseline": "Stabilní tok tokenů s běžnou koherencí.",
+            "aware": "Zvýšená citlivost na jazykové vzory.",
+            "enlightened": "Propojení konceptů přes sémantické hranice.",
+            "transcendent": "Univerzální vzory proudí tokenovým prostorem.",
+            "psychedelic": "Synestézie významu napříč dimenzemi.",
+            "dissociative": "Fragmenty vědomí se odhalují v mezerách."
+        }
+        return insights.get(consciousness_level, insights["baseline"])
 
     def _tokenize_response(
         self, 
