@@ -55,6 +55,27 @@ Preferred communication style: Simple, everyday language.
 - Neural insight generation with consciousness-appropriate messages
 - Pydantic schema for structured response validation (NRAMResponse)
 
+## Multi-Provider Support (OpenAI + OpenRouter)
+**Problem:** Need flexibility to use different LLM providers while maintaining Guidance structured output control.
+
+**Solution:** Provider-agnostic architecture with Microsoft Guidance on top:
+
+**Supported Providers:**
+- **OpenAI**: Direct API access (gpt-4o, gpt-4o-mini, gpt-4-turbo)
+- **OpenRouter**: Via Replit AI Integrations (Claude, Gemini, Llama, DeepSeek, Grok, and more)
+
+**Configuration:**
+- `PROVIDER_CONFIGS` dictionary defines available providers and their models
+- GuidanceHandler accepts `provider` and `model` parameters
+- OpenRouter uses `AI_INTEGRATIONS_OPENROUTER_BASE_URL` and `AI_INTEGRATIONS_OPENROUTER_API_KEY` (auto-configured via Replit AI Integrations)
+
+**UI Integration:**
+- Provider selector in sidebar (OpenAI or OpenRouter)
+- Model dropdown shows available models per provider
+- Badge displays current provider/model after generation
+
+**Note:** OpenRouter integration uses Replit AI Integrations - no API key required, charges billed to your Replit credits.
+
 ## Authentication & Rate Limiting
 **Problem:** Secure API access while preventing abuse.
 

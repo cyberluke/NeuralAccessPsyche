@@ -28,8 +28,34 @@ class NRAMResponse(BaseModel):
     coherence_score: float = Field(ge=0.0, le=1.0, description="Response coherence rating")
 
 
+PROVIDER_CONFIGS = {
+    "openai": {
+        "name": "OpenAI",
+        "default_model": "gpt-4o",
+        "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"],
+        "env_key": "OPENAI_API_KEY",
+        "env_base_url": None,
+    },
+    "openrouter": {
+        "name": "OpenRouter",
+        "default_model": "anthropic/claude-sonnet-4",
+        "models": [
+            "anthropic/claude-sonnet-4",
+            "anthropic/claude-opus-4",
+            "openai/gpt-4o",
+            "google/gemini-2.5-pro-preview",
+            "meta-llama/llama-3.3-70b-instruct",
+            "deepseek/deepseek-r1",
+            "x-ai/grok-3-beta",
+        ],
+        "env_key": "AI_INTEGRATIONS_OPENROUTER_API_KEY",
+        "env_base_url": "AI_INTEGRATIONS_OPENROUTER_BASE_URL",
+    }
+}
+
+
 class GuidanceHandler:
-    """Handler using Microsoft Guidance for structured LLM control"""
+    """Handler using Microsoft Guidance for structured LLM control with multiple providers"""
     
     CONSCIOUSNESS_PROMPTS = {
         "baseline": "You are a helpful AI assistant operating at baseline awareness.",
@@ -54,22 +80,53 @@ class GuidanceHandler:
         "synesthetic", "dissolution", "fragmentation", "echo", "tangent", "insight"
     ]
     
-    def __init__(self):
-        self.api_key = os.environ.get("OPENAI_API_KEY")
+    def __init__(self, provider: str = "openai", model: Optional[str] = None):
+        self.provider = provider
+        self.provider_config = PROVIDER_CONFIGS.get(provider)
+        
+        if not self.provider_config:
+            error_msg = f"CRITICAL: Unknown provider '{provider}'. Available: {list(PROVIDER_CONFIGS.keys())}"
+            logger.critical(error_msg)
+            raise ValueError(error_msg)
+        
+        self.api_key = os.environ.get(self.provider_config["env_key"])
         if not self.api_key:
-            error_msg = "CRITICAL: OPENAI_API_KEY environment variable is REQUIRED but not set"
+            error_msg = f"CRITICAL: {self.provider_config['env_key']} environment variable is REQUIRED but not set"
             logger.critical(error_msg)
             raise EnvironmentError(error_msg)
         
-        self.model_name = "gpt-4o"
+        self.base_url = None
+        if self.provider_config["env_base_url"]:
+            self.base_url = os.environ.get(self.provider_config["env_base_url"])
+        
+        self.model_name = model or self.provider_config["default_model"]
         
         try:
-            self.guidance_model = GuidanceOpenAI(self.model_name, api_key=self.api_key)
-            logger.info(f"Initialized Microsoft Guidance with model: {self.model_name}")
+            if self.base_url:
+                self.guidance_model = GuidanceOpenAI(
+                    self.model_name, 
+                    api_key=self.api_key,
+                    base_url=self.base_url
+                )
+            else:
+                self.guidance_model = GuidanceOpenAI(self.model_name, api_key=self.api_key)
+            
+            logger.info(f"Initialized Microsoft Guidance with provider={provider}, model={self.model_name}")
         except Exception as e:
             error_msg = f"CRITICAL: Failed to initialize Microsoft Guidance model: {e}"
             logger.critical(error_msg)
             raise RuntimeError(error_msg) from e
+    
+    @staticmethod
+    def get_available_providers() -> List[str]:
+        """Get list of available providers"""
+        return list(PROVIDER_CONFIGS.keys())
+    
+    @staticmethod
+    def get_provider_models(provider: str) -> List[str]:
+        """Get available models for a provider"""
+        config = PROVIDER_CONFIGS.get(provider, {})
+        return config.get("models", [])
 
     def _map_consciousness_level(self, level: str) -> str:
         """Map Czech consciousness names to internal levels"""

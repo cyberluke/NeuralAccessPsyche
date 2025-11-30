@@ -4,7 +4,7 @@ import numpy as np
 import random
 import os
 from typing import List, Dict, Tuple, Any
-from core.guidance_handler import GuidanceHandler
+from core.guidance_handler import GuidanceHandler, PROVIDER_CONFIGS
 
 st.set_page_config(
     page_title="NRAM Token Stream v4",
@@ -142,9 +142,9 @@ CONSCIOUSNESS_STATES = {
 }
 
 @st.cache_resource
-def get_guidance_handler():
-    """Get or create the GuidanceHandler instance"""
-    return GuidanceHandler()
+def get_guidance_handler(provider: str = "openai", model: str = None):
+    """Get or create the GuidanceHandler instance for a specific provider/model"""
+    return GuidanceHandler(provider=provider, model=model)
 
 def initialize_session_state():
     if "nram_state" not in st.session_state:
@@ -171,6 +171,10 @@ def initialize_session_state():
         st.session_state.show_original = False
     if "neural_insight" not in st.session_state:
         st.session_state.neural_insight = None
+    if "last_provider" not in st.session_state:
+        st.session_state.last_provider = None
+    if "last_model" not in st.session_state:
+        st.session_state.last_model = None
 
 def tokenize_with_phenomena(text: str, intensity: float, state: str) -> List[Dict]:
     words = text.split()
@@ -208,10 +212,10 @@ def tokenize_with_phenomena(text: str, intensity: float, state: str) -> List[Dic
     
     return tokens, phenomena_counts
 
-def generate_nram_response(prompt: str, intensity: float, temperature: float, consciousness_state: str) -> Dict:
+def generate_nram_response(prompt: str, intensity: float, temperature: float, consciousness_state: str, provider: str = "openai", model: str = None) -> Dict:
     """Generate response using Microsoft Guidance with consciousness-aware processing"""
     try:
-        handler = get_guidance_handler()
+        handler = get_guidance_handler(provider=provider, model=model)
         
         result = handler.process_with_guidance_sync(
             query=prompt,
@@ -219,6 +223,9 @@ def generate_nram_response(prompt: str, intensity: float, temperature: float, co
             temperature=temperature,
             max_tokens=500
         )
+        
+        result["provider"] = provider
+        result["model"] = model or PROVIDER_CONFIGS[provider]["default_model"]
         
         return result
     except Exception as e:
@@ -259,6 +266,29 @@ def main():
     with st.sidebar:
         st.markdown("### 🧠 NRAM v4")
         st.markdown('<p style="color: #6c757d; font-size: 0.8rem;">Neuronová Paměť s Modulací Vědomí</p>', unsafe_allow_html=True)
+        
+        st.markdown("---")
+        st.markdown("#### 🔌 Poskytovatel AI")
+        
+        available_providers = list(PROVIDER_CONFIGS.keys())
+        provider_names = {k: v["name"] for k, v in PROVIDER_CONFIGS.items()}
+        
+        selected_provider = st.selectbox(
+            "Vyberte poskytovatele",
+            available_providers,
+            format_func=lambda x: f"{provider_names[x]} (Guidance)",
+            label_visibility="collapsed"
+        )
+        
+        available_models = PROVIDER_CONFIGS[selected_provider]["models"]
+        default_model = PROVIDER_CONFIGS[selected_provider]["default_model"]
+        
+        selected_model = st.selectbox(
+            "Vyberte model",
+            available_models,
+            index=available_models.index(default_model) if default_model in available_models else 0,
+            label_visibility="collapsed"
+        )
         
         st.markdown("---")
         st.markdown("#### Stav vědomí")
@@ -392,12 +422,18 @@ def main():
         show_original_btn = st.button("👁 Ukázat originál", use_container_width=True)
     
     if generate_btn and user_input:
-        with st.spinner("Generuji odpověď s Microsoft Guidance..."):
-            result = generate_nram_response(user_input, intensity, temperature, selected_state)
+        provider_name = PROVIDER_CONFIGS[selected_provider]["name"]
+        with st.spinner(f"Generuji odpověď s Microsoft Guidance + {provider_name}..."):
+            result = generate_nram_response(
+                user_input, intensity, temperature, selected_state,
+                provider=selected_provider, model=selected_model
+            )
             
             response_text = result.get("main_response", "")
             st.session_state.original_text = response_text
             st.session_state.neural_insight = result.get("neural_insight")
+            st.session_state.last_provider = result.get("provider", selected_provider)
+            st.session_state.last_model = result.get("model", selected_model)
             
             if result.get("raw_tokens"):
                 tokens = []
@@ -457,7 +493,13 @@ def main():
         st.session_state.show_original = not st.session_state.show_original
     
     if st.session_state.neural_insight:
-        st.info(f"🎯 MS Guidance | **Neurální vhled:** {st.session_state.neural_insight}")
+        provider_info = ""
+        if st.session_state.last_provider and st.session_state.last_model:
+            provider_name = PROVIDER_CONFIGS.get(st.session_state.last_provider, {}).get("name", st.session_state.last_provider)
+            provider_info = f"🎯 MS Guidance + {provider_name} ({st.session_state.last_model})"
+        else:
+            provider_info = "🎯 MS Guidance"
+        st.info(f"{provider_info} | **Neurální vhled:** {st.session_state.neural_insight}")
     
     st.markdown('<div class="token-container">', unsafe_allow_html=True)
     st.markdown("#### 🧠 NRAM-modulovaný výstup:")
