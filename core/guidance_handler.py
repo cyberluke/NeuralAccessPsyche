@@ -10,8 +10,9 @@ logger.setLevel(logging.DEBUG)
 
 try:
     import guidance
-    from guidance.models._openai import OpenAI as GuidanceOpenAI
+    from guidance import models as guidance_models
     from guidance import gen as guidance_gen, select as guidance_select
+    from guidance import system as guidance_system, user as guidance_user, assistant as guidance_assistant
     logger.info("Microsoft Guidance library loaded successfully")
 except ImportError as e:
     error_msg = f"CRITICAL: Microsoft Guidance library is REQUIRED but not available: {e}"
@@ -103,13 +104,13 @@ class GuidanceHandler:
         
         try:
             if self.base_url:
-                self.guidance_model = GuidanceOpenAI(
+                self.guidance_model = guidance_models.OpenAI(
                     self.model_name, 
                     api_key=self.api_key,
                     base_url=self.base_url
                 )
             else:
-                self.guidance_model = GuidanceOpenAI(self.model_name, api_key=self.api_key)
+                self.guidance_model = guidance_models.OpenAI(self.model_name, api_key=self.api_key)
             
             logger.info(f"Initialized Microsoft Guidance with provider={provider}, model={self.model_name}")
         except Exception as e:
@@ -166,33 +167,32 @@ class GuidanceHandler:
         try:
             lm = self.guidance_model
             
-            lm = lm + f"""<|system|>
-{consciousness_prompt}
+            system_content = f"""{consciousness_prompt}
 
 You are also capable of analyzing your own token generation, noting patterns and phenomena as they occur.
-<|end|>
-<|user|>
-{query}
+After your main response, provide a brief neural analysis with:
+- An insight about the response patterns
+- A primary phenomenon type from: {', '.join(self.PHENOMENA_TYPES)}
+- A coherence score from 0.0 to 1.0"""
+            
+            user_content = f"""{query}
 
-Please respond thoughtfully, then analyze your response for any interesting token-level phenomena.
-<|end|>
-<|assistant|>
-"""
-            lm = lm + guidance_gen('main_response', max_tokens=max_tokens, temperature=temperature)
+Please respond thoughtfully, then analyze your response for any interesting token-level phenomena."""
             
-            lm = lm + """
-
-[Neural Analysis]
-Insight: """
-            lm = lm + guidance_gen('neural_insight', max_tokens=40, stop=['\n'])
+            with guidance_system():
+                lm += system_content
             
-            lm = lm + """
-Primary phenomenon: """
-            lm = lm + guidance_select(self.PHENOMENA_TYPES, name='primary_phenomenon')
+            with guidance_user():
+                lm += user_content
             
-            lm = lm + """
-Coherence (0.0-1.0): """
-            lm = lm + guidance_gen('coherence_raw', regex=r'0\.[0-9]|1\.0', max_tokens=3)
+            with guidance_assistant():
+                lm += guidance_gen('main_response', max_tokens=max_tokens, temperature=temperature)
+                lm += "\n\n[Neural Analysis]\nInsight: "
+                lm += guidance_gen('neural_insight', max_tokens=40, stop=['\n'])
+                lm += "\nPrimary phenomenon: "
+                lm += guidance_select(self.PHENOMENA_TYPES, name='primary_phenomenon')
+                lm += "\nCoherence: "
+                lm += guidance_gen('coherence_raw', regex=r'0\.[0-9]|1\.0', max_tokens=3)
             
             try:
                 main_response = str(lm['main_response']) if 'main_response' in lm else ''
