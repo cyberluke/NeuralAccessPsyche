@@ -75,8 +75,10 @@ class NRAM:
                 self.pattern_memory[idx, pattern_idx] += 0.1
                 self.pattern_memory *= 0.99  # Decay old patterns
 
-            # Calculate attention weights
-            attention = np.softmax(np.sum(self.pattern_memory, axis=1))
+            # Calculate attention weights — FIX defect 7: np.softmax does not exist
+            raw = np.sum(self.pattern_memory, axis=1)
+            exp_raw = np.exp(raw - np.max(raw))  # numerically stable softmax
+            attention = exp_raw / np.sum(exp_raw)
 
             # Apply neural dynamics
             self.memory_state = np.tanh(
@@ -114,34 +116,21 @@ class NRAM:
             return 0.5
 
     def process_messages(self, messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """Process messages through NRAM with advanced transformation"""
-        modified_messages = []
+        """Process messages through NRAM state tracking.
 
+        FIX defect 9: user message content is NEVER modified.
+        NRAM updates its internal neural state for visualization/telemetry purposes
+        but returns messages byte-for-byte unchanged.
+        """
         try:
             for message in messages:
-                # Update neural state
+                # Update neural state for visualization purposes only
                 self.update_state(message["content"])
-                state_influence = self.get_state_influence()
-
-                # Get base consciousness level
-                consciousness_level = self._get_consciousness_level(state_influence)
-
-                # Apply neural transformation
-                modified_content = self._neural_transform(
-                    message["content"],
-                    state_influence,
-                    consciousness_level
-                )
-
-                modified_messages.append({
-                    "role": message["role"],
-                    "content": modified_content
-                })
-
-            return modified_messages
         except Exception as e:
-            logger.error(f"Error processing messages: {str(e)}")
-            return messages
+            logger.error(f"Error updating NRAM state: {str(e)}")
+
+        # Return messages unchanged — user content must be preserved byte-for-byte
+        return list(messages)
 
     def _neural_transform(self, content: str, influence: float, consciousness_level: str) -> str:
         """Transform content using neural patterns and consciousness state"""

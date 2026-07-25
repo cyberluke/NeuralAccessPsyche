@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, WebSocket, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
-from core.llm_handler import LLMHandler
+from core.llm_handler import LLMHandler, InferenceError
 from core.nram import NRAM
 from core.config_suggester import NRAMConfigSuggester
 from utils.validators import validate_request
@@ -12,6 +12,8 @@ from utils.api_logger import api_metrics
 import logging
 import json
 import asyncio
+import time
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +23,32 @@ nram = NRAM()
 templates = Jinja2Templates(directory="templates")
 config_suggester = NRAMConfigSuggester()
 
+# Supported model aliases
+MODEL_ALIASES = {
+    "nram-gpt-oss-20b": "nram-gpt-oss-20b",
+    "gpt-oss-20b-baseline": "gpt-oss-20b-baseline",
+    "deepseek-r1-qwen-7b-baseline": "deepseek-r1-qwen-7b-baseline",
+    "nram-deepseek-r1-qwen-7b": "nram-deepseek-r1-qwen-7b",
+}
+
+
 class ChatCompletionRequest(BaseModel):
     model: str
     messages: List[Dict[str, str]]
     temperature: Optional[float] = 1.0
     max_tokens: Optional[int] = 100
     stream: Optional[bool] = False
+    top_p: Optional[float] = 1.0
+    seed: Optional[int] = None
+    stop: Optional[List[str]] = None
+    frequency_penalty: Optional[float] = 0.0
+    presence_penalty: Optional[float] = 0.0
+    response_format: Optional[Dict[str, Any]] = None
+    tools: Optional[List[Dict[str, Any]]] = None
+    tool_choice: Optional[Any] = None
+    # NRAM extension — optional, validated server-side only
+    nram: Optional[Dict[str, Any]] = None
+
 
 class ChatCompletionResponse(BaseModel):
     id: str
@@ -35,6 +57,21 @@ class ChatCompletionResponse(BaseModel):
     model: str
     choices: List[Dict[str, Any]]
     usage: Dict[str, int]
+
+
+def _openai_error(status_code: int, message: str, err_type: str, code: str) -> JSONResponse:
+    """Return an OpenAI-shaped error response."""
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "error": {
+                "message": message,
+                "type": err_type,
+                "param": None,
+                "code": code,
+            }
+        },
+    )
 
 @router.get("/visualize", response_class=HTMLResponse)
 async def visualize_nram(request: Request):
@@ -56,45 +93,122 @@ async def websocket_endpoint(websocket: WebSocket):
     finally:
         nram.disconnect(websocket)
 
-@router.post("/chat/completions", response_model=ChatCompletionResponse)
+@router.post("/chat/completions")
 async def create_chat_completion(
     request: ChatCompletionRequest,
     current_user: dict = Depends(get_current_user)
 ):
-    """Handle chat completion requests"""
+    """Handle chat completion requests — OpenAI-compatible, no fake 200 on failure."""
     try:
         validate_request(request)
 
-        # Process through NRAM
-        modified_messages = nram.process_messages(request.messages)
+        # Reject client-supplied processor injection attempts
+        nram_opts = request.nram or {}
+        _FORBIDDEN_FIELDS = {
+            "custom_logit_processor", "serialized_processor",
+            "processor_class", "python_code",
+        }
+        if _FORBIDDEN_FIELDS & set(nram_opts.keys()):
+            return _openai_error(
+                400,
+                "Forbidden field in nram options: processor injection is not allowed.",
+                "invalid_request_error",
+                "forbidden_field",
+            )
 
-        # Broadcast updated state
+        # Process through NRAM (state tracking only — messages returned unchanged)
+        messages = nram.process_messages(request.messages)
+
+        # Broadcast updated state for visualization
         await nram.broadcast_state()
 
-        # Get response from LLM
+        # FIX defect 6: handle streaming requests
+        if request.stream:
+            return await _stream_completion(request, messages)
+
+        # FIX defect 5: pass requested model alias
         response = await llm_handler.generate_response(
-            messages=modified_messages,
+            messages=messages,
             temperature=request.temperature,
-            max_tokens=request.max_tokens
+            max_tokens=request.max_tokens,
+            model=request.model,
         )
 
         return response
+
+    except InferenceError as e:
+        logger.error(f"Inference error: {e.message}")
+        # FIX defect 8: return OpenAI-shaped error, not a fake 200
+        return _openai_error(502, e.message, "inference_error", e.code)
+
+    except HTTPException:
+        raise
+
     except Exception as e:
-        logger.error(f"Chat completion error: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Chat completion error: {str(e)}", exc_info=True)
+        return _openai_error(500, str(e), "inference_error", "upstream_inference_failed")
+
+
+async def _stream_completion(request: ChatCompletionRequest, messages: list) -> StreamingResponse:
+    """Placeholder SSE streaming — full implementation in Phase 12."""
+    # For now, run non-streaming and emit the result as a single SSE chunk
+    response = await llm_handler.generate_response(
+        messages=messages,
+        temperature=request.temperature,
+        max_tokens=request.max_tokens,
+        model=request.model,
+    )
+
+    chunk_id = response["id"]
+    created = response["created"]
+    model = response["model"]
+    content = response["choices"][0]["message"]["content"]
+
+    async def event_generator():
+        chunk = {
+            "id": chunk_id,
+            "object": "chat.completion.chunk",
+            "created": created,
+            "model": model,
+            "choices": [{
+                "index": 0,
+                "delta": {"role": "assistant", "content": content},
+                "finish_reason": None,
+            }],
+        }
+        yield f"data: {json.dumps(chunk)}\n\n"
+
+        final_chunk = {
+            "id": chunk_id,
+            "object": "chat.completion.chunk",
+            "created": created,
+            "model": model,
+            "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
+        }
+        yield f"data: {json.dumps(final_chunk)}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 @router.get("/models")
 async def list_models(current_user: dict = Depends(get_current_user)):
-    """List available models"""
+    """List available models — OpenAI-compatible /v1/models."""
     return {
+        "object": "list",
         "data": [
             {
-                "id": "custom-nram-model",
+                "id": alias,
                 "object": "model",
-                "owned_by": "organization",
-                "permission": []
+                "created": 0,
+                "owned_by": "neuralaccesspsyche",
+                "permission": [],
             }
-        ]
+            for alias in MODEL_ALIASES
+        ],
     }
 
 @router.get("/visualize/api", response_class=HTMLResponse)

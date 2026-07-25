@@ -100,7 +100,8 @@ class NRAMConfigSuggester:
                 "content": f"Based on these performance metrics, suggest optimal NRAM configurations:\n{json.dumps(performance_data, indent=2)}"
             }
 
-            response = await self.client.chat.completions.create(
+            # FIX defect 4: OpenAI() is a sync client — do not await it
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[prompt, user_prompt],
                 response_format={"type": "json_object"},

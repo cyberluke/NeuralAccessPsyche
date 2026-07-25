@@ -10,13 +10,21 @@ from core.guidance_handler import GuidanceHandler
 
 logger = logging.getLogger(__name__)
 
+
+class InferenceError(Exception):
+    """Raised when the upstream inference engine fails. Must not be swallowed into a fake 200."""
+
+    def __init__(self, message: str, code: str = "upstream_inference_failed"):
+        super().__init__(message)
+        self.message = message
+        self.code = code
+
+
 class LLMHandler:
     def __init__(self):
         # Initialize OpenAI client
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-        # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
-        # do not change this unless explicitly requested by the user
-        self.model = "gpt-4o"
+        self.model = os.environ.get("DEFAULT_MODEL", "gpt-4o")
         self.guidance_handler = GuidanceHandler()
         self.consciousness_levels = {
             "baseline": 0.3,
@@ -30,10 +38,11 @@ class LLMHandler:
         self,
         messages: List[Dict[str, str]],
         temperature: float = 1.0,
-        max_tokens: int = 100
+        max_tokens: int = 100,
+        model: str | None = None,
     ) -> Dict[str, Any]:
+        """Generate a response. Raises InferenceError on failure — never returns fake 200 content."""
         try:
-            # Get consciousness level based on temperature
             consciousness_level = self._get_consciousness_level(temperature)
 
             # Process through Guidance for enhanced token manipulation
@@ -44,31 +53,43 @@ class LLMHandler:
                 max_tokens=max_tokens
             )
 
-            # Get token metrics
-            token_metrics = self.guidance_handler.get_token_metrics(enhanced_response)
+            # FIX defect 1: extract main_response string from the dict
+            content = (
+                enhanced_response.get("main_response", "")
+                if isinstance(enhanced_response, dict)
+                else str(enhanced_response)
+            )
+
+            # FIX defect 2: await the async get_token_metrics
+            token_metrics = await self.guidance_handler.get_token_metrics(content)
+
+            # FIX defect 3: split() now called on a string, not a dict
+            completion_tokens = len(content.split())
 
             return {
                 "id": f"chatcmpl-{uuid.uuid4()}",
                 "object": "chat.completion",
                 "created": int(time.time()),
-                "model": f"nram-enhanced-{self.model}",
+                # FIX defect 5: reflect the requested model alias
+                "model": model or self.model,
                 "choices": [{
                     "index": 0,
                     "message": {
                         "role": "assistant",
-                        "content": enhanced_response
+                        "content": content,
                     },
                     "finish_reason": "stop"
                 }],
                 "usage": {
                     "prompt_tokens": token_metrics["token_count"],
-                    "completion_tokens": len(enhanced_response.split()),
-                    "total_tokens": token_metrics["token_count"] + len(enhanced_response.split())
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": token_metrics["token_count"] + completion_tokens,
                 }
             }
         except Exception as e:
             logger.error(f"Error generating response: {str(e)}", exc_info=True)
-            return self._create_error_response(str(e))
+            # FIX defect 8: raise instead of returning a fake successful response
+            raise InferenceError(str(e)) from e
 
     def _get_consciousness_level(self, temperature: float) -> str:
         """Determine consciousness level based on temperature"""
@@ -86,19 +107,5 @@ class LLMHandler:
             return "baseline"
 
     def _create_error_response(self, error_message: str) -> Dict[str, Any]:
-        """Create an error response in the expected format"""
-        return {
-            "id": f"chatcmpl-{uuid.uuid4()}",
-            "object": "chat.completion",
-            "created": int(time.time()),
-            "model": f"nram-enhanced-{self.model}",
-            "choices": [{
-                "index": 0,
-                "message": {
-                    "role": "assistant",
-                    "content": f"Neural processing error: {error_message}"
-                },
-                "finish_reason": "error"
-            }],
-            "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
-        }
+        """DEPRECATED: kept for backward compat. Use InferenceError instead."""
+        raise InferenceError(error_message)
