@@ -6,6 +6,13 @@ from typing import List, Optional, Dict, Any
 from core.llm_handler import LLMHandler, InferenceError
 from core.nram import NRAM
 from core.config_suggester import NRAMConfigSuggester
+from core.engines.registry import (
+    get_sglang_engine,
+    should_route_to_sglang,
+    sglang_enabled,
+)
+from core.engines.sglang_engine import SGLangEngineError
+from core.contracts.openai import ChatCompletionRequest as EngineRequest
 from utils.validators import validate_request
 from utils.auth import get_current_user
 from utils.api_logger import api_metrics
@@ -122,6 +129,11 @@ async def create_chat_completion(
         # Broadcast updated state for visualization
         await nram.broadcast_state()
 
+        # Route to SGLang engine when feature flag is active for this model
+        if should_route_to_sglang(request.model):
+            return await _handle_sglang(request, messages)
+
+        # Legacy path below
         # FIX defect 6: handle streaming requests
         if request.stream:
             return await _stream_completion(request, messages)
@@ -136,6 +148,10 @@ async def create_chat_completion(
 
         return response
 
+    except SGLangEngineError as e:
+        logger.error(f"SGLang engine error: {e.message}")
+        return _openai_error(e.status_code, e.message, "inference_error", "upstream_inference_failed")
+
     except InferenceError as e:
         logger.error(f"Inference error: {e.message}")
         # FIX defect 8: return OpenAI-shaped error, not a fake 200
@@ -147,6 +163,51 @@ async def create_chat_completion(
     except Exception as e:
         logger.error(f"Chat completion error: {str(e)}", exc_info=True)
         return _openai_error(500, str(e), "inference_error", "upstream_inference_failed")
+
+
+def _to_engine_request(request: ChatCompletionRequest, messages: list) -> EngineRequest:
+    """Convert the route request model into the engine contract request."""
+    return EngineRequest(
+        model=request.model,
+        messages=messages,
+        temperature=request.temperature,
+        top_p=request.top_p,
+        max_tokens=request.max_tokens,
+        stream=request.stream,
+        stop=request.stop,
+        seed=request.seed,
+        frequency_penalty=request.frequency_penalty,
+        presence_penalty=request.presence_penalty,
+        response_format=request.response_format,
+        tools=request.tools,
+        tool_choice=request.tool_choice,
+        nram=request.nram,
+    )
+
+
+async def _handle_sglang(request: ChatCompletionRequest, messages: list):
+    """Route a request through the SGLang engine (streaming or non-streaming)."""
+    engine = get_sglang_engine()
+    if engine is None:
+        return _openai_error(
+            503,
+            "SGLang engine is enabled but not available.",
+            "inference_error",
+            "engine_unavailable",
+        )
+
+    engine_request = _to_engine_request(request, messages)
+
+    if request.stream:
+        generator = engine.stream(engine_request)
+        return StreamingResponse(
+            generator,
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
+
+    response = await engine.complete(engine_request)
+    return response.model_dump()
 
 
 async def _stream_completion(request: ChatCompletionRequest, messages: list) -> StreamingResponse:
@@ -209,6 +270,70 @@ async def list_models(current_user: dict = Depends(get_current_user)):
             }
             for alias in MODEL_ALIASES
         ],
+    }
+
+
+@router.get("/nram/capabilities")
+async def nram_capabilities(current_user: dict = Depends(get_current_user)):
+    """Report the active engine and which steering controls are verified."""
+    engine_active = sglang_enabled()
+    return {
+        "engine": "sglang" if engine_active else "legacy",
+        "sglang_enabled": engine_active,
+        "served_aliases": list(MODEL_ALIASES.keys()),
+        "controls": {
+            "prompt_steering": True,
+            "structured_output_planning": True,
+            "hard_token_masking": True,
+            "soft_logit_biasing": True,
+            "dynamic_repetition_penalty": True,
+            "activation_steering": False,
+        },
+        "verified": {
+            "pre_sampling_logit_modification": False,
+            "forced_token_proof": False,
+            "streaming": True,
+        },
+    }
+
+
+@router.get("/nram/token-policy/{profile}")
+async def nram_token_policy(
+    profile: str,
+    current_user: dict = Depends(get_current_user),
+):
+    """Diagnostics: show token IDs, decoded text, skipped reasons, and bias values.
+
+    Requires authentication. Returns the compiled policy for a persona profile.
+    """
+    from core.persona.profiles import PROFILES
+    from core.persona.compiler import compile_policy
+    from core.steering.tokenizer_bias import TokenBiasCompiler
+
+    state = PROFILES.get(profile)
+    if state is None:
+        return _openai_error(404, f"Unknown profile: {profile}", "invalid_request_error", "unknown_profile")
+
+    policy = compile_policy(state)
+
+    engine = get_sglang_engine()
+    tokenizer = getattr(engine, "_tokenizer", None) if engine else None
+
+    if tokenizer is None:
+        return {
+            "profile": profile,
+            "policy": policy.model_dump(),
+            "tokens": None,
+            "note": "No tokenizer loaded (set NRAM_TOKENIZER_PATH). Showing lexemes only.",
+        }
+
+    compiler = TokenBiasCompiler(tokenizer)
+    compiled, diagnostics = compiler.compile_with_diagnostics(policy)
+    return {
+        "profile": profile,
+        "policy": policy.model_dump(),
+        "compiled": compiled.model_dump(),
+        "diagnostics": diagnostics,
     }
 
 @router.get("/visualize/api", response_class=HTMLResponse)
