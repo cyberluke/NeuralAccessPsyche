@@ -12,12 +12,14 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# Aliases served by the SGLang engine (local GGUF model).
+# Aliases served by the SGLang engine (local models).
 SGLANG_ALIASES = {
     "nram-gpt-oss-20b",
     "gpt-oss-20b-baseline",
     "deepseek-r1-qwen-7b-baseline",
     "nram-deepseek-r1-qwen-7b",
+    "nram-qwen3-14b-awq",
+    "qwen3-14b-awq-baseline",
 }
 
 _sglang_engine = None

@@ -30,6 +30,12 @@ Each field must be a single concise sentence."""
 
 PLANNER_SCHEMA = VisionaryPlan.model_json_schema()
 
+# Planner is currently DISABLED. SGLang's json_schema response_format support
+# is unreliable and causes 120s timeouts. The developer_instruction alone
+# provides sufficient steering. Re-enable once SGLang's structured output is
+# verified stable.
+PLANNER_ENABLED = False
+
 
 async def build_rhetorical_plan(
     engine: Any,
@@ -45,7 +51,12 @@ async def build_rhetorical_plan(
     - uses a limited token budget
     - returns valid schema-conforming JSON
     - remains hidden from the end user
+
+    NOTE: Currently returns None immediately because PLANNER_ENABLED=False.
     """
+    if not PLANNER_ENABLED:
+        return None
+
     from core.contracts.openai import ChatCompletionRequest
 
     plan_request = ChatCompletionRequest(

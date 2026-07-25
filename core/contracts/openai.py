@@ -39,6 +39,7 @@ class ChatCompletionChoice(BaseModel):
     index: int = 0
     message: ChatMessage
     finish_reason: str = "stop"
+    reasoning_content: Optional[str] = None  # Qwen3/DeepSeek-R1 reasoning (when reasoning_parser is active)
 
 
 class Usage(BaseModel):

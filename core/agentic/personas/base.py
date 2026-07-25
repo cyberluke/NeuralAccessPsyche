@@ -222,7 +222,7 @@ class BasePersona:
         for attempt in range(self.max_retries + 1):
             client = NRAMChatClient(
                 nram_api_base=self._nram_api_base,
-                default_model="nram-deepseek-r1-qwen-7b",
+                default_model="nram-qwen3-14b-awq",
             )
             try:
                 response = await client.get_response(messages, chat_options)

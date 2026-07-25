@@ -35,10 +35,12 @@ MODEL_ALIAS_MAP: Dict[str, str] = {
     "gpt-oss-20b-baseline": "openai/gpt-oss-20b",
     "nram-deepseek-r1-qwen-7b": "nram-deepseek-r1-qwen-7b",
     "deepseek-r1-qwen-7b-baseline": "nram-deepseek-r1-qwen-7b",
+    "nram-qwen3-14b-awq": "nram-qwen3-14b-awq",
+    "qwen3-14b-awq-baseline": "nram-qwen3-14b-awq",
 }
 
 # NRAM-enabled aliases
-NRAM_ENABLED_ALIASES = {"nram-gpt-oss-20b", "nram-deepseek-r1-qwen-7b"}
+NRAM_ENABLED_ALIASES = {"nram-gpt-oss-20b", "nram-deepseek-r1-qwen-7b", "nram-qwen3-14b-awq"}
 
 # Explicit allowlist of fields forwarded to SGLang
 _FORWARDABLE_FIELDS = {
@@ -69,10 +71,38 @@ class SGLangEngineError(Exception):
 
 _REASONING_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
+# Heuristic patterns that indicate raw chain-of-thought (not a final answer).
+# These catch reasoning that the model emits WITHOUT  tags.
+_REASONING_HEURISTIC_RE = re.compile(
+    r"^(?:Okay,?|Hmm,?|Let me|Let's|I need to|I'm trying|I should|So,?|"
+    r"First,?|Alright,?|Well,?|The user|I think|I wonder|I'll|Now,?)",
+    re.IGNORECASE,
+)
+
 
 def strip_reasoning(text: str) -> str:
-    """Remove <think>...</think> blocks from final text."""
-    return _REASONING_RE.sub("", text).strip()
+    """Remove  tags AND heuristic chain-of-thought from final text.
+
+    DeepSeek-R1 models emit reasoning as plain text (no tags), so we also
+    detect and strip common reasoning preambles.
+    """
+    # First strip explicit  blocks
+    text = _REASONING_RE.sub("", text).strip()
+
+    # If the remaining text starts with a reasoning preamble, strip it
+    if _REASONING_HEURISTIC_RE.match(text):
+        # Find the end of the reasoning — look for a sentence boundary
+        # followed by non-reasoning content. Simple heuristic: strip
+        # everything up to the last sentence if it all looks like reasoning.
+        # For now, just strip the leading reasoning clause up to the first
+        # period/question mark, then check if the rest is substantial.
+        parts = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)
+        if len(parts) > 1 and len(parts[1]) > 20:
+            return parts[1].strip()
+        # If stripping leaves too little, return original (better than empty)
+        return text
+
+    return text
 
 
 class _StreamState:
@@ -303,6 +333,16 @@ class SGLangEngine:
         )
         payload["stream"] = False
 
+        # Qwen3 best practice for quantized models: presence_penalty=1.5 reduces
+        # endless repetitions. Only apply if the client didn't explicitly set it.
+        if "presence_penalty" not in payload:
+            payload["presence_penalty"] = 1.5
+        # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
+        if request.temperature is None:
+            payload["temperature"] = 0.7
+        if request.top_p is None:
+            payload["top_p"] = 0.8
+
         try:
             resp = await self._client.post("/chat/completions", json=payload)
             resp.raise_for_status()
@@ -320,6 +360,10 @@ class SGLangEngine:
                             content=strip_reasoning(c["message"].get("content", "")),
                         ),
                         finish_reason=c.get("finish_reason", "stop"),
+                        # Qwen3/DeepSeek-R1 reasoning parser separates thinking into
+                        # reasoning_content. We pass it through for clients that want
+                        # it, but the main content field contains only the final answer.
+                        reasoning_content=c["message"].get("reasoning_content"),
                     )
                     for c in data.get("choices", [])
                 ],
@@ -362,6 +406,16 @@ class SGLangEngine:
             request, nram_enabled, developer_instruction, plan_fragment
         )
         payload["stream"] = True
+
+        # Qwen3 best practice for quantized models: presence_penalty=1.5 reduces
+        # endless repetitions. Only apply if the client didn't explicitly set it.
+        if "presence_penalty" not in payload:
+            payload["presence_penalty"] = 1.5
+        # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
+        if request.temperature is None:
+            payload["temperature"] = 0.7
+        if request.top_p is None:
+            payload["top_p"] = 0.8
 
         try:
             async with self._client.stream(
