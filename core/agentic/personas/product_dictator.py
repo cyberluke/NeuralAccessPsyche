@@ -16,7 +16,11 @@ from core.agentic.contracts import (
     RoadmapItem,
     SelectedDirection,
 )
-from core.agentic.personas.base import BasePersona
+from core.agentic.personas.base import BasePersona, PersonaError
+import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 DICTATOR_SYSTEM_PROMPT = """You are the Product Dictator. Your job is to select ONE focused strategic direction.
 

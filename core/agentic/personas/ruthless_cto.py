@@ -13,7 +13,10 @@ from core.agentic.contracts import (
     RepositoryMap,
     ReviewedHypothesis,
 )
-from core.agentic.personas.base import BasePersona
+from core.agentic.personas.base import BasePersona, PersonaError
+import logging
+
+logger = logging.getLogger(__name__)
 
 CTO_SYSTEM_PROMPT = """You are the Ruthless CTO. Your job is to reject hypotheses using engineering, operational and economic reality.
 
@@ -61,9 +64,31 @@ class RuthlessCTO(BasePersona):
         constraints: list[str],
         **kwargs: Any,
     ) -> List[ReviewedHypothesis]:
-        """Execute the Ruthless CTO persona."""
-        # In production, call NRAM API with CTO profile
-        # For now, return minimal valid reviews
+        """Execute the Ruthless CTO persona.
+
+        Makes a live NRAM-steered call (CTO profile: normal, intensity=0.22,
+        temperature=0.25, contrarian_force=0.90) to critically review each
+        hypothesis. Falls back to heuristic reviews if the model is
+        unreachable or the output is invalid.
+        """
+        user_prompt = CTO_USER_PROMPT.format(
+            hypotheses_json="[\n" + ",\n".join(
+                h.model_dump_json(indent=2) for h in hypotheses[:15]
+            ) + "\n]" if hypotheses else "[]",
+            repository_map_json=repository_map.model_dump_json(indent=2)[:4000],
+            user_goal=user_goal,
+            constraints=", ".join(constraints) if constraints else "none",
+        )
+        messages = self.build_messages(CTO_SYSTEM_PROMPT, user_prompt)
+
+        raw = await self.invoke_model(messages, max_tokens=12288)
+        if raw:
+            try:
+                return self.validate_list_output(raw, ReviewedHypothesis)
+            except PersonaError as e:
+                logger.warning(f"[ruthless_cto] live output invalid, using fallback: {e}")
+
+        # Fallback: heuristic reviews
         reviews = []
         for hyp in hypotheses:
             reviews.append(ReviewedHypothesis(

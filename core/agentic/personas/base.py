@@ -97,6 +97,147 @@ class BasePersona:
         except (json.JSONDecodeError, ValidationError) as e:
             raise PersonaError(f"Output validation failed: {e}") from e
 
+    def validate_list_output(self, raw: str, schema: Type[T]) -> List[T]:
+        """Validate and parse a JSON array of schema objects from model output."""
+        try:
+            json_str = self.extract_json(raw)
+            data = json.loads(json_str)
+            if isinstance(data, dict) and "items" in data:
+                data = data["items"]
+            if not isinstance(data, list):
+                raise PersonaError(f"Expected a JSON array, got {type(data).__name__}")
+            return [schema.model_validate(item) for item in data]
+        except (json.JSONDecodeError, ValidationError) as e:
+            raise PersonaError(f"List output validation failed: {e}") from e
+
+    @staticmethod
+    def extract_json(raw: str) -> str:
+        """Extract a JSON object/array from raw model output.
+
+        Handles markdown code fences and surrounding prose. Returns the
+        first balanced {...} or [...] block, or the raw string if none found.
+        """
+        text = raw.strip()
+
+        # Strip markdown code fences
+        if "```" in text:
+            lines = text.split("\n")
+            inside = []
+            in_fence = False
+            for line in lines:
+                if line.strip().startswith("```"):
+                    in_fence = not in_fence
+                    continue
+                if in_fence:
+                    inside.append(line)
+            if inside:
+                text = "\n".join(inside)
+
+        # Find first { or [
+        start_obj = text.find("{")
+        start_arr = text.find("[")
+        if start_obj == -1 and start_arr == -1:
+            return text
+
+        if start_arr == -1 or (start_obj != -1 and start_obj < start_arr):
+            start, open_char, close_char = start_obj, "{", "}"
+        else:
+            start, open_char, close_char = start_arr, "[", "]"
+
+        # Find matching closing bracket
+        depth = 0
+        for i in range(start, len(text)):
+            if text[i] == open_char:
+                depth += 1
+            elif text[i] == close_char:
+                depth -= 1
+                if depth == 0:
+                    return text[start:i + 1]
+
+        return text[start:]  # Unbalanced; return from start to end
+
+    @staticmethod
+    def extract_json(raw: str) -> str:
+        """Extract a JSON object/array from raw model output.
+
+        Strips markdown code fences and surrounding prose, then returns the
+        first balanced {...} or [...] block. Robust to reasoning preambles
+        (already stripped by the NRAM API) and chatty wrappers.
+        """
+        text = raw.strip()
+        # Strip ```json ... ``` (or ```) fences if present.
+        if "```" in text:
+            parts = text.split("```")
+            candidates = []
+            for i in range(1, len(parts), 2):
+                chunk = parts[i]
+                if chunk.startswith("json"):
+                    chunk = chunk[4:]
+                candidates.append(chunk.strip())
+            if candidates:
+                text = max(candidates, key=len)
+        # Locate the first balanced JSON object or array.
+        start_obj = text.find("{")
+        start_arr = text.find("[")
+        starts = [s for s in (start_obj, start_arr) if s != -1]
+        if not starts:
+            return text
+        start = min(starts)
+        open_char = text[start]
+        close_char = "}" if open_char == "{" else "]"
+        depth = 0
+        for i in range(start, len(text)):
+            if text[i] == open_char:
+                depth += 1
+            elif text[i] == close_char:
+                depth -= 1
+                if depth == 0:
+                    return text[start:i + 1]
+        return text[start:]
+
+    async def invoke_model(
+        self,
+        messages: List[Dict[str, str]],
+        grammar: Optional[Dict[str, Any]] = None,
+        max_tokens: int = 4096,
+    ) -> Optional[str]:
+        """Invoke the NRAM API with this persona's steering profile.
+
+        Returns the raw model output string, or None if the call fails
+        (callers fall back to structured stub data in that case). Retries
+        up to max_retries times. Never exposes hidden chain-of-thought —
+        the NRAM API strips reasoning blocks.
+        """
+        from core.agentic.client import NRAMChatClient
+
+        chat_options: Dict[str, Any] = {
+            "nram": self.build_nram_options(),
+            "max_tokens": max_tokens,
+            "include_telemetry": True,
+        }
+        if grammar is not None:
+            chat_options["response_format"] = grammar
+
+        last_error: Optional[Exception] = None
+        for attempt in range(self.max_retries + 1):
+            client = NRAMChatClient(
+                nram_api_base=self._nram_api_base,
+                default_model="nram-deepseek-r1-qwen-7b",
+            )
+            try:
+                response = await client.get_response(messages, chat_options)
+                return response.content
+            except Exception as e:  # noqa: BLE001 - fall back to stub on any failure
+                last_error = e
+                logger.warning(
+                    f"[{self.name}] model invocation failed (attempt {attempt + 1}/{self.max_retries + 1}): {e}"
+                )
+            finally:
+                await client.close()
+
+        logger.error(f"[{self.name}] all {self.max_retries + 1} attempts failed: {last_error}")
+        return None
+
     async def run(self, **kwargs: Any) -> BaseModel:
         """Execute this persona. Override in subclasses."""
         raise NotImplementedError

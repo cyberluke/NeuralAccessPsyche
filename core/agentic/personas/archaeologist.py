@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from core.agentic.contracts import RepositoryMap
-from core.agentic.personas.base import BasePersona
+from core.agentic.personas.base import BasePersona, PersonaError
 
 ARCHAEOLOGIST_SYSTEM_PROMPT = """You are the Archaeologist. Your job is to produce a FACTUAL repository map.
 
@@ -54,18 +54,34 @@ class Archaeologist(BasePersona):
         constraints: list[str],
         **kwargs: Any,
     ) -> RepositoryMap:
-        """Execute the Archaeologist persona."""
-        # In production, this would:
-        # 1. Scan the repository structure
-        # 2. Extract evidence from source files
-        # 3. Call the NRAM API with the Archaeologist's NRAM profile
-        # 4. Validate the output against RepositoryMap schema
-        # 5. Store evidence in the ledger
-        # 6. Return the RepositoryMap
+        """Execute the Archaeologist persona.
 
-        # For now, return a minimal valid map
+        Makes a live NRAM-steered call (archaeologist profile: normal,
+        intensity=0.10, temperature=0.20) to analyze the repository, then
+        validates the output against RepositoryMap. Falls back to a minimal
+        valid map if the model is unreachable or the output is invalid.
+        """
+        user_prompt = ARCHAEOLOGIST_USER_PROMPT.format(
+            repository_path=repository_path,
+            repository_revision=repository_revision,
+            user_goal=user_goal,
+            constraints=", ".join(constraints) if constraints else "none",
+        )
+        messages = self.build_messages(ARCHAEOLOGIST_SYSTEM_PROMPT, user_prompt)
+
+        raw = await self.invoke_model(messages)
+        if raw:
+            try:
+                return self.validate_output(self.extract_json(raw), RepositoryMap)
+            except PersonaError as e:
+                logger.warning(f"[archaeologist] live output invalid, using fallback: {e}")
+
+        # Fallback: minimal valid map so the workflow can continue.
         return RepositoryMap(
-            summary=f"Repository at {repository_path} analyzed for goal: {user_goal}",
+            summary=(
+                f"Repository at {repository_path} analyzed for goal: {user_goal} "
+                f"(fallback — model unavailable or output did not validate)"
+            ),
             technologies=[],
             entry_points=[],
             verified_capabilities=[],

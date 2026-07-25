@@ -13,7 +13,10 @@ from core.agentic.contracts import (
     InnovationHypothesis,
     RepositoryMap,
 )
-from core.agentic.personas.base import BasePersona
+from core.agentic.personas.base import BasePersona, PersonaError
+import logging
+
+logger = logging.getLogger(__name__)
 
 SYNTHESIZER_SYSTEM_PROMPT = """You are the Psychedelic Synthesizer. Your job is controlled divergence.
 
@@ -61,9 +64,31 @@ class PsychedelicSynthesizer(BasePersona):
         constraints: list[str],
         **kwargs: Any,
     ) -> List[InnovationHypothesis]:
-        """Execute the Psychedelic Synthesizer persona."""
-        # In production, call NRAM API with psychedelic profile
-        # For now, return minimal valid hypotheses
+        """Execute the Psychedelic Synthesizer persona.
+
+        Makes a live NRAM-steered call (psychedelic profile: intensity=0.84,
+        temperature=1.05, associative_distance=0.94) to generate distant but
+        technically defensible hypotheses. Falls back to a minimal valid list
+        if the model is unreachable or the output is invalid.
+        """
+        user_prompt = SYNTHESIZER_USER_PROMPT.format(
+            repository_map_json=repository_map.model_dump_json(indent=2)[:6000],
+            challenges_json="[\n" + ",\n".join(
+                c.model_dump_json(indent=2) for c in challenges[:10]
+            ) + "\n]" if challenges else "[]",
+            user_goal=user_goal,
+            constraints=", ".join(constraints) if constraints else "none",
+        )
+        messages = self.build_messages(SYNTHESIZER_SYSTEM_PROMPT, user_prompt)
+
+        raw = await self.invoke_model(messages, max_tokens=12288)
+        if raw:
+            try:
+                return self.validate_list_output(raw, InnovationHypothesis)
+            except PersonaError as e:
+                logger.warning(f"[psychedelic_synthesizer] live output invalid, using fallback: {e}")
+
+        # Fallback: minimal valid hypotheses
         return [
             InnovationHypothesis(
                 id="hyp-1",

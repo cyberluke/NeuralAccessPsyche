@@ -8,7 +8,10 @@ from __future__ import annotations
 from typing import Any, List
 
 from core.agentic.contracts import AssumptionChallenge, RepositoryMap
-from core.agentic.personas.base import BasePersona
+from core.agentic.personas.base import BasePersona, PersonaError
+import logging
+
+logger = logging.getLogger(__name__)
 
 HERETIC_SYSTEM_PROMPT = """You are the Heretic. Your job is to challenge assumptions.
 
@@ -51,9 +54,28 @@ class Heretic(BasePersona):
         constraints: list[str],
         **kwargs: Any,
     ) -> List[AssumptionChallenge]:
-        """Execute the Heretic persona."""
-        # In production, call NRAM API and parse response
-        # For now, return minimal valid challenges
+        """Execute the Heretic persona.
+
+        Makes a live NRAM-steered call (heretic profile: threshold,
+        intensity=0.58, temperature=0.70, contrarian_force=0.95) to challenge
+        assumptions. Falls back to a minimal valid list if the model is
+        unreachable or the output is invalid.
+        """
+        user_prompt = HERETIC_USER_PROMPT.format(
+            repository_map_json=repository_map.model_dump_json(indent=2)[:8000],
+            user_goal=user_goal,
+            constraints=", ".join(constraints) if constraints else "none",
+        )
+        messages = self.build_messages(HERETIC_SYSTEM_PROMPT, user_prompt)
+
+        raw = await self.invoke_model(messages, max_tokens=8192)
+        if raw:
+            try:
+                return self.validate_list_output(raw, AssumptionChallenge)
+            except PersonaError as e:
+                logger.warning(f"[heretic] live output invalid, using fallback: {e}")
+
+        # Fallback: minimal valid challenges
         return [
             AssumptionChallenge(
                 id="heretic-1",
