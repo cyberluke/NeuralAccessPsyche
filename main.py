@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from api.middleware import TokenAuthMiddleware, RateLimitMiddleware
 from api.routes import router
 from api.nram_routes import nram_router
+from api.workflow_routes import workflow_router
 import logging
 import os
 
@@ -61,6 +62,7 @@ async def general_exception_handler(request, exc):
 # Routes
 app.include_router(router)
 app.include_router(nram_router)
+app.include_router(workflow_router)
 
 # Root endpoint
 @app.get("/")
