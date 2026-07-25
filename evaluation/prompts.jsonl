@@ -1,0 +1,24 @@
+{"id": "product-001", "category": "product_launch", "prompt": "Present a pocket AI device that has no app grid."}
+{"id": "product-002", "category": "product_launch", "prompt": "Announce a home health monitor designed for elderly users with no smartphone required."}
+{"id": "product-003", "category": "product_launch", "prompt": "Introduce a smart notebook that turns handwritten pages into structured data."}
+{"id": "edu-001", "category": "education_technology", "prompt": "Design a tutoring assistant that adapts to a student's working memory limits."}
+{"id": "edu-002", "category": "education_technology", "prompt": "Outline a classroom tool that helps teachers detect disengagement early."}
+{"id": "edu-003", "category": "education_technology", "prompt": "Propose a language-learning feature that uses spaced repetition without gamification."}
+{"id": "ai-001", "category": "ai_interface", "prompt": "Describe an AI interface that communicates primarily through spatial gestures instead of text."}
+{"id": "ai-002", "category": "ai_interface", "prompt": "Imagine a voice assistant that knows when to stay silent."}
+{"id": "ai-003", "category": "ai_interface", "prompt": "Sketch a conversational agent that explains its uncertainty visually."}
+{"id": "creative-001", "category": "creative_strategy", "prompt": "Craft a brand repositioning plan for a legacy coffee company targeting younger buyers."}
+{"id": "creative-002", "category": "creative_strategy", "prompt": "Propose a naming strategy for a family of sustainable cleaning products."}
+{"id": "creative-003", "category": "creative_strategy", "prompt": "Design a guerrilla marketing stunt for a small indie bookstore."}
+{"id": "turn-001", "category": "business_turnaround", "prompt": "Recommend a turnaround plan for a regional retailer losing customers to online giants."}
+{"id": "turn-002", "category": "business_turnaround", "prompt": "Outline a recovery strategy for a SaaS startup with high churn and low retention."}
+{"id": "turn-003", "category": "business_turnaround", "prompt": "Draft a restructuring proposal for a mid-size newspaper facing declining subscriptions."}
+{"id": "hw-001", "category": "consumer_hardware", "prompt": "Describe a modular smartphone concept aimed at reducing electronic waste."}
+{"id": "hw-002", "category": "consumer_hardware", "prompt": "Pitch a low-cost smart thermostat for renters who cannot modify wiring."}
+{"id": "hw-003", "category": "consumer_hardware", "prompt": "Design a wearable device that helps remote workers take healthier breaks."}
+{"id": "sw-001", "category": "software_architecture", "prompt": "Explain how you would architect a real-time collaborative document editor from scratch."}
+{"id": "sw-002", "category": "software_architecture", "prompt": "Design a plugin system for a desktop application that must remain stable under untrusted plugins."}
+{"id": "sw-003", "category": "software_architecture", "prompt": "Propose an architecture for a multi-tenant billing service handling millions of events per day."}
+{"id": "sci-001", "category": "scientific_explanation", "prompt": "Explain how mRNA vaccines work to a curious high school student."}
+{"id": "sci-002", "category": "scientific_explanation", "prompt": "Describe why the sky is blue using an analogy a five-year-old could grasp."}
+{"id": "sci-003", "category": "scientific_explanation", "prompt": "Explain the difference between correlation and causation with a concrete everyday example."}

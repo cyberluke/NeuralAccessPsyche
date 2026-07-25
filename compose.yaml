@@ -47,9 +47,16 @@ services:
       SERVED_MODEL_NAME: nram-deepseek-r1-qwen-7b
       LOAD_FORMAT: gguf
       QUANTIZATION: gguf
-      CONTEXT_LENGTH: "8192"
+      # Context window bumped to 32k (Qwen2.5 native limit). DeepSeek-R1 reasoning
+      # chains are long; 8k was causing finish_reason=length constantly.
+      CONTEXT_LENGTH: "32768"
       MEM_FRACTION_STATIC: "0.80"
       GRAMMAR_BACKEND: llguidance
+      # Hierarchical cache: offload KV cache to system RAM (128 GB DDR5) when VRAM
+      # is insufficient for the full 32k context. Ratio 2.0 means 2x the VRAM KV
+      # cache size is available in host memory.
+      HICACHE_RATIO: "2.0"
+      HICACHE_WRITE_POLICY: write_through_selective
       SGLANG_HOST: 0.0.0.0
       SGLANG_PORT: "30000"
 

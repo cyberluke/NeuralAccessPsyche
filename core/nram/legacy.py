@@ -1,11 +1,23 @@
-import numpy as np
-from typing import List, Dict, Set, Any
-from fastapi import WebSocket
+"""
+Legacy NRAM class — moved into the core.nram package to resolve import collision.
+
+This module contains the original NRAM visualization/telemetry class from
+core/nram.py. It is re-exported from core/nram/__init__.py so that both
+`from core.nram import NRAM` (legacy consumers) and
+`from core.nram.session import ...` (new code) resolve correctly.
+"""
+from __future__ import annotations
+
+import asyncio
 import json
 import logging
-import asyncio
+from typing import Any, Dict, List, Set
+
+import numpy as np
+from fastapi import WebSocket
 
 logger = logging.getLogger(__name__)
+
 
 class NRAM:
     def __init__(self, memory_size: int = 1024, entropy_factor: float = 0.3):

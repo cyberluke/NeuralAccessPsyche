@@ -23,9 +23,13 @@ TOKENIZER_PATH="${TOKENIZER_PATH:-/models}"
 SERVED_MODEL_NAME="${SERVED_MODEL_NAME:-nram-deepseek-r1-qwen-7b}"
 LOAD_FORMAT="${LOAD_FORMAT:-gguf}"
 QUANTIZATION="${QUANTIZATION:-gguf}"
-CONTEXT_LENGTH="${CONTEXT_LENGTH:-8192}"
+CONTEXT_LENGTH="${CONTEXT_LENGTH:-32768}"
 MEM_FRACTION_STATIC="${MEM_FRACTION_STATIC:-0.80}"
 GRAMMAR_BACKEND="${GRAMMAR_BACKEND:-llguidance}"
+# Hierarchical cache: offload KV cache to system RAM (128 GB DDR5) when VRAM is
+# insufficient for the full context. Enables 32k context on a 24 GB GPU.
+HICACHE_RATIO="${HICACHE_RATIO:-2.0}"
+HICACHE_WRITE_POLICY="${HICACHE_WRITE_POLICY:-write_through_selective}"
 HOST="${SGLANG_HOST:-0.0.0.0}"
 PORT="${SGLANG_PORT:-30000}"
 
@@ -38,6 +42,8 @@ echo "[nram-sglang]   quantization      = ${QUANTIZATION}"
 echo "[nram-sglang]   context-length    = ${CONTEXT_LENGTH}"
 echo "[nram-sglang]   mem-fraction      = ${MEM_FRACTION_STATIC}"
 echo "[nram-sglang]   grammar-backend   = ${GRAMMAR_BACKEND}"
+echo "[nram-sglang]   hicache-ratio     = ${HICACHE_RATIO}"
+echo "[nram-sglang]   hicache-write     = ${HICACHE_WRITE_POLICY}"
 echo "[nram-sglang]   host:port         = ${HOST}:${PORT}"
 
 # ---------------------------------------------------------------------------
@@ -58,6 +64,9 @@ exec python3 -m sglang.launch_server \
     --enable-custom-logit-processor \
     --grammar-backend "${GRAMMAR_BACKEND}" \
     --disable-overlap-schedule \
+    --enable-hierarchical-cache \
+    --hicache-ratio "${HICACHE_RATIO}" \
+    --hicache-write-policy "${HICACHE_WRITE_POLICY}" \
     --host "${HOST}" \
     --port "${PORT}" \
     "$@"
