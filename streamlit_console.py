@@ -187,6 +187,10 @@ def render_result(result):
 
 def phenomenon_mix(st_key, defaults):
     st.markdown("**🎛️ Mixér fenoménů** *(simulované lingvistické jevy)*")
+    with st.expander("ℹ️ Co znamená každý fenomén?", expanded=False):
+        for key, meta in PHENOMENA.items():
+            st.markdown(f"**{meta['label']}** — {meta['desc']}")
+
     weights = {}
     for key, meta in PHENOMENA.items():
         col_a, col_b = st.columns([3, 1])
