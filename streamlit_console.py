@@ -436,7 +436,13 @@ with tab_pipeline:
                         if st.button("✅ Schválit a pokračovat"):
                             try:
                                 get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/approve", headers=HEADERS)
-                                st.success("Schváleno. Obnov stav.")
+                                st.success("✅ Schváleno! Workflow pokračuje...")
+                                # Automatically refresh to show progress
+                                import time
+                                time.sleep(1)
+                                resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
+                                wf = resp.json()
+                                st.rerun()
                             except Exception as e:
                                 st.error(f"Chyba: {e}")
                     if wf.get("status") == "completed":
