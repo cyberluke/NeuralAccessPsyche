@@ -311,3 +311,68 @@ async def get_report(
         },
     }
     return report
+
+
+# ---------------------------------------------------------------------------
+# Document Innovation Workflow (P2 fix)
+# ---------------------------------------------------------------------------
+
+class DocumentInnovationRequest(BaseModel):
+    """Request model for the Document Innovation Workflow."""
+    source_document: str
+    goal: str
+    similarity_threshold: float = 0.35
+
+
+@workflow_router.post("/document-innovation/run")
+async def run_document_innovation(
+    request: DocumentInnovationRequest,
+    current_user: dict = Depends(get_current_user),
+):
+    """
+    Run the Document Innovation Workflow.
+
+    This workflow transforms source documents into breakthrough innovation outputs
+    through a multi-stage pipeline that prevents copy-paste paraphrasing:
+
+    1. Evidence Extractor — Extract facts, citations, capabilities
+    2. Fact Ledger — Store structured facts WITHOUT original prose
+    3. Contrarian Deconstructor — Challenge assumptions
+    4. 6 Expert Personas — Parallel analysis from different perspectives
+    5. Concept Tournament — Select best concepts
+    6. Visionary Composer — Synthesize using ONLY facts/citations/capabilities
+    7. Anti-copy Gate — Reject output if too similar to source
+
+    The Composer receives a structured brief, not the original text.
+    """
+    from core.agentic.document_innovation_workflow import DocumentInnovationWorkflow
+
+    workflow = DocumentInnovationWorkflow(
+        similarity_threshold=request.similarity_threshold,
+    )
+
+    try:
+        output = await workflow.run(
+            source_document=request.source_document,
+            user_goal=request.goal,
+        )
+
+        return {
+            "workflow_id": output.workflow_id,
+            "status": output.status.value,
+            "similarity_score": output.similarity_score,
+            "facts_extracted": len(output.extracted_facts),
+            "contrarian_challenges": len(output.contrarian_challenges),
+            "expert_analyses": len(output.expert_analyses),
+            "final_output": output.final_output,
+        }
+
+    except ValueError as e:
+        # Anti-copy gate rejection
+        return {
+            "status": "rejected_similar",
+            "error": str(e),
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Document innovation workflow failed: {e}")

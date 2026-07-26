@@ -136,8 +136,10 @@ services:
     environment:
       NRAM_ENGINE: sglang
       SGLANG_BASE_URL: http://sglang:30000/v1
-      SGLANG_MODEL: nram-deepseek-r1-qwen-7b
+      SGLANG_MODEL: nram-qwen3-14b-awq
       NRAM_API_KEY: ${NRAM_API_KEY:-dev-nram-key}
+      # CRITICAL: Tokenizer path for logit processor - must match sglang model
+      NRAM_TOKENIZER_PATH: /models
       # Placeholder for legacy LLMHandler/GuidanceHandler, which are instantiated
       # at module import (module-level singletons in api/routes.py). They are NOT
       # used when NRAM_ENGINE=sglang, but their constructors require a non-empty
@@ -145,6 +147,9 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-legacy-placeholder-not-used}
       PYTHONUNBUFFERED: "1"
     volumes:
+      # CRITICAL: Mount model directory for tokenizer access (read-only)
+      # TokenBiasCompiler needs tokenizer to enable logit steering
+      - E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3:/models:ro
       # Persist workflow state, artifacts, and events across container restarts
       - workflow-data:/app/data
     restart: unless-stopped

@@ -13,6 +13,7 @@ from core.engines.registry import (
 )
 from core.engines.sglang_engine import SGLangEngineError
 from core.contracts.openai import ChatCompletionRequest as EngineRequest
+from core.tools.searxng_client import SearXNGClient
 from utils.validators import validate_request
 from utils.auth import get_current_user
 from utils.api_logger import api_metrics
@@ -29,6 +30,7 @@ llm_handler = LLMHandler()
 nram = NRAM()
 templates = Jinja2Templates(directory="templates")
 config_suggester = NRAMConfigSuggester()
+searxng_client = SearXNGClient()
 
 # Supported model aliases
 MODEL_ALIASES = {
@@ -127,19 +129,39 @@ async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str
         raise InferenceError("SGLang engine not available", code="engine_unavailable")
 
     profile = _PERSONA_MODEL_MAP[model]
+    
+    # State-dependent intensity: each state gets a different intensity level
+    # This creates qualitatively different outputs, not just quantitative differences
+    intensity_map = {
+        "normal": 0.1,           # Minimal steering, structured analysis
+        "microdose": 0.35,       # Subtle pattern recognition
+        "threshold": 0.58,       # Bold associative leaps
+        "psychedelic": 0.84,     # Extraordinary synthesis
+        "peak": 1.0,             # Maximum revolutionary insights
+        "dissociative": 0.70,    # Radical deconstruction
+    }
+    intensity = intensity_map.get(profile, 0.5)
+    
     # Inject NRAM options from the persona profile
     nram_opts = {
         "enabled": True,
         "profile": profile,
-        "intensity": 0.9,
+        "intensity": intensity,
     }
     if request.nram:
         nram_opts.update(request.nram)
     request.nram = nram_opts
+    
+    # CRITICAL: Switch model to NRAM-enabled alias so engine activates logit processor
+    public_model = request.model
+    request.model = "nram-qwen3-14b-awq"
 
     engine_request = _to_engine_request(request, request.messages)
     response = await engine.complete(engine_request)
-    return response.model_dump()
+    
+    result = response.model_dump()
+    result["model"] = public_model  # Return original model name to client
+    return result
 
 
 async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
@@ -154,14 +176,17 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
             user_content = msg.get("content", "")
             break
 
-    # Query each persona in parallel (limit output to keep synthesis prompt small)
+    # Query each persona in parallel (allow substantial insights for strategic analysis)
     async def query_persona(profile: str):
         sub_request = _to_engine_request(request, request.messages)
+        # CRITICAL: Switch model to NRAM-enabled alias so engine activates logit processor
+        sub_request.model = "nram-qwen3-14b-awq"
         sub_request.nram = {"enabled": True, "profile": profile, "intensity": 0.9}
-        sub_request.max_tokens = 100  # Very short — just key insight per persona
+        sub_request.max_tokens = 1024
         try:
             result = await engine.complete(sub_request)
-            return (profile, result.choices[0].message.content[:200])
+            # Keep FULL content for rich synthesis — no truncation
+            return (profile, result.choices[0].message.content)
         except Exception as e:
             return (profile, f"[error: {e}]")
 
@@ -169,28 +194,34 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
     tasks = [query_persona(p) for p in _MOE_DEFAULT_PERSONAS]
     persona_results = await asyncio.gather(*tasks)
 
-    # Build compact synthesis prompt — keep it short and directive
+    # Build synthesis prompt — respect user's max_tokens for strategic analysis
     persona_summaries = []
     for profile, output in persona_results:
-        # Truncate aggressively to keep synthesis prompt small
-        persona_summaries.append(f"[{profile}]: {output[:150]}")
+        # Keep FULL content for rich synthesis — no truncation
+        persona_summaries.append(f"[{profile} perspective]:\n{output}")
+
+    # Determine synthesis length based on user's request
+    requested_tokens = request.max_tokens or 2048
+    synthesis_max_tokens = max(1024, min(requested_tokens, 4096))  # Increased minimum from 512
 
     synthesis_input = (
-        f"Question: {user_content[:200]}\n\n"
-        "Perspectives:\n" + "\n".join(persona_summaries) +
-        "\n\nWrite ONE short paragraph (max 3 sentences) synthesizing the best insight. Be direct."
+        f"Question: {user_content[:500]}\n\n"
+        "Perspectives from multiple analytical lenses:\n" + "\n".join(persona_summaries) +
+        f"\n\nSynthesize these perspectives into a comprehensive, strategic response. "
+        f"Integrate the best insights into a coherent analysis. Be thorough, substantive, and detailed. "
+        f"Provide concrete examples, data points, and actionable recommendations."
     )
 
-    # Synthesis uses baseline model (no NRAM steering) for speed
+    # Synthesis uses baseline model (no NRAM steering) for coherence
     synth_messages = [
-        {"role": "system", "content": "You are a concise synthesizer. Answer in max 2-3 sentences. No preamble, no bullet points."},
+        {"role": "system", "content": "You are a strategic synthesizer. Integrate multiple analytical perspectives into a comprehensive, well-structured response. Be thorough, substantive, insightful, and detailed. Provide concrete examples and actionable recommendations."},
         {"role": "user", "content": synthesis_input},
     ]
     synth_request = _to_engine_request(request, synth_messages)
     synth_request.model = "qwen3-14b-awq-baseline"
     synth_request.nram = None
-    synth_request.max_tokens = 150  # Hard cap — synthesis must be brief
-    synth_request.temperature = 0.3  # Lower temp for focused synthesis
+    synth_request.max_tokens = synthesis_max_tokens
+    synth_request.temperature = 0.5
 
     synth_response = await engine.complete(synth_request)
     result = synth_response.model_dump()
@@ -311,7 +342,7 @@ def _to_engine_request(request: ChatCompletionRequest, messages: list) -> Engine
 
 
 async def _handle_sglang(request: ChatCompletionRequest, messages: list):
-    """Route a request through the SGLang engine (streaming or non-streaming)."""
+    """Route a request through the SGLang engine with tool call support."""
     engine = get_sglang_engine()
     if engine is None:
         return _openai_error(
@@ -321,7 +352,36 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
             "engine_unavailable",
         )
 
+    # Add SearXNG tools if no tools specified
+    tools = request.tools
+    if tools is None:
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "searxng_search",
+                    "description": "Search the web for current information, market research, company analysis, or technology trends",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "The search query"
+                            },
+                            "search_type": {
+                                "type": "string",
+                                "enum": ["general", "market_research", "company_analysis", "technology_trends"],
+                                "description": "Type of search: general web search, market research, company analysis, or technology trends"
+                            }
+                        },
+                        "required": ["query"]
+                    }
+                }
+            }
+        ]
+
     engine_request = _to_engine_request(request, messages)
+    engine_request.tools = tools
 
     if request.stream:
         generator = engine.stream(engine_request)
@@ -332,53 +392,52 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
         )
 
     response = await engine.complete(engine_request)
-    return response.model_dump()
-
-
-async def _stream_completion(request: ChatCompletionRequest, messages: list) -> StreamingResponse:
-    """Placeholder SSE streaming — full implementation in Phase 12."""
-    # For now, run non-streaming and emit the result as a single SSE chunk
-    response = await llm_handler.generate_response(
-        messages=messages,
-        temperature=request.temperature,
-        max_tokens=request.max_tokens,
-        model=request.model,
-    )
-
-    chunk_id = response["id"]
-    created = response["created"]
-    model = response["model"]
-    content = response["choices"][0]["message"]["content"]
-
-    async def event_generator():
-        chunk = {
-            "id": chunk_id,
-            "object": "chat.completion.chunk",
-            "created": created,
-            "model": model,
-            "choices": [{
-                "index": 0,
-                "delta": {"role": "assistant", "content": content},
-                "finish_reason": None,
-            }],
-        }
-        yield f"data: {json.dumps(chunk)}\n\n"
-
-        final_chunk = {
-            "id": chunk_id,
-            "object": "chat.completion.chunk",
-            "created": created,
-            "model": model,
-            "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
-        }
-        yield f"data: {json.dumps(final_chunk)}\n\n"
-        yield "data: [DONE]\n\n"
-
-    return StreamingResponse(
-        event_generator(),
-        media_type="text/event-stream",
-        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
-    )
+    response_dict = response.model_dump()
+    
+    # Check if model wants to call a tool
+    if response_dict.get("choices") and response_dict["choices"][0].get("message", {}).get("tool_calls"):
+        tool_calls = response_dict["choices"][0]["message"]["tool_calls"]
+        
+        # Execute tool calls
+        tool_results = []
+        for tool_call in tool_calls:
+            if tool_call["function"]["name"] == "searxng_search":
+                try:
+                    args = json.loads(tool_call["function"]["arguments"])
+                    query = args.get("query", "")
+                    search_type = args.get("search_type", "general")
+                    
+                    if search_type == "market_research":
+                        result = await searxng_client.market_research(query)
+                    elif search_type == "company_analysis":
+                        result = await searxng_client.company_analysis(query)
+                    elif search_type == "technology_trends":
+                        result = await searxng_client.technology_trends(query)
+                    else:
+                        result = await searxng_client.search(query)
+                    
+                    tool_results.append({
+                        "tool_call_id": tool_call["id"],
+                        "role": "tool",
+                        "content": json.dumps(result, ensure_ascii=False)
+                    })
+                except Exception as e:
+                    logger.error(f"Tool call error: {e}")
+                    tool_results.append({
+                        "tool_call_id": tool_call["id"],
+                        "role": "tool",
+                        "content": json.dumps({"error": str(e)})
+                    })
+        
+        # Add tool results to messages and get final response
+        messages_with_tools = messages + [response_dict["choices"][0]["message"]] + tool_results
+        engine_request.messages = messages_with_tools
+        engine_request.tools = None  # Don't allow nested tool calls
+        
+        final_response = await engine.complete(engine_request)
+        return final_response.model_dump()
+    
+    return response_dict
 
 @router.get("/models")
 async def list_models(current_user: dict = Depends(get_current_user)):

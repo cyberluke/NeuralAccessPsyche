@@ -79,15 +79,34 @@ class BasePersona:
         return messages
 
     def build_nram_options(self) -> Dict[str, Any]:
-        """Build the NRAM options for this persona's invocation."""
-        return {
+        """Build the NRAM options for this persona's invocation.
+
+        Includes temperature and per-dimension overrides from PERSONA_NRAM_PROFILES
+        so that each persona runs with its declared cognitive parameters.
+        """
+        opts: Dict[str, Any] = {
             "enabled": True,
             "profile": self._nram_config.get("profile", "normal"),
             "intensity": self._nram_config.get("intensity", 0.5),
-            "auto_temperature": False,
             "seed": self._workflow_seed,
             "include_telemetry": True,
         }
+        # Forward per-dimension overrides (associative_distance, contrarian_force, etc.)
+        dimension_fields = {
+            "visionary_intensity", "contrarian_force", "product_obsession",
+            "human_focus", "rhetorical_compression", "associative_distance",
+            "theatricality", "emotional_voltage", "coherence_floor",
+            "novelty_target", "repetition_penalty", "corporate_jargon_penalty",
+        }
+        for field in dimension_fields:
+            if field in self._nram_config:
+                opts[field] = self._nram_config[field]
+        return opts
+
+    @property
+    def persona_temperature(self) -> float:
+        """Return the declared temperature for this persona (default 0.7)."""
+        return self._nram_config.get("temperature", 0.7)
 
     def validate_output(self, raw: str, schema: Type[T]) -> T:
         """Validate and parse persona output against the strict schema."""
@@ -213,6 +232,8 @@ class BasePersona:
         chat_options: Dict[str, Any] = {
             "nram": self.build_nram_options(),
             "max_tokens": max_tokens,
+            "temperature": self.persona_temperature,
+            "seed": self._workflow_seed,
             "include_telemetry": True,
         }
         if grammar is not None:

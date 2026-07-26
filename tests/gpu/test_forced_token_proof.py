@@ -15,6 +15,7 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
 import dill
 import httpx
 
@@ -49,6 +50,8 @@ def serialize_processor(processor_class: type) -> str:
     return json.dumps({"callable": dill.dumps(processor_class).hex()})
 
 
+@pytest.mark.asyncio
+@pytest.mark.integration
 async def test_forced_token():
     """Send a request with forced-token processor and verify output."""
     print("=== FORCED-TOKEN PROOF ===")
@@ -117,6 +120,8 @@ async def test_forced_token():
         return False
 
 
+@pytest.mark.asyncio
+@pytest.mark.integration
 async def test_tokenizer_bias_compiler():
     """Test the tokenizer-aware bias compiler with the live model."""
     print("\n=== TOKENIZER BIAS COMPILER TEST ===")

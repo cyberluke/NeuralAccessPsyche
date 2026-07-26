@@ -55,17 +55,17 @@ _FORBIDDEN_CLIENT_FIELDS = {
     "processor_class", "python_code", "__req__",
 }
 
-# Display names for the phenomenon mixer (Czech + English).
+# Display names for the phenomenon mixer (English primary, Czech secondary for UI).
 _PHENOMENON_LABELS = {
-    "overlap": "Překryv (overlap)",
-    "forgetting": "Zapomenutí (forgetting)",
-    "looping": "Zacyklení (looping)",
-    "associative_jump": "Skok (associative jump)",
-    "synesthesia": "Synestézie (synesthesia)",
-    "dissolution": "Rozpuštění (dissolution)",
-    "echo": "Ozvěna (echo)",
-    "tangent": "Tangenta (tangent)",
-    "insight": "Vhled (insight)",
+    "overlap": "Overlap (Překryv)",
+    "forgetting": "Forgetting (Zapomenutí)",
+    "looping": "Looping (Zacyklení)",
+    "associative_jump": "Associative Jump (Skok)",
+    "synesthesia": "Synesthesia (Synestézie)",
+    "dissolution": "Dissolution (Rozpuštění)",
+    "echo": "Echo (Ozvěna)",
+    "tangent": "Tangent (Tangenta)",
+    "insight": "Insight (Vhled)",
 }
 
 
@@ -116,6 +116,75 @@ class SGLangEngineError(Exception):
         self.status_code = status_code
 
 
+def _apply_global_intensity(base: "NRAMState", intensity: float) -> "NRAMState":
+    """Mix neutral profile with base profile according to intensity.
+
+    intensity=0.0 -> pure neutral (minimal steering)
+    intensity=1.0 -> full base profile
+    """
+    from core.contracts.nram import NRAMState
+    neutral = PROFILES.get("normal", PROFILES[DEFAULT_PROFILE])
+
+    def mix(a: float, b: float) -> float:
+        return a + (b - a) * intensity
+
+    return NRAMState(
+        visionary_intensity=mix(neutral.visionary_intensity, base.visionary_intensity),
+        contrarian_force=mix(neutral.contrarian_force, base.contrarian_force),
+        product_obsession=mix(neutral.product_obsession, base.product_obsession),
+        human_focus=mix(neutral.human_focus, base.human_focus),
+        rhetorical_compression=mix(neutral.rhetorical_compression, base.rhetorical_compression),
+        associative_distance=mix(neutral.associative_distance, base.associative_distance),
+        theatricality=mix(neutral.theatricality, base.theatricality),
+        emotional_voltage=mix(neutral.emotional_voltage, base.emotional_voltage),
+        coherence_floor=mix(neutral.coherence_floor, base.coherence_floor),
+        novelty_target=mix(neutral.novelty_target, base.novelty_target),
+        repetition_penalty=mix(neutral.repetition_penalty, base.repetition_penalty),
+        corporate_jargon_penalty=mix(neutral.corporate_jargon_penalty, base.corporate_jargon_penalty),
+    )
+
+
+def resolve_request_state(nram_opts: Optional[Dict[str, Any]], profile_name: str = DEFAULT_PROFILE) -> "NRAMState":
+    """Resolve the final NRAMState by applying intensity and per-request overrides.
+
+    This is the SINGLE source of truth for computing the state used by:
+    - developer instruction
+    - token bias
+    - telemetry
+    - audit
+    - UI display
+    """
+    from core.contracts.nram import NRAMState
+
+    profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
+
+    # Step 1: Apply intensity mixing
+    intensity = nram_opts.get("intensity") if nram_opts else None
+    if intensity is not None:
+        try:
+            intensity = float(intensity)
+            state = _apply_global_intensity(profile, intensity)
+        except (TypeError, ValueError):
+            state = profile
+    else:
+        state = profile
+
+    # Step 2: Apply per-request overrides (explicit dimension values)
+    override_fields = {
+        "visionary_intensity", "contrarian_force", "product_obsession",
+        "human_focus", "rhetorical_compression", "associative_distance",
+        "theatricality", "emotional_voltage", "coherence_floor",
+        "novelty_target", "repetition_penalty", "corporate_jargon_penalty",
+    }
+    state_dict = state.model_dump()
+    if nram_opts:
+        for field in override_fields:
+            if field in nram_opts and nram_opts[field] is not None:
+                state_dict[field] = nram_opts[field]
+
+    return NRAMState(**state_dict)
+
+
 # ---------------------------------------------------------------------------
 # Reasoning content stripping — never forward hidden chain-of-thought
 # ---------------------------------------------------------------------------
@@ -150,8 +219,8 @@ def strip_reasoning(text: str) -> str:
     # Strip unclosed trailing  (strong NRAM can prevent the close tag)
     text = _UNCLOSED_THINK_RE.sub("", text).strip()
 
-    # Iteratively strip leading reasoning preambles (multiple sentences)
-    for _ in range(6):
+    # Iteratively strip leading reasoning preambles (max 3 sentences to preserve content)
+    for _ in range(3):
         if not _REASONING_HEURISTIC_RE.match(text):
             break
         parts = re.split(r"(?<=[.!?…])\s+", text, maxsplit=1)
@@ -337,23 +406,8 @@ class SGLangEngine:
         # Add trusted NRAM processor for NRAM-enabled requests
         if nram_enabled and self._bias_compiler is not None:
             profile_name = (request.nram or {}).get("profile", DEFAULT_PROFILE)
-            profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
-
-            # Apply any per-request overrides
-            nram_opts = request.nram or {}
-            override_fields = {
-                "visionary_intensity", "contrarian_force", "product_obsession",
-                "human_focus", "rhetorical_compression", "associative_distance",
-                "theatricality", "emotional_voltage", "coherence_floor",
-                "novelty_target", "repetition_penalty", "corporate_jargon_penalty",
-            }
-            state_dict = profile.model_dump()
-            for field in override_fields:
-                if field in nram_opts and nram_opts[field] is not None:
-                    state_dict[field] = nram_opts[field]
-
-            from core.contracts.nram import NRAMState
-            state = NRAMState(**state_dict)
+            # UNIFIED: use resolve_request_state (same as in complete/stream)
+            state = resolve_request_state(request.nram, profile_name)
 
             policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             compiled = self._bias_compiler.compile(policy)
@@ -382,8 +436,9 @@ class SGLangEngine:
         plan_fragment = None
         if nram_enabled:
             profile_name = (request.nram or {}).get("profile", DEFAULT_PROFILE)
-            profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
-            policy = compile_policy(profile, max_tokens=request.max_tokens or 512, profile_name=profile_name)
+            # UNIFIED: use resolve_request_state for both instruction and logit policy
+            state = resolve_request_state(request.nram, profile_name)
+            policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             developer_instruction = policy.developer_instruction
             developer_instruction = _apply_phenomenon_mix(
                 developer_instruction, (request.nram or {}).get("phenomenon_weights")
@@ -404,10 +459,11 @@ class SGLangEngine:
         )
         payload["stream"] = False
 
-        # Qwen3 best practice for quantized models: presence_penalty=1.5 reduces
-        # endless repetitions. Only apply if the client didn't explicitly set it.
+        # Qwen3 best practice for quantized models: presence_penalty reduces
+        # endless repetitions. Use moderate value (0.8) to allow thematic repetition
+        # while preventing loops. Only apply if the client didn't explicitly set it.
         if "presence_penalty" not in payload:
-            payload["presence_penalty"] = 1.5
+            payload["presence_penalty"] = 0.8
         # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
         if request.temperature is None:
             payload["temperature"] = 0.7
@@ -494,8 +550,9 @@ class SGLangEngine:
         plan_fragment = None
         if nram_enabled:
             profile_name = (request.nram or {}).get("profile", DEFAULT_PROFILE)
-            profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
-            policy = compile_policy(profile, max_tokens=request.max_tokens or 512, profile_name=profile_name)
+            # UNIFIED: use resolve_request_state for both instruction and logit policy
+            state = resolve_request_state(request.nram, profile_name)
+            policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             developer_instruction = policy.developer_instruction
             developer_instruction = _apply_phenomenon_mix(
                 developer_instruction, (request.nram or {}).get("phenomenon_weights")
@@ -516,10 +573,11 @@ class SGLangEngine:
         )
         payload["stream"] = True
 
-        # Qwen3 best practice for quantized models: presence_penalty=1.5 reduces
-        # endless repetitions. Only apply if the client didn't explicitly set it.
+        # Qwen3 best practice for quantized models: presence_penalty reduces
+        # endless repetitions. Use moderate value (0.8) to allow thematic repetition
+        # while preventing loops. Only apply if the client didn't explicitly set it.
         if "presence_penalty" not in payload:
-            payload["presence_penalty"] = 1.5
+            payload["presence_penalty"] = 0.8
         # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
         if request.temperature is None:
             payload["temperature"] = 0.7

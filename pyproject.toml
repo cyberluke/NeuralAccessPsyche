@@ -22,3 +22,8 @@ dependencies = [
     "websockets>=14.1",
     "agent-framework>=1.0.0",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration tests requiring live servers (deselect with '-m \"not integration\"')",
+]

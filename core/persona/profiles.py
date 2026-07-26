@@ -69,6 +69,33 @@ PEAK = NRAMState(
     novelty_target=0.92, repetition_penalty=0.85, corporate_jargon_penalty=0.50,
 )
 
+# ---------------------------------------------------------------------------
+# VISIONARY_PEAK — Visionary Product Engine (NOT altered-state simulator)
+#
+# This profile is for "Steve Jobs on LSD, but still technically and investor-brilliant."
+# High associative distance and novelty, but WITH high coherence and zero fragmentation.
+# Used for document innovation workflows where we need breakthrough insights
+# that remain actionable and coherent.
+#
+# Contrast with PEAK (altered-state simulator):
+#   PEAK:           coherence_floor=0.58, fragmentation/looping/dissolution active
+#   VISIONARY_PEAK: coherence_floor=0.88, zero fragmentation/looping/dissolution
+# ---------------------------------------------------------------------------
+VISIONARY_PEAK = NRAMState(
+    visionary_intensity=0.98,
+    contrarian_force=0.92,
+    product_obsession=0.97,
+    human_focus=0.91,
+    rhetorical_compression=0.78,
+    associative_distance=0.90,
+    theatricality=0.82,
+    emotional_voltage=0.76,
+    coherence_floor=0.88,  # HIGH coherence — no fragmentation
+    novelty_target=0.96,
+    repetition_penalty=0.65,
+    corporate_jargon_penalty=0.95,
+)
+
 DISSOCIATIVE = NRAMState(
     visionary_intensity=0.70, contrarian_force=0.55, product_obsession=0.45,
     human_focus=0.55, rhetorical_compression=0.50, associative_distance=0.62,
@@ -85,6 +112,8 @@ PROFILES: dict[str, NRAMState] = {
     "psychedelic": PSYCHEDELIC,
     "peak": PEAK,
     "dissociative": DISSOCIATIVE,
+    # Visionary Product Engine (NOT altered-state simulator)
+    "visionary-peak": VISIONARY_PEAK,
 }
 
 DEFAULT_PROFILE = "visionary-psychedelic-keynote"

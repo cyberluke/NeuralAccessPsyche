@@ -208,8 +208,13 @@ class NRAMLogitProcessor:
         if syn_w > 0.05:
             # Deterministic scattered selection: stride through vocab with
             # an offset that shifts per generation step.
-            stride = max(1, vocab_size // 180)
-            offset = (generated * 7) % stride
+            # Target ~180 tokens affected (or 10% of vocab if smaller)
+            target_count = min(180, max(1, vocab_size // 10))
+            stride = max(2, vocab_size // target_count)
+            # Non-linear offset function to ensure different patterns for
+            # different generation steps (avoids cycling when generated is
+            # a multiple of stride).
+            offset = (generated * 7 + generated // 3) % stride
             cross_ids = list(range(offset, vocab_size, stride))
             # Filter to safe IDs inline (avoid full vocab scan)
             cross_ids = [t for t in cross_ids if 0 <= t < vocab_size]
