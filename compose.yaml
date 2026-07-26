@@ -144,9 +144,14 @@ services:
       # key or import crashes. Never used for real calls on the SGLang path.
       OPENAI_API_KEY: ${OPENAI_API_KEY:-legacy-placeholder-not-used}
       PYTHONUNBUFFERED: "1"
+    volumes:
+      # Persist workflow state, artifacts, and events across container restarts
+      - workflow-data:/app/data
     restart: unless-stopped
 
 volumes:
   # Persistent Hugging Face cache for the sglang service (tokenizers/configs,
   # not model weights).
   hf-cache:
+  # Persistent storage for workflow state, artifacts, and events
+  workflow-data:

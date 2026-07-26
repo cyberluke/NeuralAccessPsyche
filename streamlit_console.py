@@ -421,49 +421,54 @@ with tab_pipeline:
 
         if st.session_state.wf_id:
             st.divider()
-            if st.button("🔄 Obnovit stav"):
-                try:
-                    resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
-                    wf = resp.json()
-                    st.markdown(f"**Status:** `{wf.get('status')}` · **Fáze:** `{wf.get('phase')}` · "
-                                f"**Iterace:** {wf.get('iteration')}/{wf.get('max_iterations')}")
-                    ev_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/events", headers=HEADERS)
-                    events = ev_resp.json().get("events", [])
-                    st.markdown(f"**Události ({len(events)}):**")
-                    for ev in events:
-                        st.markdown(f"`{ev.get('phase')}` / {ev.get('event_type')}: {ev.get('summary')}")
-                    if wf.get("status") == "waiting_for_approval":
-                        if st.button("✅ Schválit a pokračovat"):
-                            try:
-                                get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/approve", headers=HEADERS)
-                                st.success("✅ Schváleno! Workflow pokračuje...")
-                                # Automatically refresh to show progress
-                                import time
-                                time.sleep(1)
-                                resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
-                                wf = resp.json()
-                                st.rerun()
-                            except Exception as e:
-                                st.error(f"Chyba: {e}")
-                    if wf.get("status") == "completed":
-                        if st.button("📄 Zobrazit report"):
-                            try:
-                                rep_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/report", headers=HEADERS)
-                                report = rep_resp.json()
-                                sections = report.get("sections", {})
-                                direction = sections.get("selected_direction", {})
-                                st.markdown("#### 🎯 Vybraný směr")
-                                st.markdown(f"**Product wedge:** {direction.get('product_wedge')}")
-                                st.markdown(f"**North-star metrika:** {direction.get('north_star_metric')}")
-                                roadmap = sections.get("roadmap", {})
-                                items = roadmap.get("items", [])
-                                st.markdown(f"#### 🗺️ Roadmap ({len(items)} položek)")
-                                for item in items:
-                                    st.markdown(f"- **[{item.get('horizon')}]** {item.get('title')} — {item.get('objective')}")
-                            except Exception as e:
-                                st.error(f"Chyba: {e}")
-                except Exception as e:
-                    st.error(f"Chyba při načítání stavu: {e}")
+            
+            # Always fetch current state
+            try:
+                resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
+                wf = resp.json()
+                
+                st.markdown(f"**Status:** `{wf.get('status')}` · **Fáze:** `{wf.get('phase')}` · "
+                            f"**Iterace:** {wf.get('iteration')}/{wf.get('max_iterations')}")
+                
+                # Fetch and display events
+                ev_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/events", headers=HEADERS)
+                events = ev_resp.json().get("events", [])
+                st.markdown(f"**Události ({len(events)}):**")
+                for ev in events:
+                    st.markdown(f"`{ev.get('phase')}` / {ev.get('event_type')}: {ev.get('summary')}")
+                
+                # Show approval button if waiting
+                if wf.get("status") == "waiting_for_approval":
+                    if st.button("✅ Schválit a pokračovat"):
+                        try:
+                            get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/approve", headers=HEADERS)
+                            st.success("✅ Schváleno! Workflow pokračuje...")
+                            time.sleep(1)
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Chyba při schvalování: {e}")
+                
+                # Show report button if completed
+                if wf.get("status") == "completed":
+                    if st.button("📄 Zobrazit report"):
+                        try:
+                            rep_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/report", headers=HEADERS)
+                            report = rep_resp.json()
+                            sections = report.get("sections", {})
+                            direction = sections.get("selected_direction", {})
+                            st.markdown("#### 🎯 Vybraný směr")
+                            st.markdown(f"**Product wedge:** {direction.get('product_wedge')}")
+                            st.markdown(f"**North-star metrika:** {direction.get('north_star_metric')}")
+                            roadmap = sections.get("roadmap", {})
+                            items = roadmap.get("items", [])
+                            st.markdown(f"#### 🗺️ Roadmap ({len(items)} položek)")
+                            for item in items:
+                                st.markdown(f"- **[{item.get('horizon')}]** {item.get('title')} — {item.get('objective')}")
+                        except Exception as e:
+                            st.error(f"Chyba: {e}")
+                            
+            except Exception as e:
+                st.error(f"Chyba při načítání stavu: {e}")
 
 # ---------------------------------------------------------------------------
 # Tab 5: Provenance dashboard (Feature 9)
