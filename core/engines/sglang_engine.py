@@ -121,12 +121,18 @@ class SGLangEngineError(Exception):
 # ---------------------------------------------------------------------------
 
 _REASONING_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
+# Unclosed  tag: strip everything from an unmatched  onward.
+_UNCLOSED_THINK_RE = re.compile(r"<think>(?:(?!</think>).)*$", re.DOTALL)
 
 # Heuristic patterns that indicate raw chain-of-thought (not a final answer).
 # These catch reasoning that the model emits WITHOUT  tags.
 _REASONING_HEURISTIC_RE = re.compile(
     r"^(?:Okay,?|Hmm,?|Let me|Let's|I need to|I'm trying|I should|So,?|"
-    r"First,?|Alright,?|Well,?|The user|I think|I wonder|I'll|Now,?)",
+    r"First,?|Alright,?|Well,?|The user|I think|I wonder|I'll|Now,?|"
+    # Czech reasoning preambles (strong NRAM steering → Czech CoT)
+    r"Potřebuji|Musím|Uživatel|Podívám|Zkusím|Pojďme|Nejprve|"
+    r"Zamyslím|Přemýšlím|Dobře,?|Takže,?|Hmm|Aha,?|No,?|"
+    r"Tak,?|Podívejme|Pojď|Uvažuj|Analyzuj|Zvaž)",
     re.IGNORECASE,
 )
 
@@ -135,23 +141,24 @@ def strip_reasoning(text: str) -> str:
     """Remove  tags AND heuristic chain-of-thought from final text.
 
     DeepSeek-R1 models emit reasoning as plain text (no tags), so we also
-    detect and strip common reasoning preambles.
+    detect and strip common reasoning preambles. Strong NRAM steering can
+    cause the model to emit unclosed  tags or Czech-language CoT.
     """
     # First strip explicit  blocks
     text = _REASONING_RE.sub("", text).strip()
 
-    # If the remaining text starts with a reasoning preamble, strip it
-    if _REASONING_HEURISTIC_RE.match(text):
-        # Find the end of the reasoning — look for a sentence boundary
-        # followed by non-reasoning content. Simple heuristic: strip
-        # everything up to the last sentence if it all looks like reasoning.
-        # For now, just strip the leading reasoning clause up to the first
-        # period/question mark, then check if the rest is substantial.
-        parts = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)
-        if len(parts) > 1 and len(parts[1]) > 20:
-            return parts[1].strip()
-        # If stripping leaves too little, return original (better than empty)
-        return text
+    # Strip unclosed trailing  (strong NRAM can prevent the close tag)
+    text = _UNCLOSED_THINK_RE.sub("", text).strip()
+
+    # Iteratively strip leading reasoning preambles (multiple sentences)
+    for _ in range(6):
+        if not _REASONING_HEURISTIC_RE.match(text):
+            break
+        parts = re.split(r"(?<=[.!?…])\s+", text, maxsplit=1)
+        if len(parts) > 1 and len(parts[1].strip()) > 20:
+            text = parts[1].strip()
+        else:
+            break
 
     return text
 
@@ -361,6 +368,7 @@ class SGLangEngine:
                 repetition_penalty=compiled.repetition_penalty,
                 profile=profile_name,
                 max_tokens=request.max_tokens or 0,
+                phenomenon_weights=nram_opts.get("phenomenon_weights"),
             )
 
         return payload
