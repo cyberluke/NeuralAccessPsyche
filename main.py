@@ -8,6 +8,7 @@ from api.middleware import TokenAuthMiddleware, RateLimitMiddleware
 from api.routes import router
 from api.nram_routes import nram_router
 from api.workflow_routes import workflow_router
+from api.maf_routes import router as maf_router
 import logging
 import os
 
@@ -63,6 +64,7 @@ async def general_exception_handler(request, exc):
 app.include_router(router)
 app.include_router(nram_router)
 app.include_router(workflow_router)
+app.include_router(maf_router)
 
 # Root endpoint
 @app.get("/")

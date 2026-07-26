@@ -245,7 +245,7 @@ class SGLangEngine:
         base_url: str = "http://sglang:30000/v1",
         model: str = "openai/gpt-oss-20b",
         tokenizer: Any = None,
-        timeout: float = 600.0,
+        timeout: Optional[float] = None,
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._model = model
@@ -256,7 +256,7 @@ class SGLangEngine:
 
         self._client = httpx.AsyncClient(
             base_url=self._base_url,
-            timeout=httpx.Timeout(timeout, connect=10.0),
+            timeout=httpx.Timeout(timeout, connect=30.0) if timeout else None,
         )
         self._serialized_processor = serialize_processor(NRAMLogitProcessor)
         logger.info(f"SGLangEngine initialized: base_url={base_url}, model={model}")
