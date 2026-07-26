@@ -212,14 +212,19 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
         f"Provide concrete examples, data points, and actionable recommendations."
     )
 
-    # Synthesis uses baseline model (no NRAM steering) for coherence
+    # CRITICAL FIX: Synthesis uses NRAM-enabled model to preserve persona characteristics
+    # Using "visionary-peak" profile for balanced synthesis with steering
     synth_messages = [
         {"role": "system", "content": "You are a strategic synthesizer. Integrate multiple analytical perspectives into a comprehensive, well-structured response. Be thorough, substantive, insightful, and detailed. Provide concrete examples and actionable recommendations."},
         {"role": "user", "content": synthesis_input},
     ]
     synth_request = _to_engine_request(request, synth_messages)
-    synth_request.model = "qwen3-14b-awq-baseline"
-    synth_request.nram = None
+    synth_request.model = "nram-qwen3-14b-awq"
+    synth_request.nram = {
+        "enabled": True,
+        "profile": "visionary-peak",
+        "intensity": 0.7,
+    }
     synth_request.max_tokens = synthesis_max_tokens
     synth_request.temperature = 0.5
 

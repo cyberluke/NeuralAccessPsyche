@@ -424,6 +424,10 @@ class SGLangEngine:
                 max_tokens=request.max_tokens or 0,
                 phenomenon_weights=nram_opts.get("phenomenon_weights"),
             )
+            
+            # CRITICAL FIX: Inject request object for dynamic features
+            # This enables: repetition penalty, phenomenon mixer, phase scheduling
+            payload["custom_params"]["__req__"] = request
 
         return payload
 
