@@ -84,14 +84,23 @@ LAUNCH_ARGS=(
     --port "${PORT}"
 )
 
-# CUDA graph capture is a decode-speed optimization that requires extra VRAM
-# headroom. With a 14B AWQ model + 32k KV cache on 24 GB, free VRAM after
-# allocation is too low for capture and the server can hang indefinitely.
-# DISABLE_CUDA_GRAPH=true (default) skips capture for reliable startup;
-# decode is slightly slower but correct. Set to false only with ample VRAM.
-DISABLE_CUDA_GRAPH="${DISABLE_CUDA_GRAPH:-true}"
-if [ "${DISABLE_CUDA_GRAPH}" = "true" ]; then
-    LAUNCH_ARGS+=(--disable-decode-cuda-graph --disable-prefill-cuda-graph)
+# CUDA graph capture restores decode throughput (~30+ tok/s vs <1 tok/s without
+# graphs). The PREVIOUS hang was caused by capturing a LARGE decode batch list
+# (bs=1,2,4,8,12,16,24) with insufficient free VRAM. The fix:
+#   - keep PREFILL cuda graph disabled (it auto-requires ~4 GB we don't have,
+#     and prefill of short prompts is not the bottleneck);
+#   - enable DECODE cuda graph with a SMALL, env-configurable batch list so
+#     capture is quick and low-VRAM. bs=1..8 covers interactive single-stream
+#     use (the console + API mostly run 1-4 concurrent generations).
+# Set CUDA_GRAPH_BS_DECODE="" to fully disable decode graphs (safe fallback).
+CUDA_GRAPH_BS_DECODE="${CUDA_GRAPH_BS_DECODE:-1 2 4 8}"
+# Prefill graph needs ~4 GB scratch; disable to guarantee reliable startup.
+LAUNCH_ARGS+=(--disable-prefill-cuda-graph)
+if [ -n "${CUDA_GRAPH_BS_DECODE}" ]; then
+    # shellcheck disable=SC2206  # intentional word-splitting of the bs list
+    LAUNCH_ARGS+=(--cuda-graph-bs-decode ${CUDA_GRAPH_BS_DECODE})
+else
+    LAUNCH_ARGS+=(--disable-decode-cuda-graph)
 fi
 
 # GGUF-specific flags: only for GGUF models (DeepSeek-R1-Distill-Qwen-7B-GGUF).

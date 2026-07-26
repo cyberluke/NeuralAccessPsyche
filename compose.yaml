@@ -46,7 +46,14 @@ services:
       SERVED_MODEL_NAME: nram-qwen3-14b-awq
       # Context window: Qwen3-14B supports up to 40k natively.
       CONTEXT_LENGTH: "32768"
-      MEM_FRACTION_STATIC: "0.80"
+      # Static memory fraction = weights + KV cache. Lowered from 0.80 -> 0.72
+      # to free ~1.9 GB of VRAM headroom so DECODE CUDA graph capture succeeds
+      # (capture needs scratch VRAM; without it decode runs at <1 tok/s).
+      # ~17.3 GB static leaves ~7.8 GB for KV (plenty for 32k single-stream).
+      MEM_FRACTION_STATIC: "0.72"
+      # Decode CUDA graph batch sizes (space-separated). Small list = fast,
+      # low-VRAM capture. Covers 1-8 concurrent generations. Empty = no graphs.
+      CUDA_GRAPH_BS_DECODE: "1 2 4 8"
       # Grammar backend for structured output (json_schema/regex/ebnf).
       # llguidance has a GuidanceBackend vocab-mask bug in this SGLang version;
       # xgrammar is the mature, stable backend for constrained decoding.

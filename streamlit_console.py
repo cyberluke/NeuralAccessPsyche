@@ -106,7 +106,42 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 @st.cache_resource
 def get_client():
-    return httpx.Client(timeout=180.0)
+    # Bounded connection pool + timeouts prevent socket exhaustion / hung
+    # connections from accumulating across long sessions (fixes "crash after
+    # a while" where reruns leaked or stalled HTTP connections).
+    limits = httpx.Limits(
+        max_connections=20,
+        max_keepalive_connections=5,
+        keepalive_expiry=30.0,
+    )
+    return httpx.Client(timeout=httpx.Timeout(180.0, connect=10.0), limits=limits)
+
+
+def _get_json(path, timeout=30.0):
+    """Safe GET returning parsed JSON or None (never raises into the UI)."""
+    try:
+        r = get_client().get(f"{API_BASE}{path}", headers=HEADERS, timeout=timeout)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:  # noqa: BLE001 — UI must survive backend hiccups
+        st.session_state.setdefault("_api_errors", {})[path] = str(e)
+        return None
+
+
+@st.cache_data(ttl=10, show_spinner=False)
+def fetch_telemetry():
+    """Cache telemetry for 10s so frequent Streamlit reruns don't hammer the API."""
+    return _get_json("/features/telemetry")
+
+
+@st.cache_data(ttl=60, show_spinner=False)
+def fetch_provenance_map():
+    return _get_json("/features/provenance-map", timeout=15.0)
+
+
+@st.cache_data(ttl=10, show_spinner=False)
+def fetch_memory():
+    return _get_json("/features/memory")
 
 
 def call_api(prompt, model, nram_opts, max_tokens, temperature, seed):
@@ -203,7 +238,7 @@ with tab_sim:
         st.markdown(f"**Aktivní fenomény:** {tags}", unsafe_allow_html=True)
 
     prompt = st.text_area("Prompt", value="Kolik je 1+1?", height=80, key="sim_prompt")
-    if st.button("⚡ Generovat", type="primary", use_container_width=True, key="sim_btn"):
+    if st.button("⚡ Generovat", type="primary", width="stretch", key="sim_btn"):
         if not prompt.strip():
             st.warning("Zadej prompt.")
         else:
@@ -236,7 +271,7 @@ with tab_keynote:
     k_mix = phenomenon_mix("key", {"overlap": 0.2, "associative_jump": 0.5, "synesthesia": 0.4, "insight": 0.5})
 
     prompt = st.text_area("Prompt", value="Představ nové AI učební zařízení pro děti, které odstraní tradiční menu.", height=80, key="key_prompt")
-    if st.button("⚡ Generovat keynote", type="primary", use_container_width=True, key="key_btn"):
+    if st.button("⚡ Generovat keynote", type="primary", width="stretch", key="key_btn"):
         if not prompt.strip():
             st.warning("Zadej prompt.")
         else:
@@ -265,7 +300,7 @@ with tab_ab:
             "(logit biasing) — nejde o kosmetickou úpravu textu.")
     prompt = st.text_area("Prompt", value="Představ nové AI učební zařízení pro děti, které odstraní tradiční menu.", height=80, key="ab_prompt")
 
-    if st.button("⚡ Spustit A/B", type="primary", use_container_width=True, key="ab_btn"):
+    if st.button("⚡ Spustit A/B", type="primary", width="stretch", key="ab_btn"):
         if not prompt.strip():
             st.warning("Zadej prompt.")
         else:
@@ -316,7 +351,7 @@ with tab_pipeline:
 
     col1, col2 = st.columns([1, 3])
     with col1:
-        if st.button("🚀 Vytvořit workflow", type="primary", use_container_width=True):
+        if st.button("🚀 Vytvořit workflow", type="primary", width="stretch"):
             body = {
                 "workflow_type": "codebase_innovation",
                 "repository": {"path": wf_path, "revision": "HEAD"},
@@ -392,10 +427,10 @@ with tab_telemetry:
 
     col_refresh, _ = st.columns([1, 4])
     if col_refresh.button("🔄 Načíst telemetrii"):
-        st.session_state["_tel_refresh"] = True
+        fetch_telemetry.clear()
 
-    try:
-        tel = get_client().get(f"{API_BASE}/features/telemetry", headers=HEADERS, timeout=30.0).json()
+    tel = fetch_telemetry()
+    if tel is not None:
         g = tel.get("global", {})
         sessions = tel.get("sessions", [])
 
@@ -426,18 +461,18 @@ with tab_telemetry:
                     })
         else:
             st.info("Zatím žádná telemetrie. Spusť generování v Simulátoru.")
-    except Exception as e:
-        st.error(f"Nelze načíst telemetrii: {e}")
+    else:
+        st.error("Nelze načíst telemetrii.")
 
     # Provenance map (Feature 3)
-    try:
-        pmap = get_client().get(f"{API_BASE}/features/provenance-map", headers=HEADERS, timeout=30.0).json()
+    pmap = fetch_provenance_map()
+    if pmap is not None:
         st.markdown("#### Mapa fenomén → steering vrstva → provenance")
         import pandas as pd
         rows = [{"phenomenon": k, **v} for k, v in pmap.items()]
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-    except Exception as e:
-        st.warning(f"Mapa provenance nedostupná: {e}")
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    else:
+        st.warning("Mapa provenance nedostupná.")
 
 
 # ---------------------------------------------------------------------------
@@ -464,16 +499,17 @@ with tab_memory:
                 r = get_client().post(f"{API_BASE}/features/memory", json=body, headers=HEADERS, timeout=30.0)
                 if r.status_code == 200:
                     st.success("Blok zapsán.")
+                    fetch_memory.clear()  # refresh cached block list
                 else:
                     st.error(f"Chyba: {r.text}")
             except Exception as e:
                 st.error(f"Chyba zápisu: {e}")
 
     if st.button("🔄 Načíst bloky"):
-        st.session_state["_mem_refresh"] = True
+        fetch_memory.clear()
 
-    try:
-        mem = get_client().get(f"{API_BASE}/features/memory", headers=HEADERS, timeout=30.0).json()
+    mem = fetch_memory()
+    if mem is not None:
         blocks = mem.get("blocks", [])
         st.markdown(f"**{mem.get('count', 0)} bloků**")
         if blocks:
@@ -486,23 +522,24 @@ with tab_memory:
                 "tokens": b.get("token_estimate", 0),
                 "read_only": "🔒" if b.get("read_only") else "",
             } for b in blocks])
-            st.dataframe(df, use_container_width=True, hide_index=True)
+            st.dataframe(df, width="stretch", hide_index=True)
 
             st.markdown("#### Test viditelnosti pro agenta")
             agent = st.text_input("Jméno agenta", "persona-analyst", key="mem_agent")
             if st.button("Zkompilovat kontext"):
-                ctx = get_client().get(
-                    f"{API_BASE}/features/memory/context/{agent}", headers=HEADERS, timeout=30.0
-                ).json()
-                st.json({
-                    "visible_blocks": ctx.get("block_ids_used", []),
-                    "total_tokens": ctx.get("total_tokens", 0),
-                    "messages": ctx.get("messages", []),
-                })
+                ctx = _get_json(f"/features/memory/context/{agent}")
+                if ctx is not None:
+                    st.json({
+                        "visible_blocks": ctx.get("block_ids_used", []),
+                        "total_tokens": ctx.get("total_tokens", 0),
+                        "messages": ctx.get("messages", []),
+                    })
+                else:
+                    st.error("Nepodařilo se zkompilovat kontext.")
         else:
             st.info("Zatím žádné paměťové bloky.")
-    except Exception as e:
-        st.error(f"Nelze načíst paměť: {e}")
+    else:
+        st.error("Nelze načíst paměť.")
 
 
 # ---------------------------------------------------------------------------
