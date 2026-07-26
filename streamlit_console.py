@@ -334,89 +334,126 @@ with tab_ab:
 # Tab 4: Agentic Pipeline
 # ---------------------------------------------------------------------------
 with tab_pipeline:
-    st.markdown("### 🤖 Agentic Innovation Pipeline")
-    st.info("5 person sekvenčně: **Archaeologist → Heretic → Psychedelic Synthesizer → "
-            "Ruthless CTO → Product Dictator**. Každá persona má vlastní NRAM profil. "
-            "Běží přes REST API `/v1/nram/workflows`.")
+    st.markdown("### 🤖 Agentic Pipeline")
+    
+    # Mode selector
+    chat_mode = st.radio(
+        "Vyber režim",
+        ["💬 Regular Chat", "🔬 Repository Analysis Workflow"],
+        horizontal=True,
+        key="agentic_mode"
+    )
+    
+    if chat_mode == "💬 Regular Chat":
+        st.info("Chat s jednotlivými personami nebo MoE orchestrátorem.")
+        
+        # Model selector
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            persona_model = st.selectbox(
+                "Vyber personu",
+                ["persona-normal", "persona-microdose", "persona-threshold", 
+                 "persona-psychedelic", "persona-peak", "persona-dissociative",
+                 "persona-keynote", "nram-moe-orchestrator"],
+                key="persona_chat_model"
+            )
+        with col2:
+            max_tokens = st.slider("Max tokens", 50, 1000, 300, 50, key="persona_maxtok")
+        
+        # Chat input
+        prompt = st.text_area("Prompt", height=100, key="persona_chat_prompt")
+        
+        if st.button("⚡ Generovat", type="primary", width="stretch"):
+            if not prompt.strip():
+                st.warning("Zadej prompt.")
+            else:
+                with st.spinner("Generuji..."):
+                    result = call_api(prompt, persona_model, None, max_tokens, 0.8, 271)
+                render_result(result)
+    
+    else:  # Repository Analysis Workflow
+        st.info("5 person sekvenčně: **Archaeologist → Heretic → Psychedelic Synthesizer → "
+                "Ruthless CTO → Product Dictator**. Každá persona má vlastní NRAM profil. "
+                "Běží přes REST API `/v1/nram/workflows`.")
 
-    with st.expander("⚙️ Konfigurace workflow", expanded=True):
-        wf_path = st.text_input("Cesta k repozitáři", value=r"D:\_SATIN_AI\NeuralAccessPsyche", key="wf_path")
-        wf_goal = st.text_area("Cíl", value="Najdi obhajitelný produktový směr pro NRAM token steering a vytvoř proveditelný roadmap.", height=70, key="wf_goal")
-        wf_constraints = st.text_area("Omezení (jedno na řádek)", value="Windows + Docker Desktop + WSL2\nRTX 4090\nSGLang runtime\nOpenAI-kompatibilní API musí zůstat", height=90, key="wf_constraints")
-        wf_seed = st.number_input("Seed workflow", 0, 99999, 271, key="wf_seed")
-        wf_approval = st.toggle("Vyžadovat lidský souhlas před finálním výběrem", value=True, key="wf_approval")
+        with st.expander("⚙️ Konfigurace workflow", expanded=True):
+            wf_path = st.text_input("Cesta k repozitáři", value=r"D:\_SATIN_AI\NeuralAccessPsyche", key="wf_path")
+            wf_goal = st.text_area("Cíl", value="Najdi obhajitelný produktový směr pro NRAM token steering a vytvoř proveditelný roadmap.", height=70, key="wf_goal")
+            wf_constraints = st.text_area("Omezení (jedno na řádek)", value="Windows + Docker Desktop + WSL2\nRTX 4090\nSGLang runtime\nOpenAI-kompatibilní API musí zůstat", height=90, key="wf_constraints")
+            wf_seed = st.number_input("Seed workflow", 0, 99999, 271, key="wf_seed")
+            wf_approval = st.toggle("Vyžadovat lidský souhlas před finálním výběrem", value=True, key="wf_approval")
 
-    if "wf_id" not in st.session_state:
-        st.session_state.wf_id = None
+        if "wf_id" not in st.session_state:
+            st.session_state.wf_id = None
 
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        if st.button("🚀 Vytvořit workflow", type="primary", width="stretch"):
-            body = {
-                "workflow_type": "codebase_innovation",
-                "repository": {"path": wf_path, "revision": "HEAD"},
-                "goal": wf_goal,
-                "constraints": [c for c in wf_constraints.split("\n") if c.strip()],
-                "workflow_seed": int(wf_seed),
-                "max_iterations": 2,
-                "require_human_approval_before_final_selection": wf_approval,
-            }
-            try:
-                resp = get_client().post(f"{API_BASE}/nram/workflows", json=body, headers=HEADERS)
-                data = resp.json()
-                st.session_state.wf_id = data.get("workflow_id")
-                st.success(f"Workflow vytvořen: {st.session_state.wf_id}")
-            except Exception as e:
-                st.error(f"Chyba: {e}")
-    with col2:
-        if st.session_state.wf_id:
-            st.markdown(f"**Workflow ID:** `{st.session_state.wf_id}`")
-            if st.button("▶️ Spustit (run)"):
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            if st.button("🚀 Vytvořit workflow", type="primary", width="stretch"):
+                body = {
+                    "workflow_type": "codebase_innovation",
+                    "repository": {"path": wf_path, "revision": "HEAD"},
+                    "goal": wf_goal,
+                    "constraints": [c for c in wf_constraints.split("\n") if c.strip()],
+                    "workflow_seed": int(wf_seed),
+                    "max_iterations": 2,
+                    "require_human_approval_before_final_selection": wf_approval,
+                }
                 try:
-                    get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/run", headers=HEADERS)
-                    st.success("Workflow běží na pozadí. Obnovuj stav tlačítkem níže.")
+                    resp = get_client().post(f"{API_BASE}/nram/workflows", json=body, headers=HEADERS)
+                    data = resp.json()
+                    st.session_state.wf_id = data.get("workflow_id")
+                    st.success(f"Workflow vytvořen: {st.session_state.wf_id}")
                 except Exception as e:
                     st.error(f"Chyba: {e}")
+        with col2:
+            if st.session_state.wf_id:
+                st.markdown(f"**Workflow ID:** `{st.session_state.wf_id}`")
+                if st.button("▶️ Spustit (run)"):
+                    try:
+                        get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/run", headers=HEADERS)
+                        st.success("Workflow běží na pozadí. Obnovuj stav tlačítkem níže.")
+                    except Exception as e:
+                        st.error(f"Chyba: {e}")
 
-    if st.session_state.wf_id:
-        st.divider()
-        if st.button("🔄 Obnovit stav"):
-            try:
-                resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
-                wf = resp.json()
-                st.markdown(f"**Status:** `{wf.get('status')}` · **Fáze:** `{wf.get('phase')}` · "
-                            f"**Iterace:** {wf.get('iteration')}/{wf.get('max_iterations')}")
-                ev_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/events", headers=HEADERS)
-                events = ev_resp.json().get("events", [])
-                st.markdown(f"**Události ({len(events)}):**")
-                for ev in events:
-                    st.markdown(f"`{ev.get('phase')}` / {ev.get('event_type')}: {ev.get('summary')}")
-                if wf.get("status") == "waiting_for_approval":
-                    if st.button("✅ Schválit a pokračovat"):
-                        try:
-                            get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/approve", headers=HEADERS)
-                            st.success("Schváleno. Obnov stav.")
-                        except Exception as e:
-                            st.error(f"Chyba: {e}")
-                if wf.get("status") == "completed":
-                    if st.button("📄 Zobrazit report"):
-                        try:
-                            rep_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/report", headers=HEADERS)
-                            report = rep_resp.json()
-                            sections = report.get("sections", {})
-                            direction = sections.get("selected_direction", {})
-                            st.markdown("#### 🎯 Vybraný směr")
-                            st.markdown(f"**Product wedge:** {direction.get('product_wedge')}")
-                            st.markdown(f"**North-star metrika:** {direction.get('north_star_metric')}")
-                            roadmap = sections.get("roadmap", {})
-                            items = roadmap.get("items", [])
-                            st.markdown(f"#### 🗺️ Roadmap ({len(items)} položek)")
-                            for item in items:
-                                st.markdown(f"- **[{item.get('horizon')}]** {item.get('title')} — {item.get('objective')}")
-                        except Exception as e:
-                            st.error(f"Chyba: {e}")
-            except Exception as e:
-                st.error(f"Chyba při načítání stavu: {e}")
+        if st.session_state.wf_id:
+            st.divider()
+            if st.button("🔄 Obnovit stav"):
+                try:
+                    resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}", headers=HEADERS)
+                    wf = resp.json()
+                    st.markdown(f"**Status:** `{wf.get('status')}` · **Fáze:** `{wf.get('phase')}` · "
+                                f"**Iterace:** {wf.get('iteration')}/{wf.get('max_iterations')}")
+                    ev_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/events", headers=HEADERS)
+                    events = ev_resp.json().get("events", [])
+                    st.markdown(f"**Události ({len(events)}):**")
+                    for ev in events:
+                        st.markdown(f"`{ev.get('phase')}` / {ev.get('event_type')}: {ev.get('summary')}")
+                    if wf.get("status") == "waiting_for_approval":
+                        if st.button("✅ Schválit a pokračovat"):
+                            try:
+                                get_client().post(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/approve", headers=HEADERS)
+                                st.success("Schváleno. Obnov stav.")
+                            except Exception as e:
+                                st.error(f"Chyba: {e}")
+                    if wf.get("status") == "completed":
+                        if st.button("📄 Zobrazit report"):
+                            try:
+                                rep_resp = get_client().get(f"{API_BASE}/nram/workflows/{st.session_state.wf_id}/report", headers=HEADERS)
+                                report = rep_resp.json()
+                                sections = report.get("sections", {})
+                                direction = sections.get("selected_direction", {})
+                                st.markdown("#### 🎯 Vybraný směr")
+                                st.markdown(f"**Product wedge:** {direction.get('product_wedge')}")
+                                st.markdown(f"**North-star metrika:** {direction.get('north_star_metric')}")
+                                roadmap = sections.get("roadmap", {})
+                                items = roadmap.get("items", [])
+                                st.markdown(f"#### 🗺️ Roadmap ({len(items)} položek)")
+                                for item in items:
+                                    st.markdown(f"- **[{item.get('horizon')}]** {item.get('title')} — {item.get('objective')}")
+                            except Exception as e:
+                                st.error(f"Chyba: {e}")
+                except Exception as e:
+                    st.error(f"Chyba při načítání stavu: {e}")
 
 # ---------------------------------------------------------------------------
 # Tab 5: Provenance dashboard (Feature 9)
