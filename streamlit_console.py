@@ -171,8 +171,9 @@ st.markdown('<div class="main-header">🧠 NRAM Control Console</div>', unsafe_a
 st.markdown('<div class="sub-header">Qwen3-14B-AWQ · SGLang · real-time logit steering · <b>SIMULACE alterovaných stavů vědomí</b></div>', unsafe_allow_html=True)
 st.markdown(f'<div class="disclaimer">{DISCLAIMER}</div>', unsafe_allow_html=True)
 
-tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_about = st.tabs([
-    "🧪 Simulátor", "🗣️ Keynote", "⚖️ A/B Porovnání", "🤖 Agentic Pipeline", "ℹ️ Co to je?"
+tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_telemetry, tab_memory, tab_about = st.tabs([
+    "🧪 Simulátor", "🗣️ Keynote", "⚖️ A/B Porovnání", "🤖 Agentic Pipeline",
+    "📊 Provenance", "🧠 Paměť", "ℹ️ Co to je?"
 ])
 
 # ---------------------------------------------------------------------------
@@ -383,7 +384,129 @@ with tab_pipeline:
                 st.error(f"Chyba při načítání stavu: {e}")
 
 # ---------------------------------------------------------------------------
-# Tab 5: Co to je?
+# Tab 5: Provenance dashboard (Feature 9)
+# ---------------------------------------------------------------------------
+with tab_telemetry:
+    st.markdown("### 📊 Token Provenance — jaké řízení způsobilo jaké tokeny")
+    st.caption("Applied-policy klasifikace: ukazuje aktivní steering vrstvu, ne kauzální důkaz.")
+
+    col_refresh, _ = st.columns([1, 4])
+    if col_refresh.button("🔄 Načíst telemetrii"):
+        st.session_state["_tel_refresh"] = True
+
+    try:
+        tel = get_client().get(f"{API_BASE}/features/telemetry", headers=HEADERS, timeout=30.0).json()
+        g = tel.get("global", {})
+        sessions = tel.get("sessions", [])
+
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Sezení", g.get("total_sessions", 0))
+        c2.metric("Požadavky", g.get("total_requests", 0))
+        c3.metric("Tokeny celkem", g.get("total_tokens", 0))
+
+        dist = g.get("token_origin_distribution", {})
+        if dist:
+            st.markdown("#### Globální distribuce původu tokenů")
+            import pandas as pd
+            df = pd.DataFrame(
+                [{"origin": k, "tokens": v} for k, v in sorted(dist.items(), key=lambda x: -x[1]) if v > 0]
+            )
+            if not df.empty:
+                st.bar_chart(df.set_index("origin"))
+
+        if sessions:
+            st.markdown("#### Telemetrie dle sezení")
+            for s in sessions[-10:]:
+                with st.expander(f"{s.get('session_id','?')} · {s.get('total_requests',0)} req · avg {s.get('avg_latency_ms',0)}ms"):
+                    st.json({
+                        "profile": s.get("profiles_used", {}),
+                        "origins": s.get("token_origin_counts", {}),
+                        "phenomena": s.get("phenomena_triggered", {}),
+                        "dominant": s.get("dominant_origin"),
+                    })
+        else:
+            st.info("Zatím žádná telemetrie. Spusť generování v Simulátoru.")
+    except Exception as e:
+        st.error(f"Nelze načíst telemetrii: {e}")
+
+    # Provenance map (Feature 3)
+    try:
+        pmap = get_client().get(f"{API_BASE}/features/provenance-map", headers=HEADERS, timeout=30.0).json()
+        st.markdown("#### Mapa fenomén → steering vrstva → provenance")
+        import pandas as pd
+        rows = [{"phenomenon": k, **v} for k, v in pmap.items()]
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    except Exception as e:
+        st.warning(f"Mapa provenance nedostupná: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Tab 6: Shared memory inspector (Feature 10)
+# ---------------------------------------------------------------------------
+with tab_memory:
+    st.markdown("### 🧠 Sdílená paměť — Letta memory plane")
+    st.caption("Bloky s `shared_with` jsou viditelné jen pro uvedené agenty. Prázdné = veřejné.")
+
+    # Write new memory block
+    with st.expander("➕ Zapsat paměťový blok"):
+        m_name = st.text_input("Název", key="mem_name")
+        m_class = st.selectbox("Třída", ["working", "episodic", "canonical", "overlay"], key="mem_class")
+        m_content = st.text_area("Obsah", key="mem_content")
+        m_shared = st.text_input("Sdílet s agenty (čárkou, prázdné = všichni)", key="mem_shared")
+        if st.button("Zapsat") and m_name and m_content:
+            try:
+                body = {
+                    "name": m_name,
+                    "content": m_content,
+                    "memory_class": m_class,
+                    "shared_with": [a.strip() for a in m_shared.split(",") if a.strip()],
+                }
+                r = get_client().post(f"{API_BASE}/features/memory", json=body, headers=HEADERS, timeout=30.0)
+                if r.status_code == 200:
+                    st.success("Blok zapsán.")
+                else:
+                    st.error(f"Chyba: {r.text}")
+            except Exception as e:
+                st.error(f"Chyba zápisu: {e}")
+
+    if st.button("🔄 Načíst bloky"):
+        st.session_state["_mem_refresh"] = True
+
+    try:
+        mem = get_client().get(f"{API_BASE}/features/memory", headers=HEADERS, timeout=30.0).json()
+        blocks = mem.get("blocks", [])
+        st.markdown(f"**{mem.get('count', 0)} bloků**")
+        if blocks:
+            import pandas as pd
+            df = pd.DataFrame([{
+                "id": b["id"][:12],
+                "name": b["name"],
+                "class": b["memory_class"],
+                "shared_with": ",".join(b.get("shared_with", [])) or "(všichni)",
+                "tokens": b.get("token_estimate", 0),
+                "read_only": "🔒" if b.get("read_only") else "",
+            } for b in blocks])
+            st.dataframe(df, use_container_width=True, hide_index=True)
+
+            st.markdown("#### Test viditelnosti pro agenta")
+            agent = st.text_input("Jméno agenta", "persona-analyst", key="mem_agent")
+            if st.button("Zkompilovat kontext"):
+                ctx = get_client().get(
+                    f"{API_BASE}/features/memory/context/{agent}", headers=HEADERS, timeout=30.0
+                ).json()
+                st.json({
+                    "visible_blocks": ctx.get("block_ids_used", []),
+                    "total_tokens": ctx.get("total_tokens", 0),
+                    "messages": ctx.get("messages", []),
+                })
+        else:
+            st.info("Zatím žádné paměťové bloky.")
+    except Exception as e:
+        st.error(f"Nelze načíst paměť: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Tab 7: Co to je?
 # ---------------------------------------------------------------------------
 with tab_about:
     st.markdown("### ℹ️ Co je NRAM?")

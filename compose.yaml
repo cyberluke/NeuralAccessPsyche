@@ -47,7 +47,10 @@ services:
       # Context window: Qwen3-14B supports up to 40k natively.
       CONTEXT_LENGTH: "32768"
       MEM_FRACTION_STATIC: "0.80"
-      GRAMMAR_BACKEND: llguidance
+      # Grammar backend for structured output (json_schema/regex/ebnf).
+      # llguidance has a GuidanceBackend vocab-mask bug in this SGLang version;
+      # xgrammar is the mature, stable backend for constrained decoding.
+      GRAMMAR_BACKEND: xgrammar
       REASONING_PARSER: qwen3
       # Disable thinking mode for faster, direct responses (Qwen3 best practice:
       # non-thinking mode uses Temperature=0.7, TopP=0.8, TopK=20).

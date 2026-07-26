@@ -84,6 +84,16 @@ LAUNCH_ARGS=(
     --port "${PORT}"
 )
 
+# CUDA graph capture is a decode-speed optimization that requires extra VRAM
+# headroom. With a 14B AWQ model + 32k KV cache on 24 GB, free VRAM after
+# allocation is too low for capture and the server can hang indefinitely.
+# DISABLE_CUDA_GRAPH=true (default) skips capture for reliable startup;
+# decode is slightly slower but correct. Set to false only with ample VRAM.
+DISABLE_CUDA_GRAPH="${DISABLE_CUDA_GRAPH:-true}"
+if [ "${DISABLE_CUDA_GRAPH}" = "true" ]; then
+    LAUNCH_ARGS+=(--disable-decode-cuda-graph --disable-prefill-cuda-graph)
+fi
+
 # GGUF-specific flags: only for GGUF models (DeepSeek-R1-Distill-Qwen-7B-GGUF).
 # AWQ/safetensors models auto-detect quantization from config.json.
 if [ "${MODEL_TYPE}" = "gguf" ]; then

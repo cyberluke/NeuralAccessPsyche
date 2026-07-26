@@ -299,6 +299,15 @@ class SGLangEngine:
             if value is not None:
                 payload[field] = value
 
+        # Feature 4: normalize response_format into SGLang grammar constraints.
+        if payload.get("response_format") is not None:
+            from core.steering.grammar import compile_response_format
+            compiled_fmt = compile_response_format(payload["response_format"])
+            if compiled_fmt is not None:
+                payload["response_format"] = compiled_fmt
+            else:
+                payload.pop("response_format", None)
+
         # Map model alias
         payload["model"] = self._resolve_upstream_model(request)
 
@@ -397,10 +406,45 @@ class SGLangEngine:
         if request.top_p is None:
             payload["top_p"] = 0.8
 
+        t_start = time.perf_counter()
         try:
             resp = await self._client.post("/chat/completions", json=payload)
             resp.raise_for_status()
             data = resp.json()
+
+            usage = Usage(**data.get("usage", {}))
+            latency_ms = (time.perf_counter() - t_start) * 1000
+
+            # Feature 2: record provenance telemetry into the aggregator.
+            # Token origins are derived from the active phenomenon weights
+            # (applied_policy classification, not causal attribution).
+            try:
+                from core.nram.provenance_map import derive_origin_counts
+                from core.nram.telemetry_agg import telemetry_aggregator
+
+                nram_opts = request.nram or {}
+                phen_weights = nram_opts.get("phenomenon_weights") or {}
+                # Treat each active phenomenon (weight > threshold) as firing
+                # roughly proportional to its weight * completion token count.
+                completion_tokens = getattr(usage, "completion_tokens", 0) or 0
+                phen_counts = {
+                    pid: max(1, int(w * completion_tokens))
+                    for pid, w in phen_weights.items()
+                    if isinstance(w, (int, float)) and w > 0.05
+                }
+                model_tokens = max(0, completion_tokens - sum(phen_counts.values()))
+                origin_counts = derive_origin_counts(phen_counts, model_tokens)
+
+                session_id = nram_opts.get("session_id") or request.model
+                telemetry_aggregator.record(
+                    session_id=session_id,
+                    profile=nram_opts.get("profile", "baseline"),
+                    token_origins=origin_counts,
+                    latency_ms=latency_ms,
+                    phenomena=phen_counts,
+                )
+            except Exception:  # telemetry must never break inference
+                logger.debug("telemetry aggregation skipped", exc_info=True)
 
             return ChatCompletionResponse(
                 id=data.get("id", f"chatcmpl-{uuid.uuid4()}"),
@@ -421,7 +465,7 @@ class SGLangEngine:
                     )
                     for c in data.get("choices", [])
                 ],
-                usage=Usage(**data.get("usage", {})),
+                usage=usage,
             )
         except httpx.HTTPStatusError as e:
             raise SGLangEngineError(
