@@ -5,6 +5,8 @@ NRAM profile: threshold, intensity=0.48, temperature=0.35, product_obsession=0.9
 """
 from __future__ import annotations
 
+import json
+import logging
 from typing import Any, List
 
 from core.agentic.contracts import (
@@ -17,7 +19,8 @@ from core.agentic.contracts import (
     SelectedDirection,
 )
 from core.agentic.personas.base import BasePersona, PersonaError
-import json
+
+logger = logging.getLogger(__name__)
 import logging
 
 logger = logging.getLogger(__name__)

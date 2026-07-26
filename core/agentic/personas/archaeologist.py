@@ -6,10 +6,13 @@ NRAM profile: normal, intensity=0.10, temperature=0.20
 """
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from core.agentic.contracts import RepositoryMap
 from core.agentic.personas.base import BasePersona, PersonaError
+
+logger = logging.getLogger(__name__)
 
 ARCHAEOLOGIST_SYSTEM_PROMPT = """You are the Archaeologist. Your job is to produce a FACTUAL repository map.
 

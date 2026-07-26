@@ -36,7 +36,36 @@ MODEL_ALIASES = {
     "gpt-oss-20b-baseline": "gpt-oss-20b-baseline",
     "deepseek-r1-qwen-7b-baseline": "deepseek-r1-qwen-7b-baseline",
     "nram-deepseek-r1-qwen-7b": "nram-deepseek-r1-qwen-7b",
+    # Qwen3-14B-AWQ personas (selectable in agentic coding)
+    "qwen3-14b-awq-baseline": "qwen3-14b-awq-baseline",
+    "nram-qwen3-14b-awq": "nram-qwen3-14b-awq",
+    # Persona models (route to NRAM profiles)
+    "persona-normal": "persona-normal",
+    "persona-microdose": "persona-microdose",
+    "persona-threshold": "persona-threshold",
+    "persona-psychedelic": "persona-psychedelic",
+    "persona-peak": "persona-peak",
+    "persona-dissociative": "persona-dissociative",
+    "persona-keynote": "persona-keynote",
+    # MoE orchestrator (queries multiple personas, synthesizes)
+    "nram-moe-orchestrator": "nram-moe-orchestrator",
 }
+
+# Persona model -> NRAM profile mapping
+_PERSONA_MODEL_MAP = {
+    "persona-normal": "normal",
+    "persona-microdose": "microdose",
+    "persona-threshold": "threshold",
+    "persona-psychedelic": "psychedelic",
+    "persona-peak": "peak",
+    "persona-dissociative": "dissociative",
+    "persona-keynote": "visionary-psychedelic-keynote",
+}
+
+# MoE orchestrator personas (which personas to query)
+_MOE_DEFAULT_PERSONAS = [
+    "normal", "threshold", "psychedelic", "visionary-psychedelic-keynote",
+]
 
 
 class ChatCompletionRequest(BaseModel):
@@ -80,6 +109,94 @@ def _openai_error(status_code: int, message: str, err_type: str, code: str) -> J
         },
     )
 
+
+def _is_persona_model(model: str) -> bool:
+    """Check if model is a persona model that routes to NRAM profiles."""
+    return model in _PERSONA_MODEL_MAP
+
+
+def _is_moe_model(model: str) -> bool:
+    """Check if model is the MoE orchestrator."""
+    return model == "nram-moe-orchestrator"
+
+
+async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str, Any]:
+    """Route a persona-model request to SGLang with NRAM opts injected."""
+    engine = get_sglang_engine()
+    if engine is None:
+        raise InferenceError("SGLang engine not available", code="engine_unavailable")
+
+    profile = _PERSONA_MODEL_MAP[model]
+    # Inject NRAM options from the persona profile
+    nram_opts = {
+        "enabled": True,
+        "profile": profile,
+        "intensity": 0.9,
+    }
+    if request.nram:
+        nram_opts.update(request.nram)
+    request.nram = nram_opts
+
+    engine_request = _to_engine_request(request, request.messages)
+    response = await engine.complete(engine_request)
+    return response.model_dump()
+
+
+async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
+    """MoE orchestrator: query personas in parallel, synthesize final answer."""
+    engine = get_sglang_engine()
+    if engine is None:
+        raise InferenceError("SGLang engine not available", code="engine_unavailable")
+
+    user_content = ""
+    for msg in reversed(request.messages):
+        if msg.get("role") == "user":
+            user_content = msg.get("content", "")
+            break
+
+    # Query each persona in parallel (limit output to keep synthesis prompt small)
+    async def query_persona(profile: str):
+        sub_request = _to_engine_request(request, request.messages)
+        sub_request.nram = {"enabled": True, "profile": profile, "intensity": 0.9}
+        sub_request.max_tokens = 100  # Very short — just key insight per persona
+        try:
+            result = await engine.complete(sub_request)
+            return (profile, result.choices[0].message.content[:200])
+        except Exception as e:
+            return (profile, f"[error: {e}]")
+
+    # Run all persona queries concurrently
+    tasks = [query_persona(p) for p in _MOE_DEFAULT_PERSONAS]
+    persona_results = await asyncio.gather(*tasks)
+
+    # Build compact synthesis prompt — keep it short and directive
+    persona_summaries = []
+    for profile, output in persona_results:
+        # Truncate aggressively to keep synthesis prompt small
+        persona_summaries.append(f"[{profile}]: {output[:150]}")
+
+    synthesis_input = (
+        f"Question: {user_content[:200]}\n\n"
+        "Perspectives:\n" + "\n".join(persona_summaries) +
+        "\n\nWrite ONE short paragraph (max 3 sentences) synthesizing the best insight. Be direct."
+    )
+
+    # Synthesis uses baseline model (no NRAM steering) for speed
+    synth_messages = [
+        {"role": "system", "content": "You are a concise synthesizer. Answer in max 2-3 sentences. No preamble, no bullet points."},
+        {"role": "user", "content": synthesis_input},
+    ]
+    synth_request = _to_engine_request(request, synth_messages)
+    synth_request.model = "qwen3-14b-awq-baseline"
+    synth_request.nram = None
+    synth_request.max_tokens = 150  # Hard cap — synthesis must be brief
+    synth_request.temperature = 0.3  # Lower temp for focused synthesis
+
+    synth_response = await engine.complete(synth_request)
+    result = synth_response.model_dump()
+    result["model"] = "nram-moe-orchestrator"
+    return result
+
 @router.get("/visualize", response_class=HTMLResponse)
 async def visualize_nram(request: Request):
     """Serve the NRAM visualization page"""
@@ -122,6 +239,14 @@ async def create_chat_completion(
                 "invalid_request_error",
                 "forbidden_field",
             )
+
+        # Route persona models (e.g., persona-peak -> NRAM peak profile)
+        if _is_persona_model(request.model):
+            return await _route_persona(request, request.model)
+
+        # Route MoE orchestrator model
+        if _is_moe_model(request.model):
+            return await _route_moe(request)
 
         # Process through NRAM (state tracking only — messages returned unchanged)
         messages = nram.process_messages(request.messages)

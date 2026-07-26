@@ -55,6 +55,57 @@ _FORBIDDEN_CLIENT_FIELDS = {
     "processor_class", "python_code", "__req__",
 }
 
+# Display names for the phenomenon mixer (Czech + English).
+_PHENOMENON_LABELS = {
+    "overlap": "Překryv (overlap)",
+    "forgetting": "Zapomenutí (forgetting)",
+    "looping": "Zacyklení (looping)",
+    "associative_jump": "Skok (associative jump)",
+    "synesthesia": "Synestézie (synesthesia)",
+    "dissolution": "Rozpuštění (dissolution)",
+    "echo": "Ozvěna (echo)",
+    "tangent": "Tangenta (tangent)",
+    "insight": "Vhled (insight)",
+}
+
+
+def _apply_phenomenon_mix(
+    instruction: Optional[str],
+    phenomenon_weights: Optional[Dict[str, Any]],
+) -> Optional[str]:
+    """Append an active-phenomena block to the developer instruction.
+
+    The phenomenon mixer in the UI sends per-phenomenon weights. We render the
+    active ones (weight > 0) into a concise, honest block so the model knows
+    which simulated phenomena to emphasize. This is prompt-level steering and
+    is labeled as a simulation, not a measured state.
+    """
+    if not instruction:
+        return instruction
+    if not phenomenon_weights:
+        return instruction
+
+    active = []
+    for key, label in _PHENOMENON_LABELS.items():
+        weight = phenomenon_weights.get(key)
+        if weight is None:
+            continue
+        try:
+            w = float(weight)
+        except (TypeError, ValueError):
+            continue
+        if w > 0:
+            active.append(f"- {label}: {w:.2f}")
+
+    if not active:
+        return instruction
+
+    block = (
+        "\n\nActive simulated phenomena (linguistic simulation only, "
+        "intensities 0.0-1.0):\n" + "\n".join(active)
+    )
+    return instruction + block
+
 
 class SGLangEngineError(Exception):
     """Raised when the SGLang upstream fails."""
@@ -194,7 +245,7 @@ class SGLangEngine:
         base_url: str = "http://sglang:30000/v1",
         model: str = "openai/gpt-oss-20b",
         tokenizer: Any = None,
-        timeout: float = 120.0,
+        timeout: float = 600.0,
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._model = model
@@ -288,7 +339,7 @@ class SGLangEngine:
             from core.contracts.nram import NRAMState
             state = NRAMState(**state_dict)
 
-            policy = compile_policy(state, max_tokens=request.max_tokens or 512)
+            policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             compiled = self._bias_compiler.compile(policy)
 
             payload["custom_logit_processor"] = self._serialized_processor
@@ -315,8 +366,11 @@ class SGLangEngine:
         if nram_enabled:
             profile_name = (request.nram or {}).get("profile", DEFAULT_PROFILE)
             profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
-            policy = compile_policy(profile, max_tokens=request.max_tokens or 512)
+            policy = compile_policy(profile, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             developer_instruction = policy.developer_instruction
+            developer_instruction = _apply_phenomenon_mix(
+                developer_instruction, (request.nram or {}).get("phenomenon_weights")
+            )
 
             user_content = ""
             for msg in reversed(request.messages):
@@ -389,8 +443,11 @@ class SGLangEngine:
         if nram_enabled:
             profile_name = (request.nram or {}).get("profile", DEFAULT_PROFILE)
             profile = PROFILES.get(profile_name, PROFILES[DEFAULT_PROFILE])
-            policy = compile_policy(profile, max_tokens=request.max_tokens or 512)
+            policy = compile_policy(profile, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             developer_instruction = policy.developer_instruction
+            developer_instruction = _apply_phenomenon_mix(
+                developer_instruction, (request.nram or {}).get("phenomenon_weights")
+            )
 
             user_content = ""
             for msg in reversed(request.messages):

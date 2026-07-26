@@ -5,6 +5,7 @@ NRAM profile: psychedelic, intensity=0.84, temperature=1.05, associative_distanc
 """
 from __future__ import annotations
 
+import logging
 from typing import Any, List
 
 from core.agentic.contracts import (
@@ -14,7 +15,6 @@ from core.agentic.contracts import (
     RepositoryMap,
 )
 from core.agentic.personas.base import BasePersona, PersonaError
-import logging
 
 logger = logging.getLogger(__name__)
 

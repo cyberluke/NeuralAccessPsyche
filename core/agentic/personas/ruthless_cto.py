@@ -5,6 +5,7 @@ NRAM profile: normal, intensity=0.22, temperature=0.25, contrarian_force=0.90
 """
 from __future__ import annotations
 
+import logging
 from typing import Any, List
 
 from core.agentic.contracts import (
@@ -14,7 +15,6 @@ from core.agentic.contracts import (
     ReviewedHypothesis,
 )
 from core.agentic.personas.base import BasePersona, PersonaError
-import logging
 
 logger = logging.getLogger(__name__)
 

@@ -5,11 +5,11 @@ NRAM profile: threshold, intensity=0.58, temperature=0.70
 """
 from __future__ import annotations
 
+import logging
 from typing import Any, List
 
 from core.agentic.contracts import AssumptionChallenge, RepositoryMap
 from core.agentic.personas.base import BasePersona, PersonaError
-import logging
 
 logger = logging.getLogger(__name__)
 
