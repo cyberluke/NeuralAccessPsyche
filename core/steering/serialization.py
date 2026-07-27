@@ -6,25 +6,20 @@ from typing import Any, Dict, Optional
 
 
 def serialize_processor(processor_class: type) -> str:
-    """Serialize a logit processor class with dill for SGLang.
+    """Serialize a logit processor class with cloudpickle for SGLang.
 
     Only the server itself may call this. Never accept client-supplied
     serialized processors.
     
-    Uses dill recurse mode to serialize the class by value (not by reference),
+    Uses cloudpickle to serialize the class by value (not by reference),
     so SGLang can deserialize it without needing the original module.
+    cloudpickle is more reliable than dill for cross-environment serialization.
     """
-    import dill
+    import cloudpickle
 
     # Serialize by value - class is embedded in the pickle, not referenced by module path
     # This prevents "ModuleNotFoundError: No module named 'core'" in SGLang
-    # dill.settings is a dict, not a context manager
-    old_recurse = dill.settings.get('recurse', False)
-    dill.settings['recurse'] = True
-    try:
-        serialized = dill.dumps(processor_class)
-    finally:
-        dill.settings['recurse'] = old_recurse
+    serialized = cloudpickle.dumps(processor_class)
     
     return json.dumps({"callable": serialized.hex()})
 

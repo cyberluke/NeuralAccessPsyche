@@ -412,22 +412,21 @@ class SGLangEngine:
             policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             compiled = self._bias_compiler.compile(policy)
 
-            payload["custom_logit_processor"] = self._serialized_processor
-            payload["custom_params"] = build_custom_params(
-                positive_token_ids=compiled.positive_token_ids,
-                negative_token_ids=compiled.negative_token_ids,
-                forbidden_token_ids=compiled.forbidden_token_ids,
-                positive_bias=compiled.positive_bias,
-                negative_bias=compiled.negative_bias,
-                repetition_penalty=compiled.repetition_penalty,
-                profile=profile_name,
-                max_tokens=request.max_tokens or 0,
-                phenomenon_weights=nram_opts.get("phenomenon_weights"),
-            )
-            
-            # CRITICAL FIX: Inject request object for dynamic features
-            # This enables: repetition penalty, phenomenon mixer, phase scheduling
-            payload["custom_params"]["__req__"] = request
+            # TEMPORARY: Disable custom logit processor due to serialization issues
+            # NRAM steering still works via developer instruction injection (lines 390-402)
+            # TODO: Fix dill/cloudpickle serialization for cross-container deployment
+            # payload["custom_logit_processor"] = self._serialized_processor
+            # payload["custom_params"] = build_custom_params(
+            #     positive_token_ids=compiled.positive_token_ids,
+            #     negative_token_ids=compiled.negative_token_ids,
+            #     forbidden_token_ids=compiled.forbidden_token_ids,
+            #     positive_bias=compiled.positive_bias,
+            #     negative_bias=compiled.negative_bias,
+            #     repetition_penalty=compiled.repetition_penalty,
+            #     profile=profile_name,
+            #     max_tokens=request.max_tokens or 0,
+            #     phenomenon_weights=nram_opts.get("phenomenon_weights"),
+            # )
 
         return payload
 
