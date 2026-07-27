@@ -1,26 +1,17 @@
 """Serialization utilities for the trusted custom logit processor."""
 from __future__ import annotations
 
+import hashlib
 import json
 from typing import Any, Dict, Optional
 
 
 def serialize_processor(processor_class: type) -> str:
-    """Serialize a logit processor class with cloudpickle for SGLang.
+    """Serialize the importable processor class using SGLang's dill contract."""
+    import dill
 
-    Only the server itself may call this. Never accept client-supplied
-    serialized processors.
-    
-    Uses cloudpickle to serialize the class by value (not by reference),
-    so SGLang can deserialize it without needing the original module.
-    cloudpickle is more reliable than dill for cross-environment serialization.
-    """
-    import cloudpickle
+    serialized = dill.dumps(processor_class)
 
-    # Serialize by value - class is embedded in the pickle, not referenced by module path
-    # This prevents "ModuleNotFoundError: No module named 'core'" in SGLang
-    serialized = cloudpickle.dumps(processor_class)
-    
     return json.dumps({"callable": serialized.hex()})
 
 
@@ -34,6 +25,19 @@ def build_custom_params(
     profile: str,
     max_tokens: int = 0,
     phenomenon_weights: Optional[Dict[str, float]] = None,
+    request: Optional[Any] = None,
+    phrase_constraint_config: Optional[Dict[str, Any]] = None,
+    entropy_config: Optional[Dict[str, Any]] = None,
+    concept_config: Optional[Dict[str, Any]] = None,
+    soft_injection_config: Optional[Dict[str, Any]] = None,
+    logit_vector_config: Optional[Dict[str, Any]] = None,
+    hard_injection_config: Optional[Dict[str, Any]] = None,
+    request_id: Optional[str] = None,
+    telemetry_enabled: bool = False,
+    telemetry_max_steps: int = 16,
+    telemetry_top_k: int = 5,
+    forced_token_id: Optional[int] = None,
+    forced_token_enabled: bool = False,
 ) -> Dict[str, Any]:
     """Build the trusted custom_params dict for SGLang.
 
@@ -49,6 +53,16 @@ def build_custom_params(
       synesthesia      → deterministic cross-activation noise
       dissolution      → scale logits toward zero
       insight          → periodic positive_bias spikes
+
+    request is retained for API compatibility but is deliberately not put on
+    the wire. SGLang 0.5.16 injects the live server-side request as ``__req__``
+    in ``Req.__init__``. Sending an application request here would fail JSON
+    serialization and violate the scheduler trust boundary.
+
+    NRAM v5 additions:
+    phrase_constraint_config: Phrase-level masking and source n-gram blocking
+    entropy_config: PID-based entropy control with phase targets
+    concept_config: Dynamic concept capsule injection
     """
     result = {
         "positive_token_ids": positive_token_ids,
@@ -62,4 +76,34 @@ def build_custom_params(
     }
     if phenomenon_weights:
         result["phenomenon_weights"] = phenomenon_weights
+
+    # NRAM v5 multi-layer inference control
+    if phrase_constraint_config:
+        result["phrase_constraint_config"] = phrase_constraint_config
+    if entropy_config:
+        result["entropy_config"] = entropy_config
+    if concept_config:
+        result["concept_config"] = concept_config
+    if soft_injection_config:
+        result["soft_injection_config"] = soft_injection_config
+    if logit_vector_config:
+        result["logit_vector_config"] = logit_vector_config
+    if hard_injection_config:
+        result["hard_injection_config"] = hard_injection_config
+
+    if forced_token_id is not None:
+        result["forced_token_id"] = int(forced_token_id)
+    result["forced_token_enabled"] = bool(forced_token_enabled)
+    result["telemetry_enabled"] = bool(telemetry_enabled)
+    if telemetry_enabled:
+        result["telemetry_max_steps"] = max(0, min(128, int(telemetry_max_steps)))
+        result["telemetry_top_k"] = max(1, min(20, int(telemetry_top_k)))
+
+    # Hash the exact intervention configuration before adding correlation
+    # metadata. This is deterministic across API and inference containers.
+    canonical = json.dumps(result, sort_keys=True, separators=(",", ":"))
+    result["config_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    if request_id:
+        result["request_id"] = str(request_id)[:128]
+
     return result

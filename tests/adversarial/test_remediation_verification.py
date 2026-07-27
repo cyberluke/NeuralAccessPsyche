@@ -3,7 +3,7 @@
 These tests verify that the 3 critical defects identified in the issue ledger
 have been FIXED by commit d4eb11f.
 
-DEFECT 1: __req__ injection into custom_params
+DEFECT 1: trusted server-side __req__ injection without wire serialization
 DEFECT 2: Phenomenon mixer activation
 DEFECT 3: MoE synthesis NRAM configuration
 """
@@ -16,11 +16,11 @@ from core.steering.nram_logit_processor import NRAMLogitProcessor
 
 
 class TestDefect1Remediation:
-    """Verify __req__ is now injected into custom_params."""
+    """Verify application request objects stay outside the wire payload."""
 
     @pytest.mark.asyncio
     async def test_req_is_injected_into_custom_params(self):
-        """VERIFY FIX: __req__ IS present in custom_params after remediation."""
+        """VERIFY FIX: API payload awaits trusted SGLang-side injection."""
         # Arrange
         mock_tokenizer = MagicMock()
         mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
@@ -56,25 +56,13 @@ class TestDefect1Remediation:
             plan_fragment=None,
         )
 
-        # Assert - FIX VERIFIED
+        # The official SGLang hook injects its scheduler Req after JSON decode.
         assert "custom_params" in payload, "custom_params should be in payload"
         custom_params = payload["custom_params"]
-        
-        assert "__req__" in custom_params, \
-            "FIX VERIFIED: __req__ is now injected into custom_params"
-        
-        # Verify the injected request is the same object
-        assert custom_params["__req__"] is request, \
-            "__req__ should reference the original request object"
-        
-        # Note: ChatCompletionRequest doesn't have output_ids at construction time
-        # output_ids is populated by SGLang during generation
-        # The fix ensures __req__ is injected so that WHEN output_ids is populated,
-        # the logit processor can access it
-        
-        print("[FIX VERIFIED] __req__ is injected into custom_params")
-        print(f"  Keys present: {list(custom_params.keys())}")
-        print(f"  __req__ is request: {custom_params['__req__'] is request}")
+        assert "__req__" not in custom_params
+
+        import json
+        json.dumps(payload)
 
     def test_dynamic_repetition_penalty_works(self):
         """VERIFY FIX: Dynamic repetition penalty now works with __req__."""
@@ -443,15 +431,15 @@ class TestDefect3Remediation:
         assert "custom_params" in payload, \
             "FIX VERIFIED: synthesis has custom_params"
         
-        assert "__req__" in payload["custom_params"], \
-            "FIX VERIFIED: synthesis custom_params has __req__"
+        assert "__req__" not in payload["custom_params"], \
+            "Application request objects must not cross the JSON boundary"
         
         print("[FIX VERIFIED] Synthesis payload has custom processor")
         print(f"  NRAM enabled: {nram_enabled}")
         print(f"  Payload keys: {list(payload.keys())}")
         print(f"  Has custom_logit_processor: {'custom_logit_processor' in payload}")
         print(f"  Has custom_params: {'custom_params' in payload}")
-        print(f"  Has __req__: {'__req__' in payload['custom_params']}")
+        print(f"  Wire-safe params: {'__req__' not in payload['custom_params']}")
 
     def test_synthesis_preserves_persona_characteristics(self):
         """VERIFY FIX: Synthesis preserves persona-specific steering."""
@@ -556,10 +544,10 @@ class TestIntegrationVerification:
         assert "custom_params" in payload, "Should have custom params"
         
         custom_params = payload["custom_params"]
-        assert "__req__" in custom_params, "Should have __req__ injected"
-        assert custom_params["__req__"] is request, "__req__ should be the request"
-        
-        # Verify logit processor can use __req__
+        assert "__req__" not in custom_params, "Wire payload must remain JSON-only"
+
+        # Simulate SGLang 0.5.16 Req.__init__ trusted in-process injection and
+        # verify the shared processor consumes real scheduler output history.
         processor = NRAMLogitProcessor()
         mock_request = MagicMock()
         mock_request.output_ids = [50, 51, 52]
@@ -580,7 +568,7 @@ class TestIntegrationVerification:
         print("[FIX VERIFIED] Full NRAM pipeline works end-to-end")
         print(f"  NRAM enabled: {nram_enabled}")
         print(f"  Custom processor: {'custom_logit_processor' in payload}")
-        print(f"  __req__ injected: {'__req__' in custom_params}")
+        print(f"  Server __req__ consumed: {'__req__' in custom_params}")
         print(f"  Phenomena fire: {result[0, 50] > 0}")
 
 

@@ -1,0 +1,54 @@
+HOST DEFAULT
+Python 3.13.3
+PyTorch 2.13.0+cpu
+CUDA available to host PyTorch: false
+pytest 9.1.1
+pytest-asyncio 1.4.0
+anyio 4.14.2
+dill 0.4.1
+cloudpickle 3.1.2
+SGLang: not installed
+transformers: not installed
+tokenizers: not installed
+openai: not installed
+
+ISOLATED TEST ENVIRONMENT
+Python 3.11.11
+pytest 9.1.1
+pytest-asyncio 1.4.0
+anyio 4.7.0
+openai 1.58.1
+fastapi 0.115.6
+httpx 0.28.1
+numpy 2.2.1
+pydantic 2.10.4
+dill 0.4.1 (ephemeral --with because uv.lock omits it)
+cloudpickle 3.1.2 (ephemeral --with)
+transformers 4.47.1
+tokenizers 0.21.0
+torch 2.13.0 CPU (ephemeral --with because project metadata omits it)
+
+SGLANG CONTAINER
+Python 3.12.3
+SGLang 0.5.16
+SGLang source commit fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1
+PyTorch 2.11.0+cu130
+dill 0.4.1
+cloudpickle 3.1.2
+transformers 5.12.1
+tokenizers 0.22.2
+
+API CONTAINER
+Python 3.11.15
+SGLang not installed
+PyTorch not installed
+dill 0.4.1
+cloudpickle 3.1.2
+transformers 5.14.1
+tokenizers 0.22.2
+
+DEPENDENCY DRIFT
+pyproject.toml declares dill but the frozen uv.lock environment did not install it.
+pyproject.toml does not declare PyTorch although seven test modules require it.
+API and SGLang containers use different transformers/tokenizers versions.
+Host, API, SGLang, and isolated test environments use different Python versions.

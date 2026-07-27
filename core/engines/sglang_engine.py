@@ -6,7 +6,7 @@ import logging
 import re
 import time
 import uuid
-from typing import Any, AsyncIterator, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, AsyncIterator, Dict, List, Optional
 
 import httpx
 
@@ -23,9 +23,12 @@ from core.engines.base import SGLANG_CAPABILITIES
 from core.persona.compiler import compile_policy
 from core.persona.planner import build_rhetorical_plan, plan_to_prompt_fragment
 from core.persona.profiles import DEFAULT_PROFILE, PROFILES
-from core.steering.nram_logit_processor import NRAMLogitProcessor
+from nram_sglang.processor import NRAMLogitProcessor
 from core.steering.serialization import build_custom_params, serialize_processor
 from core.steering.tokenizer_bias import TokenBiasCompiler
+
+if TYPE_CHECKING:
+    from core.contracts.nram import NRAMState
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +56,26 @@ _FORWARDABLE_FIELDS = {
 _FORBIDDEN_CLIENT_FIELDS = {
     "custom_logit_processor", "custom_params", "serialized_processor",
     "processor_class", "python_code", "__req__",
+}
+
+# These names describe mechanisms that require unavailable models, datasets,
+# hidden-state hooks, or branch runtimes. Silently ignoring them would create a
+# false scientific claim, so public requests fail explicitly.
+_UNSUPPORTED_NRAM_FEATURES = {
+    "dexperts",
+    "activation_addition",
+    "actadd",
+    "conceptor_steering",
+    "hidden_state_probes",
+    "latent_closed_loop",
+    "semantic_novelty_controller",
+    "evidence_guard",
+    "branch_tournament",
+    "reft",
+    "soft_prompts",
+    "attention_head_gating",
+    "kv_cache_firewall",
+    "gpu_native_semantic_control",
 }
 
 # Display names for the phenomenon mixer (English primary, Czech secondary for UI).
@@ -351,6 +374,127 @@ class SGLangEngine:
         """Map public alias to upstream model name."""
         return MODEL_ALIAS_MAP.get(request.model, self._model)
 
+    # ------------------------------------------------------------------
+    # NRAM v5 multi-layer config builders
+    # ------------------------------------------------------------------
+    def _build_phrase_constraint_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build phrase constraint configuration for the logit processor.
+
+        Extracts forbidden phrases and source n-gram blocking config from
+        request nram options. Returns None if no phrase constraints configured.
+        """
+        forbidden_phrases = nram_opts.get("forbidden_phrases", [])
+        source_text = nram_opts.get("source_text")
+
+        if not forbidden_phrases and not source_text:
+            return None
+
+        config: Dict[str, Any] = {}
+
+        # Encode forbidden phrases to token IDs
+        if forbidden_phrases and self._tokenizer:
+            forbidden_phrase_ids = []
+            for phrase in forbidden_phrases:
+                try:
+                    token_ids = self._tokenizer.encode(phrase, add_special_tokens=False)
+                    if token_ids:
+                        forbidden_phrase_ids.append(token_ids)
+                except Exception:
+                    pass
+            if forbidden_phrase_ids:
+                config["forbidden_phrase_ids"] = forbidden_phrase_ids
+
+        # Source n-gram blocking
+        if source_text and self._tokenizer:
+            source_ngram_size = nram_opts.get("source_ngram_size", 8)
+            try:
+                source_tokens = self._tokenizer.encode(source_text, add_special_tokens=False)
+                # Extract all n-grams from source
+                source_ngrams = []
+                for i in range(len(source_tokens) - source_ngram_size + 1):
+                    ngram = source_tokens[i:i + source_ngram_size]
+                    source_ngrams.append(ngram)
+                if source_ngrams:
+                    config["source_ngram_ids"] = source_ngrams
+                    config["source_ngram_size"] = source_ngram_size
+            except Exception:
+                pass
+
+        return config if config else None
+
+    def _build_entropy_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build entropy control configuration for the logit processor.
+
+        Returns None if entropy control is not enabled.
+        """
+        entropy_enabled = nram_opts.get("entropy_control", False)
+        if not entropy_enabled:
+            return None
+
+        return {
+            "phase_targets": nram_opts.get("entropy_phase_targets", {
+                "extraction": 2.5,
+                "questioning": 4.0,
+                "divergence": 6.0,
+                "synthesis": 4.5,
+                "formulation": 3.0,
+            }),
+            "kp": nram_opts.get("entropy_kp", 0.5),
+            "ki": nram_opts.get("entropy_ki", 0.02),
+            "kd": nram_opts.get("entropy_kd", 0.05),
+            "integral_limit": nram_opts.get("entropy_integral_limit", 20.0),
+            "scale_min": nram_opts.get("entropy_scale_min", 0.6),
+            "scale_max": nram_opts.get("entropy_scale_max", 1.8),
+        }
+
+    def _build_concept_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build concept injection configuration for the logit processor.
+
+        Returns None if no concepts configured.
+        """
+        concepts = nram_opts.get("concepts", [])
+        if not concepts or not self._tokenizer:
+            return None
+
+        # Encode concept tokens to IDs
+        encoded_concepts = []
+        for concept in concepts:
+            token_forms = concept.get("en_tokens", []) + concept.get("cs_tokens", []) + concept.get("synonyms", [])
+            token_ids = []
+            for form in token_forms:
+                try:
+                    ids = self._tokenizer.encode(form, add_special_tokens=False)
+                    token_ids.extend(ids)
+                except Exception:
+                    pass
+            if token_ids:
+                encoded_concepts.append({
+                    "concept_id": concept.get("concept_id", ""),
+                    "token_ids": list(set(token_ids)),
+                    "activation_phase": concept.get("activation_phase"),
+                    "max_uses": concept.get("max_uses", 0),
+                })
+
+        if not encoded_concepts:
+            return None
+
+        return {
+            "concepts": encoded_concepts,
+            "base_strength": nram_opts.get("concept_strength", 0.5),
+        }
+
     def _build_upstream_payload(
         self,
         request: ChatCompletionRequest,
@@ -364,6 +508,14 @@ class SGLangEngine:
         if _FORBIDDEN_CLIENT_FIELDS & set(nram_opts.keys()):
             raise SGLangEngineError(
                 "Forbidden field in nram options: processor injection is not allowed.",
+                status_code=400,
+            )
+        requested_unsupported = sorted(
+            key for key in _UNSUPPORTED_NRAM_FEATURES if nram_opts.get(key)
+        )
+        if requested_unsupported:
+            raise SGLangEngineError(
+                "Unsupported NRAM runtime feature(s): " + ", ".join(requested_unsupported),
                 status_code=400,
             )
 
@@ -411,22 +563,77 @@ class SGLangEngine:
 
             policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             compiled = self._bias_compiler.compile(policy)
+            if not nram_opts.get("profile_logit_steering_enabled", True):
+                compiled.positive_token_ids = []
+                compiled.negative_token_ids = []
+                compiled.forbidden_token_ids = []
+                compiled.positive_bias = 0.0
+                compiled.negative_bias = 0.0
+                compiled.repetition_penalty = 0.0
 
-            # TEMPORARY: Disable custom logit processor due to serialization issues
-            # NRAM steering still works via developer instruction injection (lines 390-402)
-            # TODO: Fix dill/cloudpickle serialization for cross-container deployment
-            # payload["custom_logit_processor"] = self._serialized_processor
-            # payload["custom_params"] = build_custom_params(
-            #     positive_token_ids=compiled.positive_token_ids,
-            #     negative_token_ids=compiled.negative_token_ids,
-            #     forbidden_token_ids=compiled.forbidden_token_ids,
-            #     positive_bias=compiled.positive_bias,
-            #     negative_bias=compiled.negative_bias,
-            #     repetition_penalty=compiled.repetition_penalty,
-            #     profile=profile_name,
-            #     max_tokens=request.max_tokens or 0,
-            #     phenomenon_weights=nram_opts.get("phenomenon_weights"),
-            # )
+            # Build NRAM v5 multi-layer configs
+            phrase_constraint_config = self._build_phrase_constraint_config(request, nram_opts)
+            entropy_config = self._build_entropy_config(request, nram_opts)
+            concept_config = self._build_concept_config(request, nram_opts)
+            soft_injection_config = None
+            if isinstance(nram_opts.get("soft_token_injections"), list):
+                soft_injection_config = {
+                    "injections": nram_opts["soft_token_injections"][:32]
+                }
+            logit_vector_config = None
+            if isinstance(nram_opts.get("vocabulary_logit_vectors"), list):
+                logit_vector_config = {
+                    "vectors": nram_opts["vocabulary_logit_vectors"][:16],
+                    "clip": nram_opts.get("vocabulary_logit_vector_clip", 5.0),
+                }
+            hard_injection_config = None
+            if isinstance(nram_opts.get("hard_token_schedule"), list):
+                hard_injection_config = {
+                    "token_ids": nram_opts["hard_token_schedule"][:256],
+                    "start_step": nram_opts.get("hard_token_schedule_start", 0),
+                }
+
+            # CRITICAL: Enable custom logit processor for token-level steering
+            # NRAM steering now works via both developer instruction AND logit processor
+            payload["custom_logit_processor"] = self._serialized_processor
+            request_id = nram_opts.get("request_id") or f"nram-{uuid.uuid4().hex}"
+            forced_token_id = nram_opts.get("forced_token_id")
+            if forced_token_id is not None:
+                try:
+                    forced_token_id = int(forced_token_id)
+                except (TypeError, ValueError) as exc:
+                    raise SGLangEngineError("forced_token_id must be an integer", status_code=400) from exc
+                tokenizer_size = len(self._tokenizer)
+                if forced_token_id < 0 or forced_token_id >= tokenizer_size:
+                    raise SGLangEngineError(
+                        f"forced_token_id must be in [0, {tokenizer_size})",
+                        status_code=400,
+                    )
+
+            payload["custom_params"] = build_custom_params(
+                positive_token_ids=compiled.positive_token_ids,
+                negative_token_ids=compiled.negative_token_ids,
+                forbidden_token_ids=compiled.forbidden_token_ids,
+                positive_bias=compiled.positive_bias,
+                negative_bias=compiled.negative_bias,
+                repetition_penalty=compiled.repetition_penalty,
+                profile=profile_name,
+                max_tokens=request.max_tokens or 0,
+                phenomenon_weights=nram_opts.get("phenomenon_weights"),
+                request=request,  # deliberately omitted from wire parameters
+                phrase_constraint_config=phrase_constraint_config,
+                entropy_config=entropy_config,
+                concept_config=concept_config,
+                soft_injection_config=soft_injection_config,
+                logit_vector_config=logit_vector_config,
+                hard_injection_config=hard_injection_config,
+                request_id=request_id,
+                telemetry_enabled=bool(nram_opts.get("include_telemetry", False)),
+                telemetry_max_steps=nram_opts.get("telemetry_max_steps", 16),
+                telemetry_top_k=nram_opts.get("telemetry_top_k", 5),
+                forced_token_id=forced_token_id,
+                forced_token_enabled=bool(nram_opts.get("forced_token_enabled", False)),
+            )
 
         return payload
 
@@ -456,6 +663,9 @@ class SGLangEngine:
             plan = await build_rhetorical_plan(self, user_content)
             if plan is not None:
                 plan_fragment = plan_to_prompt_fragment(plan)
+            if not (request.nram or {}).get("prompt_steering_enabled", True):
+                developer_instruction = None
+                plan_fragment = None
 
         payload = self._build_upstream_payload(
             request, nram_enabled, developer_instruction, plan_fragment
@@ -533,6 +743,14 @@ class SGLangEngine:
                     for c in data.get("choices", [])
                 ],
                 usage=usage,
+                nram_correlation=(
+                    {
+                        "request_id": payload["custom_params"]["request_id"],
+                        "config_hash": payload["custom_params"]["config_hash"],
+                    }
+                    if "custom_params" in payload
+                    else None
+                ),
             )
         except httpx.HTTPStatusError as e:
             raise SGLangEngineError(
@@ -570,6 +788,9 @@ class SGLangEngine:
             plan = await build_rhetorical_plan(self, user_content)
             if plan is not None:
                 plan_fragment = plan_to_prompt_fragment(plan)
+            if not (request.nram or {}).get("prompt_steering_enabled", True):
+                developer_instruction = None
+                plan_fragment = None
 
         payload = self._build_upstream_payload(
             request, nram_enabled, developer_instruction, plan_fragment
@@ -592,10 +813,10 @@ class SGLangEngine:
                 "POST", "/chat/completions", json=payload
             ) as resp:
                 resp.raise_for_status()
-                state = _StreamState(request.model)
+                stream_state = _StreamState(request.model)
                 async for line in resp.aiter_lines():
                     if line.startswith("data: "):
-                        for out_line in state.feed(line):
+                        for out_line in stream_state.feed(line):
                             yield (out_line + "\n\n").encode()
                     elif line.strip() == "data: [DONE]":
                         yield b"data: [DONE]\n\n"

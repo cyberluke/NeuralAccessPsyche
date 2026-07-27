@@ -98,6 +98,30 @@ class TestSecurityBoundary:
         with pytest.raises(SGLangEngineError):
             engine._build_upstream_payload(req, nram_enabled=True)
 
+    @pytest.mark.parametrize(
+        "feature",
+        [
+            "dexperts",
+            "activation_addition",
+            "conceptor_steering",
+            "hidden_state_probes",
+            "latent_closed_loop",
+            "branch_tournament",
+            "reft",
+            "attention_head_gating",
+            "kv_cache_firewall",
+        ],
+    )
+    def test_unavailable_advanced_features_fail_loudly(self, engine, feature):
+        req = make_request(
+            "nram-deepseek-r1-qwen-7b",
+            nram={"enabled": True, feature: True},
+        )
+        with pytest.raises(SGLangEngineError) as exc_info:
+            engine._build_upstream_payload(req, nram_enabled=True)
+        assert exc_info.value.status_code == 400
+        assert feature in exc_info.value.message
+
 
 class TestPayloadConstruction:
     def test_baseline_has_no_processor(self, engine):

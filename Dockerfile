@@ -25,18 +25,7 @@ WORKDIR /app
 # `pip install .` line for the explicit runtime list in the comment below.
 COPY pyproject.toml ./
 RUN pip install --upgrade pip && \
-    pip install . || \
-    pip install \
-        "fastapi>=0.115.6" \
-        "uvicorn[standard]>=0.34.0" \
-        "httpx" \
-        "pydantic>=2.10.4" \
-        "numpy>=2.2.1" \
-        "jinja2>=3.1.5" \
-        "python-multipart>=0.0.20" \
-        "dill" \
-        "openai>=1.58.1" \
-        "websockets>=14.1"
+    pip install .
 
 # --- Copy application source ------------------------------------------------
 # Deliberately NOT copied: tests/, logs/, .git/, attached_assets/, and the
@@ -45,6 +34,7 @@ RUN pip install --upgrade pip && \
 COPY main.py ./
 COPY api/ ./api/
 COPY core/ ./core/
+COPY nram_sglang/ ./nram_sglang/
 COPY utils/ ./utils/
 COPY templates/ ./templates/
 COPY static/ ./static/

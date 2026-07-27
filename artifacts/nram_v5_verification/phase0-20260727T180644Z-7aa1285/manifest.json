@@ -1,0 +1,37 @@
+{
+  "run_id": "phase0-20260727T180644Z-7aa1285",
+  "purpose": "NRAM v5 bounded Phase 0 intake; no production repair",
+  "starting_commit": "7aa12854800327ea905e608b9ececc3e3f5fd758",
+  "starting_tree_dirty": true,
+  "baseline_commit": "6b92283d8fee480fe6355faed6fa24a2f0d75a56",
+  "docker_sglang_digest": "sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda",
+  "docker_api_digest": "sha256:0431419049080f54c7b8040478ee65f1886a0cfeed2c0bf4aebd62bc20513a7c",
+  "model_manifest_sha256": "1fc86763f6e47c0e4d534f914268b54be1221afb8e82d6f9c82d4fd84e621dd3",
+  "processor_source_sha256": "ea56fcee0a127abb04f47a3b50add54f16294b0b7cdf8a4f51d17b0eb8bd80a7",
+  "processor_serialization_sha256": "ff2da67fd87cedd80269ddf9bca0e09844d8785a243202412514890556e642e2",
+  "artifacts": {
+    "environment": "environment.json",
+    "commands": "commands.sh",
+    "server_launch": "server-launch.txt",
+    "dependencies": "dependency-versions.txt",
+    "serialization": "serialization-diagnostics.txt",
+    "model_hashes": "model-sha256.txt",
+    "test_results": "test-results.xml",
+    "runtime_evidence": "runtime-evidence.json",
+    "current_git_status": "git-status-current.txt",
+    "pre_existing_worktree": "pre-existing-worktree.txt",
+    "pre_existing_diff_stat": "pre-existing-tracked-diff-stat.txt",
+    "pre_existing_name_status": "pre-existing-tracked-name-status.txt"
+  },
+  "missing_phase13_artifacts": [
+    "runtime-events.jsonl",
+    "token-level-ablation.csv",
+    "representation-ablation.csv",
+    "generation-metrics.csv",
+    "human-evaluation-template.csv",
+    "raw-generations/",
+    "plots/",
+    "failures/"
+  ],
+  "note": "Missing artifacts are future verification deliverables and are not implied by this Phase 0 intake."
+}

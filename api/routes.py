@@ -129,7 +129,7 @@ async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str
         raise InferenceError("SGLang engine not available", code="engine_unavailable")
 
     profile = _PERSONA_MODEL_MAP[model]
-    
+
     # State-dependent intensity: each state gets a different intensity level
     # This creates qualitatively different outputs, not just quantitative differences
     intensity_map = {
@@ -141,26 +141,31 @@ async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str
         "dissociative": 0.70,    # Radical deconstruction
     }
     intensity = intensity_map.get(profile, 0.5)
-    
+
     # Inject NRAM options from the persona profile
+    # Preserve include_telemetry from original request
+    include_telemetry = request.nram.get("include_telemetry", False) if request.nram else False
+
     nram_opts = {
         "enabled": True,
         "profile": profile,
         "intensity": intensity,
+        "include_telemetry": include_telemetry,
     }
     if request.nram:
         nram_opts.update(request.nram)
     request.nram = nram_opts
-    
+
     # CRITICAL: Switch model to NRAM-enabled alias so engine activates logit processor
     public_model = request.model
     request.model = "nram-qwen3-14b-awq"
 
     engine_request = _to_engine_request(request, request.messages)
     response = await engine.complete(engine_request)
-    
+
     result = response.model_dump()
     result["model"] = public_model  # Return original model name to client
+
     return result
 
 
@@ -190,9 +195,11 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
         except Exception as e:
             return (profile, f"[error: {e}]")
 
-    # Run all persona queries concurrently
-    tasks = [query_persona(p) for p in _MOE_DEFAULT_PERSONAS]
-    persona_results = await asyncio.gather(*tasks)
+    # Deterministic single-request runtime: issue persona calls sequentially.
+    # This route is an orchestration workflow, not DExperts or model-level MoE.
+    persona_results = []
+    for persona in _MOE_DEFAULT_PERSONAS:
+        persona_results.append(await query_persona(persona))
 
     # Build synthesis prompt — respect user's max_tokens for strategic analysis
     persona_summaries = []
@@ -302,8 +309,8 @@ async def create_chat_completion(
         # FIX defect 5: pass requested model alias
         response = await llm_handler.generate_response(
             messages=messages,
-            temperature=request.temperature,
-            max_tokens=request.max_tokens,
+            temperature=request.temperature if request.temperature is not None else 1.0,
+            max_tokens=request.max_tokens if request.max_tokens is not None else 256,
             model=request.model,
         )
 
@@ -344,6 +351,29 @@ def _to_engine_request(request: ChatCompletionRequest, messages: list) -> Engine
         tool_choice=request.tool_choice,
         nram=request.nram,
     )
+
+
+async def _stream_completion(request: ChatCompletionRequest, messages: list):
+    """Adapt the legacy non-SGLang handler to a valid one-chunk SSE stream."""
+    async def generate():
+        response = await llm_handler.generate_response(
+            messages=messages,
+            temperature=request.temperature if request.temperature is not None else 1.0,
+            max_tokens=request.max_tokens if request.max_tokens is not None else 256,
+            model=request.model,
+        )
+        content = response.get("choices", [{}])[0].get("message", {}).get("content", "")
+        chunk = {
+            "id": response.get("id", f"chatcmpl-{uuid.uuid4()}"),
+            "object": "chat.completion.chunk",
+            "created": response.get("created", int(time.time())),
+            "model": request.model,
+            "choices": [{"index": 0, "delta": {"role": "assistant", "content": content}, "finish_reason": "stop"}],
+        }
+        yield f"data: {json.dumps(chunk)}\n\n".encode()
+        yield b"data: [DONE]\n\n"
+
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 
 async def _handle_sglang(request: ChatCompletionRequest, messages: list):
@@ -398,11 +428,11 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
 
     response = await engine.complete(engine_request)
     response_dict = response.model_dump()
-    
+
     # Check if model wants to call a tool
     if response_dict.get("choices") and response_dict["choices"][0].get("message", {}).get("tool_calls"):
         tool_calls = response_dict["choices"][0]["message"]["tool_calls"]
-        
+
         # Execute tool calls
         tool_results = []
         for tool_call in tool_calls:
@@ -411,7 +441,7 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
                     args = json.loads(tool_call["function"]["arguments"])
                     query = args.get("query", "")
                     search_type = args.get("search_type", "general")
-                    
+
                     if search_type == "market_research":
                         result = await searxng_client.market_research(query)
                     elif search_type == "company_analysis":
@@ -420,7 +450,7 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
                         result = await searxng_client.technology_trends(query)
                     else:
                         result = await searxng_client.search(query)
-                    
+
                     tool_results.append({
                         "tool_call_id": tool_call["id"],
                         "role": "tool",
@@ -433,15 +463,15 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
                         "role": "tool",
                         "content": json.dumps({"error": str(e)})
                     })
-        
+
         # Add tool results to messages and get final response
         messages_with_tools = messages + [response_dict["choices"][0]["message"]] + tool_results
         engine_request.messages = messages_with_tools
         engine_request.tools = None  # Don't allow nested tool calls
-        
+
         final_response = await engine.complete(engine_request)
         return final_response.model_dump()
-    
+
     return response_dict
 
 @router.get("/models")

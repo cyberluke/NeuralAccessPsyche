@@ -1,161 +1,93 @@
-"""Adversarial Test 1: Verify __req__ injection in custom_params.
+"""Security tests for SGLang's trusted, server-side ``__req__`` injection.
 
-FORENSIC CLAIM: build_custom_params() never includes __req__ key,
-so NRAMLogitProcessor cannot access request.output_ids.
-
-TEST STRATEGY:
-1. Create ChatCompletionRequest with NRAM enabled
-2. Call SGLangEngine._build_upstream_payload()
-3. Extract custom_params from payload
-4. Check if "__req__" key exists
-5. If missing, prove the defect is real
+The application sends only JSON ``custom_params``.  SGLang 0.5.16 creates a
+shallow copy in ``Req.__init__`` and adds its own scheduler ``Req`` object
+in-process.  An API request object must never cross the HTTP boundary.
 """
-import pytest
+import json
+from types import SimpleNamespace
 from unittest.mock import MagicMock
+
+import numpy as np
+
 from core.contracts.openai import ChatCompletionRequest
 from core.engines.sglang_engine import SGLangEngine
 from core.steering.serialization import build_custom_params
+from nram_sglang.processor import NRAMLogitProcessor
 
 
 class TestReqInjection:
-    """Test suite to falsify __req__ injection claim."""
+    """Falsify unsafe client injection while preserving the official hook."""
 
-    def test_build_custom_params_does_not_include_req(self):
-        """PROVE: build_custom_params() output lacks __req__ key."""
-        # Arrange
-        positive_ids = [1, 2, 3]
-        negative_ids = [4, 5, 6]
-        forbidden_ids = [7, 8, 9]
-        positive_bias = 0.5
-        negative_bias = 0.3
-        repetition_penalty = 1.2
-        profile = "peak"
-        max_tokens = 512
-        phenomenon_weights = {"overlap": 0.8, "forgetting": 0.6}
+    def test_build_custom_params_excludes_application_request(self):
+        application_request = SimpleNamespace(output_ids=[10, 20, 30])
 
-        # Act
         custom_params = build_custom_params(
-            positive_token_ids=positive_ids,
-            negative_token_ids=negative_ids,
-            forbidden_token_ids=forbidden_ids,
-            positive_bias=positive_bias,
-            negative_bias=negative_bias,
-            repetition_penalty=repetition_penalty,
-            profile=profile,
-            max_tokens=max_tokens,
-            phenomenon_weights=phenomenon_weights,
+            positive_token_ids=[1, 2, 3],
+            negative_token_ids=[4, 5, 6],
+            forbidden_token_ids=[7, 8, 9],
+            positive_bias=0.5,
+            negative_bias=0.3,
+            repetition_penalty=1.2,
+            profile="peak",
+            max_tokens=512,
+            phenomenon_weights={"overlap": 0.8, "forgetting": 0.6},
+            request=application_request,
         )
 
-        # Assert - PROVE the defect
-        assert "__req__" not in custom_params, \
-            "DEFECT FALSIFIED: __req__ is present in custom_params"
-        
-        # Verify what IS present
-        assert "positive_token_ids" in custom_params
-        assert "negative_token_ids" in custom_params
-        assert "forbidden_token_ids" in custom_params
-        assert "positive_bias" in custom_params
-        assert "negative_bias" in custom_params
-        assert "repetition_penalty" in custom_params
-        assert "profile" in custom_params
-        assert "max_tokens" in custom_params
-        assert "phenomenon_weights" in custom_params
-        
-        print("[CONFIRMED] __req__ is NOT in custom_params")
-        print(f"  Keys present: {list(custom_params.keys())}")
+        assert "__req__" not in custom_params
+        assert "request" not in custom_params
+        # This is the actual wire contract; non-JSON request objects would fail.
+        assert json.loads(json.dumps(custom_params)) == custom_params
 
-    @pytest.mark.asyncio
-    async def test_sglang_payload_lacks_req_in_custom_params(self):
-        """PROVE: SGLangEngine._build_upstream_payload() doesn't inject __req__."""
-        # Arrange - create mock tokenizer
-        mock_tokenizer = MagicMock()
-        mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
-        mock_tokenizer.encode.return_value = [1, 2, 3]
-        mock_tokenizer.decode.return_value = "test"
-        
-        # Create engine with tokenizer (required for bias compiler)
+    def test_sglang_payload_keeps_request_object_off_wire(self):
+        tokenizer = MagicMock()
+        tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
+        tokenizer.encode.return_value = [1, 2, 3]
+        tokenizer.decode.return_value = "test"
         engine = SGLangEngine(
             base_url="http://localhost:30000/v1",
             model="nram-qwen3-14b-awq",
-            tokenizer=mock_tokenizer,
+            tokenizer=tokenizer,
         )
-
-        # Create request with NRAM enabled
         request = ChatCompletionRequest(
             model="nram-qwen3-14b-awq",
             messages=[{"role": "user", "content": "Test prompt"}],
             nram={
                 "enabled": True,
                 "profile": "peak",
-                "intensity": 0.9,
-                "phenomenon_weights": {"overlap": 0.8, "forgetting": 0.6},
+                "phenomenon_weights": {"overlap": 0.8},
             },
-            max_tokens=512,
+            max_tokens=32,
         )
 
-        # Act
-        nram_enabled = engine._is_nram_enabled(request)
-        assert nram_enabled, "NRAM should be enabled for this request"
-        
-        payload = engine._build_upstream_payload(
-            request,
-            nram_enabled=True,
-            developer_instruction="Test instruction",
-            plan_fragment=None,
+        payload = engine._build_upstream_payload(request, nram_enabled=True)
+
+        assert "custom_logit_processor" in payload
+        assert "__req__" not in payload["custom_params"]
+        # Exact payload construction must remain JSON serializable.
+        json.dumps(payload)
+
+    def test_processor_consumes_trusted_server_request_history(self):
+        """Model the documented SGLang ``Req.__init__`` in-process merge."""
+        wire_params = build_custom_params(
+            positive_token_ids=[],
+            negative_token_ids=[],
+            forbidden_token_ids=[],
+            positive_bias=0.0,
+            negative_bias=0.0,
+            repetition_penalty=1.2,
+            profile="peak",
+            max_tokens=32,
+            phenomenon_weights={"overlap": 0.8},
         )
-
-        # Assert - PROVE the defect
-        assert "custom_params" in payload, "custom_params should be in payload"
-        custom_params = payload["custom_params"]
-        
-        assert "__req__" not in custom_params, \
-            "DEFECT FALSIFIED: __req__ is injected into custom_params"
-        
-        print("[CONFIRMED] __req__ is NOT in SGLang payload custom_params")
-        print(f"  Keys present: {list(custom_params.keys())}")
-
-    def test_logit_processor_request_is_none(self):
-        """PROVE: NRAMLogitProcessor receives params without __req__, so request is None."""
-        from core.steering.nram_logit_processor import NRAMLogitProcessor
-        import numpy as np
-
-        # Arrange - simulate what SGLang actually sends (no __req__)
-        params_without_req = {
-            "positive_token_ids": [1, 2, 3],
-            "negative_token_ids": [4, 5, 6],
-            "forbidden_token_ids": [7, 8, 9],
-            "positive_bias": 0.5,
-            "negative_bias": 0.3,
-            "repetition_penalty": 1.2,
-            "profile": "peak",
-            "max_tokens": 512,
-            "phenomenon_weights": {"overlap": 0.8, "forgetting": 0.6},
+        server_params = wire_params | {
+            "__req__": SimpleNamespace(origin_input_ids=[1, 2], output_ids=[10, 20, 30])
         }
-
-        processor = NRAMLogitProcessor()
         logits = np.zeros((1, 100), dtype=np.float32)
 
-        # Act - call processor with params that lack __req__
-        result_logits = processor(logits, [params_without_req])
+        result = NRAMLogitProcessor()(logits, [server_params])
 
-        # Assert - verify request was None inside processor
-        # We can't directly inspect the local variable, but we can verify
-        # the behavior: phenomena should NOT fire because request is None
-        
-        # Store original logits for comparison
-        original_logits = logits.copy()
-        
-        # If phenomena fired, logits would be modified
-        # But since request is None, phenomena won't fire
-        # Only base steering (positive/negative/forbidden) should apply
-        
-        # Check that positive bias was applied (base steering works)
-        assert result_logits[0, 1] > 0, "Positive bias should be applied"
-        assert result_logits[0, 4] < 0, "Negative bias should be applied"
-        assert result_logits[0, 7] == -float("inf"), "Forbidden tokens should be -inf"
-        
-        print("[CONFIRMED] Base steering works, but phenomena cannot fire without __req__")
-
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v", "-s"])
+        # Repetition (-1.2) plus overlap (+0.28) leaves a direct history effect.
+        assert np.isclose(result[0, 10], -0.92)
+        assert result[0, 60] == 0.0

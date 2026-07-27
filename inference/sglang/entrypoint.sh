@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------------------
 # SGLang entrypoint for NeuralAccessPsyche (NRAM).
 #
-# Launches the SGLang OpenAI-compatible server backed by a LOCAL GGUF model
+# Launches SGLang 0.5.16 backed by the LOCAL Qwen3-14B-AWQ snapshot
 # mounted read-only at /models by docker compose. The model is NEVER
 # downloaded or copied here.
 #
@@ -13,25 +13,25 @@
 set -euo pipefail
 
 # --- Tunable launch parameters (env-overridable) ---------------------------
-MODEL_PATH="${MODEL_PATH:-/models/DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf}"
+MODEL_PATH="${MODEL_PATH:-/models}"
 # Directory holding the proper HF tokenizer (tokenizer.json / tokenizer_config.json).
 # Defaults to /models — the same read-only mount as the model. For GGUF models
 # this fixes the llguidance vocab-size mismatch. For safetensors/AWQ models
 # the tokenizer lives alongside the weights.
 TOKENIZER_PATH="${TOKENIZER_PATH:-/models}"
-SERVED_MODEL_NAME="${SERVED_MODEL_NAME:-nram-deepseek-r1-qwen-7b}"
+SERVED_MODEL_NAME="${SERVED_MODEL_NAME:-nram-qwen3-14b-awq}"
 # Model type: gguf | awq | auto. GGUF needs explicit --load-format/--quantization;
 # AWQ/safetensors auto-detect from config.json.
-MODEL_TYPE="${MODEL_TYPE:-gguf}"
-LOAD_FORMAT="${LOAD_FORMAT:-gguf}"
-QUANTIZATION="${QUANTIZATION:-gguf}"
+MODEL_TYPE="${MODEL_TYPE:-awq}"
+LOAD_FORMAT="${LOAD_FORMAT:-auto}"
+QUANTIZATION="${QUANTIZATION:-awq}"
 CONTEXT_LENGTH="${CONTEXT_LENGTH:-32768}"
-MEM_FRACTION_STATIC="${MEM_FRACTION_STATIC:-0.80}"
-GRAMMAR_BACKEND="${GRAMMAR_BACKEND:-llguidance}"
+MEM_FRACTION_STATIC="${MEM_FRACTION_STATIC:-0.72}"
+GRAMMAR_BACKEND="${GRAMMAR_BACKEND:-xgrammar}"
 # Reasoning parser: split the model's reasoning chain into a separate
 # reasoning_content field so the main content contains only the final answer.
 # Use deepseek-r1 for DeepSeek-R1 models, qwen3 for Qwen3 models, none to disable.
-REASONING_PARSER="${REASONING_PARSER:-deepseek-r1}"
+REASONING_PARSER="${REASONING_PARSER:-qwen3}"
 # Thinking mode control (Qwen3-specific):
 # ENABLE_THINKING=true  → model generates  reasoning (slower, better quality)
 # ENABLE_THINKING=false → model skips reasoning entirely (faster, direct answers)
@@ -42,6 +42,28 @@ HICACHE_RATIO="${HICACHE_RATIO:-2.0}"
 HICACHE_WRITE_POLICY="${HICACHE_WRITE_POLICY:-write_through_selective}"
 HOST="${SGLANG_HOST:-0.0.0.0}"
 PORT="${SGLANG_PORT:-30000}"
+MAX_RUNNING_REQUESTS="${MAX_RUNNING_REQUESTS:-1}"
+
+# Fail before model loading when the pinned runtime contract drifts. The
+# output-history hook is an official in-process SGLang mechanism; no request
+# object is accepted from JSON custom_params.
+python3 - <<'PY'
+from importlib.metadata import version
+from pathlib import Path
+
+expected = "0.5.16"
+actual = version("sglang")
+if actual != expected:
+    raise SystemExit(f"NRAM requires sglang=={expected}; found {actual}")
+
+root = Path("/sgl-workspace/sglang/python/sglang/srt")
+schedule = (root / "managers/schedule_batch.py").read_text()
+processor = (root / "sampling/custom_logit_processor.py").read_text()
+if '"__req__": self' not in schedule:
+    raise SystemExit("Pinned SGLang server-side __req__ history hook is absent")
+if "dill.dumps(cls).hex()" not in processor or "_cache_from_str(json_str)()" not in processor:
+    raise SystemExit("Pinned SGLang dill class-serialization contract drifted")
+PY
 
 echo "[nram-sglang] Launching SGLang server"
 echo "[nram-sglang]   model-path        = ${MODEL_PATH}"
@@ -76,6 +98,7 @@ LAUNCH_ARGS=(
     --enable-custom-logit-processor
     --grammar-backend "${GRAMMAR_BACKEND}"
     --disable-overlap-schedule
+    --max-running-requests "${MAX_RUNNING_REQUESTS}"
     --enable-hierarchical-cache
     --hicache-ratio "${HICACHE_RATIO}"
     --hicache-write-policy "${HICACHE_WRITE_POLICY}"
@@ -93,7 +116,7 @@ LAUNCH_ARGS=(
 #     capture is quick and low-VRAM. bs=1..8 covers interactive single-stream
 #     use (the console + API mostly run 1-4 concurrent generations).
 # Set CUDA_GRAPH_BS_DECODE="" to fully disable decode graphs (safe fallback).
-CUDA_GRAPH_BS_DECODE="${CUDA_GRAPH_BS_DECODE:-1 2 4 8}"
+CUDA_GRAPH_BS_DECODE="${CUDA_GRAPH_BS_DECODE-}"
 # Prefill graph needs ~4 GB scratch; disable to guarantee reliable startup.
 LAUNCH_ARGS+=(--disable-prefill-cuda-graph)
 if [ -n "${CUDA_GRAPH_BS_DECODE}" ]; then

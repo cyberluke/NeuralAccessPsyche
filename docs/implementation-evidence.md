@@ -335,7 +335,11 @@ GET /v1/nram/token-policy/visionary-psychedelic-keynote
 
 **VERIFIED: NRAM modifies logits before token sampling.**
 
-The NeuralAccessPsyche system is production-ready for local inference with NRAM-controlled steering. The forced-token proof provides hard evidence that the custom logit processor runs inside SGLang and changes logits before sampling. The A/B validation shows measurable persona differences. All 99 tests pass.
+Historical status superseded: this file does not establish production or
+scientific readiness. Current bounded evidence proves selected logit controls
+only; advanced representation, DExperts, closed-loop, and tournament claims are
+not implemented. See `NRAM_V5_ABLATION_RESULTS.md` and
+`NRAM_V5_LIMITATIONS.md`. The truthful bounded verdict is `PARTIALLY FUNCTIONAL`.
 
 The system is ready for:
 - ✅ Baseline inference (no steering)

@@ -41,7 +41,7 @@ class TestDefect1Fixed_ContentIsString:
             handler.model = "test-model"
             handler.consciousness_levels = {"baseline": 0.3}
 
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 handler.generate_response(
                     messages=[{"role": "user", "content": "Hi"}],
                     temperature=0.5,
@@ -123,7 +123,7 @@ class TestDefect5Fixed_ModelReflected:
             handler.model = "default-model"
             handler.consciousness_levels = {"baseline": 0.3}
 
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 handler.generate_response(
                     messages=[{"role": "user", "content": "Hi"}],
                     temperature=0.5,
@@ -157,7 +157,7 @@ class TestDefect8Fixed_InferenceErrorRaised:
             handler.consciousness_levels = {"baseline": 0.3}
 
             with pytest.raises(InferenceError):
-                asyncio.get_event_loop().run_until_complete(
+                asyncio.run(
                     handler.generate_response(
                         messages=[{"role": "user", "content": "Hi"}],
                         temperature=0.5,

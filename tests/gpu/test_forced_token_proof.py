@@ -1,205 +1,125 @@
-"""
-Forced-token proof: NRAM modifies logits BEFORE token sampling.
+"""Live public-API proofs against the pinned Qwen3/SGLang/RTX runtime."""
+from __future__ import annotations
 
-This test sends a request through the live SGLang server with a custom logit
-processor that masks ALL tokens except one specific token ID. If the output
-is exactly that token, we have proven that:
-1. The processor runs inside SGLang
-2. It modifies logits before sampling
-3. The forced token is the only possible output
-
-This is the definition-of-done evidence for NRAM pre-sampling control.
-"""
-import asyncio
 import json
-import sys
-from pathlib import Path
+import os
+import subprocess
+import time
+import uuid
 
-import pytest
-import dill
 import httpx
-
-# Token ID to force — a common English token that should exist in Qwen vocab.
-# Token 42 is typically a common word or subword. We'll verify it exists.
-FORCED_TOKEN_ID = 42
-SGLANG_BASE = "http://localhost:30000/v1"
-MODEL_NAME = "nram-deepseek-r1-qwen-7b"
+import pytest
 
 
-class ForcedTokenProcessor:
-    """Masks all logits except one token, forcing it to be sampled."""
-
-    def __call__(self, logits, custom_param_list=None):
-        if not custom_param_list:
-            return logits
-
-        forced_id = custom_param_list[0].get("forced_token_id", FORCED_TOKEN_ID)
-
-        # Mask everything except the forced token
-        for batch_idx in range(logits.shape[0]):
-            # Set all logits to -inf
-            logits[batch_idx, :] = float("-inf")
-            # Set the forced token to 0 (highest probability)
-            logits[batch_idx, forced_id] = 0.0
-
-        return logits
+API_URL = os.getenv("NRAM_TEST_API_URL", "http://127.0.0.1:8000/v1/chat/completions")
+API_KEY = os.getenv("NRAM_TEST_API_KEY", "dev-nram-key")
+FORCED_TOKEN_ID = 11064  # live Qwen tokenizer decodes this token as " proof"
 
 
-def serialize_processor(processor_class: type) -> str:
-    """Serialize processor for SGLang's custom_logit_processor field."""
-    return json.dumps({"callable": dill.dumps(processor_class).hex()})
+def _processor_events(request_id: str) -> list[dict]:
+    completed = subprocess.run(
+        ["docker", "logs", "nram-sglang"],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    events = []
+    for line in (completed.stdout + completed.stderr).splitlines():
+        marker = "NRAM_PROCESSOR_EVENT "
+        if marker not in line:
+            continue
+        event = json.loads(line.split(marker, 1)[1])
+        if event.get("request_id") == request_id:
+            events.append(event)
+    return events
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_forced_token():
-    """Send a request with forced-token processor and verify output."""
-    print("=== FORCED-TOKEN PROOF ===")
-    print(f"Forcing token ID: {FORCED_TOKEN_ID}")
-    print(f"Target: {SGLANG_BASE}")
-    print(f"Model: {MODEL_NAME}")
-    print()
-
-    # Serialize the processor
-    processor_payload = serialize_processor(ForcedTokenProcessor)
-    print(f"Processor serialized: {len(processor_payload)} bytes")
-
-    # Build the request
-    request_body = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "user", "content": "Say anything."}
-        ],
-        "max_tokens": 1,  # Force exactly one token output
+@pytest.mark.gpu
+async def test_forced_token_public_api_same_seed_control():
+    """Force one real token and correlate public output with processor logs."""
+    request_id = f"gpu-forced-{uuid.uuid4().hex}"
+    common = {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [{"role": "user", "content": "Say one word."}],
+        "max_tokens": 1,
         "temperature": 1.0,
-        "stream": False,
-        # SGLang custom logit processor injection
-        "custom_logit_processor": processor_payload,
-        "custom_params": [
-            {"forced_token_id": FORCED_TOKEN_ID}
-        ],
+        "top_p": 1.0,
+        "seed": 271828,
+        "tools": [],
+        "nram": {
+            "enabled": True,
+            "profile": "normal",
+            "request_id": request_id,
+            "include_telemetry": True,
+            "telemetry_max_steps": 1,
+            "forced_token_id": FORCED_TOKEN_ID,
+        },
     }
 
-    print("\nSending request to SGLang...")
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        response = await client.post(
-            f"{SGLANG_BASE}/chat/completions",
-            json=request_body,
-        )
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        disabled_body = json.loads(json.dumps(common))
+        disabled_body["nram"]["request_id"] += "-disabled"
+        disabled_body["nram"]["forced_token_enabled"] = False
+        disabled_response = await client.post(API_URL, json=disabled_body, headers=headers)
 
-    print(f"HTTP status: {response.status_code}")
+        enabled_body = json.loads(json.dumps(common))
+        enabled_body["nram"]["forced_token_enabled"] = True
+        enabled_response = await client.post(API_URL, json=enabled_body, headers=headers)
 
-    if response.status_code != 200:
-        print(f"ERROR: {response.text}")
-        return False
+    assert disabled_response.status_code == 200, disabled_response.text
+    assert enabled_response.status_code == 200, enabled_response.text
+    disabled = disabled_response.json()
+    enabled = enabled_response.json()
+    disabled_text = disabled["choices"][0]["message"]["content"]
+    enabled_text = enabled["choices"][0]["message"]["content"]
+    assert enabled_text.strip() == "proof"
+    assert disabled_text != enabled_text
 
-    result = response.json()
-    print(f"Response: {json.dumps(result, indent=2)}")
+    # Give Docker's log reader a bounded moment to flush subprocess stdout.
+    deadline = time.monotonic() + 10
+    events = []
+    while time.monotonic() < deadline and not events:
+        events = _processor_events(request_id)
+        if not events:
+            time.sleep(0.25)
+    assert len(events) == 1
+    event = events[0]
+    assert event["schema"] == "nram.processor.step.v1"
+    assert event["invocation_count"] == 1
+    assert event["forced_token_id"] == FORCED_TOKEN_ID
+    assert event["mask_count"] == 151935
+    assert event["post_top_k"][0]["token_id"] == FORCED_TOKEN_ID
+    assert event["config_hash"] == enabled["nram_correlation"]["config_hash"]
+    assert enabled["nram_correlation"]["request_id"] == request_id
 
-    # Extract the generated token
-    choices = result.get("choices", [])
-    if not choices:
-        print("ERROR: No choices in response")
-        return False
-
-    content = choices[0].get("message", {}).get("content", "")
-    print(f"\nGenerated content: {repr(content)}")
-
-    # The content should be the decoded form of token 42
-    # We can't verify the exact token ID from the response, but we can verify
-    # that the processor ran by checking that the output is deterministic
-    # and matches what token 42 decodes to.
-
-    # For now, just verify we got a response
-    if content:
-        print("\n✅ SUCCESS: Processor executed, forced token was sampled")
-        print(f"   (Token {FORCED_TOKEN_ID} decoded to: {repr(content)})")
-        return True
-    else:
-        print("\n❌ FAILURE: No content generated")
-        return False
+    disabled_events = _processor_events(request_id + "-disabled")
+    assert len(disabled_events) == 1
+    assert disabled_events[0]["forced_token_id"] is None
+    assert disabled_events[0]["mask_count"] < 151935
 
 
-@pytest.mark.asyncio
 @pytest.mark.integration
-async def test_tokenizer_bias_compiler():
-    """Test the tokenizer-aware bias compiler with the live model."""
-    print("\n=== TOKENIZER BIAS COMPILER TEST ===")
-
-    from core.steering.tokenizer_bias import TokenBiasCompiler
-    from core.persona.compiler import compile_policy
-    from core.persona.profiles import VISIONARY_PSYCHEDELIC_KEYNOTE
-
-    # Load the tokenizer from the model directory
-    tokenizer_path = Path("E:/_MODELS/huggingface/hub/DeepSeek-R1-Distill-Qwen-7B-GGUF")
-
-    try:
-        from transformers import AutoTokenizer
-        print(f"Loading tokenizer from {tokenizer_path}...")
-        tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_path), trust_remote_code=True)
-        print(f"Tokenizer loaded: vocab_size={tokenizer.vocab_size}")
-    except Exception as e:
-        print(f"❌ Failed to load tokenizer: {e}")
-        return False
-
-    # Compile a policy
-    print("\nCompiling NRAM policy...")
-    policy = compile_policy(VISIONARY_PSYCHEDELIC_KEYNOTE, max_tokens=512)
-    print(f"Policy compiled: {len(policy.positive_lexemes)} positive, {len(policy.negative_lexemes)} negative")
-
-    # Compile token IDs
-    print("\nCompiling token IDs...")
-    compiler = TokenBiasCompiler(tokenizer)
-    compiled = compiler.compile(policy)
-
-    print(f"Positive token IDs: {len(compiled.positive_token_ids)}")
-    print(f"Negative token IDs: {len(compiled.negative_token_ids)}")
-    print(f"Forbidden token IDs: {len(compiled.forbidden_token_ids)}")
-    print(f"Positive bias: {compiled.positive_bias}")
-    print(f"Negative bias: {compiled.negative_bias}")
-    print(f"Repetition penalty: {compiled.repetition_penalty}")
-
-    # Verify we got some token IDs
-    if compiled.positive_token_ids or compiled.negative_token_ids:
-        print("\n✅ SUCCESS: Tokenizer bias compiler produced token IDs")
-        # Show a few examples
-        if compiled.positive_token_ids:
-            sample_pos = compiled.positive_token_ids[:5]
-            decoded = [tokenizer.decode([tid]) for tid in sample_pos]
-            print(f"   Sample positive tokens: {list(zip(sample_pos, decoded))}")
-        return True
-    else:
-        print("\n❌ FAILURE: No token IDs compiled")
-        return False
-
-
-async def main():
-    print("=" * 60)
-    print("NRAM FORCED-TOKEN PROOF + TOKENIZER BIAS TEST")
-    print("=" * 60)
-    print()
-
-    # Test 1: Forced-token proof
-    result1 = await test_forced_token()
-
-    # Test 2: Tokenizer bias compiler
-    result2 = await test_tokenizer_bias_compiler()
-
-    print("\n" + "=" * 60)
-    print("SUMMARY")
-    print("=" * 60)
-    print(f"Forced-token proof: {'✅ PASS' if result1 else '❌ FAIL'}")
-    print(f"Tokenizer bias compiler: {'✅ PASS' if result2 else '❌ FAIL'}")
-    print()
-
-    if result1 and result2:
-        print("🎉 ALL TESTS PASSED — NRAM pre-sampling control is PROVEN")
-        return 0
-    else:
-        print("⚠️  SOME TESTS FAILED — review output above")
-        return 1
-
-
-if __name__ == "__main__":
-    exit_code = asyncio.run(main())
-    sys.exit(exit_code)
+@pytest.mark.gpu
+def test_api_and_server_use_same_qwen_tokenizer_artifact():
+    """Verify token 11064 and tokenizer files in both live containers."""
+    command = (
+        "from transformers import AutoTokenizer; "
+        "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+        "print(len(t)); print(repr(t.decode([11064])))"
+    )
+    outputs = []
+    for container in ("nram-api", "nram-sglang"):
+        completed = subprocess.run(
+            ["docker", "exec", container, "python", "-c", command],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        outputs.append(completed.stdout.strip().splitlines()[-2:])
+    assert outputs[0] == outputs[1]
+    assert outputs[0] == ["151669", "' proof'"]

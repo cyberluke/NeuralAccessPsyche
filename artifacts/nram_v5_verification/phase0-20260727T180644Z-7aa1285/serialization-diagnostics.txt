@@ -1,0 +1,72 @@
+INSTALLED SGLANG SOURCE
+Version: 0.5.16
+Source commit: fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1
+Contract file: /sgl-workspace/sglang/python/sglang/srt/sampling/custom_logit_processor.py
+Contract file SHA-256: 5f502753c4b06df62f9df24f6b9cdbad18a02b7cae1e63757d9836b56899cd77
+to_str lines 36-39: json.dumps({"callable": dill.dumps(cls).hex()})
+from_str lines 41-44: _cache_from_str(json_str)()
+_cache_from_str lines 15-21: orjson load, bytes.fromhex, dill.loads
+
+PROCESSOR IDENTITY
+module: nram_sglang.processor
+qualname: NRAMLogitProcessor
+top-level stable class: yes
+zero-argument constructor: yes
+API dill: 0.4.1
+SGLang dill: 0.4.1
+raw dill bytes: 59
+hex characters: 118
+JSON payload characters: 134
+raw SHA-256: ff2da67fd87cedd80269ddf9bca0e09844d8785a243202412514890556e642e2
+processor source SHA-256 in API: ea56fcee0a127abb04f47a3b50add54f16294b0b7cdf8a4f51d17b0eb8bd80a7
+processor source SHA-256 in SGLang: ea56fcee0a127abb04f47a3b50add54f16294b0b7cdf8a4f51d17b0eb8bd80a7
+API raw round-trip: yes
+SGLang CustomLogitProcessor.from_str round-trip: yes
+SGLang instance is CustomLogitProcessor: yes
+
+PICKLETOOLS DISASSEMBLY
+0: PROTO 4
+2: FRAME 48
+11: SHORT_BINUNICODE 'nram_sglang.processor'
+34: MEMOIZE
+35: SHORT_BINUNICODE 'NRAMLogitProcessor'
+55: MEMOIZE
+56: STACK_GLOBAL
+57: MEMOIZE
+58: STOP
+
+ORIGINAL FAILURE
+Preserved at repository-pre-existing sglang_logs.txt lines 1-42.
+SGLang deserialized a class referencing module core and failed:
+ModuleNotFoundError: No module named 'core'
+The exception occurred in CustomLogitProcessor.from_str during SamplingBatchInfo.from_schedule_batch and killed the scheduler. Cancellation and timeout traces were secondary.
+
+CURRENT ROOT-CAUSE STATUS
+The specific unavailable-module root cause is removed in the running images: the class now references nram_sglang.processor, the same source exists in both containers, both use dill 0.4.1, SGLang from_str succeeds, a gateway NRAM request succeeds, and a direct real-GPU forced-token request succeeds.
+Cold-restart proof was not run in Phase 0 because restarting an already-running research server was outside the bounded non-repair intake.
+
+CUSTOM PARAMETER CONTRACT
+Installed sampling_batch_info.py lines 161-172 constructs processor objects from class strings and separately copies r.sampling_params.custom_params.
+Installed sampler.py lines 742-776 calls processor(logits[mask], [sampling_batch_info.custom_params[i] ...]).
+Installed SGLang does not inject a scheduler request object under __req__.
+Repository claim in core/steering/serialization.py lines 47-51 that SGLang injects __req__ is false for installed 0.5.16.
+
+LIVE FORCED-TOKEN PROOF (PARTIAL PHASE-2 EVIDENCE)
+Model: nram-qwen3-14b-awq
+Prompt: Say one word.
+Seed: 271828
+Temperature: 1.0
+Top-p: 1.0
+Max tokens: 1
+Forced token ID: 11064
+Tokenizer decoding: " proof"
+Disabled control output: "Hello"
+Controlled output: " proof"
+Masked IDs: 151935 of config vocabulary 151936
+Processor JSON length: 134
+HTTP request JSON length: 1104926
+Configuration SHA-256: 699fbcca3a76e66e6be54fd11e3e64cbcbae12bc66a3573af9e4e6ce05f66b93
+Both HTTP statuses: 200
+
+LIMIT OF PROOF
+No pre/post top-k token IDs/logits, exact numeric logit delta, invocation count, request ID correlation, or telemetry event was emitted by the processor. The controlled token result proves pre-sampling execution but does not satisfy the full Phase-2 telemetry criterion.

@@ -55,6 +55,9 @@ class ChatCompletionResponse(BaseModel):
     model: str
     choices: List[ChatCompletionChoice]
     usage: Usage = Field(default_factory=Usage)
+    # Correlation metadata only. Causal telemetry is emitted by the processor
+    # in the SGLang runtime and must be matched by these values.
+    nram_correlation: Optional[Dict[str, str]] = None
 
 
 class OpenAIError(BaseModel):

@@ -1,0 +1,11 @@
+ Dockerfile                              |   1 +
+ api/routes.py                           |  43 +++++++
+ compose.yaml                            |   9 +-
+ core/engines/sglang_engine.py           | 157 ++++++++++++++++++++++---
+ core/steering/nram_logit_processor.py   | 201 +++++++++++++++++++++++++++++++-
+ core/steering/serialization.py          |  40 ++++---
+ inference/sglang/Dockerfile             |   7 +-
+ inference/sglang/entrypoint.sh          |   4 +-
+ section_by_section_ab_test.py           |   6 +
+ tests/adversarial/test_req_injection.py |  44 ++++---
+ 10 files changed, 458 insertions(+), 54 deletions(-)

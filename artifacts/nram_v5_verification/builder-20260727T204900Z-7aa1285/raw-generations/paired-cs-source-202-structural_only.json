@@ -1,0 +1,66 @@
+{
+  "prompt": {
+    "id": "cs-source",
+    "language": "cs",
+    "category": "source_transformation",
+    "prompt": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí.",
+    "source": "Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+  },
+  "seed": 202,
+  "condition": "structural_only",
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 24,
+    "seed": 202,
+    "tools": [],
+    "nram": {
+      "enabled": true,
+      "profile": "normal",
+      "request_id": "paired-cs-source-202-structural_only",
+      "include_telemetry": true,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "forbidden_phrases": [
+        "as an AI",
+        "jako AI"
+      ],
+      "source_text": "Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí.",
+      "source_ngram_size": 8
+    }
+  },
+  "response": {
+    "id": "2b72b4c5de974043803c21d3520c24a7",
+    "object": "chat.completion",
+    "created": 1785186894,
+    "model": "nram-qwen3-14b-awq",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Jasný mechanismus převádí doložky na konkrétní rozhodnutí"
+        },
+        "finish_reason": "length",
+        "reasoning_content": null
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 51,
+      "completion_tokens": 24,
+      "total_tokens": 75
+    },
+    "nram_correlation": {
+      "request_id": "paired-cs-source-202-structural_only",
+      "config_hash": "40f1aae43f8faacf1839b35099881caba9d6f2bb4bd70edbcb2b46e42aea14ef"
+    }
+  },
+  "latency_ms": 526.8863999990572
+}

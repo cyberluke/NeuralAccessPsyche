@@ -2,29 +2,23 @@
 # NeuralAccessPsyche (NRAM) — Docker Compose
 #
 # Two services:
-#   - sglang:   SGLang OpenAI-compatible inference server backed by a LOCAL
-#               GGUF model mounted READ-ONLY from the host (no download).
+#   - sglang:   SGLang 0.5.16 OpenAI-compatible server backed by the LOCAL
+#               Qwen3-14B-AWQ snapshot mounted READ-ONLY from the host.
 #   - nram-api: FastAPI wrapper that steers SGLang via NRAM.
 #
-# The model file on the Windows host is:
-#   E:\_MODELS\huggingface\hub\DeepSeek-R1-Distill-Qwen-7B-GGUF\DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf
-# On Windows/WSL2 the E:\ drive is exposed to Docker as /mnt/e, hence the
-# read-only mount below.
+# Runtime source commit: fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1.
 # ---------------------------------------------------------------------------
 name: neuralaccesspsyche
 
 services:
   sglang:
-    # `latest` is a PLACEHOLDER. Before any real deployment, pin this to a
-    # validated sha256 digest in .env, e.g.:
-    #   SGLANG_IMAGE=lmsysorg/sglang@sha256:<digest>
-    # so builds are reproducible and the flag set below is known-good.
-    image: ${SGLANG_IMAGE:-lmsysorg/sglang:latest}
+    # Local thin wrapper; its FROM image is pinned by immutable digest below.
+    image: ${NRAM_SGLANG_IMAGE:-neuralaccesspsyche-nram-sglang:0.5.16-nram}
     build:
-      context: ./inference/sglang
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: inference/sglang/Dockerfile
       args:
-        SGLANG_IMAGE: ${SGLANG_IMAGE:-lmsysorg/sglang:latest}
+        SGLANG_IMAGE: ${SGLANG_IMAGE:-lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda}
     container_name: nram-sglang
 
     # GPU access + shared memory tuning required by SGLang/torch.
@@ -53,7 +47,10 @@ services:
       MEM_FRACTION_STATIC: "0.72"
       # Decode CUDA graph batch sizes (space-separated). Small list = fast,
       # low-VRAM capture. Covers 1-8 concurrent generations. Empty = no graphs.
-      CUDA_GRAPH_BS_DECODE: "1 2 4 8"
+      # Stateful custom logit processors execute Python on every decode step.
+      # Disable decode graphs for deterministic single-request runtime proof.
+      CUDA_GRAPH_BS_DECODE: ""
+      MAX_RUNNING_REQUESTS: "1"
       # Grammar backend for structured output (json_schema/regex/ebnf).
       # llguidance has a GuidanceBackend vocab-mask bug in this SGLang version;
       # xgrammar is the mature, stable backend for constrained decoding.
@@ -98,28 +95,21 @@ services:
     restart: unless-stopped
 
     # -----------------------------------------------------------------------
-    # IMPORTANT — FLAG VERIFICATION:
+    # PINNED QWEN3-AWQ LAUNCH CONTRACT:
     # The entrypoint launches SGLang with:
     #   python3 -m sglang.launch_server \
-    #     --model-path /models/DeepSeek-R1-Distill-Qwen-7B-Q4_K_M.gguf \
-    #     --served-model-name nram-deepseek-r1-qwen-7b \
-    #     --load-format gguf \
-    #     --quantization gguf \
-    #     --context-length 8192 \
-    #     --mem-fraction-static 0.80 \
+    #     --model-path /models --tokenizer-path /models \
+    #     --served-model-name nram-qwen3-14b-awq \
+    #     --context-length 32768 --mem-fraction-static 0.72 \
     #     --enable-custom-logit-processor \
-    #     --grammar-backend llguidance \
-    #     --disable-overlap-schedule \
+    #     --grammar-backend xgrammar --disable-overlap-schedule \
+    #     --max-running-requests 1 \
     #     --host 0.0.0.0 \
     #     --port 30000
     #
-    # ALL of these flags MUST be verified against the chosen image before
-    # launch:
+    # Verify flags against the pinned image before launch:
     #   docker compose run --rm sglang python3 -m sglang.launch_server --help
-    # SGLang renames flags between releases. If a flag is renamed, update
-    # inference/sglang/entrypoint.sh with the new name but DO NOT remove the
-    # intended capability (custom logit processor, gguf quantization, grammar
-    # backend, overlap-schedule disabling, etc.).
+    # The entrypoint fail-fast checks SGLang version/source compatibility.
     # -----------------------------------------------------------------------
 
   nram-api:
@@ -152,6 +142,12 @@ services:
       - E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3:/models:ro
       # Persist workflow state, artifacts, and events across container restarts
       - workflow-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=5)"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
     restart: unless-stopped
 
 volumes:

@@ -1,0 +1,67 @@
+{
+  "prompt": {
+    "id": "en-source",
+    "language": "en",
+    "category": "source_transformation",
+    "prompt": "Paraphrase without copying: A transparent mechanism turns evidence into a concrete product decision.",
+    "source": "A transparent mechanism turns evidence into a concrete product decision."
+  },
+  "seed": 202,
+  "condition": "full_supported",
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Paraphrase without copying: A transparent mechanism turns evidence into a concrete product decision."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 24,
+    "seed": 202,
+    "tools": [],
+    "nram": {
+      "enabled": true,
+      "profile": "normal",
+      "request_id": "paired-en-source-202-full_supported",
+      "include_telemetry": true,
+      "prompt_steering_enabled": true,
+      "profile_logit_steering_enabled": true,
+      "forbidden_phrases": [
+        "as an AI",
+        "jako AI"
+      ],
+      "entropy_control": true,
+      "source_text": "A transparent mechanism turns evidence into a concrete product decision.",
+      "source_ngram_size": 8
+    }
+  },
+  "response": {
+    "id": "cad5481a0b2341c8b2807d4a9af57a91",
+    "object": "chat.completion",
+    "created": 1785186887,
+    "model": "nram-qwen3-14b-awq",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "A clear process transforms evidence into a specific product decision."
+        },
+        "finish_reason": "stop",
+        "reasoning_content": null
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 151,
+      "completion_tokens": 12,
+      "total_tokens": 163
+    },
+    "nram_correlation": {
+      "request_id": "paired-en-source-202-full_supported",
+      "config_hash": "d4b51142c3006b217839ad6722d464badf44ac1159e8daf920e74b657e3aa2ef"
+    }
+  },
+  "latency_ms": 420.52720000356203
+}

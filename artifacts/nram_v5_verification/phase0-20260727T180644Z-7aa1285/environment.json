@@ -1,0 +1,141 @@
+{
+  "captured_at_utc": "2026-07-27T18:06:44.371Z",
+  "phase": "Phase 0 intake",
+  "git": {
+    "branch": "main",
+    "starting_sha": "7aa12854800327ea905e608b9ececc3e3f5fd758",
+    "baseline_sha": "6b92283d8fee480fe6355faed6fa24a2f0d75a56",
+    "baseline_is_ancestor": true,
+    "starting_tree_dirty": true,
+    "staged_changes": false,
+    "pre_existing_status_path_count": 142
+  },
+  "host": {
+    "os_name": "Microsoft Windows 11 Pro Insider Preview",
+    "os_version": "10.0.26300",
+    "os_build": "26300.8935",
+    "architecture": "64-bit",
+    "powershell": "7.7.0-preview.2",
+    "wsl": "2.7.10.0",
+    "wsl_kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "wsl_distribution": "Ubuntu 26.04 LTS (Resolute Raccoon)",
+    "docker_desktop": "4.83.0 (234302)",
+    "docker_engine": "29.6.2",
+    "docker_compose": "v5.3.1",
+    "docker_context": "desktop-linux",
+    "python_default": "CPython 3.13.3",
+    "python_test_isolated": "CPython 3.11.11",
+    "uv": "0.6.11"
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090",
+    "uuid": "GPU-2511a5a1-c9f7-42bd-112f-0fcae20e106a",
+    "driver": "591.86",
+    "nvidia_smi_cuda": "13.1",
+    "host_nvcc": "12.4.99",
+    "total_mib": 23028,
+    "used_mib_at_inventory": 16582,
+    "free_mib_at_inventory": 6027,
+    "mig": "N/A"
+  },
+  "containers": {
+    "sglang": {
+      "name": "nram-sglang",
+      "container_id": "fe7a3eb409b2ae5b9cb84131ff3bf884f15b38c93012a25a51628810378bf31a",
+      "status_at_inventory": "running (healthy)",
+      "image_id": "sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda",
+      "repo_digest": "lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda",
+      "declared_tag": "lmsysorg/sglang:latest",
+      "label_version": "lmsysorg/sglang:v0.5.16",
+      "source_commit": "fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1",
+      "python": "3.12.3",
+      "pytorch": "2.11.0+cu130",
+      "sglang": "0.5.16",
+      "dill": "0.4.1",
+      "cloudpickle": "3.1.2",
+      "transformers": "5.12.1",
+      "tokenizers": "0.22.2"
+    },
+    "api": {
+      "name": "nram-api",
+      "container_id": "d2cdb0a2037950b3fe0480a13228141394384580094a5270879f22111886fe8e",
+      "status_at_inventory": "running",
+      "image_id": "sha256:0431419049080f54c7b8040478ee65f1886a0cfeed2c0bf4aebd62bc20513a7c",
+      "repo_digest": "neuralaccesspsyche-nram-api@sha256:0431419049080f54c7b8040478ee65f1886a0cfeed2c0bf4aebd62bc20513a7c",
+      "python": "3.11.15",
+      "sglang": null,
+      "pytorch": null,
+      "dill": "0.4.1",
+      "cloudpickle": "3.1.2",
+      "transformers": "5.14.1",
+      "tokenizers": "0.22.2"
+    }
+  },
+  "model": {
+    "repository_id_inferred_from_mount": "Qwen/Qwen3-14B-AWQ",
+    "served_model_name": "nram-qwen3-14b-awq",
+    "snapshot_id": "31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+    "mount": "/models (read-only)",
+    "architecture": "Qwen3ForCausalLM",
+    "model_type": "qwen3",
+    "quantization": "AWQ 4-bit, group size 128, gemm",
+    "hidden_size": 5120,
+    "layers": 40,
+    "config_vocab_size": 151936,
+    "max_position_embeddings": 40960,
+    "total_size": "9.4G",
+    "aggregate_sorted_sha256_manifest": "1fc86763f6e47c0e4d534f914268b54be1221afb8e82d6f9c82d4fd84e621dd3"
+  },
+  "tokenizer": {
+    "repository_id_inferred_from_mount": "Qwen/Qwen3-14B-AWQ",
+    "snapshot_id": "31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+    "class": "Qwen2Tokenizer",
+    "vocab_size_property": 151643,
+    "length": 151669,
+    "model_max_length": 131072,
+    "tokenizer_json_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config_sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+    "merges_sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+    "vocab_sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "safe_runtime_configuration": {
+    "model_path": "/models",
+    "tokenizer_path": "/models",
+    "model_type": "awq",
+    "context_length": 32768,
+    "mem_fraction_static": 0.72,
+    "max_running_requests": 1,
+    "overlap_schedule_disabled": true,
+    "prefill_cuda_graph_disabled": true,
+    "decode_cuda_graph_disabled": true,
+    "grammar_backend": "xgrammar",
+    "reasoning_parser": "qwen3",
+    "thinking_enabled": false,
+    "hierarchical_cache_ratio": 2.0,
+    "hierarchical_cache_write_policy": "write_through_selective",
+    "secrets_captured": false
+  },
+  "phase0_sampling": {
+    "vanilla_replay": {
+      "model_alias": "qwen3-14b-awq-baseline",
+      "seed": 271828,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 24,
+      "stream": false,
+      "tools": [],
+      "content_equal": true,
+      "content_sha256": "c0f0a0d4fed0200c99a06dcb0af2ccb40f162704a73bc008a752af0d25a75b7b"
+    },
+    "forced_token": {
+      "model": "nram-qwen3-14b-awq",
+      "seed": 271828,
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "forced_token_id": 11064,
+      "forced_text": " proof",
+      "configuration_sha256": "699fbcca3a76e66e6be54fd11e3e64cbcbae12bc66a3573af9e4e6ce05f66b93"
+    }
+  }
+}

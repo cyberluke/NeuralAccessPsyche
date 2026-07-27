@@ -32,29 +32,39 @@ def call(model: str, nram: dict | None = None) -> tuple[str, float, dict]:
     return content, latency, usage
 
 
-print("=" * 70)
-print("BASELINE (no NRAM steering)")
-print("=" * 70)
-baseline_text, baseline_ms, baseline_usage = call("qwen3-14b-awq-baseline")
-print(f"Latency: {baseline_ms:.0f}ms | Tokens: {baseline_usage}")
-print(f"\n{baseline_text}\n")
+def main() -> None:
+    """Run the opt-in live A/B smoke test.
 
-print("=" * 70)
-print("NRAM (visionary-psychedelic-keynote)")
-print("=" * 70)
-nram_text, nram_ms, nram_usage = call("nram-qwen3-14b-awq", {
-    "enabled": True,
-    "profile": "visionary-psychedelic-keynote",
-    "intensity": 0.9,
-    "associative_distance": 0.7,
-    "coherence_floor": 0.82,
-})
-print(f"Latency: {nram_ms:.0f}ms | Tokens: {nram_usage}")
-print(f"\n{nram_text}\n")
+    Keeping network I/O behind this entry point makes importing the module safe
+    for pytest collection and for tooling that discovers repository modules.
+    """
+    print("=" * 70)
+    print("BASELINE (no NRAM steering)")
+    print("=" * 70)
+    baseline_text, baseline_ms, baseline_usage = call("qwen3-14b-awq-baseline")
+    print(f"Latency: {baseline_ms:.0f}ms | Tokens: {baseline_usage}")
+    print(f"\n{baseline_text}\n")
 
-print("=" * 70)
-print("COMPARISON")
-print("=" * 70)
-print(f"Baseline: {baseline_ms:.0f}ms, {baseline_usage.get('completion_tokens', 0)} tokens")
-print(f"NRAM:     {nram_ms:.0f}ms, {nram_usage.get('completion_tokens', 0)} tokens")
-print(f"Overhead: {nram_ms - baseline_ms:.0f}ms ({(nram_ms/baseline_ms - 1)*100:.1f}%)")
+    print("=" * 70)
+    print("NRAM (visionary-psychedelic-keynote)")
+    print("=" * 70)
+    nram_text, nram_ms, nram_usage = call("nram-qwen3-14b-awq", {
+        "enabled": True,
+        "profile": "visionary-psychedelic-keynote",
+        "intensity": 0.9,
+        "associative_distance": 0.7,
+        "coherence_floor": 0.82,
+    })
+    print(f"Latency: {nram_ms:.0f}ms | Tokens: {nram_usage}")
+    print(f"\n{nram_text}\n")
+
+    print("=" * 70)
+    print("COMPARISON")
+    print("=" * 70)
+    print(f"Baseline: {baseline_ms:.0f}ms, {baseline_usage.get('completion_tokens', 0)} tokens")
+    print(f"NRAM:     {nram_ms:.0f}ms, {nram_usage.get('completion_tokens', 0)} tokens")
+    print(f"Overhead: {nram_ms - baseline_ms:.0f}ms ({(nram_ms/baseline_ms - 1)*100:.1f}%)")
+
+
+if __name__ == "__main__":
+    main()

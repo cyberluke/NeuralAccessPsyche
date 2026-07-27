@@ -47,6 +47,10 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
+# Node dependency installation (package-lock.json remains versioned)
+node_modules/
+*.tgz
+
 # Temporary recovery / builder scripts and scratch files
 _rebuild_engine.py
 _surgery.py
