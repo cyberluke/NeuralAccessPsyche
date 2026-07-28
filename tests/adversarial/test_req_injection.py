@@ -76,7 +76,7 @@ class TestReqInjection:
             forbidden_token_ids=[],
             positive_bias=0.0,
             negative_bias=0.0,
-            repetition_penalty=1.2,
+            repetition_penalty=0.8,
             profile="peak",
             max_tokens=32,
             phenomenon_weights={"overlap": 0.8},
@@ -88,6 +88,6 @@ class TestReqInjection:
 
         result = NRAMLogitProcessor()(logits, [server_params])
 
-        # Repetition (-1.2) plus overlap (+0.28) leaves a direct history effect.
-        assert np.isclose(result[0, 10], -0.92)
+        # Repetition (-0.8) plus overlap (+0.28) leaves a direct history effect.
+        assert np.isclose(result[0, 10], -0.52)
         assert result[0, 60] == 0.0

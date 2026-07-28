@@ -210,9 +210,9 @@ st.markdown('<div class="main-header">🧠 NRAM Control Console</div>', unsafe_a
 st.markdown('<div class="sub-header">Qwen3-14B-AWQ · SGLang · real-time logit steering · <b>SIMULACE alterovaných stavů vědomí</b></div>', unsafe_allow_html=True)
 st.markdown(f'<div class="disclaimer">{DISCLAIMER}</div>', unsafe_allow_html=True)
 
-tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_telemetry, tab_memory, tab_about = st.tabs([
+tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_telemetry, tab_memory, tab_v5, tab_about = st.tabs([
     "🧪 Simulátor", "🗣️ Keynote", "⚖️ A/B Porovnání", "🤖 Agentic Pipeline",
-    "📊 Provenance", "🧠 Paměť", "ℹ️ Co to je?"
+    "📊 Provenance", "🧠 Paměť", "🔬 NRAM v5", "ℹ️ Co to je?"
 ])
 
 # ---------------------------------------------------------------------------
@@ -595,7 +595,193 @@ with tab_memory:
 
 
 # ---------------------------------------------------------------------------
-# Tab 7: Co to je?
+# Tab 7: NRAM v5 Advanced Controls
+# ---------------------------------------------------------------------------
+with tab_v5:
+    st.markdown("### 🔬 NRAM v5 — Advanced Steering Controls")
+    st.info(
+        "Experimental research controls for representation-level steering. "
+        "These mechanisms operate on hidden states, not just logits."
+    )
+    
+    with st.sidebar:
+        st.markdown("### 🔬 NRAM v5 — řízení")
+        v5_profile = st.selectbox("Stav", list(STATES.keys()), index=3, key="v5_profile")
+        v5_maxtok = st.slider("Max tokenů", 50, 1000, 300, 50, key="v5_maxtok")
+        v5_temp = st.slider("Teplota", 0.0, 1.5, 0.8, 0.05, key="v5_temp")
+        v5_seed = st.number_input("Seed", 0, 99999, 271, key="v5_seed")
+    
+    # Representation Control
+    st.markdown("#### 🎯 Representation Control (Activation Addition)")
+    col_rep1, col_rep2 = st.columns(2)
+    with col_rep1:
+        rep_enabled = st.toggle("Enable representation control", value=False, key="v5_rep_enabled")
+        rep_vector_id = st.text_input("Vector ID", value="novelty_vs_paraphrase_layer20", key="v5_rep_vector")
+        rep_alpha = st.slider("Alpha (strength)", -2.0, 2.0, 1.0, 0.1, key="v5_rep_alpha")
+    with col_rep2:
+        rep_layer = st.selectbox("Target layer", ["auto", "layer_10", "layer_20", "layer_30"], key="v5_rep_layer")
+        rep_scope = st.selectbox("Token scope", ["both", "prefill", "decode"], key="v5_rep_scope")
+    
+    # Conceptor Steering
+    st.markdown("#### 🔷 Conceptor Steering")
+    col_con1, col_con2 = st.columns(2)
+    with col_con1:
+        conceptor_enabled = st.toggle("Enable conceptor", value=False, key="v5_con_enabled")
+        conceptor_id = st.text_input("Conceptor ID", value="creativity_conceptor", key="v5_con_id")
+        conceptor_alpha = st.slider("Conceptor alpha", -2.0, 2.0, 1.0, 0.1, key="v5_con_alpha")
+    with col_con2:
+        conceptor_aperture = st.slider("Aperture", 0.1, 10.0, 2.0, 0.1, key="v5_con_aperture")
+        conceptor_mode = st.selectbox("Mode", ["positive", "negative", "and", "or"], key="v5_con_mode")
+    
+    # Closed-Loop Control
+    st.markdown("#### 🔄 Latent Closed-Loop Control")
+    col_loop1, col_loop2 = st.columns(2)
+    with col_loop1:
+        loop_enabled = st.toggle("Enable closed loop", value=False, key="v5_loop_enabled")
+        loop_probe = st.text_input("Probe ID", value="novelty_probe", key="v5_loop_probe")
+        loop_target = st.slider("Target value", 0.0, 1.0, 0.7, 0.05, key="v5_loop_target")
+    with col_loop2:
+        loop_kp = st.slider("Kp (proportional)", 0.0, 2.0, 0.5, 0.1, key="v5_loop_kp")
+        loop_ki = st.slider("Ki (integral)", 0.0, 1.0, 0.0, 0.05, key="v5_loop_ki")
+        loop_kd = st.slider("Kd (derivative)", 0.0, 1.0, 0.0, 0.05, key="v5_loop_kd")
+    
+    # Semantic Closed Loop
+    st.markdown("#### 📝 Semantic Closed Loop")
+    col_sem1, col_sem2 = st.columns(2)
+    with col_sem1:
+        sem_enabled = st.toggle("Enable semantic loop", value=False, key="v5_sem_enabled")
+        sem_chunk_size = st.slider("Chunk size (tokens)", 8, 64, 24, 4, key="v5_sem_chunk")
+    with col_sem2:
+        sem_source = st.text_area("Source text (optional)", height=80, key="v5_sem_source")
+        sem_target_sim = st.slider("Target source similarity", 0.0, 1.0, 0.3, 0.05, key="v5_sem_sim")
+    
+    # Branch Tournament
+    st.markdown("#### 🌳 Branch-and-Tournament Search")
+    col_br1, col_br2 = st.columns(2)
+    with col_br1:
+        branch_enabled = st.toggle("Enable branch tournament", value=False, key="v5_branch_enabled")
+        branch_count = st.slider("Number of branches", 2, 8, 4, 1, key="v5_branch_count")
+    with col_br2:
+        branch_length = st.slider("Branch length (tokens)", 16, 128, 32, 8, key="v5_branch_length")
+        branch_single = st.toggle("Single trajectory mode", value=False, key="v5_branch_single")
+    
+    # DExperts
+    st.markdown("#### 🎓 DExperts (Democratized Experts)")
+    col_dex1, col_dex2 = st.columns(2)
+    with col_dex1:
+        dexperts_enabled = st.toggle("Enable DExperts", value=False, key="v5_dex_enabled")
+        dexperts_expert = st.text_input("Expert name", value="creativity", key="v5_dex_expert")
+        dexperts_alpha = st.slider("Alpha (expert weight)", 0.0, 3.0, 1.0, 0.1, key="v5_dex_alpha")
+    with col_dex2:
+        dexperts_anti = st.text_input("Anti-expert name (optional)", value="", key="v5_dex_anti")
+        dexperts_beta = st.slider("Beta (anti-expert weight)", 0.0, 3.0, 0.5, 0.1, key="v5_dex_beta")
+    
+    # Telemetry
+    st.markdown("#### 📊 Telemetry Level")
+    telemetry_level = st.selectbox("Telemetry", ["none", "summary", "detailed"], index=1, key="v5_telemetry")
+    
+    # Generate button
+    prompt = st.text_area(
+        "Prompt",
+        value="Explain quantum entanglement using a novel metaphor.",
+        height=80,
+        key="v5_prompt"
+    )
+    
+    if st.button("⚡ Generate with NRAM v5", type="primary", width="stretch", key="v5_btn"):
+        if not prompt.strip():
+            st.warning("Enter a prompt.")
+        else:
+            # Build NRAM options
+            nram_opts = {
+                "enabled": True,
+                "profile": STATES[v5_profile]["profile"],
+                "intensity": STATES[v5_profile]["intensity"],
+                "coherence_floor": STATES[v5_profile]["coherence"],
+                "phenomenon_weights": STATE_PHENOMENA_DEFAULTS[v5_profile],
+                "telemetry": {"level": telemetry_level},
+            }
+            
+            # Add representation control
+            if rep_enabled:
+                nram_opts["representation"] = {
+                    "enabled": True,
+                    "vector_id": rep_vector_id,
+                    "alpha": rep_alpha,
+                    "layer": rep_layer,
+                    "scope": rep_scope,
+                }
+            
+            # Add conceptor
+            if conceptor_enabled:
+                nram_opts["conceptor"] = {
+                    "enabled": True,
+                    "conceptor_id": conceptor_id,
+                    "alpha": conceptor_alpha,
+                    "aperture": conceptor_aperture,
+                    "mode": conceptor_mode,
+                }
+            
+            # Add closed loop
+            if loop_enabled:
+                nram_opts["latent_loop"] = {
+                    "enabled": True,
+                    "probe_id": loop_probe,
+                    "target": loop_target,
+                    "kp": loop_kp,
+                    "ki": loop_ki,
+                    "kd": loop_kd,
+                }
+            
+            # Add semantic loop
+            if sem_enabled:
+                nram_opts["semantic_loop"] = {
+                    "enabled": True,
+                    "chunk_size": sem_chunk_size,
+                    "source_text": sem_source if sem_source else None,
+                    "target_similarity": sem_target_sim,
+                }
+            
+            # Add branch tournament
+            if branch_enabled:
+                nram_opts["branch_search"] = {
+                    "enabled": True,
+                    "num_branches": branch_count,
+                    "branch_length": branch_length,
+                    "single_trajectory_mode": branch_single,
+                }
+            
+            # Add DExperts
+            if dexperts_enabled:
+                nram_opts["dexperts"] = {
+                    "enabled": True,
+                    "expert_name": dexperts_expert,
+                    "alpha": dexperts_alpha,
+                    "anti_expert_name": dexperts_anti if dexperts_anti else None,
+                    "beta": dexperts_beta,
+                }
+            
+            with st.spinner("Generating with NRAM v5..."):
+                result = call_api(
+                    prompt,
+                    "nram-qwen3-14b-awq",
+                    nram_opts,
+                    v5_maxtok,
+                    v5_temp,
+                    v5_seed
+                )
+            
+            render_result(result)
+            
+            # Show telemetry if available
+            if "nram_telemetry" in result:
+                st.markdown("#### 📊 Telemetry")
+                with st.expander("View telemetry data"):
+                    st.json(result["nram_telemetry"])
+
+
+# ---------------------------------------------------------------------------
+# Tab 8: Co to je?
 # ---------------------------------------------------------------------------
 with tab_about:
     st.markdown("### ℹ️ Co je NRAM?")

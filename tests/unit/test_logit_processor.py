@@ -51,10 +51,10 @@ class TestLogitProcessor:
     def test_repetition_penalty_on_recent_tokens(self):
         logits = torch.zeros((1, 100))
         req = FakeRequest(output_ids=[3, 4, 5])
-        params = [{"repetition_penalty": 1.5, "__req__": req}]
+        params = [{"repetition_penalty": 0.8, "__req__": req}]
         out = self.proc(logits.clone(), params)
-        assert out[0, 3].item() == pytest.approx(-1.5)
-        assert out[0, 4].item() == pytest.approx(-1.5)
+        assert out[0, 3].item() == pytest.approx(-0.8)
+        assert out[0, 4].item() == pytest.approx(-0.8)
         assert out[0, 99].item() == pytest.approx(0.0)
 
     def test_out_of_range_ids_ignored(self):

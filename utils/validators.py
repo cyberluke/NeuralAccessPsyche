@@ -79,7 +79,11 @@ def validate_request(request: Any) -> bool:
             _reject("Message content must be text", "invalid_message_content", f"messages.{index}.content")
 
     _finite_number(request.temperature, name="temperature", minimum=0.0, maximum=2.0)
-    _finite_number(request.top_p, name="top_p", minimum=0.0, maximum=1.0)
+    # top_p must be strictly greater than 0.0 per SGLang sampling requirements
+    if request.top_p is not None:
+        _finite_number(request.top_p, name="top_p", minimum=0.0, maximum=1.0)
+        if request.top_p <= 0.0:
+            _reject("top_p must be greater than 0.0", "number_out_of_range", "top_p")
     _finite_number(
         request.frequency_penalty,
         name="frequency_penalty",

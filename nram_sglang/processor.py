@@ -85,7 +85,12 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             repetition_penalty = self._bounded_float(
                 params.get("repetition_penalty", 0.0),
                 minimum=0.0,
-                maximum=2.0,
+                maximum=1.0,
+            )
+            corporate_jargon_penalty = self._bounded_float(
+                params.get("corporate_jargon_penalty", 0.0),
+                minimum=0.0,
+                maximum=1.0,
             )
 
             # Phase 13: dynamic per-token schedule based on generation progress.
@@ -137,6 +142,13 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                 recent_ids = self._safe_ids(recent_ids, vocab_size)
                 if recent_ids:
                     logits[batch_index, recent_ids] -= repetition_penalty
+
+            # Corporate jargon penalty — bounded [0.0, 1.0] to match public schema
+            if request is not None and corporate_jargon_penalty > 0:
+                # Apply to common corporate jargon tokens if available
+                jargon_ids = self._safe_ids(params.get("corporate_jargon_token_ids", []), vocab_size)
+                if jargon_ids:
+                    logits[batch_index, jargon_ids] -= corporate_jargon_penalty
 
             # ---------------------------------------------------------------
             # Layer 3: Entropy control (PID servo with phase-based targets)
