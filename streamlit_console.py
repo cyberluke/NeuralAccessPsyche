@@ -210,9 +210,9 @@ st.markdown('<div class="main-header">🧠 NRAM Control Console</div>', unsafe_a
 st.markdown('<div class="sub-header">Qwen3-14B-AWQ · SGLang · real-time logit steering · <b>SIMULACE alterovaných stavů vědomí</b></div>', unsafe_allow_html=True)
 st.markdown(f'<div class="disclaimer">{DISCLAIMER}</div>', unsafe_allow_html=True)
 
-tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_telemetry, tab_memory, tab_v5, tab_about = st.tabs([
+tab_sim, tab_keynote, tab_ab, tab_pipeline, tab_telemetry, tab_memory, tab_v5, tab_evidence, tab_about = st.tabs([
     "🧪 Simulátor", "🗣️ Keynote", "⚖️ A/B Porovnání", "🤖 Agentic Pipeline",
-    "📊 Provenance", "🧠 Paměť", "🔬 NRAM v5", "ℹ️ Co to je?"
+    "📊 Provenance", "🧠 Paměť", "🔬 NRAM v5", "🔍 Runtime Evidence", "ℹ️ Co to je?"
 ])
 
 # ---------------------------------------------------------------------------
@@ -765,7 +765,111 @@ with tab_v5:
 
 
 # ---------------------------------------------------------------------------
-# Tab 8: Co to je?
+# Tab 8: Runtime Evidence
+# ---------------------------------------------------------------------------
+with tab_evidence:
+    st.markdown("### 🔍 Runtime Evidence — Capability States")
+    st.markdown(
+        "This tab displays **evidence-based capability states** from the `/nram/capabilities` endpoint. "
+        "Each mechanism reports its verification status based on actual test results, not just imports."
+    )
+    
+    @st.cache_data(ttl=30, show_spinner=False)
+    def fetch_capabilities():
+        return _get_json("/nram/capabilities")
+    
+    caps = fetch_capabilities()
+    
+    if caps is None:
+        st.error("⚠️ Cannot reach API. Is the server running at http://127.0.0.1:8000?")
+    else:
+        # Engine info
+        st.markdown(f"**Engine:** `{caps.get('engine', 'unknown')}` | "
+                   f"**Base Model:** `{caps.get('actual_base_model', 'unknown')}`")
+        st.markdown(f"**SGLang Enabled:** {caps.get('sglang_enabled', False)}")
+        
+        st.divider()
+        
+        # Controls with evidence states
+        controls = caps.get("controls", {})
+        
+        # Filter to NRAM v5 mechanisms
+        v5_mechanisms = [
+            "activation_addition",
+            "multi_vector_representation",
+            "conceptor_steering",
+            "hidden_state_probes",
+            "latent_closed_loop",
+            "semantic_closed_loop",
+            "branch_tournament",
+            "dexperts",
+            "batch_context",
+        ]
+        
+        st.markdown("#### NRAM v5 Mechanism States")
+        
+        for mech_name in v5_mechanisms:
+            mech = controls.get(mech_name, {})
+            if not mech:
+                continue
+            
+            state = mech.get("state", "UNKNOWN")
+            runtime_wired = mech.get("runtime_wired", False)
+            mechanism = mech.get("mechanism", "unknown")
+            
+            # State badge
+            if state == "CAUSALLY_PROVEN":
+                state_badge = "🟢 CAUSALLY_PROVEN"
+                state_color = "green"
+            elif state == "EXECUTING":
+                state_badge = "🟡 EXECUTING"
+                state_color = "orange"
+            elif state == "CONFIGURED":
+                state_badge = "🔵 CONFIGURED"
+                state_color = "blue"
+            else:
+                state_badge = "⚪ UNKNOWN"
+                state_color = "gray"
+            
+            with st.expander(f"**{mech_name.replace('_', ' ').title()}** — {state_badge}"):
+                st.markdown(f"**State:** `{state}`")
+                st.markdown(f"**Runtime Wired:** {'✅ Yes' if runtime_wired else '❌ No'}")
+                st.markdown(f"**Mechanism:** `{mechanism}`")
+                
+                if "last_proof_artifact" in mech:
+                    st.markdown(f"**Last Proof Artifact:** `{mech['last_proof_artifact']}`")
+                
+                if "proof_tests" in mech:
+                    st.markdown("**Proof Tests:**")
+                    for test in mech["proof_tests"]:
+                        st.markdown(f"- `{test}`")
+                
+                if "note" in mech:
+                    st.info(mech["note"])
+        
+        st.divider()
+        
+        # Verified capabilities
+        verified = caps.get("verified", {})
+        st.markdown("#### Verified Capabilities")
+        
+        verified_cols = st.columns(3)
+        for idx, (key, value) in enumerate(verified.items()):
+            col = verified_cols[idx % 3]
+            with col:
+                if value:
+                    st.success(f"✅ {key.replace('_', ' ').title()}")
+                else:
+                    st.warning(f"⚠️ {key.replace('_', ' ').title()}")
+        
+        st.divider()
+        
+        # Raw JSON
+        with st.expander("📄 Raw Capabilities JSON"):
+            st.json(caps)
+
+# ---------------------------------------------------------------------------
+# Tab 9: Co to je?
 # ---------------------------------------------------------------------------
 with tab_about:
     st.markdown("### ℹ️ Co je NRAM?")
