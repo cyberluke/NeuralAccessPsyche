@@ -712,54 +712,38 @@ with tab_v5:
                     "scope": rep_scope,
                 }
             
-            # Add conceptor
+            # Add conceptor steering (NRAM v5)
             if conceptor_enabled:
-                nram_opts["conceptor"] = {
-                    "enabled": True,
-                    "conceptor_id": conceptor_id,
-                    "alpha": conceptor_alpha,
-                    "aperture": conceptor_aperture,
-                    "mode": conceptor_mode,
-                }
+                nram_opts["conceptor_steering"] = True
+                nram_opts["conceptor_id"] = conceptor_id
+                nram_opts["conceptor_alpha"] = conceptor_alpha
+                nram_opts["conceptor_aperture"] = conceptor_aperture
             
-            # Add closed loop
+            # Add latent closed loop (NRAM v5)
             if loop_enabled:
-                nram_opts["latent_loop"] = {
-                    "enabled": True,
-                    "probe_id": loop_probe,
-                    "target": loop_target,
-                    "kp": loop_kp,
-                    "ki": loop_ki,
-                    "kd": loop_kd,
-                }
+                nram_opts["latent_closed_loop"] = True
+                nram_opts["latent_loop_target_probe"] = loop_probe
+                nram_opts["latent_loop_target_value"] = loop_target
+                nram_opts["latent_loop_kp"] = loop_kp
             
-            # Add semantic loop
+            # Add semantic closed loop (NRAM v5)
             if sem_enabled:
-                nram_opts["semantic_loop"] = {
-                    "enabled": True,
-                    "chunk_size": sem_chunk_size,
-                    "source_text": sem_source if sem_source else None,
-                    "target_similarity": sem_target_sim,
-                }
+                nram_opts["semantic_closed_loop"] = True
+                nram_opts["semantic_loop_block_size"] = sem_chunk_size
+                nram_opts["semantic_loop_target_score"] = sem_target_sim
             
-            # Add branch tournament
+            # Add branch tournament (NRAM v5)
             if branch_enabled:
-                nram_opts["branch_search"] = {
-                    "enabled": True,
-                    "num_branches": branch_count,
-                    "branch_length": branch_length,
-                    "single_trajectory_mode": branch_single,
-                }
+                nram_opts["branch_tournament"] = True
+                nram_opts["branch_tournament_branch_count"] = branch_count
+                nram_opts["branch_tournament_max_tokens"] = branch_length
             
-            # Add DExperts
+            # Add DExperts (NRAM v5)
             if dexperts_enabled:
-                nram_opts["dexperts"] = {
-                    "enabled": True,
-                    "expert_name": dexperts_expert,
-                    "alpha": dexperts_alpha,
-                    "anti_expert_name": dexperts_anti if dexperts_anti else None,
-                    "beta": dexperts_beta,
-                }
+                nram_opts["dexperts"] = True
+                nram_opts["dexperts_expert"] = dexperts_expert
+                nram_opts["dexperts_alpha"] = dexperts_alpha
+                nram_opts["dexperts_beta"] = dexperts_beta
             
             with st.spinner("Generating with NRAM v5..."):
                 result = call_api(

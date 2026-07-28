@@ -89,7 +89,7 @@ def make_response(model="nram-qwen3-14b-awq", correlation=None) -> ChatCompletio
         {"forced_token_enabled": True, "forced_token_id": 1.5},
         {"concept_strength": float("nan")},
         {"soft_token_injections": {"token_ids": [1]}},
-        {"dexperts": True},
+        {"reft": True},  # reft is still in UNSUPPORTED_NRAM_FEATURES
         {"forced_token_enabled": True, "forced_token_id": 3, "forbidden_token_ids": [3]},
     ],
 )

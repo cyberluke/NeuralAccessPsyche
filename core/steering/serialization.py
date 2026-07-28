@@ -40,6 +40,14 @@ def build_custom_params(
     forced_token_enabled: bool = False,
     applied_state_hash: Optional[str] = None,
     applied_state_schema: str = "nram.applied-state.v1",
+    # NRAM v5 representation control configs
+    activation_addition_config: Optional[Dict[str, Any]] = None,
+    conceptor_config: Optional[Dict[str, Any]] = None,
+    probes_config: Optional[Dict[str, Any]] = None,
+    latent_loop_config: Optional[Dict[str, Any]] = None,
+    semantic_loop_config: Optional[Dict[str, Any]] = None,
+    branch_tournament_config: Optional[Dict[str, Any]] = None,
+    dexperts_config: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Build the trusted custom_params dict for SGLang.
 
@@ -92,6 +100,22 @@ def build_custom_params(
         result["logit_vector_config"] = logit_vector_config
     if hard_injection_config:
         result["hard_injection_config"] = hard_injection_config
+    
+    # NRAM v5 representation control configs
+    if activation_addition_config:
+        result["activation_addition_config"] = activation_addition_config
+    if conceptor_config:
+        result["conceptor_config"] = conceptor_config
+    if probes_config:
+        result["probes_config"] = probes_config
+    if latent_loop_config:
+        result["latent_loop_config"] = latent_loop_config
+    if semantic_loop_config:
+        result["semantic_loop_config"] = semantic_loop_config
+    if branch_tournament_config:
+        result["branch_tournament_config"] = branch_tournament_config
+    if dexperts_config:
+        result["dexperts_config"] = dexperts_config
 
     if forced_token_id is not None:
         result["forced_token_id"] = int(forced_token_id)

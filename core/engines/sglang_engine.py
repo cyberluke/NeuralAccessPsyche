@@ -28,6 +28,11 @@ from core.contracts.nram_runtime import (
     UNSUPPORTED_NRAM_FEATURES,
     validate_tokenizer_ids,
 )
+
+# NRAM v5 representation control imports
+# These are wired into the inference path for token-level steering
+from core.steering.request_control_plane import NRAMRequestControlPlane, NRAMRequestConfig
+from core.steering.representation_config import NRAMRepresentationConfig
 from core.persona.compiler import compile_policy
 from core.persona.planner import build_rhetorical_plan, plan_to_prompt_fragment
 from core.persona.profiles import DEFAULT_PROFILE, PROFILES
@@ -682,6 +687,154 @@ class SGLangEngine:
             "base_strength": nram_opts.get("concept_strength", 0.5),
         }
 
+    def _build_activation_addition_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build activation addition configuration.
+
+        Activation addition applies vector-based steering at the token level.
+        Returns None if not enabled.
+        """
+        actadd_enabled = nram_opts.get("activation_addition", False)
+        if not actadd_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "vector_id": nram_opts.get("actadd_vector_id", "novelty_vs_paraphrase"),
+            "alpha": nram_opts.get("actadd_alpha", 1.0),
+            "layer": nram_opts.get("actadd_layer", -1),  # -1 = last layer
+        }
+
+    def _build_conceptor_steering_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build conceptor steering configuration.
+
+        Conceptor steering applies soft boolean logic over concept activations.
+        Returns None if not enabled.
+        """
+        conceptor_enabled = nram_opts.get("conceptor_steering", False)
+        if not conceptor_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "conceptor_id": nram_opts.get("conceptor_id", "creativity"),
+            "aperture": nram_opts.get("conceptor_aperture", 0.5),
+            "alpha": nram_opts.get("conceptor_alpha", 1.0),
+        }
+
+    def _build_hidden_state_probes_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build hidden state probes configuration.
+
+        Probes classify hidden states for semantic properties.
+        Returns None if not enabled.
+        """
+        probes_enabled = nram_opts.get("hidden_state_probes", False)
+        if not probes_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "probe_ids": nram_opts.get("probe_ids", ["novelty", "coherence"]),
+            "layer": nram_opts.get("probe_layer", -1),
+        }
+
+    def _build_latent_closed_loop_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build latent closed-loop configuration.
+
+        Latent closed-loop connects probe scores to intervention strength.
+        Returns None if not enabled.
+        """
+        loop_enabled = nram_opts.get("latent_closed_loop", False)
+        if not loop_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "target_probe": nram_opts.get("latent_loop_target_probe", "novelty"),
+            "target_value": nram_opts.get("latent_loop_target_value", 0.7),
+            "kp": nram_opts.get("latent_loop_kp", 0.5),
+            "max_adjustment": nram_opts.get("latent_loop_max_adjustment", 0.3),
+        }
+
+    def _build_semantic_closed_loop_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build semantic closed-loop configuration.
+
+        Semantic closed-loop evaluates block-level semantics and adjusts steering.
+        Returns None if not enabled.
+        """
+        loop_enabled = nram_opts.get("semantic_closed_loop", False)
+        if not loop_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "evaluator": nram_opts.get("semantic_loop_evaluator", "novelty"),
+            "target_score": nram_opts.get("semantic_loop_target_score", 0.7),
+            "block_size": nram_opts.get("semantic_loop_block_size", 64),
+            "adjustment_strength": nram_opts.get("semantic_loop_adjustment_strength", 0.3),
+        }
+
+    def _build_branch_tournament_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build branch tournament configuration.
+
+        Branch tournament generates multiple branches and selects the best.
+        Returns None if not enabled.
+        """
+        tournament_enabled = nram_opts.get("branch_tournament", False)
+        if not tournament_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "branch_count": nram_opts.get("branch_tournament_branch_count", 4),
+            "evaluator": nram_opts.get("branch_tournament_evaluator", "novelty"),
+            "max_tokens_per_branch": nram_opts.get("branch_tournament_max_tokens", 32),
+        }
+
+    def _build_dexperts_config(
+        self,
+        request: ChatCompletionRequest,
+        nram_opts: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Build DExperts configuration.
+
+        DExperts applies expert/anti-expert logit modulation.
+        Returns None if not enabled.
+        """
+        dexperts_enabled = nram_opts.get("dexperts", False)
+        if not dexperts_enabled:
+            return None
+
+        return {
+            "enabled": True,
+            "expert_name": nram_opts.get("dexperts_expert", "creative"),
+            "alpha": nram_opts.get("dexperts_alpha", 1.0),
+            "beta": nram_opts.get("dexperts_beta", 0.5),
+        }
+
     def _build_upstream_payload(
         self,
         request: ChatCompletionRequest,
@@ -771,6 +924,16 @@ class SGLangEngine:
             phrase_constraint_config = self._build_phrase_constraint_config(request, nram_opts)
             entropy_config = self._build_entropy_config(request, nram_opts)
             concept_config = self._build_concept_config(request, nram_opts)
+            
+            # NRAM v5 representation control configs
+            activation_addition_config = self._build_activation_addition_config(request, nram_opts)
+            conceptor_config = self._build_conceptor_steering_config(request, nram_opts)
+            probes_config = self._build_hidden_state_probes_config(request, nram_opts)
+            latent_loop_config = self._build_latent_closed_loop_config(request, nram_opts)
+            semantic_loop_config = self._build_semantic_closed_loop_config(request, nram_opts)
+            branch_tournament_config = self._build_branch_tournament_config(request, nram_opts)
+            dexperts_config = self._build_dexperts_config(request, nram_opts)
+            
             soft_injection_config = None
             if isinstance(nram_opts.get("soft_token_injections"), list):
                 soft_injection_config = {
@@ -827,6 +990,14 @@ class SGLangEngine:
                 telemetry_top_k=nram_opts.get("telemetry_top_k", 5),
                 forced_token_id=forced_token_id,
                 forced_token_enabled=bool(nram_opts.get("forced_token_enabled", False)),
+                # NRAM v5 representation control configs
+                activation_addition_config=activation_addition_config,
+                conceptor_config=conceptor_config,
+                probes_config=probes_config,
+                latent_loop_config=latent_loop_config,
+                semantic_loop_config=semantic_loop_config,
+                branch_tournament_config=branch_tournament_config,
+                dexperts_config=dexperts_config,
             )
 
         return payload

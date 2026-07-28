@@ -171,11 +171,12 @@ async def test_moe_rejects_unsupported_before_first_generation(monkeypatch):
 
     engine = RecordingEngine()
     monkeypatch.setattr(routes, "get_sglang_engine", lambda: engine)
+    # Use a truly unsupported feature (reft is still in UNSUPPORTED_NRAM_FEATURES)
     request = routes.ChatCompletionRequest(
         model="nram-moe-orchestrator",
         messages=[{"role": "user", "content": "bounded"}],
         max_tokens=1,
-        nram={"dexperts": True},
+        nram={"reft": True},
     )
     with pytest.raises(Exception) as exc_info:
         await routes._route_moe(request)

@@ -112,12 +112,14 @@ class TestSecurityBoundary:
     @pytest.mark.parametrize(
         "feature",
         [
-            "dexperts",
-            "activation_addition",
-            "conceptor_steering",
-            "hidden_state_probes",
-            "latent_closed_loop",
-            "branch_tournament",
+            # NRAM v5 features are now runtime-wired and should be accepted
+            # "dexperts",
+            # "activation_addition",
+            # "conceptor_steering",
+            # "hidden_state_probes",
+            # "latent_closed_loop",
+            # "branch_tournament",
+            # Only truly unsupported infrastructure features should be rejected
             "reft",
             "attention_head_gating",
             "kv_cache_firewall",
@@ -132,6 +134,34 @@ class TestSecurityBoundary:
             engine._build_upstream_payload(req, nram_enabled=True)
         assert exc_info.value.status_code == 400
         assert feature in exc_info.value.message
+    
+    @pytest.mark.parametrize(
+        "feature",
+        [
+            # NRAM v5 features are now runtime-wired and should be accepted
+            "dexperts",
+            "activation_addition",
+            "conceptor_steering",
+            "hidden_state_probes",
+            "latent_closed_loop",
+            "branch_tournament",
+        ],
+    )
+    def test_nram_v5_features_are_now_wired(self, engine, feature):
+        """NRAM v5 features are now runtime-wired and should be accepted."""
+        req = make_request(
+            "nram-qwen3-14b-awq",
+            nram={"enabled": True, feature: True},
+        )
+        # Should NOT raise - feature is now wired
+        try:
+            payload = engine._build_upstream_payload(req, nram_enabled=True)
+            # Verify the feature config is in the payload
+            assert "custom_params" in payload
+        except SGLangEngineError as e:
+            if "Unsupported NRAM runtime feature" in str(e):
+                pytest.fail(f"{feature} should be accepted, not rejected")
+            raise
 
 
 class TestPayloadConstruction:

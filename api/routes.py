@@ -763,14 +763,55 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
             "phrase_and_source_masks": True,
             "entropy_pid": True,
             "vocabulary_logit_vectors": True,
-            "activation_addition": True,
-            "multi_vector_representation": True,
-            "conceptor_steering": True,
-            "hidden_state_probes": True,
-            "latent_closed_loop": True,
-            "semantic_closed_loop": True,
-            "branch_tournament": True,
-            "dexperts": True,
+            # NRAM v5 representation control - now runtime-wired through logit processor
+            "activation_addition": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,  # Requires causal proof test
+                "mechanism": "token_level_vector_steering",
+            },
+            "multi_vector_representation": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "multi_layer_vector_control",
+            },
+            "conceptor_steering": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "soft_boolean_conceptor_logic",
+            },
+            "hidden_state_probes": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "hidden_state_classification",
+            },
+            "latent_closed_loop": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "probe_to_intervention_feedback",
+            },
+            "semantic_closed_loop": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "block_level_semantic_evaluation",
+            },
+            "branch_tournament": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "multi_branch_generation_selection",
+            },
+            "dexperts": {
+                "available": True,
+                "runtime_wired": True,
+                "causally_proven": False,
+                "mechanism": "expert_anti_expert_logit_modulation",
+            },
         },
         "verified": {
             "pre_sampling_logit_modification": True,

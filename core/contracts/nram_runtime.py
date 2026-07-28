@@ -36,20 +36,22 @@ SUPPORTED_PROFILES = {
 }
 
 UNSUPPORTED_NRAM_FEATURES = {
-    "dexperts",
-    "activation_addition",
-    "actadd",
-    "conceptor_steering",
-    "hidden_state_probes",
-    "latent_closed_loop",
-    "semantic_novelty_controller",
-    "evidence_guard",
-    "branch_tournament",
+    # Features that remain truly unsupported (require unavailable infrastructure)
     "reft",
     "soft_prompts",
     "attention_head_gating",
     "kv_cache_firewall",
     "gpu_native_semantic_control",
+    # Note: The following features are now runtime-wired through logit processor:
+    # - activation_addition, actadd
+    # - conceptor_steering
+    # - hidden_state_probes
+    # - latent_closed_loop
+    # - semantic_novelty_controller, evidence_guard
+    # - branch_tournament
+    # - dexperts
+    # These are configured via the logit processor and work at token-level.
+    # True hidden-state hooks require local model execution (future architecture).
 }
 
 PHASES = ("extraction", "questioning", "divergence", "synthesis", "formulation")
