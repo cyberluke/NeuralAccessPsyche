@@ -203,6 +203,31 @@ class NRAMOptions(StrictRuntimeModel):
     kv_cache_firewall: Optional[StrictBool] = None
     gpu_native_semantic_control: Optional[StrictBool] = None
 
+    # NRAM v5 representation control configuration
+    representation: Optional[Dict[str, Any]] = None
+    conceptor: Optional[Dict[str, Any]] = None
+    latent_loop: Optional[Dict[str, Any]] = None
+    semantic_loop: Optional[Dict[str, Any]] = None
+    branch_search: Optional[Dict[str, Any]] = None
+    dexperts_config: Optional[Dict[str, Any]] = None
+    telemetry: Optional[Dict[str, Any]] = None
+
+    @field_validator("representation")
+    @classmethod
+    def validate_representation(cls, value: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        if value is None:
+            return value
+        # Validate required fields
+        if "vector_id" not in value:
+            raise ValueError("representation.vector_id is required")
+        if "alpha" not in value:
+            raise ValueError("representation.alpha is required")
+        # Validate alpha range
+        alpha = value.get("alpha", 0.0)
+        if not isinstance(alpha, (int, float)) or alpha < -10.0 or alpha > 10.0:
+            raise ValueError("representation.alpha must be between -10.0 and 10.0")
+        return value
+
     @field_validator("profile")
     @classmethod
     def validate_profile(cls, value: str) -> str:

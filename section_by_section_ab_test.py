@@ -1,6 +1,12 @@
 """
 Section-by-section A/B test: Compare NRAM outputs with ChatGPT document sections
 """
+import sys
+import io
+
+# Fix Windows console encoding
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 import requests
 import json
 import os
