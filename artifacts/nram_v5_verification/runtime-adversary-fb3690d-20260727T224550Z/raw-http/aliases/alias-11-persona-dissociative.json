@@ -1,0 +1,78 @@
+{
+  "case_id": "alias-11-persona-dissociative",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.958987Z",
+  "finished_utc": "2026-07-27T22:49:19.038294Z",
+  "elapsed_ms": 79.28130000072997,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-11-persona-dissociative"
+    },
+    "body": {
+      "model": "persona-dissociative",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-11-persona-dissociative",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-dissociative\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-11-persona-dissociative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:18 GMT",
+      "server": "uvicorn",
+      "content-length": "462",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"c3913ce6565f4d96b6d150fea7398c01\",\"object\":\"chat.completion\",\"created\":1785192559,\"model\":\"persona-dissociative\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":200,\"completion_tokens\":1,\"total_tokens\":201},\"nram_correlation\":{\"request_id\":\"RA-ALIAS-11-persona-dissociative\",\"config_hash\":\"c6f91aecfc396970284aaaf189cc302b5b0bdc07ea359351e0a856217fa339e1\"}}",
+    "json": {
+      "id": "c3913ce6565f4d96b6d150fea7398c01",
+      "object": "chat.completion",
+      "created": 1785192559,
+      "model": "persona-dissociative",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 200,
+        "completion_tokens": 1,
+        "total_tokens": 201
+      },
+      "nram_correlation": {
+        "request_id": "RA-ALIAS-11-persona-dissociative",
+        "config_hash": "c6f91aecfc396970284aaaf189cc302b5b0bdc07ea359351e0a856217fa339e1"
+      }
+    },
+    "bytes": 462
+  },
+  "exception": null
+}

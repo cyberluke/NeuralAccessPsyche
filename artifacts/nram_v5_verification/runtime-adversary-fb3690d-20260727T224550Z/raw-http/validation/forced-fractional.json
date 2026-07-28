@@ -1,0 +1,80 @@
+{
+  "case_id": "forced-fractional",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T22:51:18.351037Z",
+  "finished_utc": "2026-07-27T22:51:18.472534Z",
+  "elapsed_ms": 121.46639999991748,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "forced-fractional"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-forced-fractional",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "forced_token_enabled": true,
+        "forced_token_id": 1.5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-fractional\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":1.5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:51:17 GMT",
+      "server": "uvicorn",
+      "content-length": "453",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"cdb96f966cc34daeb9f58b9c0e34e933\",\"object\":\"chat.completion\",\"created\":1785192678,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"\\\"\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-VALID-forced-fractional\",\"config_hash\":\"a9a791c717c5db2c17fc3975cc623ccfdbf13b5c1752acc0a30231db817c3301\"}}",
+    "json": {
+      "id": "cdb96f966cc34daeb9f58b9c0e34e933",
+      "object": "chat.completion",
+      "created": 1785192678,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "\""
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 378,
+        "completion_tokens": 1,
+        "total_tokens": 379
+      },
+      "nram_correlation": {
+        "request_id": "RA-VALID-forced-fractional",
+        "config_hash": "a9a791c717c5db2c17fc3975cc623ccfdbf13b5c1752acc0a30231db817c3301"
+      }
+    },
+    "bytes": 453
+  },
+  "exception": null
+}

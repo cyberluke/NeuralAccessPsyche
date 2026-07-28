@@ -1,0 +1,31 @@
+Container: nram-sglang
+Container ID: fe7a3eb409b2ae5b9cb84131ff3bf884f15b38c93012a25a51628810378bf31a
+Image: lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda
+Image label: lmsysorg/sglang:v0.5.16
+SGLang source commit: fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1
+
+Exact observed process command:
+python3 -m sglang.launch_server --model-path /models --tokenizer-path /models --served-model-name nram-qwen3-14b-awq --context-length 32768 --mem-fraction-static 0.72 --enable-custom-logit-processor --grammar-backend xgrammar --disable-overlap-schedule --max-running-requests 1 --enable-hierarchical-cache --hicache-ratio 2.0 --hicache-write-policy write_through_selective --reasoning-parser qwen3 --host 0.0.0.0 --port 30000 --disable-prefill-cuda-graph --disable-decode-cuda-graph --default-chat-template-kwargs {"enable_thinking": false}
+
+Installed executable check:
+docker exec nram-sglang python3 -m sglang.launch_server --help
+Exit code: 0
+Full command output artifact from tool session: cmd-1785175782386.txt
+
+Confirmed installed flags:
+--tokenizer-path
+--max-running-requests
+--disable-overlap-schedule
+--served-model-name
+--default-chat-template-kwargs
+--grammar-backend
+--disable-prefill-cuda-graph
+--disable-decode-cuda-graph
+--enable-hierarchical-cache
+--hicache-ratio
+--hicache-write-policy
+--enable-custom-logit-processor
+--reasoning-parser
+
+Compose declaration warning:
+compose.yaml declares lmsysorg/sglang:latest rather than the observed digest. The local image resolved to the digest above, but a future pull is not immutable.

@@ -1,0 +1,330 @@
+{
+  "counts": {
+    "windows_crlf": 43,
+    "git_blob": 3
+  },
+  "rows": [
+    {
+      "path": "commands.sh",
+      "declared": "cdadfbe10735b67f9251aa9182aa96294289ce3d290e8220b665d40a51699360",
+      "git_blob_domain": "232e534825a346eff609fe434202a9d48437f072b715998a2e7783cbceed5992",
+      "windows_crlf_domain": "cdadfbe10735b67f9251aa9182aa96294289ce3d290e8220b665d40a51699360",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "dependency-versions.txt",
+      "declared": "53108a1ecf0df186e7f130f2786975309cdc6d690c69f7b2f5ebcb8c6c77bfb7",
+      "git_blob_domain": "45dceea80671e834bea188ccc6453f319134c63758da06235f07a98d537a1451",
+      "windows_crlf_domain": "53108a1ecf0df186e7f130f2786975309cdc6d690c69f7b2f5ebcb8c6c77bfb7",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "environment.json",
+      "declared": "538cd995bbdb8922b3a45e3ffa1401562e117a1d55358d5d1e76f6384490712c",
+      "git_blob_domain": "6d2ce2cd332421c903c71d7a8b41089e8670a3ac19e2a2c39c3605d64ff0c379",
+      "windows_crlf_domain": "538cd995bbdb8922b3a45e3ffa1401562e117a1d55358d5d1e76f6384490712c",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "experiment-summary.json",
+      "declared": "f4d3e38b92bea178ddce4c88c167a88d63e682a9ab365b3797069f237a3253d8",
+      "git_blob_domain": "558714455a7255aa4cc95e98aeb79dd2143a9c0ef3ddf24df344db5a3ae4e7f4",
+      "windows_crlf_domain": "f4d3e38b92bea178ddce4c88c167a88d63e682a9ab365b3797069f237a3253d8",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "failures/ledger.json",
+      "declared": "fe9d55ee8dac8cfc408a5ac51ea1b460c648bea119b9018edd525dd423dad5e4",
+      "git_blob_domain": "e259289237c8e24589dd3707dff2f1545004276600184dd41e4a06fb7d17cad7",
+      "windows_crlf_domain": "fe9d55ee8dac8cfc408a5ac51ea1b460c648bea119b9018edd525dd423dad5e4",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "generation-metrics.csv",
+      "declared": "e0b8875bb566ed5b82c46ae05cd0bcbcb927b7b8e030ef19f2a5cbfebad261aa",
+      "git_blob_domain": "2e62c81cafa5b7f1fc918439a23328f61a6bafb2d9059476c4a4fdd98457fda6",
+      "windows_crlf_domain": "e0b8875bb566ed5b82c46ae05cd0bcbcb927b7b8e030ef19f2a5cbfebad261aa",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "gpu-test-results.xml",
+      "declared": "26f5d5234b57365ad08a57de6166bf553e92c686493f843e67994222b27d431f",
+      "git_blob_domain": "26f5d5234b57365ad08a57de6166bf553e92c686493f843e67994222b27d431f",
+      "windows_crlf_domain": "26f5d5234b57365ad08a57de6166bf553e92c686493f843e67994222b27d431f",
+      "domain": "git_blob"
+    },
+    {
+      "path": "human-evaluation-template.csv",
+      "declared": "95e9253fced76642bac1639e3f93dc6c757bbab3b08f80208a21bd7c3c74fc93",
+      "git_blob_domain": "1a50b06c4287516d8e1fad7e9d7cc5fdd04df24ec0c55210106fccf9d3c03d58",
+      "windows_crlf_domain": "95e9253fced76642bac1639e3f93dc6c757bbab3b08f80208a21bd7c3c74fc93",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "npm-build.json",
+      "declared": "85f45c50be67f45d675f6bd51252e00633ed5ef20bd926afc7fc85f6ca6779b8",
+      "git_blob_domain": "85f45c50be67f45d675f6bd51252e00633ed5ef20bd926afc7fc85f6ca6779b8",
+      "windows_crlf_domain": "b24fa4f89abcafda005dba7a2c5938c2749a45c3d054266aa73cfa805c368b1c",
+      "domain": "git_blob"
+    },
+    {
+      "path": "plots/README.md",
+      "declared": "162529d177fb5ce5e52bd39c8a9ddb03f862204ff374deaef09f4a5556c5625f",
+      "git_blob_domain": "4f4d923c67686787cbb3a16ed7da8cf583079dd01fb67c4aead0759c99eacabc",
+      "windows_crlf_domain": "162529d177fb5ce5e52bd39c8a9ddb03f862204ff374deaef09f4a5556c5625f",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "preregistration.json",
+      "declared": "e86db4b5f2bbedf1113bbcb4f438a5096b701db1acb368cdbd3d4d1e2bd9ef94",
+      "git_blob_domain": "27c88018c8512c076be8afa87acf6400b905d35c79860f7390eeb09236776251",
+      "windows_crlf_domain": "e86db4b5f2bbedf1113bbcb4f438a5096b701db1acb368cdbd3d4d1e2bd9ef94",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "provenance-ledger.md",
+      "declared": "10f62b9ab2a2a93ad8bf71f977a59d679f83885e8dfdc600df4e576e6bb985d2",
+      "git_blob_domain": "c2b3983b18af20cfca367fe4da5255071f28ce98b24c0ea9a46932b87a43c481",
+      "windows_crlf_domain": "10f62b9ab2a2a93ad8bf71f977a59d679f83885e8dfdc600df4e576e6bb985d2",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-developer_prompt_only.json",
+      "declared": "8b299cd5a05eb6ce0492a981c143aafadc439e43c73b97c977b12c5e779543b1",
+      "git_blob_domain": "814c81b85a395f45f5deb6be81da1a678c851c683ea7310d2953c92e0c3350e7",
+      "windows_crlf_domain": "8b299cd5a05eb6ce0492a981c143aafadc439e43c73b97c977b12c5e779543b1",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-full_minus_logit.json",
+      "declared": "67be6772cf494bfd397b965d67b617664ec5fcc989cb2867afd9528b9e13a411",
+      "git_blob_domain": "08c58a672a1a0f76b3f153486d01371f069fc73d5ff30e737d5f3299e0690143",
+      "windows_crlf_domain": "67be6772cf494bfd397b965d67b617664ec5fcc989cb2867afd9528b9e13a411",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-full_minus_structural.json",
+      "declared": "b97e40c52ed7e1ffc27c996f1d43e595a88d6adf1e09e66b100c77bde7cac54b",
+      "git_blob_domain": "2f0320c13403897517f4d2ae061671775c202c85c27605e1a439eafc39a68129",
+      "windows_crlf_domain": "b97e40c52ed7e1ffc27c996f1d43e595a88d6adf1e09e66b100c77bde7cac54b",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-full_supported.json",
+      "declared": "981cbd092743952e7bbd30ce5421b1c7590eb453f9afc0d21f96e300386e3dcd",
+      "git_blob_domain": "6765011f8c0fa3d13381d8280c1e4b43f12900f2ad95bd9929626314f59ac6a9",
+      "windows_crlf_domain": "981cbd092743952e7bbd30ce5421b1c7590eb453f9afc0d21f96e300386e3dcd",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-logit_only.json",
+      "declared": "bfb59bcb8c090daf0f8029dc6a395fc853018a1bd83ff549a0ab09534e009c07",
+      "git_blob_domain": "9abc8cb744a300579c7bdbb8d69c1feb2e54bb2aa15feea1cee4b2a16f4052dd",
+      "windows_crlf_domain": "bfb59bcb8c090daf0f8029dc6a395fc853018a1bd83ff549a0ab09534e009c07",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-structural_only.json",
+      "declared": "bd640cc3192067d49c854facdf3ff7c20eb17fbdc3bb71445a975881c462cf09",
+      "git_blob_domain": "eef8d043883addd4bca91672d2f7dd0b0d50ccfc75349cc57cba21f352544482",
+      "windows_crlf_domain": "bd640cc3192067d49c854facdf3ff7c20eb17fbdc3bb71445a975881c462cf09",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-101-vanilla.json",
+      "declared": "f23b6ccc244c079a04133600bd90c7f0fa20505dd4a76a149416f46a89a0fdf1",
+      "git_blob_domain": "8706e77cdf271eec52ff6b9517ab530cda7f5207b5af947f3c51d30b638c3342",
+      "windows_crlf_domain": "f23b6ccc244c079a04133600bd90c7f0fa20505dd4a76a149416f46a89a0fdf1",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-developer_prompt_only.json",
+      "declared": "0532ea134020dbef11f59fd7f4aeac26624008a1577ef5fc074bb7e6eb5ffdda",
+      "git_blob_domain": "9ff9e5e21242eb3aa6a49d1cbbe4746b559101651b08b8fc2495b341065d7f62",
+      "windows_crlf_domain": "0532ea134020dbef11f59fd7f4aeac26624008a1577ef5fc074bb7e6eb5ffdda",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-full_minus_logit.json",
+      "declared": "c0d6316e166080c9b516925d37db36070758ba92facdc808e8fff77264d4e516",
+      "git_blob_domain": "dc57dafe4d960a884579c54694220272a9ceae2d739a77f94c5de93df541b282",
+      "windows_crlf_domain": "c0d6316e166080c9b516925d37db36070758ba92facdc808e8fff77264d4e516",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-full_minus_structural.json",
+      "declared": "64668f5c9120bd792c6e891e48ac07b27927dbbe579acfbaef834e389bd4eabc",
+      "git_blob_domain": "d12e7bd951abf63b55f0377ba8aac84b70cb050e2d2eabe504b4fd44b4a1b7f5",
+      "windows_crlf_domain": "64668f5c9120bd792c6e891e48ac07b27927dbbe579acfbaef834e389bd4eabc",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-full_supported.json",
+      "declared": "8c12120e6317eff241c1bbd3e7ea129005fc53b28719faed3e31f6d94216eff2",
+      "git_blob_domain": "78b281912779aafacc3397f8c437643c9c4a1ed6498c8f8c46a1c6553b1dfb7f",
+      "windows_crlf_domain": "8c12120e6317eff241c1bbd3e7ea129005fc53b28719faed3e31f6d94216eff2",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-logit_only.json",
+      "declared": "58770c0501ee8a47fd983f63b62c11ebde8091983ffb04e230eabef931767451",
+      "git_blob_domain": "0caac7e5364e812b34c2e3cf60d6ec93b555ef452e8d8b98e93dfc1267da5c27",
+      "windows_crlf_domain": "58770c0501ee8a47fd983f63b62c11ebde8091983ffb04e230eabef931767451",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-structural_only.json",
+      "declared": "854fc27926d0212c0f71d44610611c1f94ffa074f767c58254ae480c5a39afeb",
+      "git_blob_domain": "669b4a33937bc67560ad2373ba7002e9fa6b635af93dcd68af89dbae74f8f904",
+      "windows_crlf_domain": "854fc27926d0212c0f71d44610611c1f94ffa074f767c58254ae480c5a39afeb",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-cs-source-202-vanilla.json",
+      "declared": "5e530bf3fe7e4c1cb3a36ca7b12f429c920db0f0db5529cb89eb748f9b48af58",
+      "git_blob_domain": "19eb78fe16d1b0378629bf77936369f65a1dfa8266c41b875c9a8b67cbdc6f9f",
+      "windows_crlf_domain": "5e530bf3fe7e4c1cb3a36ca7b12f429c920db0f0db5529cb89eb748f9b48af58",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-developer_prompt_only.json",
+      "declared": "f58e324d99e2f7f0d7f375fd4e81165ec351c83d6360426f05eb6033ae5b3d71",
+      "git_blob_domain": "a27a8ec1b6c4cb09bf4691bc81e646fe7f0c7c46c1c920f3e850441041c1e1ea",
+      "windows_crlf_domain": "f58e324d99e2f7f0d7f375fd4e81165ec351c83d6360426f05eb6033ae5b3d71",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-full_minus_logit.json",
+      "declared": "1fca08f1d902b7a1409979471317d26cbf0a8bf59ddd1250fba937b6c0f78ccb",
+      "git_blob_domain": "ff1494b67db38c0fcdbbfaa5597c38953f57b96b7f6036695011112c787e0590",
+      "windows_crlf_domain": "1fca08f1d902b7a1409979471317d26cbf0a8bf59ddd1250fba937b6c0f78ccb",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-full_minus_structural.json",
+      "declared": "6ffd2e33be41eb7ee7840d596ac93d8942fb1f899b2d6792bc336073852e1a85",
+      "git_blob_domain": "6c2e0383cd40ce56cadd5d00fc51b577025d72966485b6d85c85d368c17a1c13",
+      "windows_crlf_domain": "6ffd2e33be41eb7ee7840d596ac93d8942fb1f899b2d6792bc336073852e1a85",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-full_supported.json",
+      "declared": "4ecc7b66e0047150cc5c49a72aa95d0f7295a82a76876624b02f33734fe73f6e",
+      "git_blob_domain": "f15ca2bbc085e31b5c732c6b1ff27951a7094a989fc9d326b49d4050152e1dcd",
+      "windows_crlf_domain": "4ecc7b66e0047150cc5c49a72aa95d0f7295a82a76876624b02f33734fe73f6e",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-logit_only.json",
+      "declared": "4ead9cb476c470be2e6dabfb7c84d346aa1e6a4d4b7d98e487755715f97be24a",
+      "git_blob_domain": "8d835b680f93e9353bc67b2f070219ae90a23488db3a1916b75e7aba4487a4fb",
+      "windows_crlf_domain": "4ead9cb476c470be2e6dabfb7c84d346aa1e6a4d4b7d98e487755715f97be24a",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-structural_only.json",
+      "declared": "1576cba1e2aacdb03ed892d8c4f31163fa7ba9781aff03a40fe844b1d7fdff14",
+      "git_blob_domain": "743d57d41a3020c9ba516de6b6022256c2b66608ad37710113556a0f0049662f",
+      "windows_crlf_domain": "1576cba1e2aacdb03ed892d8c4f31163fa7ba9781aff03a40fe844b1d7fdff14",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-101-vanilla.json",
+      "declared": "b9aa2bb741b7a5702213afb67eaa8014a3d2a0b8b8649971c6a861fe5dfd23fa",
+      "git_blob_domain": "3b7660c9c87391daa12c0f537071af0c19bef18670129a6eccf8555f9474521a",
+      "windows_crlf_domain": "b9aa2bb741b7a5702213afb67eaa8014a3d2a0b8b8649971c6a861fe5dfd23fa",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-developer_prompt_only.json",
+      "declared": "f52f95274b4a0fe4690804179c8d421e2941af00e9748ed9e4de3ebff42c0244",
+      "git_blob_domain": "45fec8f15f6e2d1f0914abd9211f671a6b4c7d4e394d496ccfbe2d8b300d328f",
+      "windows_crlf_domain": "f52f95274b4a0fe4690804179c8d421e2941af00e9748ed9e4de3ebff42c0244",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-full_minus_logit.json",
+      "declared": "205c0d7409bb7b858ad8021e098cf7271d325e77a649b9a7c5ce96103101c461",
+      "git_blob_domain": "c98314881bbb0631ce13dde203f0b2d20603f6cebcaee7c4bfcf64fe21493460",
+      "windows_crlf_domain": "205c0d7409bb7b858ad8021e098cf7271d325e77a649b9a7c5ce96103101c461",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-full_minus_structural.json",
+      "declared": "e642791d8e44c7a21d6a04561dde8f343a1cb461a383232169edb208e2db6518",
+      "git_blob_domain": "02c02843773df02308efecb9493b4938af55d0d3f7815c61c9c073f0d37e1156",
+      "windows_crlf_domain": "e642791d8e44c7a21d6a04561dde8f343a1cb461a383232169edb208e2db6518",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-full_supported.json",
+      "declared": "f4444757a8dca73cd3a308a5474a747b2eecccbe73122a4d03b2d6bb3f74955b",
+      "git_blob_domain": "ea1cfd910c8974cae20abff7ac00b761656b85596c3c27238afb630da6259a91",
+      "windows_crlf_domain": "f4444757a8dca73cd3a308a5474a747b2eecccbe73122a4d03b2d6bb3f74955b",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-logit_only.json",
+      "declared": "6790fd46fb4dd4e234482fe216344a4e20d7cf308f6d6a4a8120284cb5918f84",
+      "git_blob_domain": "6a0dcd4dfb11d35aeb58dd4bc55522b7d16911a9111dcc1803632b854fc10418",
+      "windows_crlf_domain": "6790fd46fb4dd4e234482fe216344a4e20d7cf308f6d6a4a8120284cb5918f84",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-structural_only.json",
+      "declared": "60f22efd16daed608b84ae21931e172305b2f7f1960cf8bb870164b68b51708c",
+      "git_blob_domain": "4da66f80247f64c33392c2c9038357e516cec1b9d15de6a6d04997d841c9e84e",
+      "windows_crlf_domain": "60f22efd16daed608b84ae21931e172305b2f7f1960cf8bb870164b68b51708c",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "raw-generations/paired-en-source-202-vanilla.json",
+      "declared": "98d44f6aa584896ee0717c9e2d05b04559fd32fa3cb9ede583f88e14dd75b937",
+      "git_blob_domain": "cc4e07daf1801d0bcdebe850f579f28761c070ece8e4d97b59d5edae1e0bece1",
+      "windows_crlf_domain": "98d44f6aa584896ee0717c9e2d05b04559fd32fa3cb9ede583f88e14dd75b937",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "representation-ablation.csv",
+      "declared": "48ab2671988e410e3e794136ec2c667b2068765f69f6fe96667ee2176cba222b",
+      "git_blob_domain": "fad3369ab890093544894b9ae93ef03ea4e7ee7b09b7d6cd1c53ce0352963aec",
+      "windows_crlf_domain": "48ab2671988e410e3e794136ec2c667b2068765f69f6fe96667ee2176cba222b",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "runtime-events.jsonl",
+      "declared": "a4d5ff92b5e1cdf5421c71fef172c9662374dc9ba7b4869cc548bbdd933e84af",
+      "git_blob_domain": "7c68e8d0807a0d3a368c07bcc0af11847ec9ca2e048c75a970a77df672b3434b",
+      "windows_crlf_domain": "a4d5ff92b5e1cdf5421c71fef172c9662374dc9ba7b4869cc548bbdd933e84af",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "serialization-diagnostics.txt",
+      "declared": "7fc49ee7ba44191447ca8d6bb67b5520666e7b911480eb588b505ca77976f3bd",
+      "git_blob_domain": "2bb14ec15b0e97480210cc904451d5939d0601cc5b4b754d04ee8559e66e13c7",
+      "windows_crlf_domain": "7fc49ee7ba44191447ca8d6bb67b5520666e7b911480eb588b505ca77976f3bd",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "server-launch.txt",
+      "declared": "f16852f09f5c288dbdd7b635303df38ed7894173f0ce20aa93749ec1055bf370",
+      "git_blob_domain": "a3963d6da4e44b61d4557309c5167756073033ef3ff56bafd0455755e6bd8149",
+      "windows_crlf_domain": "f16852f09f5c288dbdd7b635303df38ed7894173f0ce20aa93749ec1055bf370",
+      "domain": "windows_crlf"
+    },
+    {
+      "path": "test-results.xml",
+      "declared": "87d5e221b7e7651358ac3de4f099ca6b37b5fdbc4726b13dccc0519f26a89df5",
+      "git_blob_domain": "87d5e221b7e7651358ac3de4f099ca6b37b5fdbc4726b13dccc0519f26a89df5",
+      "windows_crlf_domain": "87d5e221b7e7651358ac3de4f099ca6b37b5fdbc4726b13dccc0519f26a89df5",
+      "domain": "git_blob"
+    },
+    {
+      "path": "token-level-ablation.csv",
+      "declared": "630063816a34776e075877c84bf3e9ed27d2c2363f39c98735a0c1824e646bd7",
+      "git_blob_domain": "d3938d7d5a85493f68ec48c8421c1848ad16f96b429abcc5cfd88e1d1c8cb7c4",
+      "windows_crlf_domain": "630063816a34776e075877c84bf3e9ed27d2c2363f39c98735a0c1824e646bd7",
+      "domain": "windows_crlf"
+    }
+  ]
+}

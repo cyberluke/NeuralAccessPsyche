@@ -1,0 +1,2600 @@
+{
+  "unchanged_matrix_request_count": 38,
+  "unchanged_matrix_processor_event_count": 0,
+  "final_nonfinite_request_count": 126,
+  "final_nonfinite_processor_event_count": 0,
+  "unexpected_events": [
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.53125,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.53125,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-003",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ec2e8132143c4cdbbf486580e9f3de27",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "563044da6fe4d2e08fa13e2a8375665b05e4064a9136b2fe1d1fc2ef47c52a81",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-004",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-737f01053afa422d9fa75059e8599397",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-009",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-532370a809bc4e61805a0daba993fbe9",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "c36e16857492914759f2b4b2737bed96b7108fb7590bfd522c150e7463488add",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-013",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-fcae84cadec449f2926f556093de18a8",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "4d4c63d9a73e7b8203d35d03889de45d404d056b5a368f92767ff02432594866",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-014",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-8cebec10bc594c758ea38b351f879020",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "858d9d1828b6385944ca5c37a38c7d1310b975b3eb55b2ed96a324d735c36c8e",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-018",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-90e72bf031f444b384d81e03be1782a3",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "3c6eacd4d2887b99507f71278690f3ffe46724b1978deb7cc4fab7164cc17d57",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-019",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-c2a7f7a467af4929906f6f4f216b26f5",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-023",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d9b04ac42833421c98acd7c593102054",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-024",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-4130d27cf1304b0d954db1a9b0c0b672",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "d67fd26d8e02a1386df3ab83c9df1bea5af70e2f3579b9721dca3462287b3783",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-028",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-47b95f8e86eb428a822afb31cfde46b4",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "e3fc95bec239d45d628c06100a88e701a9c35e6e7e3a01c0b99c1e106a73f588",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-029",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-41c871c6dc2e4496a6153420314ea6d3",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-033",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-83ad041f22b64dfb9867d2d4daf2c104",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-034",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ff807aea8a634237b4c806153fcf6a64",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-038",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-fab4590bdd144302a2fc982be42f5f25",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-039",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-e0b0ae68c3e7445ebcdeb91e75d962b8",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-043",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-f18e0de1c88d4137b0354de69c58fafe",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-044",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-1ec7d23af23c497c92b6c49cd1eae377",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-048",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d477706015ab447294b98bad5b2d35c5",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-049",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-b572ca89bc284a3abffac3a44828beee",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-053",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-6f1f62cf2cc3406997dac1839d7e3b6e",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-054",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-cfb1613800864f85812497a1a377d105",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-058",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-f323332599c743799bbc64e52176ac68",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-059",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-5cecab012d3d4c2a87b3217d4cada3a1",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-063",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ab0639a6f2ca403990dee70035583875",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-064",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-bdcf401f0bdb4c01ae5b5eb5c862b2df",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-068",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-776e23492beb4fca93602af09800e439",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-069",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-cbae3d9fbd2d442ba7399eb3c0886ff0",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-073",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-643d14beb4fe450e9abc00d8344f6786",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-074",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d58a601522774a0aa9ae716e323076de",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-078",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-873e68af725940029f1f45eb38554085",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-079",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-f30fdb71c3744c89b23a80bd7256a52c",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-083",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-299782098f284edb8ecd70ddca229dda",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-084",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-0cc63bcca46d4130b3be3ef43067f3ca",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-088",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-2712d610b44b4397805b92e1bb14f768",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-089",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-4bd31242e53546d6bff61dee7af7c2cb",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-093",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-4f5e1d6460474d02bd57a764331d8dda",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-094",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-2f9076f9e8fb465aac9ce511d1454d31",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-098",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-1602696630f54ec0bc243364abe62768",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-099",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-79a0bf15123348a983daefe67843063e",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-103",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-7f7203a0aa2a44b4bfd74157e521ec8d",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-104",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-154f116bdf384433a03d79a857390de5",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-108",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-090a6c4e082e4e1fb6768ca647491054",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-109",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ca8a832c8b8f468d9f583b4a8fbdb65d",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-113",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ff11c54b3ff94aebbc164fce98bdf47c",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-114",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-08775d52c65c4d2d950a0292bb02c134",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-118",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-cc149099677d4bf09f993f75f5ae178e",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-123",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-5ba32f4a5da640598a5f8be001f38966",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-128",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d504fdfe5b1c45e3be524f60d71efa24",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-129",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d70bc491efcf47b8b896e8806bd5240f",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-133",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-149d48d8802e4774a59cf32572186180",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-134",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-b381b101c9a142bfb78a4531745ca4bb",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-138",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-2808da40d8e64190886514c4f64e62b7",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-139",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-b23ad27656ee4337ba7416209295cc6a",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-143",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-369aa021901744b6a6c5937bea95a239",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-144",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-f71d7087f71b46f381aa02b97c9a8011",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-148",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-1faa5935e9994c4d82eb9fd67d1b83d1",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-149",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-e50fbafd6d714ae094e9feb1e5901909",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "36e6a9913c945f797a5f4c6c44d67f416ac592ac08c805607a7fffefee37244a",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-153",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-025bbdcfffac43ab83adbf7ae69421f5",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "9b8dc4ad843e51d3b8d43d717df793a666654637d79188f494b793d6c33dfce2",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-154",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-c57830462cdb473e82b140d65b6c4f22",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "35369c4d3ce8dafe8515a426b7e8d9c68af7736ce43f7b31441dcc219d4299ec",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-158",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-bb7badc2cec0486a82fc7321d534a0fe",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "35a7674a8d25bcceb44ab7bbd4a41f18fd6e8d8005504f0bcd22031f18da7bb9",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-159",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ac33bd1fbccb4703b4148cfb8bac12e0",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "96dfe4f84029c7403dfefecdea82e7cecf10bd035579b37ec837f821579f4f7a",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-163",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-e34e64bf5cb14d9f8e126650d4a4af5f",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "896086e4798697bef9070fbd4709371af30e6dc433012eb8f7c6dd060788ebe6",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-164",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-4986da0d95ac43208229f16f703eabbe",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "475bdbdb4a64301d6883c4d36c7a3df460fd9245b5ff1a5c10e00990f13494a8",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-168",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-311b186016394d88ad9e2e3b6918bffd",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [
+        {
+          "after": 20.05781364440918,
+          "before": 36.46875,
+          "delta": -16.41093635559082,
+          "probability_after": 0.747265636920929,
+          "probability_before": 0.9505102038383484,
+          "rank_after": 1,
+          "rank_before": 1,
+          "token_id": 32313
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "5a82eaa37b9ea4be34b5c500bfcc13b0032bc3ae13baf17d01a85e9d991a9206",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 20.05781364440918,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-169",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-8bd6251893f6406dbceb0af762ad8779",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "11a05602295dab321fee189c114827397fda411e39415f9698ffb3f5ba478098",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-173",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-3a6d34ddb3784faa991466a5390d8df7",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "de876162b7fd055ad5549f5c4401da8ae46f12e8ab9c03b4287221970873a529",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-174",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-ac511c97fa574cd98253dcce5e88fac6",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "a8ea9ff68f60ce6235e5bf02cc4053889da989c0d9b9eeea1be22a127cf01285",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-178",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-d77b6ff5c1ab4936a7c8c411c803288b",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [
+        {
+          "after": 16.41093635559082,
+          "before": 36.46875,
+          "delta": -20.05781364440918,
+          "probability_after": 0.627260148525238,
+          "probability_before": 0.9505102038383484,
+          "rank_after": 1,
+          "rank_before": 1,
+          "token_id": 32313
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "8fdba20a282f47ae47afc53aec3783eda099626fb03ad87fc68afc2809e62e7d",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 16.41093635559082,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-179",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-e4e461c607074c4b821034e83456daea",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "77b5c3dbb4967a221b4cb745dec85b4833ff903bfe41bda4d660d2beb4deb18a",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-183",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-cfd3446a12294b7394363288fc1fa4fb",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "5b77c37a8a144f96b05bf9f1bc94b0af6628307291c34c411f22374cbb32c468",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-184",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-5646169ffeeb4d6bb770bfb0f5b1ea0d",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "538040e7d3edb057b34a4ae8be2198eba134f3369dd4bf386a4da37af5432b7f",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-188",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-cae59e71527840f99b44a3bafeb60ce5",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "0227ff6c47b7e11c2b5de7a27d77a73fc1ed56e03ad080dfaf0d275747a7a8cf",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-189",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-bf86bea9f76d433e9a82ed1729fb2754",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "bc416066ede9555d885bbfbf4d8334188d4f249d9ed94b0a78dee93e3c84dd1a",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-193",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-bc6354d2edb74ec89940f514b08f9c7f",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [],
+      "concept_capsules": [],
+      "config_hash": "1d89eecae360b5bf7784dca80a663606679ef07c9508c865af06d939ecc9fc44",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-194",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-930cdc2993604be49853fb6839b06ebd",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [
+        {
+          "after": -4.859130859375,
+          "before": 0.140869140625,
+          "delta": -5.0,
+          "probability_after": 1.0702522884426805e-18,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 108843,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "f28288e21b5c91b5c6198cdc9265eb54b3b0092f537757cb47f9bdb587c3a660",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-198",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-b919169e64a54d699173342e86c9a257",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [
+        {
+          "bias": -5.0,
+          "end_step": 1,
+          "start_step": 0,
+          "token_ids": [
+            9702
+          ]
+        }
+      ],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [
+        {
+          "after": 5.140869140625,
+          "before": 0.140869140625,
+          "delta": 5.0,
+          "probability_after": 2.3573877293053998e-14,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 4848,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "1f4ef5fe815551a18ca590ed48de9cc818844981707fe585da2cc11a11e5d313",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-199",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-9b1d3ad1f3b242f5a02158d94de82450",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [
+        {
+          "bias": 5.0,
+          "end_step": 1,
+          "start_step": 0,
+          "token_ids": [
+            9702
+          ]
+        }
+      ],
+      "vocabulary_logit_vectors": []
+    },
+    {
+      "changed": [
+        {
+          "after": -3.859130859375,
+          "before": 0.140869140625,
+          "delta": -4.0,
+          "probability_after": 2.909247360703355e-18,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 88662,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "fdb48a38b5ca9ca21cf174df38d7e150e9bf72247217a75e2f3e9ea41fb9c48b",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-203",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-636528ab113f41a3969ba900fb64ab67",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": [
+        {
+          "clip": 5.0,
+          "coefficient": -4.0,
+          "deltas": [
+            {
+              "delta": -4.0,
+              "token_id": 9702
+            }
+          ],
+          "normalized": false,
+          "raw_norm": 1.0,
+          "vector_id": "final-vector"
+        }
+      ]
+    },
+    {
+      "changed": [
+        {
+          "after": 4.140869140625,
+          "before": 0.140869140625,
+          "delta": 4.0,
+          "probability_after": 8.67234513639726e-15,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 6368,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "d699fa06037cb0fb5616c5343d8deb4b54ba72d5eb5b5d74a205b3d27f2b1f05",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-204",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-b5e20db2bf2445ad8d845e17640c252c",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": [
+        {
+          "clip": 5.0,
+          "coefficient": 4.0,
+          "deltas": [
+            {
+              "delta": 4.0,
+              "token_id": 9702
+            }
+          ],
+          "normalized": false,
+          "raw_norm": 1.0,
+          "vector_id": "final-vector"
+        }
+      ]
+    },
+    {
+      "changed": [
+        {
+          "after": -4.859130859375,
+          "before": 0.140869140625,
+          "delta": -5.0,
+          "probability_after": 1.0702522884426805e-18,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 108843,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "7452f066a066f0b62cc7a39ac1cd697872521f3beb12b2c8cfe4d3a75e327bc3",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-208",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-8c6813b5d8ba46bfb71f3d66ec19c39c",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": [
+        {
+          "clip": 5.0,
+          "coefficient": 1.0,
+          "deltas": [
+            {
+              "delta": -5.0,
+              "token_id": 9702
+            }
+          ],
+          "normalized": false,
+          "raw_norm": 10.0,
+          "vector_id": "final-entry"
+        }
+      ]
+    },
+    {
+      "changed": [
+        {
+          "after": 5.140869140625,
+          "before": 0.140869140625,
+          "delta": 5.0,
+          "probability_after": 2.3573877293053998e-14,
+          "probability_before": 1.5883952256161765e-16,
+          "rank_after": 4848,
+          "rank_before": 25766,
+          "token_id": 9702
+        }
+      ],
+      "concept_capsules": [],
+      "config_hash": "a484bb914c67a08ee49befaadfbec637c4b6455cc8c2a121805ef91951971114",
+      "entropy_pid": null,
+      "forced_token_id": null,
+      "generated_tokens_before_sample": 0,
+      "hard_injection_blocked_by_mask": false,
+      "invocation_count": 1,
+      "mask_count": 0,
+      "masked_token_ids": [],
+      "post_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "pre_top_k": [
+        {
+          "logit": 36.46875,
+          "token_id": 32313
+        }
+      ],
+      "request_id": "FINAL-VAL-209",
+      "requested_forced_token_id": null,
+      "scheduler_request_id": "nram-scheduler-389976fe355d4da0b1cfa506ce85951a",
+      "schema": "nram.processor.step.v1",
+      "soft_injections": [],
+      "vocabulary_logit_vectors": [
+        {
+          "clip": 5.0,
+          "coefficient": 1.0,
+          "deltas": [
+            {
+              "delta": 5.0,
+              "token_id": 9702
+            }
+          ],
+          "normalized": false,
+          "raw_norm": 10.0,
+          "vector_id": "final-entry"
+        }
+      ]
+    }
+  ]
+}

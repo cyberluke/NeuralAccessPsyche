@@ -1,0 +1,2170 @@
+[
+  {
+    "case_id": "unknown-top-level",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.561909Z",
+    "finished_utc": "2026-07-28T01:18:22.588768Z",
+    "elapsed_ms": 26.8261999999595,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unknown-top-level"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unknown-top",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        },
+        "unknown_top_level_control": {
+          "must": "reject"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unknown-top\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5},\"unknown_top_level_control\":{\"must\":\"reject\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 422,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "147",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"detail\":[{\"type\":\"extra_forbidden\",\"loc\":[\"body\",\"unknown_top_level_control\"],\"msg\":\"Extra inputs are not permitted\",\"input\":{\"must\":\"reject\"}}]}",
+      "json": {
+        "detail": [
+          {
+            "type": "extra_forbidden",
+            "loc": [
+              "body",
+              "unknown_top_level_control"
+            ],
+            "msg": "Extra inputs are not permitted",
+            "input": {
+              "must": "reject"
+            }
+          }
+        ]
+      },
+      "bytes": 147
+    },
+    "exception": "HTTPError: HTTP Error 422: Unprocessable Entity"
+  },
+  {
+    "case_id": "unknown-nested-nram",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.589320Z",
+    "finished_utc": "2026-07-28T01:18:22.591666Z",
+    "elapsed_ms": 2.3327999997491133,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unknown-nested-nram"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unknown-nested",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "unknown_nested_control": {
+            "must": "reject"
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unknown-nested\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"unknown_nested_control\":{\"must\":\"reject\"}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "195",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'unknown_nested_control', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'unknown_nested_control', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}"
+      },
+      "bytes": 195
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unknown-profile",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.592063Z",
+    "finished_utc": "2026-07-28T01:18:22.593710Z",
+    "elapsed_ms": 1.6366999998354004,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unknown-profile"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unknown-profile",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "profile": "ra-profile-does-not-exist"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unknown-profile\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"profile\":\"ra-profile-does-not-exist\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "179",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'profile', 'code': 'value_error', 'message': 'Value error, unknown_nram_profile'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'profile', 'code': 'value_error', 'message': 'Value error, unknown_nram_profile'}]}"
+      },
+      "bytes": 179
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "concepts-wrong-shape",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.594516Z",
+    "finished_utc": "2026-07-28T01:18:22.596126Z",
+    "elapsed_ms": 1.5999000002011599,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "concepts-wrong-shape"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-concepts-wrong-shape",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "concepts": "not-a-list"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-concepts-wrong-shape\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"concepts\":\"not-a-list\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "173",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concepts', 'code': 'list_type', 'message': 'Input should be a valid list'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concepts', 'code': 'list_type', 'message': 'Input should be a valid list'}]}"
+      },
+      "bytes": 173
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "soft-injections-wrong-shape",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.596613Z",
+    "finished_utc": "2026-07-28T01:18:22.616465Z",
+    "elapsed_ms": 19.8326999998244,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "soft-injections-wrong-shape"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-soft-injections-wrong-shape",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "soft_token_injections": {
+            "token_ids": [
+              1
+            ]
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-soft-injections-wrong-shape\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"soft_token_injections\":{\"token_ids\":[1]}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "186",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'soft_token_injections', 'code': 'list_type', 'message': 'Input should be a valid list'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'soft_token_injections', 'code': 'list_type', 'message': 'Input should be a valid list'}]}"
+      },
+      "bytes": 186
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "vectors-wrong-shape",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.617391Z",
+    "finished_utc": "2026-07-28T01:18:22.631216Z",
+    "elapsed_ms": 13.804499999878317,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "vectors-wrong-shape"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-vectors-wrong-shape",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "vocabulary_logit_vectors": {
+            "entries": []
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-vectors-wrong-shape\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"vocabulary_logit_vectors\":{\"entries\":[]}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "189",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'vocabulary_logit_vectors', 'code': 'list_type', 'message': 'Input should be a valid list'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'vocabulary_logit_vectors', 'code': 'list_type', 'message': 'Input should be a valid list'}]}"
+      },
+      "bytes": 189
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "hard-schedule-wrong-shape",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.631753Z",
+    "finished_utc": "2026-07-28T01:18:22.645920Z",
+    "elapsed_ms": 14.15190000034272,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hard-schedule-wrong-shape"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-hard-schedule-wrong-shape",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "hard_token_schedule": "1,2,3"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-hard-schedule-wrong-shape\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hard_token_schedule\":\"1,2,3\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "184",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'hard_token_schedule', 'code': 'list_type', 'message': 'Input should be a valid list'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'hard_token_schedule', 'code': 'list_type', 'message': 'Input should be a valid list'}]}"
+      },
+      "bytes": 184
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "forced-negative",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.646578Z",
+    "finished_utc": "2026-07-28T01:18:22.661675Z",
+    "elapsed_ms": 15.081000000009226,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "forced-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-forced-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "forced_token_enabled": true,
+          "forced_token_id": -1
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":-1}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "203",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'greater_than_equal', 'message': 'Input should be greater than or equal to 0'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'greater_than_equal', 'message': 'Input should be greater than or equal to 0'}]}"
+      },
+      "bytes": 203
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "forced-fractional",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.662395Z",
+    "finished_utc": "2026-07-28T01:18:22.676709Z",
+    "elapsed_ms": 14.296899999862944,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "forced-fractional"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-forced-fractional",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "forced_token_enabled": true,
+          "forced_token_id": 1.5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-fractional\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":1.5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "182",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'int_type', 'message': 'Input should be a valid integer'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'int_type', 'message': 'Input should be a valid integer'}]}"
+      },
+      "bytes": 182
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "forced-string-fractional",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.677192Z",
+    "finished_utc": "2026-07-28T01:18:22.679391Z",
+    "elapsed_ms": 2.18780000022889,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "forced-string-fractional"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-forced-string-fractional",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "forced_token_enabled": true,
+          "forced_token_id": "1.5"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-string-fractional\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":\"1.5\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "182",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'int_type', 'message': 'Input should be a valid integer'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'forced_token_id', 'code': 'int_type', 'message': 'Input should be a valid integer'}]}"
+      },
+      "bytes": 182
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "forced-tokenizer-oob",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.679777Z",
+    "finished_utc": "2026-07-28T01:18:22.693539Z",
+    "elapsed_ms": 13.718900000185386,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "forced-tokenizer-oob"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-forced-tokenizer-oob",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "forced_token_enabled": true,
+          "forced_token_id": 200000
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-tokenizer-oob\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":200000}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "153",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":{\"message\":\"forced_token_id:token_id_not_defined_by_active_tokenizer\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+      "json": {
+        "error": {
+          "message": "forced_token_id:token_id_not_defined_by_active_tokenizer",
+          "type": "inference_error",
+          "param": null,
+          "code": "upstream_inference_failed"
+        }
+      },
+      "bytes": 153
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "temperature-nan",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.694213Z",
+    "finished_utc": "2026-07-28T01:18:22.698410Z",
+    "elapsed_ms": 4.179799999747047,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "temperature-nan"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": NaN,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-temperature-nan",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":NaN,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-temperature-nan\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "78",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Middleware error: Out of range float values are not JSON compliant\"}",
+      "json": {
+        "error": "Middleware error: Out of range float values are not JSON compliant"
+      },
+      "bytes": 78
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  },
+  {
+    "case_id": "temperature-inf",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.698878Z",
+    "finished_utc": "2026-07-28T01:18:22.701910Z",
+    "elapsed_ms": 3.0173000000104366,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "temperature-inf"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": Infinity,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-temperature-inf",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":Infinity,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-temperature-inf\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "78",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Middleware error: Out of range float values are not JSON compliant\"}",
+      "json": {
+        "error": "Middleware error: Out of range float values are not JSON compliant"
+      },
+      "bytes": 78
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  },
+  {
+    "case_id": "temperature-negative",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.702326Z",
+    "finished_utc": "2026-07-28T01:18:22.704292Z",
+    "elapsed_ms": 1.9541000001481734,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "temperature-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": -0.1,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-temperature-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":-0.1,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-temperature-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "121",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'number_out_of_range', 'param': 'temperature', 'message': 'temperature must be between 0.0 and 2.0'}\"}",
+      "json": {
+        "error": "{'code': 'number_out_of_range', 'param': 'temperature', 'message': 'temperature must be between 0.0 and 2.0'}"
+      },
+      "bytes": 121
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "top-p-nan",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.704826Z",
+    "finished_utc": "2026-07-28T01:18:22.723705Z",
+    "elapsed_ms": 18.86319999994157,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "top-p-nan"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": NaN,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-top-p-nan",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":NaN,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-top-p-nan\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "78",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Middleware error: Out of range float values are not JSON compliant\"}",
+      "json": {
+        "error": "Middleware error: Out of range float values are not JSON compliant"
+      },
+      "bytes": 78
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  },
+  {
+    "case_id": "top-p-negative",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.724177Z",
+    "finished_utc": "2026-07-28T01:18:22.726685Z",
+    "elapsed_ms": 2.4978000001283363,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "top-p-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": -0.5,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-top-p-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":-0.5,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-top-p-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "109",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'number_out_of_range', 'param': 'top_p', 'message': 'top_p must be between 0.0 and 1.0'}\"}",
+      "json": {
+        "error": "{'code': 'number_out_of_range', 'param': 'top_p', 'message': 'top_p must be between 0.0 and 1.0'}"
+      },
+      "bytes": 109
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "max-tokens-negative",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.727143Z",
+    "finished_utc": "2026-07-28T01:18:22.728814Z",
+    "elapsed_ms": 1.6612999997960287,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "max-tokens-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": -1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-max-tokens-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":-1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-max-tokens-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "119",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'integer_out_of_range', 'param': 'max_tokens', 'message': 'max_tokens must be between 1 and 8192'}\"}",
+      "json": {
+        "error": "{'code': 'integer_out_of_range', 'param': 'max_tokens', 'message': 'max_tokens must be between 1 and 8192'}"
+      },
+      "bytes": 119
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "max-tokens-fractional",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.729101Z",
+    "finished_utc": "2026-07-28T01:18:22.754931Z",
+    "elapsed_ms": 25.810999999976048,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "max-tokens-fractional"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1.5,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-max-tokens-fractional",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1.5,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-max-tokens-fractional\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 422,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "155",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"detail\":[{\"type\":\"int_from_float\",\"loc\":[\"body\",\"max_tokens\"],\"msg\":\"Input should be a valid integer, got a number with a fractional part\",\"input\":1.5}]}",
+      "json": {
+        "detail": [
+          {
+            "type": "int_from_float",
+            "loc": [
+              "body",
+              "max_tokens"
+            ],
+            "msg": "Input should be a valid integer, got a number with a fractional part",
+            "input": 1.5
+          }
+        ]
+      },
+      "bytes": 155
+    },
+    "exception": "HTTPError: HTTP Error 422: Unprocessable Entity"
+  },
+  {
+    "case_id": "concept-strength-nan",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.755403Z",
+    "finished_utc": "2026-07-28T01:18:22.769901Z",
+    "elapsed_ms": 14.483899999959249,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "concept-strength-nan"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-concept-strength-nan",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "concept_strength": NaN
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-concept-strength-nan\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"concept_strength\":NaN}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "188",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}"
+      },
+      "bytes": 188
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "concept-strength-inf",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.770481Z",
+    "finished_utc": "2026-07-28T01:18:22.786525Z",
+    "elapsed_ms": 16.028600000026927,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "concept-strength-inf"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-concept-strength-inf",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "concept_strength": Infinity
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-concept-strength-inf\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"concept_strength\":Infinity}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "188",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}"
+      },
+      "bytes": 188
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "intensity-inf",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.787038Z",
+    "finished_utc": "2026-07-28T01:18:22.788934Z",
+    "elapsed_ms": 1.884900000277412,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "intensity-inf"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-intensity-inf",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "intensity": Infinity
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-intensity-inf\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"intensity\":Infinity}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "181",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'intensity', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'intensity', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}"
+      },
+      "bytes": 181
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "spoof-reserved-req",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.789292Z",
+    "finished_utc": "2026-07-28T01:18:22.790882Z",
+    "elapsed_ms": 1.580199999807519,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "spoof-reserved-req"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-reserved",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "__req__": {
+            "spoof": true
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-reserved\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"__req__\":{\"spoof\":true}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "180",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '__req__', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '__req__', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}"
+      },
+      "bytes": 180
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "forced-vs-forbidden-conflict",
+    "expected_contract": "explicit deterministic 4xx conflict",
+    "started_utc": "2026-07-28T01:18:22.791361Z",
+    "finished_utc": "2026-07-28T01:18:22.792886Z",
+    "elapsed_ms": 1.514800000222749,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "forced-vs-forbidden-conflict"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-all-mask",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "forbidden_token_ids": [
+            9702
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-all-mask\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"forbidden_token_ids\":[9702]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "195",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, forced_token_conflicts_with_forbidden_token'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, forced_token_conflicts_with_forbidden_token'}]}"
+      },
+      "bytes": 195
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-dexperts",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.793223Z",
+    "finished_utc": "2026-07-28T01:18:22.816785Z",
+    "elapsed_ms": 23.546299999907205,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-dexperts"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-dexperts",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "dexperts": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-dexperts\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"dexperts\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "186",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:dexperts'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:dexperts'}]}"
+      },
+      "bytes": 186
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-activation_addition",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.817373Z",
+    "finished_utc": "2026-07-28T01:18:22.831741Z",
+    "elapsed_ms": 14.352300000155083,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-activation_addition"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-activation_addition",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "activation_addition": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-activation_addition\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"activation_addition\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "197",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:activation_addition'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:activation_addition'}]}"
+      },
+      "bytes": 197
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-actadd",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.832268Z",
+    "finished_utc": "2026-07-28T01:18:22.847045Z",
+    "elapsed_ms": 14.761299999918265,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-actadd"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-actadd",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "actadd": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-actadd\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"actadd\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "184",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:actadd'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:actadd'}]}"
+      },
+      "bytes": 184
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-conceptor_steering",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.847795Z",
+    "finished_utc": "2026-07-28T01:18:22.861513Z",
+    "elapsed_ms": 13.703999999961525,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-conceptor_steering"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-conceptor_steering",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "conceptor_steering": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-conceptor_steering\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"conceptor_steering\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "196",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:conceptor_steering'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:conceptor_steering'}]}"
+      },
+      "bytes": 196
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-hidden_state_probes",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.862011Z",
+    "finished_utc": "2026-07-28T01:18:22.878107Z",
+    "elapsed_ms": 16.080900000360998,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-hidden_state_probes"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-hidden_state_probes",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "hidden_state_probes": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-hidden_state_probes\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hidden_state_probes\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "197",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:hidden_state_probes'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:hidden_state_probes'}]}"
+      },
+      "bytes": 197
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-latent_closed_loop",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.878828Z",
+    "finished_utc": "2026-07-28T01:18:22.893316Z",
+    "elapsed_ms": 14.47150000012698,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-latent_closed_loop"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-latent_closed_loop",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "latent_closed_loop": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-latent_closed_loop\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"latent_closed_loop\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+        "server": "uvicorn",
+        "content-length": "196",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:latent_closed_loop'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:latent_closed_loop'}]}"
+      },
+      "bytes": 196
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-semantic_novelty_controller",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.893799Z",
+    "finished_utc": "2026-07-28T01:18:22.909669Z",
+    "elapsed_ms": 15.855499999815947,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-semantic_novelty_controller"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-semantic_novelty_controller",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "semantic_novelty_controller": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-semantic_novelty_controller\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"semantic_novelty_controller\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "205",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:semantic_novelty_controller'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:semantic_novelty_controller'}]}"
+      },
+      "bytes": 205
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-evidence_guard",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.910162Z",
+    "finished_utc": "2026-07-28T01:18:22.926093Z",
+    "elapsed_ms": 15.916800000013609,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-evidence_guard"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-evidence_guard",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "evidence_guard": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-evidence_guard\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"evidence_guard\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "192",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:evidence_guard'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:evidence_guard'}]}"
+      },
+      "bytes": 192
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-branch_tournament",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.926690Z",
+    "finished_utc": "2026-07-28T01:18:22.941476Z",
+    "elapsed_ms": 14.771299999665644,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-branch_tournament"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-branch_tournament",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "branch_tournament": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-branch_tournament\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"branch_tournament\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "195",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:branch_tournament'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:branch_tournament'}]}"
+      },
+      "bytes": 195
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-reft",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.942039Z",
+    "finished_utc": "2026-07-28T01:18:22.956137Z",
+    "elapsed_ms": 14.082499999858555,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-reft"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-reft",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "reft": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-reft\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"reft\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "182",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:reft'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:reft'}]}"
+      },
+      "bytes": 182
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-soft_prompts",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.956624Z",
+    "finished_utc": "2026-07-28T01:18:22.958379Z",
+    "elapsed_ms": 1.7450000000280852,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-soft_prompts"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-soft_prompts",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "soft_prompts": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-soft_prompts\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"soft_prompts\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "190",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:soft_prompts'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:soft_prompts'}]}"
+      },
+      "bytes": 190
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-attention_head_gating",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.958908Z",
+    "finished_utc": "2026-07-28T01:18:22.971865Z",
+    "elapsed_ms": 12.940400000388763,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-attention_head_gating"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-attention_head_gating",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "attention_head_gating": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-attention_head_gating\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"attention_head_gating\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "199",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:attention_head_gating'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:attention_head_gating'}]}"
+      },
+      "bytes": 199
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-kv_cache_firewall",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.972390Z",
+    "finished_utc": "2026-07-28T01:18:22.988017Z",
+    "elapsed_ms": 15.613699999903474,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-kv_cache_firewall"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-kv_cache_firewall",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "kv_cache_firewall": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-kv_cache_firewall\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"kv_cache_firewall\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "195",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:kv_cache_firewall'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:kv_cache_firewall'}]}"
+      },
+      "bytes": 195
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "unsupported-gpu_native_semantic_control",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:22.988495Z",
+    "finished_utc": "2026-07-28T01:18:23.003597Z",
+    "elapsed_ms": 15.087400000084017,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "unsupported-gpu_native_semantic_control"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-unsupported-gpu_native_semantic_control",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "gpu_native_semantic_control": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-gpu_native_semantic_control\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"gpu_native_semantic_control\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "205",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:gpu_native_semantic_control'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:gpu_native_semantic_control'}]}"
+      },
+      "bytes": 205
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  },
+  {
+    "case_id": "persona-unsupported-dexperts",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-28T01:18:23.004260Z",
+    "finished_utc": "2026-07-28T01:18:23.006156Z",
+    "elapsed_ms": 1.8863000000237662,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "persona-unsupported-dexperts"
+      },
+      "body": {
+        "model": "persona-peak",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VALID-persona-unsupported",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "dexperts": true
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"persona-peak\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-persona-unsupported\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"dexperts\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 400,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "186",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:dexperts'}]}\"}",
+      "json": {
+        "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:dexperts'}]}"
+      },
+      "bytes": 186
+    },
+    "exception": "HTTPError: HTTP Error 400: Bad Request"
+  }
+]

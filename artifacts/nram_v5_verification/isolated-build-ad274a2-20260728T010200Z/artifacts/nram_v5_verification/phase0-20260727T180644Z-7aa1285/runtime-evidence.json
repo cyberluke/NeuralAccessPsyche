@@ -1,0 +1,70 @@
+{
+  "real_gpu": {
+    "gateway_health": {"status": 200, "body": {"status": "ok"}},
+    "gateway_ready": {
+      "status": 200,
+      "body": {"status": "ready", "engine": "sglang", "model": "nram-qwen3-14b-awq"}
+    },
+    "vanilla_determinism": {
+      "model_alias": "qwen3-14b-awq-baseline",
+      "prompt": "Reply with one concise sentence defining deterministic inference.",
+      "seed": 271828,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 24,
+      "tools": [],
+      "run_1_status": 200,
+      "run_2_status": 200,
+      "run_1_seconds": 0.466700,
+      "run_2_seconds": 0.412083,
+      "content_equal": true,
+      "content_sha256": "c0f0a0d4fed0200c99a06dcb0af2ccb40f162704a73bc008a752af0d25a75b7b",
+      "content": "Deterministic inference is a method of reasoning where conclusions are logically derived with certainty from given premises or data."
+    },
+    "gateway_nram_smoke": {
+      "status": 200,
+      "model_alias": "nram-qwen3-14b-awq",
+      "seed": 271828,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 12,
+      "profile": "peak",
+      "intensity": 0.7,
+      "content": "Precise, deliberate, transformative.",
+      "evidence_scope": "Live routing and successful class deserialization only; API telemetry is not processor invocation proof."
+    },
+    "forced_token": {
+      "status_control": 200,
+      "status_controlled": 200,
+      "model": "nram-qwen3-14b-awq",
+      "prompt": "Say one word.",
+      "seed": 271828,
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "forced_token_id": 11064,
+      "forced_text": " proof",
+      "disabled_control_text": "Hello",
+      "masked_id_count": 151935,
+      "configuration_sha256": "699fbcca3a76e66e6be54fd11e3e64cbcbae12bc66a3573af9e4e6ce05f66b93",
+      "conclusion": "Shared custom processor deserialized and executed before sampling on real SGLang/GPU.",
+      "missing": ["pre/post top-k", "exact numeric logit deltas", "invocation count", "processor event telemetry"]
+    }
+  },
+  "mocked_or_cpu_only": {
+    "junit": "test-results.xml",
+    "count": 282,
+    "passed": 273,
+    "failed": 9,
+    "skipped": 0,
+    "errors": 0,
+    "warning_count": 2,
+    "note": "Most repository tests are mocks, source inspections, or CPU tensor tests and are not acceptance proof."
+  },
+  "invalid_repository_gpu_test": {
+    "node": "tests/gpu/test_forced_token_proof.py::test_forced_token",
+    "result": "failed",
+    "cause": "Targets unpublished http://localhost:30000 and stale model alias.",
+    "acceptance_evidence": false
+  }
+}

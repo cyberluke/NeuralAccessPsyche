@@ -1,0 +1,67 @@
+{
+  "case_id": "max-tokens-fractional",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.473784Z",
+  "finished_utc": "2026-07-28T02:59:17.476735Z",
+  "elapsed_ms": 2.913400001489208,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "max-tokens-fractional"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1.5,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-max-tokens-fractional",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1.5,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-max-tokens-fractional\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "186",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"details\":[{\"type\":\"int_from_float\",\"loc\":[\"body\",\"max_tokens\"],\"msg\":\"Input should be a valid integer, got a number with a fractional part\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "details": [
+          {
+            "type": "int_from_float",
+            "loc": [
+              "body",
+              "max_tokens"
+            ],
+            "msg": "Input should be a valid integer, got a number with a fractional part"
+          }
+        ]
+      }
+    },
+    "bytes": 186
+  },
+  "exception": "HTTPError: HTTP Error 422: Unprocessable Entity"
+}

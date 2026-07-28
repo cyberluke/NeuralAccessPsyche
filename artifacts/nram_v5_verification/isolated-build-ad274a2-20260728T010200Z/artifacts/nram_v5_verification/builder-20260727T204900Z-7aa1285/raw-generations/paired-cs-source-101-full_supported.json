@@ -1,0 +1,67 @@
+{
+  "prompt": {
+    "id": "cs-source",
+    "language": "cs",
+    "category": "source_transformation",
+    "prompt": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí.",
+    "source": "Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+  },
+  "seed": 101,
+  "condition": "full_supported",
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 24,
+    "seed": 101,
+    "tools": [],
+    "nram": {
+      "enabled": true,
+      "profile": "normal",
+      "request_id": "paired-cs-source-101-full_supported",
+      "include_telemetry": true,
+      "prompt_steering_enabled": true,
+      "profile_logit_steering_enabled": true,
+      "forbidden_phrases": [
+        "as an AI",
+        "jako AI"
+      ],
+      "entropy_control": true,
+      "source_text": "Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí.",
+      "source_ngram_size": 8
+    }
+  },
+  "response": {
+    "id": "cc1ecd1300404a859b2f19aeee2c659e",
+    "object": "chat.completion",
+    "created": 1785186891,
+    "model": "nram-qwen3-14b-awq",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Transparentní mechanismus převádějící důkazy do konkrétních produktov"
+        },
+        "finish_reason": "length",
+        "reasoning_content": null
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 173,
+      "completion_tokens": 24,
+      "total_tokens": 197
+    },
+    "nram_correlation": {
+      "request_id": "paired-cs-source-101-full_supported",
+      "config_hash": "217df8b3740992fdf262c5d7ec4db88ba9633a66fa75a1555a7e38aba7222fa5"
+    }
+  },
+  "latency_ms": 706.5196999974432
+}

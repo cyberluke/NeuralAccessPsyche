@@ -1,0 +1,757 @@
+[
+  {
+    "case_id": "hash-control",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:23.832981Z",
+    "finished_utc": "2026-07-28T01:18:23.910617Z",
+    "elapsed_ms": 77.60189999999056,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-control"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+        "server": "uvicorn",
+        "content-length": "773",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-7325649566b74f188185f215e098c2e2\",\"object\":\"chat.completion\",\"created\":1785201503,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-7325649566b74f188185f215e098c2e2\",\"config_hash\":\"54bdc693aefb87f8692df83fb8b5dba42b80ba07bdcf4ac0ec5942530ba28459\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-7325649566b74f188185f215e098c2e2",
+        "object": "chat.completion",
+        "created": 1785201503,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-7325649566b74f188185f215e098c2e2",
+          "config_hash": "54bdc693aefb87f8692df83fb8b5dba42b80ba07bdcf4ac0ec5942530ba28459",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 773
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-prompt",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:23.911123Z",
+    "finished_utc": "2026-07-28T01:18:23.949148Z",
+    "elapsed_ms": 37.9982999997992,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-prompt"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "A different prompt."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"A different prompt.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "773",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-2828bd8aa5c642c39b84e5918ded2697\",\"object\":\"chat.completion\",\"created\":1785201503,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":16,\"completion_tokens\":1,\"total_tokens\":17},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-2828bd8aa5c642c39b84e5918ded2697\",\"config_hash\":\"ea81569aa61d63056c6e6d39a7ad9845359d9f9a917ca5e865e4968573276e93\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-2828bd8aa5c642c39b84e5918ded2697",
+        "object": "chat.completion",
+        "created": 1785201503,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 16,
+          "completion_tokens": 1,
+          "total_tokens": 17
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-2828bd8aa5c642c39b84e5918ded2697",
+          "config_hash": "ea81569aa61d63056c6e6d39a7ad9845359d9f9a917ca5e865e4968573276e93",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 773
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-seed",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:23.950249Z",
+    "finished_utc": "2026-07-28T01:18:23.988677Z",
+    "elapsed_ms": 38.40309999986857,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-seed"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424243,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424243,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "773",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-f279e9e7b70e4a2681df5ab5c06887fb\",\"object\":\"chat.completion\",\"created\":1785201503,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-f279e9e7b70e4a2681df5ab5c06887fb\",\"config_hash\":\"9772ae3a8383a194538f7913f66678f2126ca8bc6ebe16e8f1ef73a23c161e05\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-f279e9e7b70e4a2681df5ab5c06887fb",
+        "object": "chat.completion",
+        "created": 1785201503,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-f279e9e7b70e4a2681df5ab5c06887fb",
+          "config_hash": "9772ae3a8383a194538f7913f66678f2126ca8bc6ebe16e8f1ef73a23c161e05",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 773
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-temperature",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:23.989168Z",
+    "finished_utc": "2026-07-28T01:18:24.035003Z",
+    "elapsed_ms": 45.81030000008468,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-temperature"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.7,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.7,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "773",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0\",\"config_hash\":\"5a428702e25c1b644dbc21fce3342e9f4dcd1f56c95d89c73e4862571f77dfc8\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0",
+          "config_hash": "5a428702e25c1b644dbc21fce3342e9f4dcd1f56c95d89c73e4862571f77dfc8",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 773
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-top-p",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:24.035732Z",
+    "finished_utc": "2026-07-28T01:18:24.072585Z",
+    "elapsed_ms": 36.828399999649264,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-top-p"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 0.8,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":0.8,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "773",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-94b560056c0949c48693d9bcd67a0253\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-94b560056c0949c48693d9bcd67a0253\",\"config_hash\":\"f610ff451bc41e6aa3513e00224b18b0db4ade43dc5892effafe1fd975afa6cc\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-94b560056c0949c48693d9bcd67a0253",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-94b560056c0949c48693d9bcd67a0253",
+          "config_hash": "f610ff451bc41e6aa3513e00224b18b0db4ade43dc5892effafe1fd975afa6cc",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 773
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-response-format",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:24.073088Z",
+    "finished_utc": "2026-07-28T01:18:24.125993Z",
+    "elapsed_ms": 52.88190000010218,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-response-format"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        },
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702},\"response_format\":{\"type\":\"json_object\"}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "768",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-aa340631a87c44d6b13488e3f956144f\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-aa340631a87c44d6b13488e3f956144f\",\"config_hash\":\"7ff91824ac484758a48b9d98a6ba1eafdf3eeb4884300ae5fe223ab5cb571b0a\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[4913],\"sampled_tokens\":[\"{\\\"\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-aa340631a87c44d6b13488e3f956144f",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\""
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-aa340631a87c44d6b13488e3f956144f",
+          "config_hash": "7ff91824ac484758a48b9d98a6ba1eafdf3eeb4884300ae5fe223ab5cb571b0a",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            4913
+          ],
+          "sampled_tokens": [
+            "{\""
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 768
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-prompt-steering",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:24.126635Z",
+    "finished_utc": "2026-07-28T01:18:24.189281Z",
+    "elapsed_ms": 62.623899999834975,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-prompt-steering"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": true,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":true,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "775",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-466a468bd3824c588ee9cd9b7642c455\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":141,\"completion_tokens\":1,\"total_tokens\":142},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-466a468bd3824c588ee9cd9b7642c455\",\"config_hash\":\"04819c9acb079e7b73f4a6814cb8a5005eff52ff9e4c06f3b06289ad5a9e225d\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-466a468bd3824c588ee9cd9b7642c455",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 141,
+          "completion_tokens": 1,
+          "total_tokens": 142
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-DUPLICATE",
+          "scheduler_request_id": "nram-scheduler-466a468bd3824c588ee9cd9b7642c455",
+          "config_hash": "04819c9acb079e7b73f4a6814cb8a5005eff52ff9e4c06f3b06289ad5a9e225d",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 775
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hash-application-request-id",
+    "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+    "started_utc": "2026-07-28T01:18:24.189874Z",
+    "finished_utc": "2026-07-28T01:18:24.225638Z",
+    "elapsed_ms": 35.73259999984657,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hash-application-request-id"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HASH-OTHER",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-OTHER\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "769",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-8b4368679115486e96f70c6e009bdb63\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-OTHER\",\"scheduler_request_id\":\"nram-scheduler-8b4368679115486e96f70c6e009bdb63\",\"config_hash\":\"54bdc693aefb87f8692df83fb8b5dba42b80ba07bdcf4ac0ec5942530ba28459\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-8b4368679115486e96f70c6e009bdb63",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-HASH-OTHER",
+          "scheduler_request_id": "nram-scheduler-8b4368679115486e96f70c6e009bdb63",
+          "config_hash": "54bdc693aefb87f8692df83fb8b5dba42b80ba07bdcf4ac0ec5942530ba28459",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 769
+    },
+    "exception": null
+  }
+]

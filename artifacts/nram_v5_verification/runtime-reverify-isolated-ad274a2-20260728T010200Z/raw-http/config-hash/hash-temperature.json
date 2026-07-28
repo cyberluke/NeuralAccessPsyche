@@ -1,0 +1,94 @@
+{
+  "case_id": "hash-temperature",
+  "expected_contract": "configuration hash changes iff behaviorally relevant state changes",
+  "started_utc": "2026-07-28T01:18:23.989168Z",
+  "finished_utc": "2026-07-28T01:18:24.035003Z",
+  "elapsed_ms": 45.81030000008468,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "hash-temperature"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.7,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-HASH-DUPLICATE",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": true,
+        "forced_token_id": 9702
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.7,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+      "server": "uvicorn",
+      "content-length": "773",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-HASH-DUPLICATE\",\"scheduler_request_id\":\"nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0\",\"config_hash\":\"5a428702e25c1b644dbc21fce3342e9f4dcd1f56c95d89c73e4862571f77dfc8\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0",
+      "object": "chat.completion",
+      "created": 1785201504,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "thank"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": {
+        "request_id": "RA-HASH-DUPLICATE",
+        "scheduler_request_id": "nram-scheduler-da6fcbbc7328429c9aff060751d3f3b0",
+        "config_hash": "5a428702e25c1b644dbc21fce3342e9f4dcd1f56c95d89c73e4862571f77dfc8",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          9702
+        ],
+        "sampled_tokens": [
+          " thank"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    },
+    "bytes": 773
+  },
+  "exception": null
+}

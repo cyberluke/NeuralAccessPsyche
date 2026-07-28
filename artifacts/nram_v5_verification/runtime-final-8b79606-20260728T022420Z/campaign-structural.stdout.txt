@@ -1,0 +1,5 @@
+{"case_id": "phrase-disabled", "elapsed_ms": 120.605, "exception": null, "response_bytes": 796, "status": 200}
+{"case_id": "phrase-leading-space-exact", "elapsed_ms": 123.498, "exception": null, "response_bytes": 800, "status": 200}
+{"case_id": "phrase-no-space-variant", "elapsed_ms": 103.054, "exception": null, "response_bytes": 797, "status": 200}
+{"case_id": "source-disabled", "elapsed_ms": 362.476, "exception": null, "response_bytes": 917, "status": 200}
+{"case_id": "source-enabled", "elapsed_ms": 292.671, "exception": null, "response_bytes": 902, "status": 200}

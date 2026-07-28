@@ -1,0 +1,66 @@
+{
+  "case_id": "unsupported-hidden_state_probes",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.637675Z",
+  "finished_utc": "2026-07-28T02:59:17.640648Z",
+  "elapsed_ms": 2.949100000478211,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unsupported-hidden_state_probes"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unsupported-hidden_state_probes",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "hidden_state_probes": true
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-hidden_state_probes\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hidden_state_probes\":true}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "185",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"\",\"code\":\"value_error\",\"message\":\"Value error, unsupported_nram_features:hidden_state_probes\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "schema": "nram.request.v1",
+        "errors": [
+          {
+            "path": "",
+            "code": "value_error",
+            "message": "Value error, unsupported_nram_features:hidden_state_probes"
+          }
+        ]
+      }
+    },
+    "bytes": 185
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

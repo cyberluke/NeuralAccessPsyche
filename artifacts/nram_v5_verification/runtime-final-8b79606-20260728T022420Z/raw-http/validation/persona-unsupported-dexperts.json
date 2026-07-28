@@ -1,0 +1,66 @@
+{
+  "case_id": "persona-unsupported-dexperts",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.773503Z",
+  "finished_utc": "2026-07-28T02:59:17.776275Z",
+  "elapsed_ms": 2.7462999987619696,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "persona-unsupported-dexperts"
+    },
+    "body": {
+      "model": "persona-peak",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-persona-unsupported",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "dexperts": true
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-peak\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-persona-unsupported\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"dexperts\":true}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:17 GMT",
+      "server": "uvicorn",
+      "content-length": "174",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"\",\"code\":\"value_error\",\"message\":\"Value error, unsupported_nram_features:dexperts\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "schema": "nram.request.v1",
+        "errors": [
+          {
+            "path": "",
+            "code": "value_error",
+            "message": "Value error, unsupported_nram_features:dexperts"
+          }
+        ]
+      }
+    },
+    "bytes": 174
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

@@ -1,0 +1,55 @@
+{
+  "case_id": "temperature-inf",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T22:51:18.546959Z",
+  "finished_utc": "2026-07-27T22:51:18.570029Z",
+  "elapsed_ms": 23.05239999986952,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "temperature-inf"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": Infinity,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-temperature-inf",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":Infinity,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-temperature-inf\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:51:17 GMT",
+      "server": "uvicorn",
+      "content-length": "47",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"Temperature must be between 0 and 2\"}",
+    "json": {
+      "error": "Temperature must be between 0 and 2"
+    },
+    "bytes": 47
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

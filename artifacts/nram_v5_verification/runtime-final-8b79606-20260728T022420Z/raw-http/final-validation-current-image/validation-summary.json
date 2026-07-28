@@ -1,0 +1,4253 @@
+{
+  "schema": "nram.final.validation.v1",
+  "total": 210,
+  "rejections": 126,
+  "boundaries": 84,
+  "passed": 207,
+  "failed": 3,
+  "zero_event_rejections": 126,
+  "results": [
+    {
+      "index": 0,
+      "case_id": "public-temperature-nan",
+      "request_id": "FINAL-VAL-000",
+      "kind": "reject",
+      "path": [
+        "temperature"
+      ],
+      "value_repr": "nan",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 1,
+      "case_id": "public-temperature-posinf",
+      "request_id": "FINAL-VAL-001",
+      "kind": "reject",
+      "path": [
+        "temperature"
+      ],
+      "value_repr": "inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 2,
+      "case_id": "public-temperature-neginf",
+      "request_id": "FINAL-VAL-002",
+      "kind": "reject",
+      "path": [
+        "temperature"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 3,
+      "case_id": "public-temperature-lower",
+      "request_id": "FINAL-VAL-003",
+      "kind": "boundary",
+      "path": [
+        "temperature"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-075ae025306449988cf17af138549d74"
+      ],
+      "passed": true
+    },
+    {
+      "index": 4,
+      "case_id": "public-temperature-upper",
+      "request_id": "FINAL-VAL-004",
+      "kind": "boundary",
+      "path": [
+        "temperature"
+      ],
+      "value_repr": "2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-a976151efa6a4651bff354cb8b8c53a5"
+      ],
+      "passed": true
+    },
+    {
+      "index": 5,
+      "case_id": "public-top_p-nan",
+      "request_id": "FINAL-VAL-005",
+      "kind": "reject",
+      "path": [
+        "top_p"
+      ],
+      "value_repr": "nan",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 6,
+      "case_id": "public-top_p-posinf",
+      "request_id": "FINAL-VAL-006",
+      "kind": "reject",
+      "path": [
+        "top_p"
+      ],
+      "value_repr": "inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 7,
+      "case_id": "public-top_p-neginf",
+      "request_id": "FINAL-VAL-007",
+      "kind": "reject",
+      "path": [
+        "top_p"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 8,
+      "case_id": "public-top_p-lower",
+      "request_id": "FINAL-VAL-008",
+      "kind": "boundary",
+      "path": [
+        "top_p"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 502,
+      "error_code": "upstream_inference_failed",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": false,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": false
+    },
+    {
+      "index": 9,
+      "case_id": "public-top_p-upper",
+      "request_id": "FINAL-VAL-009",
+      "kind": "boundary",
+      "path": [
+        "top_p"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-146b7b9396094bf3ac885e09f8ecdad3"
+      ],
+      "passed": true
+    },
+    {
+      "index": 10,
+      "case_id": "public-frequency_penalty-nan",
+      "request_id": "FINAL-VAL-010",
+      "kind": "reject",
+      "path": [
+        "frequency_penalty"
+      ],
+      "value_repr": "nan",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 11,
+      "case_id": "public-frequency_penalty-posinf",
+      "request_id": "FINAL-VAL-011",
+      "kind": "reject",
+      "path": [
+        "frequency_penalty"
+      ],
+      "value_repr": "inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 12,
+      "case_id": "public-frequency_penalty-neginf",
+      "request_id": "FINAL-VAL-012",
+      "kind": "reject",
+      "path": [
+        "frequency_penalty"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 13,
+      "case_id": "public-frequency_penalty-lower",
+      "request_id": "FINAL-VAL-013",
+      "kind": "boundary",
+      "path": [
+        "frequency_penalty"
+      ],
+      "value_repr": "-2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-67912cbbcbfc4f6a95a9b4f6e57c527c"
+      ],
+      "passed": true
+    },
+    {
+      "index": 14,
+      "case_id": "public-frequency_penalty-upper",
+      "request_id": "FINAL-VAL-014",
+      "kind": "boundary",
+      "path": [
+        "frequency_penalty"
+      ],
+      "value_repr": "2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-09fb5e49c4fb4898be5252b316562405"
+      ],
+      "passed": true
+    },
+    {
+      "index": 15,
+      "case_id": "public-presence_penalty-nan",
+      "request_id": "FINAL-VAL-015",
+      "kind": "reject",
+      "path": [
+        "presence_penalty"
+      ],
+      "value_repr": "nan",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 16,
+      "case_id": "public-presence_penalty-posinf",
+      "request_id": "FINAL-VAL-016",
+      "kind": "reject",
+      "path": [
+        "presence_penalty"
+      ],
+      "value_repr": "inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 17,
+      "case_id": "public-presence_penalty-neginf",
+      "request_id": "FINAL-VAL-017",
+      "kind": "reject",
+      "path": [
+        "presence_penalty"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 422,
+      "actual_status": 422,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 18,
+      "case_id": "public-presence_penalty-lower",
+      "request_id": "FINAL-VAL-018",
+      "kind": "boundary",
+      "path": [
+        "presence_penalty"
+      ],
+      "value_repr": "-2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-375ef3813ad14c4e9ff8b1d4eeef8c2e"
+      ],
+      "passed": true
+    },
+    {
+      "index": 19,
+      "case_id": "public-presence_penalty-upper",
+      "request_id": "FINAL-VAL-019",
+      "kind": "boundary",
+      "path": [
+        "presence_penalty"
+      ],
+      "value_repr": "2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-15f98a8cfd0a4385856c2efaa9b1ba1d"
+      ],
+      "passed": true
+    },
+    {
+      "index": 20,
+      "case_id": "nram-intensity-nan",
+      "request_id": "FINAL-VAL-020",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "intensity"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 21,
+      "case_id": "nram-intensity-posinf",
+      "request_id": "FINAL-VAL-021",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "intensity"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 22,
+      "case_id": "nram-intensity-neginf",
+      "request_id": "FINAL-VAL-022",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "intensity"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 23,
+      "case_id": "nram-intensity-lower",
+      "request_id": "FINAL-VAL-023",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "intensity"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-97c87e075735436d968131f4c86ada41"
+      ],
+      "passed": true
+    },
+    {
+      "index": 24,
+      "case_id": "nram-intensity-upper",
+      "request_id": "FINAL-VAL-024",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "intensity"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-ed3aa38dade545dcbaf47e57f2e26244"
+      ],
+      "passed": true
+    },
+    {
+      "index": 25,
+      "case_id": "nram-vocabulary_logit_vector_clip-nan",
+      "request_id": "FINAL-VAL-025",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vector_clip"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 26,
+      "case_id": "nram-vocabulary_logit_vector_clip-posinf",
+      "request_id": "FINAL-VAL-026",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vector_clip"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 27,
+      "case_id": "nram-vocabulary_logit_vector_clip-neginf",
+      "request_id": "FINAL-VAL-027",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vector_clip"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 28,
+      "case_id": "nram-vocabulary_logit_vector_clip-lower",
+      "request_id": "FINAL-VAL-028",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vector_clip"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-49e3cdb61d5e4d5fad42177a6256cd6d"
+      ],
+      "passed": true
+    },
+    {
+      "index": 29,
+      "case_id": "nram-vocabulary_logit_vector_clip-upper",
+      "request_id": "FINAL-VAL-029",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vector_clip"
+      ],
+      "value_repr": "10.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-01e641211a3947fa96baf17e782b6aa6"
+      ],
+      "passed": true
+    },
+    {
+      "index": 30,
+      "case_id": "nram-entropy_kp-nan",
+      "request_id": "FINAL-VAL-030",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kp"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 31,
+      "case_id": "nram-entropy_kp-posinf",
+      "request_id": "FINAL-VAL-031",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kp"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 32,
+      "case_id": "nram-entropy_kp-neginf",
+      "request_id": "FINAL-VAL-032",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kp"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 33,
+      "case_id": "nram-entropy_kp-lower",
+      "request_id": "FINAL-VAL-033",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_kp"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-b2d2754ecc5e4626b48b58cf9944b8d9"
+      ],
+      "passed": true
+    },
+    {
+      "index": 34,
+      "case_id": "nram-entropy_kp-upper",
+      "request_id": "FINAL-VAL-034",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_kp"
+      ],
+      "value_repr": "2.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-a4ac47412e3d43c1b211cb40f87de8b1"
+      ],
+      "passed": true
+    },
+    {
+      "index": 35,
+      "case_id": "nram-entropy_ki-nan",
+      "request_id": "FINAL-VAL-035",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_ki"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 36,
+      "case_id": "nram-entropy_ki-posinf",
+      "request_id": "FINAL-VAL-036",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_ki"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 37,
+      "case_id": "nram-entropy_ki-neginf",
+      "request_id": "FINAL-VAL-037",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_ki"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 38,
+      "case_id": "nram-entropy_ki-lower",
+      "request_id": "FINAL-VAL-038",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_ki"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-4c75c763fbfc46f99741c427a5286586"
+      ],
+      "passed": true
+    },
+    {
+      "index": 39,
+      "case_id": "nram-entropy_ki-upper",
+      "request_id": "FINAL-VAL-039",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_ki"
+      ],
+      "value_repr": "0.5",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-148d180e4cc94e15aafe8fd174b720b7"
+      ],
+      "passed": true
+    },
+    {
+      "index": 40,
+      "case_id": "nram-entropy_kd-nan",
+      "request_id": "FINAL-VAL-040",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kd"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 41,
+      "case_id": "nram-entropy_kd-posinf",
+      "request_id": "FINAL-VAL-041",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kd"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 42,
+      "case_id": "nram-entropy_kd-neginf",
+      "request_id": "FINAL-VAL-042",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_kd"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 43,
+      "case_id": "nram-entropy_kd-lower",
+      "request_id": "FINAL-VAL-043",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_kd"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-6d1f82c3b76848c0bd30e0e6522701d4"
+      ],
+      "passed": true
+    },
+    {
+      "index": 44,
+      "case_id": "nram-entropy_kd-upper",
+      "request_id": "FINAL-VAL-044",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_kd"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-ae5787fd78cf440c8a4d9bc1e9d80f69"
+      ],
+      "passed": true
+    },
+    {
+      "index": 45,
+      "case_id": "nram-entropy_integral_limit-nan",
+      "request_id": "FINAL-VAL-045",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_integral_limit"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 46,
+      "case_id": "nram-entropy_integral_limit-posinf",
+      "request_id": "FINAL-VAL-046",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_integral_limit"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 47,
+      "case_id": "nram-entropy_integral_limit-neginf",
+      "request_id": "FINAL-VAL-047",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_integral_limit"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 48,
+      "case_id": "nram-entropy_integral_limit-lower",
+      "request_id": "FINAL-VAL-048",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_integral_limit"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-61764907db7f4653bd3905c7d0ec0cd5"
+      ],
+      "passed": true
+    },
+    {
+      "index": 49,
+      "case_id": "nram-entropy_integral_limit-upper",
+      "request_id": "FINAL-VAL-049",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_integral_limit"
+      ],
+      "value_repr": "100.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-a6085b54fe3e487db91d4f900e8d0839"
+      ],
+      "passed": true
+    },
+    {
+      "index": 50,
+      "case_id": "nram-entropy_scale_min-nan",
+      "request_id": "FINAL-VAL-050",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_min"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 51,
+      "case_id": "nram-entropy_scale_min-posinf",
+      "request_id": "FINAL-VAL-051",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_min"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 52,
+      "case_id": "nram-entropy_scale_min-neginf",
+      "request_id": "FINAL-VAL-052",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_min"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 53,
+      "case_id": "nram-entropy_scale_min-lower",
+      "request_id": "FINAL-VAL-053",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_scale_min"
+      ],
+      "value_repr": "0.05",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-03fdbe124a4246329bbc42f4d76eec6c"
+      ],
+      "passed": true
+    },
+    {
+      "index": 54,
+      "case_id": "nram-entropy_scale_min-upper",
+      "request_id": "FINAL-VAL-054",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_scale_min"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-f623a278fcdc4e4798f31d1b8fcb8346"
+      ],
+      "passed": true
+    },
+    {
+      "index": 55,
+      "case_id": "nram-entropy_scale_max-nan",
+      "request_id": "FINAL-VAL-055",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_max"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 56,
+      "case_id": "nram-entropy_scale_max-posinf",
+      "request_id": "FINAL-VAL-056",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_max"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 57,
+      "case_id": "nram-entropy_scale_max-neginf",
+      "request_id": "FINAL-VAL-057",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_scale_max"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 58,
+      "case_id": "nram-entropy_scale_max-lower",
+      "request_id": "FINAL-VAL-058",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_scale_max"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-515c19faabaf4c6495ee1f8157f448c4"
+      ],
+      "passed": true
+    },
+    {
+      "index": 59,
+      "case_id": "nram-entropy_scale_max-upper",
+      "request_id": "FINAL-VAL-059",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_scale_max"
+      ],
+      "value_repr": "5.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c22fcb905ef14ba78afcb802580c2c3f"
+      ],
+      "passed": true
+    },
+    {
+      "index": 60,
+      "case_id": "nram-concept_strength-nan",
+      "request_id": "FINAL-VAL-060",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "concept_strength"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 61,
+      "case_id": "nram-concept_strength-posinf",
+      "request_id": "FINAL-VAL-061",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "concept_strength"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 62,
+      "case_id": "nram-concept_strength-neginf",
+      "request_id": "FINAL-VAL-062",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "concept_strength"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 63,
+      "case_id": "nram-concept_strength-lower",
+      "request_id": "FINAL-VAL-063",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "concept_strength"
+      ],
+      "value_repr": "-5.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-10166dc499b14976aceb459105517c5e"
+      ],
+      "passed": true
+    },
+    {
+      "index": 64,
+      "case_id": "nram-concept_strength-upper",
+      "request_id": "FINAL-VAL-064",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "concept_strength"
+      ],
+      "value_repr": "5.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-03935914f4a64724b88021f55e2cc1e3"
+      ],
+      "passed": true
+    },
+    {
+      "index": 65,
+      "case_id": "nram-visionary_intensity-nan",
+      "request_id": "FINAL-VAL-065",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "visionary_intensity"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 66,
+      "case_id": "nram-visionary_intensity-posinf",
+      "request_id": "FINAL-VAL-066",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "visionary_intensity"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 67,
+      "case_id": "nram-visionary_intensity-neginf",
+      "request_id": "FINAL-VAL-067",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "visionary_intensity"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 68,
+      "case_id": "nram-visionary_intensity-lower",
+      "request_id": "FINAL-VAL-068",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "visionary_intensity"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-f87d8bb1823d415db0f4aeddfb63e294"
+      ],
+      "passed": true
+    },
+    {
+      "index": 69,
+      "case_id": "nram-visionary_intensity-upper",
+      "request_id": "FINAL-VAL-069",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "visionary_intensity"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-697109a761d5483086001684caf3de49"
+      ],
+      "passed": true
+    },
+    {
+      "index": 70,
+      "case_id": "nram-contrarian_force-nan",
+      "request_id": "FINAL-VAL-070",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "contrarian_force"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 71,
+      "case_id": "nram-contrarian_force-posinf",
+      "request_id": "FINAL-VAL-071",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "contrarian_force"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 72,
+      "case_id": "nram-contrarian_force-neginf",
+      "request_id": "FINAL-VAL-072",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "contrarian_force"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 73,
+      "case_id": "nram-contrarian_force-lower",
+      "request_id": "FINAL-VAL-073",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "contrarian_force"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-3841cc6e4d194631b3b19cf5851ec719"
+      ],
+      "passed": true
+    },
+    {
+      "index": 74,
+      "case_id": "nram-contrarian_force-upper",
+      "request_id": "FINAL-VAL-074",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "contrarian_force"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c3d36b83286148eba7fa220399b30163"
+      ],
+      "passed": true
+    },
+    {
+      "index": 75,
+      "case_id": "nram-product_obsession-nan",
+      "request_id": "FINAL-VAL-075",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "product_obsession"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 76,
+      "case_id": "nram-product_obsession-posinf",
+      "request_id": "FINAL-VAL-076",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "product_obsession"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 77,
+      "case_id": "nram-product_obsession-neginf",
+      "request_id": "FINAL-VAL-077",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "product_obsession"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 78,
+      "case_id": "nram-product_obsession-lower",
+      "request_id": "FINAL-VAL-078",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "product_obsession"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-01150938eec741fe994468d099f2cac4"
+      ],
+      "passed": true
+    },
+    {
+      "index": 79,
+      "case_id": "nram-product_obsession-upper",
+      "request_id": "FINAL-VAL-079",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "product_obsession"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-dc099327657b44349511a7fa7f4bc9e9"
+      ],
+      "passed": true
+    },
+    {
+      "index": 80,
+      "case_id": "nram-human_focus-nan",
+      "request_id": "FINAL-VAL-080",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "human_focus"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 81,
+      "case_id": "nram-human_focus-posinf",
+      "request_id": "FINAL-VAL-081",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "human_focus"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 82,
+      "case_id": "nram-human_focus-neginf",
+      "request_id": "FINAL-VAL-082",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "human_focus"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 83,
+      "case_id": "nram-human_focus-lower",
+      "request_id": "FINAL-VAL-083",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "human_focus"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-0a8a41a3c1d94ee8a928973e755bf4fd"
+      ],
+      "passed": true
+    },
+    {
+      "index": 84,
+      "case_id": "nram-human_focus-upper",
+      "request_id": "FINAL-VAL-084",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "human_focus"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-f86a7bed9be048e893a40695e4890481"
+      ],
+      "passed": true
+    },
+    {
+      "index": 85,
+      "case_id": "nram-rhetorical_compression-nan",
+      "request_id": "FINAL-VAL-085",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "rhetorical_compression"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 86,
+      "case_id": "nram-rhetorical_compression-posinf",
+      "request_id": "FINAL-VAL-086",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "rhetorical_compression"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 87,
+      "case_id": "nram-rhetorical_compression-neginf",
+      "request_id": "FINAL-VAL-087",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "rhetorical_compression"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 88,
+      "case_id": "nram-rhetorical_compression-lower",
+      "request_id": "FINAL-VAL-088",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "rhetorical_compression"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-5715b695e32f4129bb70f315cb17cdc5"
+      ],
+      "passed": true
+    },
+    {
+      "index": 89,
+      "case_id": "nram-rhetorical_compression-upper",
+      "request_id": "FINAL-VAL-089",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "rhetorical_compression"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-4cb11aa812094761a6da0ac53ce68efd"
+      ],
+      "passed": true
+    },
+    {
+      "index": 90,
+      "case_id": "nram-associative_distance-nan",
+      "request_id": "FINAL-VAL-090",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "associative_distance"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 91,
+      "case_id": "nram-associative_distance-posinf",
+      "request_id": "FINAL-VAL-091",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "associative_distance"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 92,
+      "case_id": "nram-associative_distance-neginf",
+      "request_id": "FINAL-VAL-092",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "associative_distance"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 93,
+      "case_id": "nram-associative_distance-lower",
+      "request_id": "FINAL-VAL-093",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "associative_distance"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-2a3f66c55d1942f28d798f938414ec03"
+      ],
+      "passed": true
+    },
+    {
+      "index": 94,
+      "case_id": "nram-associative_distance-upper",
+      "request_id": "FINAL-VAL-094",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "associative_distance"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-64ee9d7266e54355a1e84d4bcaf082c8"
+      ],
+      "passed": true
+    },
+    {
+      "index": 95,
+      "case_id": "nram-theatricality-nan",
+      "request_id": "FINAL-VAL-095",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "theatricality"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 96,
+      "case_id": "nram-theatricality-posinf",
+      "request_id": "FINAL-VAL-096",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "theatricality"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 97,
+      "case_id": "nram-theatricality-neginf",
+      "request_id": "FINAL-VAL-097",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "theatricality"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 98,
+      "case_id": "nram-theatricality-lower",
+      "request_id": "FINAL-VAL-098",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "theatricality"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-fe5d7136e2fb4e639822be640001a910"
+      ],
+      "passed": true
+    },
+    {
+      "index": 99,
+      "case_id": "nram-theatricality-upper",
+      "request_id": "FINAL-VAL-099",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "theatricality"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-cfd891360e2c4414a8b565e872f7d4b3"
+      ],
+      "passed": true
+    },
+    {
+      "index": 100,
+      "case_id": "nram-emotional_voltage-nan",
+      "request_id": "FINAL-VAL-100",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "emotional_voltage"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 101,
+      "case_id": "nram-emotional_voltage-posinf",
+      "request_id": "FINAL-VAL-101",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "emotional_voltage"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 102,
+      "case_id": "nram-emotional_voltage-neginf",
+      "request_id": "FINAL-VAL-102",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "emotional_voltage"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 103,
+      "case_id": "nram-emotional_voltage-lower",
+      "request_id": "FINAL-VAL-103",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "emotional_voltage"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-06ed06665dbe47e689c893b2a5168e6b"
+      ],
+      "passed": true
+    },
+    {
+      "index": 104,
+      "case_id": "nram-emotional_voltage-upper",
+      "request_id": "FINAL-VAL-104",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "emotional_voltage"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-4b631a832ba641a4acd45a1ffa48d3c3"
+      ],
+      "passed": true
+    },
+    {
+      "index": 105,
+      "case_id": "nram-coherence_floor-nan",
+      "request_id": "FINAL-VAL-105",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "coherence_floor"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 106,
+      "case_id": "nram-coherence_floor-posinf",
+      "request_id": "FINAL-VAL-106",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "coherence_floor"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 107,
+      "case_id": "nram-coherence_floor-neginf",
+      "request_id": "FINAL-VAL-107",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "coherence_floor"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 108,
+      "case_id": "nram-coherence_floor-lower",
+      "request_id": "FINAL-VAL-108",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "coherence_floor"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-8602b1222fe448ad9f0bf5cec793d21a"
+      ],
+      "passed": true
+    },
+    {
+      "index": 109,
+      "case_id": "nram-coherence_floor-upper",
+      "request_id": "FINAL-VAL-109",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "coherence_floor"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c5880e8c250a474488f0ec85c8909fc7"
+      ],
+      "passed": true
+    },
+    {
+      "index": 110,
+      "case_id": "nram-novelty_target-nan",
+      "request_id": "FINAL-VAL-110",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "novelty_target"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 111,
+      "case_id": "nram-novelty_target-posinf",
+      "request_id": "FINAL-VAL-111",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "novelty_target"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 112,
+      "case_id": "nram-novelty_target-neginf",
+      "request_id": "FINAL-VAL-112",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "novelty_target"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 113,
+      "case_id": "nram-novelty_target-lower",
+      "request_id": "FINAL-VAL-113",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "novelty_target"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-fe96b26596f74972a7d3e10e48f79046"
+      ],
+      "passed": true
+    },
+    {
+      "index": 114,
+      "case_id": "nram-novelty_target-upper",
+      "request_id": "FINAL-VAL-114",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "novelty_target"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-5f41113d75c34fa39aa28f07a44c83fb"
+      ],
+      "passed": true
+    },
+    {
+      "index": 115,
+      "case_id": "nram-repetition_penalty-nan",
+      "request_id": "FINAL-VAL-115",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "repetition_penalty"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 116,
+      "case_id": "nram-repetition_penalty-posinf",
+      "request_id": "FINAL-VAL-116",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "repetition_penalty"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 117,
+      "case_id": "nram-repetition_penalty-neginf",
+      "request_id": "FINAL-VAL-117",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "repetition_penalty"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 118,
+      "case_id": "nram-repetition_penalty-lower",
+      "request_id": "FINAL-VAL-118",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "repetition_penalty"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-5a2909a3e003437999d6829d5404bed1"
+      ],
+      "passed": true
+    },
+    {
+      "index": 119,
+      "case_id": "nram-repetition_penalty-upper",
+      "request_id": "FINAL-VAL-119",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "repetition_penalty"
+      ],
+      "value_repr": "2.0",
+      "expected_status": 200,
+      "actual_status": 500,
+      "error_code": "upstream_inference_failed",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": false,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": false
+    },
+    {
+      "index": 120,
+      "case_id": "nram-corporate_jargon_penalty-nan",
+      "request_id": "FINAL-VAL-120",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "corporate_jargon_penalty"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 121,
+      "case_id": "nram-corporate_jargon_penalty-posinf",
+      "request_id": "FINAL-VAL-121",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "corporate_jargon_penalty"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 122,
+      "case_id": "nram-corporate_jargon_penalty-neginf",
+      "request_id": "FINAL-VAL-122",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "corporate_jargon_penalty"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 123,
+      "case_id": "nram-corporate_jargon_penalty-lower",
+      "request_id": "FINAL-VAL-123",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "corporate_jargon_penalty"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-3359d095fce34147afdc28bbc1506a60"
+      ],
+      "passed": true
+    },
+    {
+      "index": 124,
+      "case_id": "nram-corporate_jargon_penalty-upper",
+      "request_id": "FINAL-VAL-124",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "corporate_jargon_penalty"
+      ],
+      "value_repr": "2.5",
+      "expected_status": 200,
+      "actual_status": 500,
+      "error_code": "upstream_inference_failed",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": false,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": false
+    },
+    {
+      "index": 125,
+      "case_id": "entropy-phase-extraction-nan",
+      "request_id": "FINAL-VAL-125",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "extraction"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 126,
+      "case_id": "entropy-phase-extraction-posinf",
+      "request_id": "FINAL-VAL-126",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "extraction"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 127,
+      "case_id": "entropy-phase-extraction-neginf",
+      "request_id": "FINAL-VAL-127",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "extraction"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 128,
+      "case_id": "entropy-phase-extraction-lower",
+      "request_id": "FINAL-VAL-128",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "extraction"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-1c72f39256394b9d9f672eb82afe0442"
+      ],
+      "passed": true
+    },
+    {
+      "index": 129,
+      "case_id": "entropy-phase-extraction-upper",
+      "request_id": "FINAL-VAL-129",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "extraction"
+      ],
+      "value_repr": "20.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-6258078a1fb44157a6cf476d9cee406a"
+      ],
+      "passed": true
+    },
+    {
+      "index": 130,
+      "case_id": "entropy-phase-questioning-nan",
+      "request_id": "FINAL-VAL-130",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "questioning"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 131,
+      "case_id": "entropy-phase-questioning-posinf",
+      "request_id": "FINAL-VAL-131",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "questioning"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 132,
+      "case_id": "entropy-phase-questioning-neginf",
+      "request_id": "FINAL-VAL-132",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "questioning"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 133,
+      "case_id": "entropy-phase-questioning-lower",
+      "request_id": "FINAL-VAL-133",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "questioning"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-6f955aa211ae4d3dac8a44db4a3b0d03"
+      ],
+      "passed": true
+    },
+    {
+      "index": 134,
+      "case_id": "entropy-phase-questioning-upper",
+      "request_id": "FINAL-VAL-134",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "questioning"
+      ],
+      "value_repr": "20.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-ecb01018240a45d7a17db3d4c5401fcc"
+      ],
+      "passed": true
+    },
+    {
+      "index": 135,
+      "case_id": "entropy-phase-divergence-nan",
+      "request_id": "FINAL-VAL-135",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "divergence"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 136,
+      "case_id": "entropy-phase-divergence-posinf",
+      "request_id": "FINAL-VAL-136",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "divergence"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 137,
+      "case_id": "entropy-phase-divergence-neginf",
+      "request_id": "FINAL-VAL-137",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "divergence"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 138,
+      "case_id": "entropy-phase-divergence-lower",
+      "request_id": "FINAL-VAL-138",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "divergence"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-993c604769944adf885f2b43809bb8e9"
+      ],
+      "passed": true
+    },
+    {
+      "index": 139,
+      "case_id": "entropy-phase-divergence-upper",
+      "request_id": "FINAL-VAL-139",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "divergence"
+      ],
+      "value_repr": "20.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-fa4ebcc948f646a3903ab0cee40a32ba"
+      ],
+      "passed": true
+    },
+    {
+      "index": 140,
+      "case_id": "entropy-phase-synthesis-nan",
+      "request_id": "FINAL-VAL-140",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "synthesis"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 141,
+      "case_id": "entropy-phase-synthesis-posinf",
+      "request_id": "FINAL-VAL-141",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "synthesis"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 142,
+      "case_id": "entropy-phase-synthesis-neginf",
+      "request_id": "FINAL-VAL-142",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "synthesis"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 143,
+      "case_id": "entropy-phase-synthesis-lower",
+      "request_id": "FINAL-VAL-143",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "synthesis"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c044819f6a1442958533c2e8384fde1d"
+      ],
+      "passed": true
+    },
+    {
+      "index": 144,
+      "case_id": "entropy-phase-synthesis-upper",
+      "request_id": "FINAL-VAL-144",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "synthesis"
+      ],
+      "value_repr": "20.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c1d9fb1052994e7e8e279da1f857c0de"
+      ],
+      "passed": true
+    },
+    {
+      "index": 145,
+      "case_id": "entropy-phase-formulation-nan",
+      "request_id": "FINAL-VAL-145",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "formulation"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 146,
+      "case_id": "entropy-phase-formulation-posinf",
+      "request_id": "FINAL-VAL-146",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "formulation"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 147,
+      "case_id": "entropy-phase-formulation-neginf",
+      "request_id": "FINAL-VAL-147",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "formulation"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 148,
+      "case_id": "entropy-phase-formulation-lower",
+      "request_id": "FINAL-VAL-148",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "formulation"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-8e7aef91d74b4bcdb11af57212784399"
+      ],
+      "passed": true
+    },
+    {
+      "index": 149,
+      "case_id": "entropy-phase-formulation-upper",
+      "request_id": "FINAL-VAL-149",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "entropy_phase_targets",
+        "formulation"
+      ],
+      "value_repr": "20.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-2f47a60e935a4d64a084ab7e67515a90"
+      ],
+      "passed": true
+    },
+    {
+      "index": 150,
+      "case_id": "phenomenon-overlap-nan",
+      "request_id": "FINAL-VAL-150",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "overlap"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 151,
+      "case_id": "phenomenon-overlap-posinf",
+      "request_id": "FINAL-VAL-151",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "overlap"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 152,
+      "case_id": "phenomenon-overlap-neginf",
+      "request_id": "FINAL-VAL-152",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "overlap"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 153,
+      "case_id": "phenomenon-overlap-lower",
+      "request_id": "FINAL-VAL-153",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "overlap"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-f50aae08721846bc9e5e4afbd4c8136f"
+      ],
+      "passed": true
+    },
+    {
+      "index": 154,
+      "case_id": "phenomenon-overlap-upper",
+      "request_id": "FINAL-VAL-154",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "overlap"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-d04ca7c658ad4aaba35a0c41c49ad17a"
+      ],
+      "passed": true
+    },
+    {
+      "index": 155,
+      "case_id": "phenomenon-forgetting-nan",
+      "request_id": "FINAL-VAL-155",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "forgetting"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 156,
+      "case_id": "phenomenon-forgetting-posinf",
+      "request_id": "FINAL-VAL-156",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "forgetting"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 157,
+      "case_id": "phenomenon-forgetting-neginf",
+      "request_id": "FINAL-VAL-157",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "forgetting"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 158,
+      "case_id": "phenomenon-forgetting-lower",
+      "request_id": "FINAL-VAL-158",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "forgetting"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-51689287c2f24768a563efcb5f840cc8"
+      ],
+      "passed": true
+    },
+    {
+      "index": 159,
+      "case_id": "phenomenon-forgetting-upper",
+      "request_id": "FINAL-VAL-159",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "forgetting"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-55daad7395b446dfae984ff5c11c58b4"
+      ],
+      "passed": true
+    },
+    {
+      "index": 160,
+      "case_id": "phenomenon-looping-nan",
+      "request_id": "FINAL-VAL-160",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "looping"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 161,
+      "case_id": "phenomenon-looping-posinf",
+      "request_id": "FINAL-VAL-161",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "looping"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 162,
+      "case_id": "phenomenon-looping-neginf",
+      "request_id": "FINAL-VAL-162",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "looping"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 163,
+      "case_id": "phenomenon-looping-lower",
+      "request_id": "FINAL-VAL-163",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "looping"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-a10ebddee5a4429e8559e7ba4b763fbf"
+      ],
+      "passed": true
+    },
+    {
+      "index": 164,
+      "case_id": "phenomenon-looping-upper",
+      "request_id": "FINAL-VAL-164",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "looping"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-4b5bd694e7a84a6a9588d90d1b5a982e"
+      ],
+      "passed": true
+    },
+    {
+      "index": 165,
+      "case_id": "phenomenon-associative_jump-nan",
+      "request_id": "FINAL-VAL-165",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "associative_jump"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 166,
+      "case_id": "phenomenon-associative_jump-posinf",
+      "request_id": "FINAL-VAL-166",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "associative_jump"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 167,
+      "case_id": "phenomenon-associative_jump-neginf",
+      "request_id": "FINAL-VAL-167",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "associative_jump"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 168,
+      "case_id": "phenomenon-associative_jump-lower",
+      "request_id": "FINAL-VAL-168",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "associative_jump"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-6daa044511294a21b2831afdf154a1d4"
+      ],
+      "passed": true
+    },
+    {
+      "index": 169,
+      "case_id": "phenomenon-associative_jump-upper",
+      "request_id": "FINAL-VAL-169",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "associative_jump"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-7c5927986f604ecb9bd07198f74ae59b"
+      ],
+      "passed": true
+    },
+    {
+      "index": 170,
+      "case_id": "phenomenon-synesthesia-nan",
+      "request_id": "FINAL-VAL-170",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "synesthesia"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 171,
+      "case_id": "phenomenon-synesthesia-posinf",
+      "request_id": "FINAL-VAL-171",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "synesthesia"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 172,
+      "case_id": "phenomenon-synesthesia-neginf",
+      "request_id": "FINAL-VAL-172",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "synesthesia"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 173,
+      "case_id": "phenomenon-synesthesia-lower",
+      "request_id": "FINAL-VAL-173",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "synesthesia"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-e40d04535f894ab08b63f970b5e5ad1a"
+      ],
+      "passed": true
+    },
+    {
+      "index": 174,
+      "case_id": "phenomenon-synesthesia-upper",
+      "request_id": "FINAL-VAL-174",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "synesthesia"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-adca7ed092444cd6be1474b27328f85e"
+      ],
+      "passed": true
+    },
+    {
+      "index": 175,
+      "case_id": "phenomenon-dissolution-nan",
+      "request_id": "FINAL-VAL-175",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "dissolution"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 176,
+      "case_id": "phenomenon-dissolution-posinf",
+      "request_id": "FINAL-VAL-176",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "dissolution"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 177,
+      "case_id": "phenomenon-dissolution-neginf",
+      "request_id": "FINAL-VAL-177",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "dissolution"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 178,
+      "case_id": "phenomenon-dissolution-lower",
+      "request_id": "FINAL-VAL-178",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "dissolution"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-6c6e708e7a9b4657900291812540e468"
+      ],
+      "passed": true
+    },
+    {
+      "index": 179,
+      "case_id": "phenomenon-dissolution-upper",
+      "request_id": "FINAL-VAL-179",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "dissolution"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-d54340f8ef0945c5b5e086e55e0bf505"
+      ],
+      "passed": true
+    },
+    {
+      "index": 180,
+      "case_id": "phenomenon-echo-nan",
+      "request_id": "FINAL-VAL-180",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "echo"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 181,
+      "case_id": "phenomenon-echo-posinf",
+      "request_id": "FINAL-VAL-181",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "echo"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 182,
+      "case_id": "phenomenon-echo-neginf",
+      "request_id": "FINAL-VAL-182",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "echo"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 183,
+      "case_id": "phenomenon-echo-lower",
+      "request_id": "FINAL-VAL-183",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "echo"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-c784ec12507a46c0b52e5c06d95b5ec7"
+      ],
+      "passed": true
+    },
+    {
+      "index": 184,
+      "case_id": "phenomenon-echo-upper",
+      "request_id": "FINAL-VAL-184",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "echo"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-cf2ed9f95ecc4c35b40a255ee6abe03e"
+      ],
+      "passed": true
+    },
+    {
+      "index": 185,
+      "case_id": "phenomenon-tangent-nan",
+      "request_id": "FINAL-VAL-185",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "tangent"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 186,
+      "case_id": "phenomenon-tangent-posinf",
+      "request_id": "FINAL-VAL-186",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "tangent"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 187,
+      "case_id": "phenomenon-tangent-neginf",
+      "request_id": "FINAL-VAL-187",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "tangent"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 188,
+      "case_id": "phenomenon-tangent-lower",
+      "request_id": "FINAL-VAL-188",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "tangent"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-a18be8bfd10b4f3784a5bfb57a9745e2"
+      ],
+      "passed": true
+    },
+    {
+      "index": 189,
+      "case_id": "phenomenon-tangent-upper",
+      "request_id": "FINAL-VAL-189",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "tangent"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-cb38c5dc08554d2ea076a6f6de02259d"
+      ],
+      "passed": true
+    },
+    {
+      "index": 190,
+      "case_id": "phenomenon-insight-nan",
+      "request_id": "FINAL-VAL-190",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "insight"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 191,
+      "case_id": "phenomenon-insight-posinf",
+      "request_id": "FINAL-VAL-191",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "insight"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 192,
+      "case_id": "phenomenon-insight-neginf",
+      "request_id": "FINAL-VAL-192",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "insight"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 193,
+      "case_id": "phenomenon-insight-lower",
+      "request_id": "FINAL-VAL-193",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "insight"
+      ],
+      "value_repr": "0.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-e4b0f9bcb94b450081088fe9999a19bc"
+      ],
+      "passed": true
+    },
+    {
+      "index": 194,
+      "case_id": "phenomenon-insight-upper",
+      "request_id": "FINAL-VAL-194",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "phenomenon_weights",
+        "insight"
+      ],
+      "value_repr": "1.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-bfd1b1f24243498894d6068160a4c3af"
+      ],
+      "passed": true
+    },
+    {
+      "index": 195,
+      "case_id": "soft-injection-bias-nan",
+      "request_id": "FINAL-VAL-195",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "soft_token_injections",
+        0,
+        "bias"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 196,
+      "case_id": "soft-injection-bias-posinf",
+      "request_id": "FINAL-VAL-196",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "soft_token_injections",
+        0,
+        "bias"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 197,
+      "case_id": "soft-injection-bias-neginf",
+      "request_id": "FINAL-VAL-197",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "soft_token_injections",
+        0,
+        "bias"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 198,
+      "case_id": "soft-injection-bias-lower",
+      "request_id": "FINAL-VAL-198",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "soft_token_injections",
+        0,
+        "bias"
+      ],
+      "value_repr": "-5.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-1d0f655a38e946949ec0b84de4a634ca"
+      ],
+      "passed": true
+    },
+    {
+      "index": 199,
+      "case_id": "soft-injection-bias-upper",
+      "request_id": "FINAL-VAL-199",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "soft_token_injections",
+        0,
+        "bias"
+      ],
+      "value_repr": "5.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-53b1e4ee9b8542a295b85f7428a0ac62"
+      ],
+      "passed": true
+    },
+    {
+      "index": 200,
+      "case_id": "vector-coefficient-nan",
+      "request_id": "FINAL-VAL-200",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "coefficient"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 201,
+      "case_id": "vector-coefficient-posinf",
+      "request_id": "FINAL-VAL-201",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "coefficient"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 202,
+      "case_id": "vector-coefficient-neginf",
+      "request_id": "FINAL-VAL-202",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "coefficient"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 203,
+      "case_id": "vector-coefficient-lower",
+      "request_id": "FINAL-VAL-203",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "coefficient"
+      ],
+      "value_repr": "-4.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-2f4ef540abe24a6da25dd66491ba5c92"
+      ],
+      "passed": true
+    },
+    {
+      "index": 204,
+      "case_id": "vector-coefficient-upper",
+      "request_id": "FINAL-VAL-204",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "coefficient"
+      ],
+      "value_repr": "4.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-4177eb7e57ee4a0983bc193fa8ee5935"
+      ],
+      "passed": true
+    },
+    {
+      "index": 205,
+      "case_id": "vector-entry-weight-nan",
+      "request_id": "FINAL-VAL-205",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "entries",
+        0,
+        "weight"
+      ],
+      "value_repr": "nan",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 206,
+      "case_id": "vector-entry-weight-posinf",
+      "request_id": "FINAL-VAL-206",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "entries",
+        0,
+        "weight"
+      ],
+      "value_repr": "inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 207,
+      "case_id": "vector-entry-weight-neginf",
+      "request_id": "FINAL-VAL-207",
+      "kind": "reject",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "entries",
+        0,
+        "weight"
+      ],
+      "value_repr": "-inf",
+      "expected_status": 400,
+      "actual_status": 400,
+      "error_code": "invalid_request_schema",
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 0,
+      "scheduler_request_ids": [],
+      "passed": true
+    },
+    {
+      "index": 208,
+      "case_id": "vector-entry-weight-lower",
+      "request_id": "FINAL-VAL-208",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "entries",
+        0,
+        "weight"
+      ],
+      "value_repr": "-10.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-36c5486f22524db392e197db119258b0"
+      ],
+      "passed": true
+    },
+    {
+      "index": 209,
+      "case_id": "vector-entry-weight-upper",
+      "request_id": "FINAL-VAL-209",
+      "kind": "boundary",
+      "path": [
+        "nram",
+        "vocabulary_logit_vectors",
+        0,
+        "entries",
+        0,
+        "weight"
+      ],
+      "value_repr": "10.0",
+      "expected_status": 200,
+      "actual_status": 200,
+      "error_code": null,
+      "no_sensitive_or_raw_value_leak": true,
+      "pre_event_pass": true,
+      "processor_event_count": 1,
+      "scheduler_request_ids": [
+        "nram-scheduler-911c09f7849749f29c69cfbdd8359088"
+      ],
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "case_id": "soft-injection-bias-upper",
+  "elapsed_ms": 57.131290435791016,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-199",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "soft_token_injections": [
+        {
+          "token_ids": [
+            9702
+          ],
+          "bias": 5.0,
+          "start_step": 0,
+          "end_step": 1
+        }
+      ]
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-199\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"soft_token_injections\":[{\"token_ids\":[9702],\"bias\":5.0,\"start_step\":0,\"end_step\":1}]}}",
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:42:41 GMT",
+      "server": "uvicorn",
+      "content-length": "767",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-53b1e4ee9b8542a295b85f7428a0ac62\",\"object\":\"chat.completion\",\"created\":1785210162,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":17,\"completion_tokens\":1,\"total_tokens\":18},\"nram_correlation\":{\"request_id\":\"FINAL-VAL-199\",\"scheduler_request_id\":\"nram-scheduler-53b1e4ee9b8542a295b85f7428a0ac62\",\"config_hash\":\"1f4ef5fe815551a18ca590ed48de9cc818844981707fe585da2cc11a11e5d313\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[32313],\"sampled_tokens\":[\"Okay\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-53b1e4ee9b8542a295b85f7428a0ac62",
+      "object": "chat.completion",
+      "created": 1785210162,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 17,
+        "completion_tokens": 1,
+        "total_tokens": 18
+      },
+      "nram_correlation": {
+        "request_id": "FINAL-VAL-199",
+        "scheduler_request_id": "nram-scheduler-53b1e4ee9b8542a295b85f7428a0ac62",
+        "config_hash": "1f4ef5fe815551a18ca590ed48de9cc818844981707fe585da2cc11a11e5d313",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          32313
+        ],
+        "sampled_tokens": [
+          "Okay"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    }
+  },
+  "exception": null
+}

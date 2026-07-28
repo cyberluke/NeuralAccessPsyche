@@ -1,0 +1,62 @@
+{
+  "case_id": "forced-tokenizer-oob",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.375328Z",
+  "finished_utc": "2026-07-28T02:59:17.392445Z",
+  "elapsed_ms": 17.085700001189252,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "forced-tokenizer-oob"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-forced-tokenizer-oob",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "forced_token_enabled": true,
+        "forced_token_id": 200000
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-tokenizer-oob\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":200000}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "153",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"message\":\"forced_token_id:token_id_not_defined_by_active_tokenizer\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+    "json": {
+      "error": {
+        "message": "forced_token_id:token_id_not_defined_by_active_tokenizer",
+        "type": "inference_error",
+        "param": null,
+        "code": "upstream_inference_failed"
+      }
+    },
+    "bytes": 153
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

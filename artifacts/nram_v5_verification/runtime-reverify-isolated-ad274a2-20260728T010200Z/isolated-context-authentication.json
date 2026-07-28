@@ -1,0 +1,13 @@
+{
+  "target_commit": "ad274a2c4b0575cf796659073fb69a962dbb66d0",
+  "target_tree": "cb0457f4f09f00cd6e7c94dca15bd15ddd4fe128",
+  "entry_count": 269,
+  "blob_count": 269,
+  "actual_file_count": 269,
+  "extra_paths": [],
+  "missing_paths": [],
+  "failure_count": 0,
+  "authenticated": true,
+  "canonical_path_mode_content_sha256": "490bb25b6fbad71c1e7a2c89010dca2b28bbb2e7e33356e3ef37b43d838b55f3",
+  "method": "direct Git-object extraction from target git ls-tree plus git cat-file; every extracted byte re-hashed as a Git blob and compared with the target tree object ID; the separately retained git archive is provenance evidence but was not used after Windows tar changed byte/name domains"
+}

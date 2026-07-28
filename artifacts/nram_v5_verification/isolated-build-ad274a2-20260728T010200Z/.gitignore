@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files
+*.gguf
+*.safetensors
+*.bin
+
+# HuggingFace cache
+.cache/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node dependency installation (package-lock.json remains versioned)
+node_modules/
+*.tgz
+
+# Temporary recovery / builder scripts and scratch files
+_rebuild_engine.py
+_surgery.py
+_fix_tokenizer.py
+_sglang_help.txt
+*.corrupt
+*.recovered
+*.bak

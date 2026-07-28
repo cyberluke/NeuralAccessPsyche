@@ -1,0 +1,14 @@
+{
+  "executed_rows": 28,
+  "blocked_or_not_implemented_condition_rows": 8,
+  "prompts": 2,
+  "seeds": 2,
+  "executed_conditions": 7,
+  "per_condition_n": 4,
+  "inferential_statistics": "NOT_CALCULATED_INSUFFICIENT_BOUNDED_SAMPLE",
+  "multiple_comparison_correction": "NOT_APPLICABLE_NO_HYPOTHESIS_TESTS",
+  "negative_result": "All seven supported conditions had identical aggregate text metrics in this bounded deterministic run: mean output words 8.5, mean lexical diversity 0.95, and total exact source 8-gram overlap 0. This does not erase processor-level causal effects; it means this text sample does not demonstrate a condition-level text effect.",
+  "direct_effect_evidence": "runtime-events.jsonl and token-level-ablation.csv",
+  "raw_output_evidence": "raw-generations/",
+  "scientific_claim": "No population-level or human-preference claim is supported."
+}

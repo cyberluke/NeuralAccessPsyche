@@ -1,0 +1,45 @@
+{
+  "case_id": "ordinary-sse-raw-close",
+  "model": "nram-qwen3-14b-awq",
+  "request_id": "FINAL-CANCEL-ORDINARY",
+  "max_tokens": 64,
+  "forced_schedule_length": 64,
+  "elapsed_ms_to_close": 371.8251999998756,
+  "raw_received_hex": "485454502f312e3120323030204f4b0d0a646174653a205475652c203238204a756c20323032362030333a34333a313920474d540d0a7365727665723a20757669636f726e0d0a63616368652d636f6e74726f6c3a206e6f2d63616368650d0a782d616363656c2d627566666572696e673a206e6f0d0a636f6e74656e742d747970653a20746578742f6576656e742d73747265616d3b20636861727365743d7574662d380d0a636f6e6e656374696f6e3a20636c6f73650d0a7472616e736665722d656e636f64696e673a206368756e6b65640d0a0d0a3330350d0a646174613a207b226964223a20226e72616d2d7363686564756c65722d3539353133383135346633303461316362646133353633373837396362303536222c20226f626a656374223a2022636861742e636f6d706c6574696f6e2e6368756e6b222c202263726561746564223a20313738353231303230302c20226d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202263686f69636573223a205b7b22696e646578223a20302c202264656c7461223a207b22726561736f6e696e675f636f6e74656e74223a206e756c6c2c2022636f6e74656e74223a2022207468616e6b227d2c20226c6f6770726f6273223a206e756c6c2c202266696e6973685f726561736f6e223a206e756c6c2c20226d6174636865645f73746f70223a206e756c6c7d5d2c20226e72616d5f636f7272656c6174696f6e223a207b22726571756573745f6964223a202246494e414c2d43414e43454c2d4f5244494e415259222c20227363686564756c65725f726571756573745f6964223a20226e72616d2d7363686564756c65722d3539353133383135346633303461316362646133353633373837396362303536222c2022636f6e6669675f68617368223a202261373466393265376438356238323465663530346462633934343434613231306165366466386131313931343364643064316331336134363861386361393930222c20226170706c6965645f73746174655f736368656d61223a20226e72616d2e6170706c6965642d73746174652e7631222c20227075626c69635f6d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202261637475616c5f626173655f6d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202270726f636573736f725f696e74657276656e6564223a20747275652c202273616d706c65645f746f6b656e5f696473223a205b5d2c202273616d706c65645f746f6b656e73223a205b5d2c202273616d706c655f6a6f696e223a2022756e617661696c61626c655f666f725f73747265616d696e67227d7d0a0a0d0a",
+  "raw_received_utf8": "HTTP/1.1 200 OK\r\ndate: Tue, 28 Jul 2026 03:43:19 GMT\r\nserver: uvicorn\r\ncache-control: no-cache\r\nx-accel-buffering: no\r\ncontent-type: text/event-stream; charset=utf-8\r\nconnection: close\r\ntransfer-encoding: chunked\r\n\r\n305\r\ndata: {\"id\": \"nram-scheduler-595138154f304a1cbda35637879cb056\", \"object\": \"chat.completion.chunk\", \"created\": 1785210200, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-ORDINARY\", \"scheduler_request_id\": \"nram-scheduler-595138154f304a1cbda35637879cb056\", \"config_hash\": \"a74f92e7d85b824ef504dbc94444a210ae6df8a119143dd0d1c13a468a8ca990\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"nram-qwen3-14b-awq\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}\n\n\r\n",
+  "first_data_line_utf8": "data: {\"id\": \"nram-scheduler-595138154f304a1cbda35637879cb056\", \"object\": \"chat.completion.chunk\", \"created\": 1785210200, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-ORDINARY\", \"scheduler_request_id\": \"nram-scheduler-595138154f304a1cbda35637879cb056\", \"config_hash\": \"a74f92e7d85b824ef504dbc94444a210ae6df8a119143dd0d1c13a468a8ca990\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"nram-qwen3-14b-awq\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}",
+  "closed_immediately_after_first_data_line": true,
+  "samples": [
+    {
+      "seconds_after_close": 0.0,
+      "event_count": 3,
+      "max_invocation_count": 3,
+      "scheduler_request_ids": [
+        "nram-scheduler-595138154f304a1cbda35637879cb056"
+      ]
+    },
+    {
+      "seconds_after_close": 0.5,
+      "event_count": 3,
+      "max_invocation_count": 3,
+      "scheduler_request_ids": [
+        "nram-scheduler-595138154f304a1cbda35637879cb056"
+      ]
+    },
+    {
+      "seconds_after_close": 3.5,
+      "event_count": 3,
+      "max_invocation_count": 3,
+      "scheduler_request_ids": [
+        "nram-scheduler-595138154f304a1cbda35637879cb056"
+      ]
+    }
+  ],
+  "abort_access_count_before": 0,
+  "abort_access_count_after": 1,
+  "abort_access_delta": 1,
+  "new_abort_access_lines": [
+    "2026-07-28T03:43:20.796299774Z [2026-07-28 03:43:20] INFO:     172.22.0.3:58370 - \"POST /abort_request HTTP/1.1\" 200 OK"
+  ],
+  "passed": true
+}

@@ -1,0 +1,75 @@
+{
+  "case_id": "alias-01-gpt-oss-20b-baseline",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.189118Z",
+  "finished_utc": "2026-07-27T22:49:18.247858Z",
+  "elapsed_ms": 58.71929999557324,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-01-gpt-oss-20b-baseline"
+    },
+    "body": {
+      "model": "gpt-oss-20b-baseline",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-01-gpt-oss-20b-baseline",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"gpt-oss-20b-baseline\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-01-gpt-oss-20b-baseline\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:17 GMT",
+      "server": "uvicorn",
+      "content-length": "335",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"bdd77c015d994adca4eec5d01055ca8a\",\"object\":\"chat.completion\",\"created\":1785192558,\"model\":\"gpt-oss-20b-baseline\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":null}",
+    "json": {
+      "id": "bdd77c015d994adca4eec5d01055ca8a",
+      "object": "chat.completion",
+      "created": 1785192558,
+      "model": "gpt-oss-20b-baseline",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": null
+    },
+    "bytes": 335
+  },
+  "exception": null
+}

@@ -1,0 +1,25 @@
+{
+  "case": "auth-missing",
+  "elapsed_seconds": 0.0150146484375,
+  "request": {
+    "path": "/v1/models",
+    "method": "GET",
+    "authorization": "missing",
+    "body": null
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+      "server": "uvicorn",
+      "content-length": "40",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"Invalid authentication token\"}",
+    "json": {
+      "error": "Invalid authentication token"
+    }
+  },
+  "exception": "HTTPError: HTTP Error 401: Unauthorized"
+}

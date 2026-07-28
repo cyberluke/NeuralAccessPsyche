@@ -1,0 +1,170 @@
+[
+  {
+    "id": "NRAM-001",
+    "title": "False model identity and stale public aliases",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-002",
+    "title": "Comparison bypasses processor and fails after generation",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-003",
+    "title": "Exact-target tests and artifacts do not match committed tree",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-004",
+    "title": "Cancellation and timeout do not abort upstream generation",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-005",
+    "title": "Permissive and unsafe request validation",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-006",
+    "title": "Streaming contract defects",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-007",
+    "title": "Telemetry incomplete, truncatable, spoofable, and synthetic",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-008",
+    "title": "Applied-state hash omits behaviorally relevant state",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-009",
+    "title": "Session controls disconnected from inference",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-010",
+    "title": "MoE bypasses validation, ignores bounds/controls, and swallows errors",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-011",
+    "title": "Tokenizer variants and structural proof gaps",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-012",
+    "title": "Overstated/dead capabilities and contradictions",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-013",
+    "title": "Fake authentication boundary",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-014",
+    "title": "Original failure/provenance history incomplete",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-015",
+    "title": "Numerical stability and all-mask recovery",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-016",
+    "title": "Bounded phrase/capsule/vector/entropy evidence overstated",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-017",
+    "title": "Comparison/session/dashboard/test package/runtime drift",
+    "prior_status": "CONFIRMED",
+    "tested_evidence": "Exact-target runtime re-verification stopped before build because the root Docker context contains untracked production modules consumed by COPY core/.",
+    "result": "NOT_RETESTED"
+  },
+  {
+    "id": "NRAM-018",
+    "title": "DExperts absent",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-019",
+    "title": "Representation stack absent",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-020",
+    "title": "Semantic/evidence closed loop absent",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-021",
+    "title": "Branch-and-tournament absent",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-022",
+    "title": "Full causal/statistical study absent",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-023",
+    "title": "Original 269/273 four-failure artifact unavailable",
+    "prior_status": "BLOCKED",
+    "tested_evidence": "Canonical blocked status retained and not upgraded. Fail-loud runtime behavior was not independently rerun because exact-target containers could not be built.",
+    "result": "BLOCKED"
+  },
+  {
+    "id": "NRAM-024",
+    "title": "Unattributed container exit 137",
+    "prior_status": "UNCONFIRMED",
+    "tested_evidence": "No cold recreation or Docker event/resource capture occurred after the mandatory context-purity gate failed.",
+    "result": "UNCONFIRMED"
+  }
+]

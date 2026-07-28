@@ -1,0 +1,48 @@
+{
+  "case_id": "session-events-after",
+  "expected_contract": "observation",
+  "started_utc": "2026-07-27T23:13:03.741626Z",
+  "finished_utc": "2026-07-27T23:13:03.756371Z",
+  "elapsed_ms": 14.723899999808054,
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15/events",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "session-events-after"
+    },
+    "body": null,
+    "wire_body_utf8": null,
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+      "server": "uvicorn",
+      "content-length": "281",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"session_id\":\"nram-session-8bb680358b15\",\"request_count\":0,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"events\":[]}",
+    "json": {
+      "session_id": "nram-session-8bb680358b15",
+      "request_count": 0,
+      "token_steering_counts": {
+        "model_generated": 0,
+        "positive_logit_bias": 0,
+        "negative_logit_bias": 0,
+        "hard_mask": 0,
+        "forced_injection": 0,
+        "memory_recall": 0,
+        "planner_constraint": 0,
+        "postprocess": 0
+      },
+      "phenomenon_counts": {},
+      "events": []
+    },
+    "bytes": 281
+  },
+  "exception": null
+}

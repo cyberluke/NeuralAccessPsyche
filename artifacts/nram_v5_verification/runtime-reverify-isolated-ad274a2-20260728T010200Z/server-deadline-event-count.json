@@ -1,0 +1,8 @@
+{
+  "event_count": 0,
+  "steps": [],
+  "scheduler_ids": [],
+  "abort_log_lines": [
+    "2026-07-28T01:31:49.607686112Z [2026-07-28 01:31:49] INFO:     172.21.0.3:59160 - \"POST /abort_request HTTP/1.1\" 200 OK"
+  ]
+}

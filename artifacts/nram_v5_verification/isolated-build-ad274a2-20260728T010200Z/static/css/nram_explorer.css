@@ -1,0 +1,388 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 100vh;
+}
+
+.sidebar {
+    background: #2a2a2a;
+    padding: 20px;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+}
+
+.main-content {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.architecture-section {
+    background: #333;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    background: #444;
+    border-radius: 4px;
+}
+
+.section-content {
+    padding: 10px;
+    display: none;
+}
+
+.section-content.active {
+    display: block;
+}
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.memory-cell {
+    background: #2a2a2a;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.memory-cell:hover {
+    transform: scale(1.1);
+    background: #4CAF50;
+}
+
+.pattern-matrix {
+    margin-top: 15px;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.stat-card {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    color: #4CAF50;
+    margin: 10px 0;
+}
+
+.visualization {
+    width: 100%;
+    height: 400px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.controls {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    color: #4CAF50;
+}
+
+.config-panel {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.suggestion-card {
+    background: #333;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.suggestion-group {
+    margin-bottom: 15px;
+}
+
+.suggestion-group h4 {
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.suggestion-group pre {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+/* New styles for token flow animation */
+.token {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+
+.control-panel {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.slider {
+    width: 100%;
+    height: 5px;
+    border-radius: 5px;
+    background: #444;
+    outline: none;
+    margin-top: 10px;
+    -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background: #45a049;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: none;
+}
+
+.slider::-moz-range-thumb:hover {
+    background: #45a049;
+}
+
+/* Network visualization styles */
+.link {
+    stroke-linecap: round;
+}
+
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.token-layer {
+    pointer-events: none;
+}
+
+/* Network visualization enhancements */
+.node-group {
+    cursor: pointer;
+}
+
+.node {
+    transition: r 0.3s ease, fill 0.3s ease;
+}
+
+.node:hover {
+    filter: brightness(1.2);
+}
+
+.link {
+    transition: stroke-width 0.3s ease, stroke-opacity 0.3s ease;
+}
+
+.link:hover {
+    stroke-opacity: 1;
+}
+
+.node-type {
+    pointer-events: none;
+    opacity: 0.8;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.activity-indicator {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+}
+
+.visualization {
+    background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Network visualization tooltip enhancements */
+.tooltip {
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.4;
+    max-width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Performance Heatmap styles */
+#performance-heatmap {
+    width: 100%;
+    height: 200px;
+    margin: 10px 0;
+    background: #2a2a2a;
+    border-radius: 4px;
+    position: relative;
+}
+
+.heatmap-controls {
+    margin-bottom: 10px;
+}
+
+#metric-selector {
+    width: 100%;
+    padding: 8px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    outline: none;
+}
+
+#metric-selector option {
+    background: #333;
+    color: #fff;
+}
+
+.heatmap-legend {
+    height: 20px;
+    margin-top: 5px;
+    border-radius: 2px;
+    background: linear-gradient(to right,
+        #313695,
+        #4575b4,
+        #74add1,
+        #abd9e9,
+        #e0f3f8,
+        #fee090,
+        #fdae61,
+        #f46d43,
+        #d73027
+    );
+}
+
+.heatmap-cell {
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.1);
+    z-index: 1;
+}
+
+.heatmap-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Complexity control styles */
+.complexity-info {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+#complexity-value {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Update slider colors for complexity */
+.slider.complexity {
+    background: linear-gradient(to right,
+        #1a237e,  /* Deep neural connections */
+        #4CAF50,  /* Optimal complexity */
+        #f44336   /* High complexity */
+    );
+}

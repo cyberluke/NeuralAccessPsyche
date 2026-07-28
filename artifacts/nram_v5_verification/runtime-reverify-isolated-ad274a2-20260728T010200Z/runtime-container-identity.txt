@@ -1,0 +1,4 @@
+api_image=sha256:c9e6a1146ceb76babc31640f86ed98e4b960a884ea73c78b2ebedda93e73de40 api_status=running api_started=2026-07-28T01:31:22.274374817Z
+sglang_image=sha256:bf6d462ff8903f0d0163f1396a516198abd1734d6978317d2d1de96e7cad18e5 sglang_status=running sglang_health=healthy sglang_started=2026-07-28T01:10:43.707025095Z
+api_mounts=[{"Type":"bind","Source":"E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-14B-AWQ\\snapshots\\31c69efc29464b6bb0aee1398b5a7b50a99340c3","Destination":"/models","Mode":"","RW":false,"Propagation":"rprivate"},{"Type":"volume","Name":"nram-rvr-ad274a2-data","Source":"/var/lib/docker/volumes/nram-rvr-ad274a2-data/_data","Destination":"/app/data","Driver":"local","Mode":"z","RW":true,"Propagation":""}]
+sglang_mounts=[{"Type":"bind","Source":"E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-14B-AWQ\\snapshots\\31c69efc29464b6bb0aee1398b5a7b50a99340c3","Destination":"/models","Mode":"","RW":false,"Propagation":"rprivate"}]

@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="246" time="35.848" timestamp="2026-07-28T03:25:01.691000+02:00" hostname="WIN-LECQMSG5OQP"><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_full_generation_simulation_without_req" time="0.003" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_full_generation_simulation_with_req" time="0.005" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_comparison_baseline_vs_nram_without_req" time="0.001" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_phase_schedule_without_req" time="0.001" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_uses_baseline_model" time="0.320" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_persona_queries_use_nram" time="0.318" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_loses_persona_characteristics" time="0.341" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_payload_lacks_custom_processor" time="0.302" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_phenomena_not_called_without_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_overlap_fires_with_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_repetition_penalty_requires_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_phenomena_gating_line_in_processor" time="0.002" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_comparison_overlap_with_vs_without_req" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect1Remediation" name="test_req_is_injected_into_custom_params" time="0.312" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect1Remediation" name="test_dynamic_repetition_penalty_works" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_overlap_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_forgetting_phenomenon_fires" time="0.002" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_looping_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_associative_jump_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_dissolution_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_synesthesia_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_phase_scheduling_works" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_moe_synthesis_uses_nram_model" time="0.301" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_moe_synthesis_payload_has_custom_processor" time="0.316" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_synthesis_preserves_persona_characteristics" time="0.311" /><testcase classname="tests.adversarial.test_remediation_verification.TestIntegrationVerification" name="test_full_nram_pipeline_works" time="0.307" /><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_build_custom_params_excludes_application_request" time="0.001" /><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_sglang_payload_keeps_request_object_off_wire" time="0.295" /><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_processor_consumes_trusted_server_request_history" time="0.001" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_missing_auth_returns_401" time="0.192" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_invalid_token_returns_401" time="0.004" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_valid_token_returns_200" time="0.011" /><testcase classname="tests.contract.test_openai_chat_contract.TestRequestValidation" name="test_missing_messages_returns_400" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestRequestValidation" name="test_invalid_message_format_returns_400" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestErrorHandling" name="test_upstream_failure_returns_openai_error_not_fake_200" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestContentPreservation" name="test_user_content_not_modified_by_nram" time="0.005" /><testcase classname="tests.contract.test_openai_chat_contract.TestModelAlias" name="test_requested_model_passed_to_llm_handler" time="0.005" /><testcase classname="tests.contract.test_openai_chat_contract.TestModelAlias" name="test_baseline_model_alias_works" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestResponseShape" name="test_response_has_required_openai_fields" time="0.005" /><testcase classname="tests.contract.test_openai_chat_contract.TestResponseShape" name="test_content_is_string_not_dict" time="0.005" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_requires_auth" time="0.005" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_returns_only_loaded_immutable_identity" time="0.004" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_have_required_fields" time="0.004" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_both_aliases_map_to_same_upstream" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_unloaded_model_identities_are_not_mapped" time="0.307" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_only_nram_alias_is_steering_enabled" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_is_nram_enabled_true_for_nram_alias" time="0.300" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_is_nram_enabled_false_for_baseline" time="0.295" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_nram_disabled_via_option" time="0.310" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_forbidden_fields_constant" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_client_cannot_inject_processor" time="0.333" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_client_cannot_inject_serialized_processor" time="0.305" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[dexperts]" time="0.358" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[activation_addition]" time="0.324" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[conceptor_steering]" time="0.318" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[hidden_state_probes]" time="0.317" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[latent_closed_loop]" time="0.313" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[branch_tournament]" time="0.299" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[reft]" time="0.307" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[attention_head_gating]" time="0.310" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_unavailable_advanced_features_fail_loudly[kv_cache_firewall]" time="0.321" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_baseline_has_no_processor" time="0.300" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_nram_payload_has_processor_and_params" time="0.323" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_user_content_preserved" time="0.303" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_allowlist_filters_unknown_fields" time="0.300" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_model_alias_resolved_in_payload" time="0.305" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_custom_params_profile_reflects_request" time="0.311" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_bias_values_within_bounds" time="0.311" /><testcase classname="tests.gpu.test_forced_token_proof" name="test_forced_token_public_api_same_seed_control" time="10.738"><failure message="assert 0 == 1&#10; +  where 0 = len([])">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_forced_token_public_api_same_seed_control():
+        """Force one real token and correlate public output with processor logs."""
+        request_id = f"gpu-forced-{uuid.uuid4().hex}"
+        common = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "Say one word."}],
+            "max_tokens": 1,
+            "temperature": 1.0,
+            "top_p": 1.0,
+            "seed": 271828,
+            "tools": [],
+            "nram": {
+                "enabled": True,
+                "profile": "normal",
+                "request_id": request_id,
+                "include_telemetry": True,
+                "telemetry_max_steps": 1,
+                "forced_token_id": FORCED_TOKEN_ID,
+            },
+        }
+    
+        headers = {"Authorization": f"Bearer {API_KEY}"}
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            disabled_body = json.loads(json.dumps(common))
+            disabled_body["nram"]["request_id"] += "-disabled"
+            disabled_body["nram"]["forced_token_enabled"] = False
+            disabled_response = await client.post(API_URL, json=disabled_body, headers=headers)
+    
+            enabled_body = json.loads(json.dumps(common))
+            enabled_body["nram"]["forced_token_enabled"] = True
+            enabled_response = await client.post(API_URL, json=enabled_body, headers=headers)
+    
+        assert disabled_response.status_code == 200, disabled_response.text
+        assert enabled_response.status_code == 200, enabled_response.text
+        disabled = disabled_response.json()
+        enabled = enabled_response.json()
+        disabled_text = disabled["choices"][0]["message"]["content"]
+        enabled_text = enabled["choices"][0]["message"]["content"]
+        assert enabled_text.strip() == "proof"
+        assert disabled_text != enabled_text
+    
+        # Give Docker's log reader a bounded moment to flush subprocess stdout.
+        deadline = time.monotonic() + 10
+        events = []
+        while time.monotonic() &lt; deadline and not events:
+            events = _processor_events(request_id)
+            if not events:
+                time.sleep(0.25)
+&gt;       assert len(events) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\gpu\test_forced_token_proof.py:89: AssertionError</failure></testcase><testcase classname="tests.gpu.test_forced_token_proof" name="test_api_and_server_use_same_qwen_tokenizer_artifact" time="0.101"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(len(t)); print(repr(t.decode([11064])))&quot;]' returned non-zero exit status 1.">@pytest.mark.integration
+    @pytest.mark.gpu
+    def test_api_and_server_use_same_qwen_tokenizer_artifact():
+        """Verify token 11064 and tokenizer files in both live containers."""
+        command = (
+            "from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            "print(len(t)); print(repr(t.decode([11064])))"
+        )
+        outputs = []
+        for container in ("nram-api", "nram-sglang"):
+&gt;           completed = subprocess.run(
+                ["docker", "exec", container, "python", "-c", command],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+
+tests\gpu\test_forced_token_proof.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(len(t)); print(repr(t.decode([11064])))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(len(t)); print(repr(t.decode([11064])))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_logit_controls" name="test_live_pid_low_medium_high_and_request_reset" time="0.715"><failure message="assert 0 == 1&#10; +  where 0 = len([])">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_live_pid_low_medium_high_and_request_reset():
+        run = uuid.uuid4().hex
+        results = {}
+        for label, target in (("low", 1.0), ("medium", 4.0), ("high", 8.0)):
+&gt;           _, events = await _request(
+                f"entropy-{run}-{label}",
+                {
+                    "entropy_control": True,
+                    "entropy_phase_targets": {
+                        name: target
+                        for name in ("extraction", "questioning", "divergence", "synthesis", "formulation")
+                    },
+                    "entropy_kp": 0.2,
+                    "entropy_ki": 0.01,
+                    "entropy_kd": 0.02,
+                    "entropy_scale_min": 0.3,
+                    "entropy_scale_max": 3.0,
+                },
+            )
+
+tests\gpu\test_logit_controls.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request_id = 'entropy-fda4739ef09642f8be0a8238e45d2f6a-low'
+nram = {'entropy_control': True, 'entropy_phase_targets': {'extraction': 1.0, 'questioning': 1.0, 'divergence': 1.0, 'synthesis': 1.0, ...}, 'entropy_kp': 0.2, 'entropy_ki': 0.01, ...}
+max_tokens = 1
+
+    async def _request(request_id: str, nram: dict, max_tokens: int = 1):
+        body = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "Name one property of light."}],
+            "max_tokens": max_tokens,
+            "temperature": 0.7,
+            "top_p": 1.0,
+            "seed": 424242,
+            "tools": [],
+            "nram": {
+                "enabled": True,
+                "profile": "normal",
+                "request_id": request_id,
+                "include_telemetry": True,
+                "telemetry_max_steps": max_tokens,
+                **nram,
+            },
+        }
+        async with httpx.AsyncClient(timeout=120) as client:
+            response = await client.post(
+                API_URL,
+                json=body,
+                headers={"Authorization": f"Bearer {API_KEY}"},
+            )
+        assert response.status_code == 200, response.text
+        events = _events(request_id)
+&gt;       assert len(events) == max_tokens
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\gpu\test_logit_controls.py:78: AssertionError</failure></testcase><testcase classname="tests.gpu.test_logit_controls" name="test_live_capsule_soft_window_and_sparse_vector_deltas" time="0.124"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); ids=t.encode(' xylophone', add_special_tokens=False); print(json.dumps(ids))&quot;]' returned non-zero exit status 1.">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_live_capsule_soft_window_and_sparse_vector_deltas():
+        run = uuid.uuid4().hex
+&gt;       concept_id = _token_id(" xylophone")
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_logit_controls.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = ' xylophone'
+
+    def _token_id(text: str) -&gt; int:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"ids=t.encode({text!r}, add_special_tokens=False); print(json.dumps(ids))"
+        )
+&gt;       output = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        ).stdout.strip().splitlines()[-1]
+
+tests\gpu\test_logit_controls.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer....ned('/models', local_files_only=True); ids=t.encode(' xylophone', add_special_tokens=False); print(json.dumps(ids))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); ids=t.encode(' xylophone', add_special_tokens=False); print(json.dumps(ids))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_structural_controls" name="test_bilingual_overlapping_phrase_completion_is_masked[ forbidden horizon]" time="0.074"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))&quot;]' returned non-zero exit status 1.">phrase = ' forbidden horizon'
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.parametrize("phrase", [" forbidden horizon", " zakázaný obzor"])
+    async def test_bilingual_overlapping_phrase_completion_is_masked(phrase):
+&gt;       token_ids = _tokenize(phrase)
+                    ^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_structural_controls.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = ' forbidden horizon'
+
+    def _tokenize(text: str) -&gt; list[int]:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"print(json.dumps(t.encode({text!r}, add_special_tokens=False)))"
+        )
+&gt;       result = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+tests\gpu\test_structural_controls.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer....ined('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_structural_controls" name="test_bilingual_overlapping_phrase_completion_is_masked[ zak\xe1zan\xfd obzor]" time="0.125"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' zakázaný obzor', add_special_tokens=False)))&quot;]' returned non-zero exit status 1.">phrase = ' zakázaný obzor'
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.parametrize("phrase", [" forbidden horizon", " zakázaný obzor"])
+    async def test_bilingual_overlapping_phrase_completion_is_masked(phrase):
+&gt;       token_ids = _tokenize(phrase)
+                    ^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_structural_controls.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = ' zakázaný obzor'
+
+    def _tokenize(text: str) -&gt; list[int]:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"print(json.dumps(t.encode({text!r}, add_special_tokens=False)))"
+        )
+&gt;       result = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+tests\gpu\test_structural_controls.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer....trained('/models', local_files_only=True); print(json.dumps(t.encode(' zakázaný obzor', add_special_tokens=False)))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' zakázaný obzor', add_special_tokens=False)))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_structural_controls" name="test_exact_source_eight_token_continuation_is_masked" time="0.084"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' A precise source continuation crosses eight distinct token boundaries safely.', add_special_tokens=False)))&quot;]' returned non-zero exit status 1.">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_exact_source_eight_token_continuation_is_masked():
+        source = " A precise source continuation crosses eight distinct token boundaries safely."
+&gt;       source_ids = _tokenize(source)
+                     ^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_structural_controls.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = ' A precise source continuation crosses eight distinct token boundaries safely.'
+
+    def _tokenize(text: str) -&gt; list[int]:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"print(json.dumps(t.encode({text!r}, add_special_tokens=False)))"
+        )
+&gt;       result = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+tests\gpu\test_structural_controls.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer....ncode(' A precise source continuation crosses eight distinct token boundaries safely.', add_special_tokens=False)))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' A precise source continuation crosses eight distinct token boundaries safely.', add_special_tokens=False)))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_structural_controls" name="test_phrase_mask_composes_with_live_json_grammar" time="0.093"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', 'import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained(\'/models\', local_files_only=True); print(json.dumps(t.encode(\'{&quot;value&quot;:&quot;\', add_special_tokens=False)))']' returned non-zero exit status 1.">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_phrase_mask_composes_with_live_json_grammar():
+&gt;       prefix = _tokenize('{"value":"')
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_structural_controls.py:149: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = '{"value":"'
+
+    def _tokenize(text: str) -&gt; list[int]:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"print(json.dumps(t.encode({text!r}, add_special_tokens=False)))"
+        )
+&gt;       result = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+tests\gpu\test_structural_controls.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', 'import json; from transformers import AutoTokenizer; t=AutoTokenizer....etrained(\'/models\', local_files_only=True); print(json.dumps(t.encode(\'{"value":"\', add_special_tokens=False)))'],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', 'import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained(\'/models\', local_files_only=True); print(json.dumps(t.encode(\'{"value":"\', add_special_tokens=False)))']' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.gpu.test_structural_controls" name="test_streamed_steps_use_same_request_history" time="0.091"><failure message="subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', &quot;import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))&quot;]' returned non-zero exit status 1.">@pytest.mark.asyncio
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    async def test_streamed_steps_use_same_request_history():
+        phrase_text = " forbidden horizon"
+&gt;       schedule = _tokenize(phrase_text)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+
+tests\gpu\test_structural_controls.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = ' forbidden horizon'
+
+    def _tokenize(text: str) -&gt; list[int]:
+        code = (
+            "import json; from transformers import AutoTokenizer; "
+            "t=AutoTokenizer.from_pretrained('/models', local_files_only=True); "
+            f"print(json.dumps(t.encode({text!r}, add_special_tokens=False)))"
+        )
+&gt;       result = subprocess.run(
+            ["docker", "exec", "nram-api", "python", "-c", code],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+
+tests\gpu\test_structural_controls.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer....ined('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['docker', 'exec', 'nram-api', 'python', '-c', "import json; from transformers import AutoTokenizer; t=AutoTokenizer.from_pretrained('/models', local_files_only=True); print(json.dumps(t.encode(' forbidden horizon', add_special_tokens=False)))"]' returned non-zero exit status 1.
+
+C:\Python313\Lib\subprocess.py:577: CalledProcessError</failure></testcase><testcase classname="tests.integration.test_consciousness_quality" name="test_consciousness_state_instructions" time="0.003" /><testcase classname="tests.integration.test_consciousness_quality" name="test_consciousness_state_quality_metrics" time="0.009" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_route_persona_uses_internal_model_without_mutating_input" time="0.003" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_moe_subrequest_sets_internal_model" time="0.003" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_engine_injects_custom_logit_processor" time="0.389" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_persona_model_not_in_nram_enabled_aliases" time="0.002" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_nram_enabled_aliases_contains_actual_nram_models" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestTokenizerFailFast" name="test_missing_tokenizer_raises_error" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_exists" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_coherence" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_novelty" time="0.002" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_product_obsession" time="0.001" /><testcase classname="tests.integration.test_streamlit_smoke" name="test_streamlit_console_constructs_without_exception" time="6.146" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_public_models_do_not_advertise_unloaded_immutable_models" time="0.039" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;0]" time="0.030" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;1]" time="0.038" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;2]" time="0.020" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;3]" time="0.016" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_persona_stream_obeys_sse_contract_and_terminates" time="0.239" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_configuration_hash_covers_prompt_seed_sampling_and_grammar" time="0.465" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_compare_route_reaches_processor_and_rejects_unsupported_controls" time="0.030" /><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_moe_rejects_unsupported_before_first_generation" time="0.002" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect1Fixed_ContentIsString" name="test_generate_response_returns_string_content" time="0.002" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect2Fixed_Awaited" name="test_get_token_metrics_is_awaited_in_source" time="0.002" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect4Fixed_NoAwaitOnSyncClient" name="test_config_suggester_no_longer_awaits_sync_client" time="0.001" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect5Fixed_ModelReflected" name="test_generate_response_accepts_model_param" time="0.001" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect5Fixed_ModelReflected" name="test_model_field_in_response" time="0.003" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect8Fixed_InferenceErrorRaised" name="test_generate_response_raises_on_failure" time="0.004" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect8Fixed_InferenceErrorRaised" name="test_inference_error_has_correct_fields" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_numpy_has_no_softmax" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_nram_update_state_no_longer_raises" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_attention_weights_are_finite" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_process_messages_returns_unchanged_content" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_no_prefix_added" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_no_symbols_injected" time="0.003" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_multi_message_preservation" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_nram_initialization" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_get_consciousness_level" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_reset_state" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_get_explorer_state_returns_dict" time="0.004" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_update_configuration" time="0.002" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_positive_bias_increases_logits" time="0.044" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_negative_bias_decreases_logits" time="0.002" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_forbidden_tokens_negative_infinity" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_repetition_penalty_on_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_out_of_range_ids_ignored" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_invalid_param_types_do_not_crash" time="0.002" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_batch_isolation" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_empty_params_returns_logits" time="0.003" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_bias_clamped_to_bounds" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestProcessorSerialization" name="test_dill_roundtrip_preserves_behavior" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestProcessorSerialization" name="test_serialize_processor_helper_returns_hex" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestForcedTokenProof" name="test_forced_token_is_argmax" time="0.003" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_default_state_within_bounds" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_extra_fields_forbidden" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_out_of_range_rejected" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_negative_generated_tokens_rejected" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_is_immutable_copy" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_registered" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_has_high_visionary_and_jargon_penalty" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options0]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options1]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options2]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options3]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options4]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options5]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_strict_nram_schema_rejects_confirmed_malformed_controls[options6]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_top_level_schema_and_sampling_are_rejected_before_dispatch" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_tokenizer_undefined_padding_ids_rejected_for_every_sparse_control" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_local_auth_accepts_only_configured_token" time="0.001" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_applied_state_hash_changes_for_behavior_and_normalizes_newlines" time="0.310" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_phrase_builder_adds_leading_and_nonleading_tokenizer_variants" time="0.318" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_nonstream_disconnect_aborts_real_scheduler_id_before_cancel" time="0.003" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_moe_preserves_caller_bound_and_propagates_subrequest_error" time="0.002" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_session_snapshot_affects_request_and_records_real_response_accounting" time="0.003" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_comparison_preflights_both_arms_and_preserves_sampling" time="0.011" /><testcase classname="tests.unit.test_nram_v5_remediation" name="test_engine_stream_emits_public_identity_correlation_and_done" time="0.326" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_phrase_and_source_masks_use_server_history_only" time="0.006" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_pid_entropy_moves_toward_target[0.2--1]" time="0.022" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_pid_entropy_moves_toward_target[2.5-1]" time="0.002" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_pid_entropy_moves_toward_target[4.0-1]" time="0.001" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_pid_state_is_request_isolated_and_resets" time="0.001" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_soft_window_and_sparse_vocabulary_vectors_have_local_signed_effects" time="0.008" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_processor_telemetry_never_truncates_explicit_forced_targets" time="0.012" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_processor_telemetry_still_bounds_noncausal_steps" time="0.001" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_no_finite_candidate_and_nan_rows_fail_without_unmasking" time="0.002" /><testcase classname="tests.unit.test_nram_v5_runtime_controls" name="test_fractional_token_ids_are_not_truncated_inside_processor" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestPolicyCompilerDeterminism" name="test_identical_inputs_produce_identical_policy" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestPolicyCompilerDeterminism" name="test_different_inputs_produce_different_hash" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_positive_bias_within_conservative_range" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_negative_bias_within_conservative_range" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_repetition_penalty_bounded" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_extreme_state_still_bounds_positive_bias" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_positive_lexemes_present" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_negative_lexemes_are_corporate_filler" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_developer_instruction_does_not_impersonate" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_opening_phase_no_scaling" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_contradiction_phase_boosts_negative" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_revelation_phase_boosts_positive" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_final_turn_boosts_repetition" time="0.002" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_no_max_tokens_disables_schedule" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_schedule_actually_changes_logits" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_request_state_isolated" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_boosts_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_below_threshold_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_with_empty_history" time="0.002" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonForgetting" name="test_forgetting_penalizes_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonForgetting" name="test_forgetting_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonLooping" name="test_looping_rewards_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonLooping" name="test_looping_window_is_16_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonAssociativeJump" name="test_associative_jump_flattens_logits" time="0.003" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonAssociativeJump" name="test_associative_jump_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonSynesthesia" name="test_synesthesia_adds_noise_to_scattered_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonSynesthesia" name="test_synesthesia_pattern_shifts_with_generation" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonDissolution" name="test_dissolution_scales_logits_toward_zero" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonDissolution" name="test_dissolution_is_strongest_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_25_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_50_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_75_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_no_spike_outside_windows" time="0.002" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_overlap_and_forgetting_cancel_partially" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_all_phenomena_no_crash" time="0.002" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_phenomena_require_request" time="0.001" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_valid_plan_parsed" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_temperature_in_range" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_uses_structured_output" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_failure_returns_none" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_invalid_json_returns_none" time="0.005" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_disabled_returns_none" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_plan_to_fragment_contains_fields" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_returns_json_string" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_contains_callable" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_roundtrip" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_basic" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_with_phenomena" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_minimal" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_with_max_tokens" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_preserves_all_fields" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_no_phenomena_omits_key" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_removes_complete_think_block" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_no_think_block_unchanged" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_multiple_blocks_removed" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_empty_after_strip" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_multiline_reasoning" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_plain_content_passes_through" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_model_rewritten_to_public_alias" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_complete_reasoning_block_suppressed" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_partial_reasoning_buffered_until_close" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_done_line_yields_nothing" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_unparseable_line_dropped" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_finish_reason_chunk_preserved" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_single_token_lexeme_selected" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_multi_token_lexeme_skipped" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_punctuation_never_biased" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_ids_deduplicated" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_ids_validated_against_vocab" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_bias_values_propagated" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_diagnostics_include_skipped_reason" time="0.001" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_create_workflow" time="0.021" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_workflow" time="0.025" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_nonexistent_workflow" time="0.023" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_update_workflow" time="0.022" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_list_workflows" time="0.034" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_add_event" time="0.025" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_events_ordered_by_sequence" time="0.036" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_store_and_get_artifact" time="0.029" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_artifacts_by_type" time="0.036" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_workflow_persistence_across_store_instances" time="0.025" /></testsuite></testsuites>

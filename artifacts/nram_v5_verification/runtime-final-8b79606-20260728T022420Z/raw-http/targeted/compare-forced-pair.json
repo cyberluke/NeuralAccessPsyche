@@ -1,0 +1,109 @@
+{
+  "case": "compare-forced-pair",
+  "elapsed_seconds": 0.31702327728271484,
+  "request": {
+    "path": "/v1/nram/compare",
+    "method": "POST",
+    "authorization": "Bearer <redacted>",
+    "body": {
+      "prompt": "Reply with exactly one short word.",
+      "model": "nram-qwen3-14b-awq",
+      "baseline_model": "qwen3-14b-awq-baseline",
+      "seed": 424242,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "nram": {
+        "request_id": "RVR-COMPARE-FORCED",
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": true,
+        "forced_token_id": 9702,
+        "telemetry_max_steps": 8,
+        "telemetry_top_k": 20
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:15:40 GMT",
+      "server": "uvicorn",
+      "content-length": "1608",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"request_id\":\"compare-4a384260\",\"prompt\":\"Reply with exactly one short word.\",\"model\":\"nram-qwen3-14b-awq\",\"baseline_model\":\"qwen3-14b-awq-baseline\",\"seed\":424242,\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"baseline\":{\"output\":\"Okay\",\"latency_ms\":189.5,\"tokens\":1,\"finish_reason\":\"length\",\"metrics\":{\"corporate_jargon_count\":0,\"repeated_phrase_ratio\":0.0,\"average_sentence_length\":1.0,\"short_declarative_ratio\":1.0,\"product_noun_count\":0,\"metaphor_marker_count\":0,\"forbidden_cliche_count\":0,\"output_length\":1},\"processor_intervened\":false,\"correlation\":{\"scheduler_request_id\":\"nram-scheduler-a5d02db6d0684fa28298ad4aa8fe60cc\",\"public_model\":\"qwen3-14b-awq-baseline\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":false,\"sampled_token_ids\":[],\"sampled_tokens\":[],\"sample_join\":\"not_requested\"}},\"nram\":{\"output\":\"thank\",\"latency_ms\":107.8,\"tokens\":1,\"finish_reason\":\"length\",\"metrics\":{\"corporate_jargon_count\":0,\"repeated_phrase_ratio\":0.0,\"average_sentence_length\":1.0,\"short_declarative_ratio\":1.0,\"product_noun_count\":0,\"metaphor_marker_count\":0,\"forbidden_cliche_count\":0,\"output_length\":1},\"profile\":\"normal\",\"processor_intervened\":true,\"correlation\":{\"request_id\":\"RVR-COMPARE-FORCED\",\"scheduler_request_id\":\"nram-scheduler-79a87ff46a1d4079a23f561bf5ae067b\",\"config_hash\":\"56c90911bce79013d0ebc1c830dd6afbbf25d269429f22aa6327346a70cfa10e\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}}",
+    "json": {
+      "request_id": "compare-4a384260",
+      "prompt": "Reply with exactly one short word.",
+      "model": "nram-qwen3-14b-awq",
+      "baseline_model": "qwen3-14b-awq-baseline",
+      "seed": 424242,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "baseline": {
+        "output": "Okay",
+        "latency_ms": 189.5,
+        "tokens": 1,
+        "finish_reason": "length",
+        "metrics": {
+          "corporate_jargon_count": 0,
+          "repeated_phrase_ratio": 0.0,
+          "average_sentence_length": 1.0,
+          "short_declarative_ratio": 1.0,
+          "product_noun_count": 0,
+          "metaphor_marker_count": 0,
+          "forbidden_cliche_count": 0,
+          "output_length": 1
+        },
+        "processor_intervened": false,
+        "correlation": {
+          "scheduler_request_id": "nram-scheduler-a5d02db6d0684fa28298ad4aa8fe60cc",
+          "public_model": "qwen3-14b-awq-baseline",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": false,
+          "sampled_token_ids": [],
+          "sampled_tokens": [],
+          "sample_join": "not_requested"
+        }
+      },
+      "nram": {
+        "output": "thank",
+        "latency_ms": 107.8,
+        "tokens": 1,
+        "finish_reason": "length",
+        "metrics": {
+          "corporate_jargon_count": 0,
+          "repeated_phrase_ratio": 0.0,
+          "average_sentence_length": 1.0,
+          "short_declarative_ratio": 1.0,
+          "product_noun_count": 0,
+          "metaphor_marker_count": 0,
+          "forbidden_cliche_count": 0,
+          "output_length": 1
+        },
+        "profile": "normal",
+        "processor_intervened": true,
+        "correlation": {
+          "request_id": "RVR-COMPARE-FORCED",
+          "scheduler_request_id": "nram-scheduler-79a87ff46a1d4079a23f561bf5ae067b",
+          "config_hash": "56c90911bce79013d0ebc1c830dd6afbbf25d269429f22aa6327346a70cfa10e",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    }
+  },
+  "exception": null
+}

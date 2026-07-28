@@ -1,0 +1,70 @@
+{
+  "case_id": "forced-vs-forbidden-conflict",
+  "expected_contract": "explicit deterministic 4xx conflict",
+  "started_utc": "2026-07-28T02:59:17.558209Z",
+  "finished_utc": "2026-07-28T02:59:17.573164Z",
+  "elapsed_ms": 14.928799999324838,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "forced-vs-forbidden-conflict"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-all-mask",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "forced_token_enabled": true,
+        "forced_token_id": 9702,
+        "forbidden_token_ids": [
+          9702
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-all-mask\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"forbidden_token_ids\":[9702]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "183",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"\",\"code\":\"value_error\",\"message\":\"Value error, forced_token_conflicts_with_forbidden_token\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "schema": "nram.request.v1",
+        "errors": [
+          {
+            "path": "",
+            "code": "value_error",
+            "message": "Value error, forced_token_conflicts_with_forbidden_token"
+          }
+        ]
+      }
+    },
+    "bytes": 183
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

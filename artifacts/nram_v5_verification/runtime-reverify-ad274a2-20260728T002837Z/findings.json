@@ -1,0 +1,25 @@
+[
+  {
+    "id": "RVR-001",
+    "severity": "HIGH (verification blocker; not attributed as a target production defect)",
+    "confidence": "HIGH",
+    "location": [
+      "Dockerfile:36",
+      "compose.yaml:117",
+      "core/steering/activation_addition.py",
+      "core/steering/activation_vectors.py",
+      "core/steering/concept_capsules.py",
+      "core/steering/conceptor_steering.py",
+      "core/steering/dexperts.py",
+      "core/steering/entropy_controller.py",
+      "core/steering/forward_hooks.py",
+      "core/steering/hallucination_guard.py",
+      "core/steering/hidden_state_probes.py",
+      "core/steering/multi_vector_controller.py",
+      "core/steering/phrase_constraints.py"
+    ],
+    "evidence": "Both services use root context; no .dockerignore exists; API COPY core/ recursively includes 11 untracked runtime modules not present in the target Git tree.",
+    "reproduction": "git ls-files --others --exclude-standard, then compare results to Dockerfile COPY sources and compose build context",
+    "required_remediation": "Provide an isolated exact-target build context/worktree that contains no protected untracked production files. Do not delete, reset, clean, or silently ignore user files."
+  }
+]

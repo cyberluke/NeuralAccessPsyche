@@ -1,0 +1,6 @@
+2026-07-27T22:59:20Z PRE-RESTART 
+name=/nram-api id=d3698f1b5968f888901a321a008c7f26e8b35dbd548a9b899d5729719b47ce89 image=sha256:5e32ec5617c4395b65a80827fc1f3ba7170af37a5acb83b03634727db9124e76 state=exited exit=137 finished=2026-07-27T22:58:06.663640201Z restart=0
+name=/nram-sglang id=48be80a04618f45c5845e34d3774cd98e2bf92cd3534df5b3dc36d398d60b57e image=sha256:f024c1401943af0dc5375fcf953354c6b8a972530ae6e62787656a18cb69465b state=exited exit=137 finished=2026-07-27T22:58:09.269541747Z restart=0
+name=/nram-api id=d3698f1b5968f888901a321a008c7f26e8b35dbd548a9b899d5729719b47ce89 image=sha256:5e32ec5617c4395b65a80827fc1f3ba7170af37a5acb83b03634727db9124e76 state=running started=2026-07-27T23:03:25.351553858Z health=healthy restart=0
+name=/nram-sglang id=48be80a04618f45c5845e34d3774cd98e2bf92cd3534df5b3dc36d398d60b57e image=sha256:f024c1401943af0dc5375fcf953354c6b8a972530ae6e62787656a18cb69465b state=running started=2026-07-27T23:00:07.523833391Z health=healthy restart=0
+{"status":"ready","engine":"sglang","detail":{"engine":"sglang","healthy":true,"models":["nram-qwen3-14b-awq"]}}

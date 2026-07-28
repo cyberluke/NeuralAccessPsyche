@@ -1,0 +1,7 @@
+2026-07-28T01:38:45.4073091Z sglang=starting api=starting
+2026-07-28T01:38:55.5819438Z sglang=starting api=starting
+2026-07-28T01:39:05.7432415Z sglang=starting api=starting
+2026-07-28T01:39:15.9230231Z sglang=starting api=starting
+2026-07-28T01:39:26.0899789Z sglang=starting api=starting
+2026-07-28T01:39:36.2638215Z sglang=healthy api=healthy
+{"status":"ready","engine":"sglang","detail":{"engine":"sglang","healthy":true,"models":["nram-qwen3-14b-awq"]}}

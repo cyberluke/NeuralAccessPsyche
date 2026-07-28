@@ -1,0 +1,60 @@
+{
+  "prompt": {
+    "id": "cs-source",
+    "language": "cs",
+    "category": "source_transformation",
+    "prompt": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí.",
+    "source": "Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+  },
+  "seed": 101,
+  "condition": "developer_prompt_only",
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Přeformuluj bez kopírování: Transparentní mechanismus převádí důkazy na konkrétní produktové rozhodnutí."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 24,
+    "seed": 101,
+    "tools": [],
+    "nram": {
+      "enabled": true,
+      "profile": "normal",
+      "request_id": "paired-cs-source-101-developer_prompt_only",
+      "include_telemetry": true,
+      "prompt_steering_enabled": true,
+      "profile_logit_steering_enabled": false
+    }
+  },
+  "response": {
+    "id": "99c42b19fe6a45fa8af84308b724760e",
+    "object": "chat.completion",
+    "created": 1785186889,
+    "model": "nram-qwen3-14b-awq",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Transparentní mechanismus převádí důkazy do konkrétního rozhodnutí"
+        },
+        "finish_reason": "length",
+        "reasoning_content": null
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 173,
+      "completion_tokens": 24,
+      "total_tokens": 197
+    },
+    "nram_correlation": {
+      "request_id": "paired-cs-source-101-developer_prompt_only",
+      "config_hash": "4155a1f8730d726f4237cffc5e64ceeeef1011182327a96b035402cb74bdacee"
+    }
+  },
+  "latency_ms": 533.9180000009947
+}

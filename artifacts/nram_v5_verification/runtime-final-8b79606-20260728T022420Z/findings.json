@@ -1,0 +1,31 @@
+[
+  {
+    "id": "RVR2-001",
+    "severity": "HIGH",
+    "title": "Declared public top_p lower boundary is rejected only by upstream SGLang",
+    "evidence": "top_p=0.0 passes public schema, reaches upstream, and returns HTTP 502; SGLang requires (0,1].",
+    "paths": [
+      "raw-http/final-validation-current-image/cases/public-top_p-lower.json"
+    ]
+  },
+  {
+    "id": "RVR2-002",
+    "severity": "HIGH",
+    "title": "Public NRAM penalty maxima disagree with resolved NRAMState bounds",
+    "evidence": "repetition_penalty=2.0 and corporate_jargon_penalty=2.5 pass request schema then return HTTP 500 from NRAMState max=1 validation.",
+    "paths": [
+      "raw-http/final-validation-current-image/cases/nram-repetition_penalty-upper.json",
+      "raw-http/final-validation-current-image/cases/nram-corporate_jargon_penalty-upper.json"
+    ]
+  },
+  {
+    "id": "RVR2-003",
+    "severity": "MEDIUM",
+    "title": "Compose rebuild can leave running containers on uninspectable dangling image IDs",
+    "evidence": "Initial v2 collector failed loud because docker image inspect could not resolve the running pre-build API image ID; authenticated tag recreation restored provenance.",
+    "paths": [
+      "collector-v2.stderr.txt",
+      "collector-image-id-drift.txt"
+    ]
+  }
+]

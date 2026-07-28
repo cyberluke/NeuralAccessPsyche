@@ -33,19 +33,25 @@ def _token_id(text: str) -> int:
 
 
 def _events(request_id: str) -> list[dict]:
-    output = subprocess.run(
-        ["docker", "logs", "nram-sglang"],
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=30,
-    )
-    events = []
-    for line in (output.stdout + output.stderr).splitlines():
-        if "NRAM_PROCESSOR_EVENT " in line:
-            event = json.loads(line.split("NRAM_PROCESSOR_EVENT ", 1)[1])
-            if event.get("request_id") == request_id:
-                events.append(event)
+    import time
+    # Docker logs may not flush instantly; retry with longer wait
+    for _ in range(10):
+        output = subprocess.run(
+            ["docker", "logs", "nram-sglang", "--tail", "1000"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        events = []
+        for line in (output.stdout + output.stderr).splitlines():
+            if "NRAM_PROCESSOR_EVENT " in line:
+                event = json.loads(line.split("NRAM_PROCESSOR_EVENT ", 1)[1])
+                if event.get("request_id") == request_id:
+                    events.append(event)
+        if events:
+            return events
+        time.sleep(1.0)
     return events
 
 

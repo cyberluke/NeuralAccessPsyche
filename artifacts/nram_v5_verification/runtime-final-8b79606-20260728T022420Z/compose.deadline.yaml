@@ -1,0 +1,4 @@
+services:
+  nram-api:
+    environment:
+      NRAM_REQUEST_TIMEOUT_SECONDS: "0.001"

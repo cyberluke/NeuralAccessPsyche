@@ -1,0 +1,85 @@
+{
+  "sglang_poll": [
+    {
+      "monotonic": 11486.2453801,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11491.3122945,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11496.3632238,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11501.4856266,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11506.5339858,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11511.5854158,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11516.6380093,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11521.6912118,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11526.7379409,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11531.7862041,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11536.8324395,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11541.8825931,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11546.9313746,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11551.9807211,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11557.0317817,
+      "health": "healthy"
+    }
+  ],
+  "api_poll": [
+    {
+      "monotonic": 11557.2784319,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11562.3293943,
+      "health": "starting"
+    },
+    {
+      "monotonic": 11567.3770787,
+      "health": "healthy"
+    }
+  ],
+  "ready_status": 200,
+  "ready_body": "{\"status\":\"ready\",\"engine\":\"sglang\",\"detail\":{\"engine\":\"sglang\",\"healthy\":true,\"models\":[\"nram-qwen3-14b-awq\"]}}",
+  "identity": [
+    "/nram-api|6c254b358178b37d2f8b446a7b07e414f2b0e68625dbf69f178a4d2196ddcf43|sha256:0574970fec30e44d76106e9eeab6f105871cd1b85767d0515025b5f383207d55|running|healthy",
+    "/nram-sglang|48be80a04618f45c5845e34d3774cd98e2bf92cd3534df5b3dc36d398d60b57e|sha256:f024c1401943af0dc5375fcf953354c6b8a972530ae6e62787656a18cb69465b|running|healthy"
+  ],
+  "restored": true
+}

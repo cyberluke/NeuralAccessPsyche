@@ -1,0 +1,24 @@
+{
+  "prompt_ids": [
+    "final-validation-one-word",
+    "final-cancellation-deterministic",
+    "tracked-regression-suite"
+  ],
+  "seeds": [424242, 271828],
+  "intervention_ids": [
+    "nonfinite-rejection-matrix",
+    "exact-boundary-controls",
+    "hard-token-9702-64-step",
+    "forced-enabled-disabled-pair"
+  ],
+  "configuration": {
+    "target_commit": "8b796066ec6fed3f3260e9aea1e1ab19489e6ae8",
+    "target_tree": "18829ce184fc05427187aaf0a9a201d26b82c27e",
+    "model_snapshot": "31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+    "max_running_requests": 1,
+    "overlap_schedule": false,
+    "max_cancellation_tokens": 64,
+    "temperature": 0.0,
+    "top_p": 1.0
+  }
+}

@@ -1,0 +1,8 @@
+3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]
+sglang=0.5.16
+dill=0.4.1
+torch=2.11.0+cu130
+cuda=13.0
+gpu=NVIDIA GeForce RTX 4090
+fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1
+NVIDIA GeForce RTX 4090, 591.86, 23028 MiB

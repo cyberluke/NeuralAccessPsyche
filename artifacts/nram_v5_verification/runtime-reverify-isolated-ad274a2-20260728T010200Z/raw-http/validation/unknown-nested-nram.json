@@ -1,0 +1,58 @@
+{
+  "case_id": "unknown-nested-nram",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T01:18:22.589320Z",
+  "finished_utc": "2026-07-28T01:18:22.591666Z",
+  "elapsed_ms": 2.3327999997491133,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unknown-nested-nram"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unknown-nested",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "unknown_nested_control": {
+          "must": "reject"
+        }
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unknown-nested\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"unknown_nested_control\":{\"must\":\"reject\"}}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+      "server": "uvicorn",
+      "content-length": "195",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'unknown_nested_control', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}\"}",
+    "json": {
+      "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'unknown_nested_control', 'code': 'extra_forbidden', 'message': 'Extra inputs are not permitted'}]}"
+    },
+    "bytes": 195
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

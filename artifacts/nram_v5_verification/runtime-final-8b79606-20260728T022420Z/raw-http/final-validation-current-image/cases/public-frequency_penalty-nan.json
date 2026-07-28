@@ -1,0 +1,55 @@
+{
+  "case_id": "public-frequency_penalty-nan",
+  "elapsed_ms": 2.000093460083008,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": NaN,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-010",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":NaN,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-010\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false}}",
+  "response": {
+    "status": 422,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:42:22 GMT",
+      "server": "uvicorn",
+      "content-length": "155",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"details\":[{\"type\":\"finite_number\",\"loc\":[\"body\",\"frequency_penalty\"],\"msg\":\"Input should be a finite number\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "details": [
+          {
+            "type": "finite_number",
+            "loc": [
+              "body",
+              "frequency_penalty"
+            ],
+            "msg": "Input should be a finite number"
+          }
+        ]
+      }
+    }
+  },
+  "exception": null
+}

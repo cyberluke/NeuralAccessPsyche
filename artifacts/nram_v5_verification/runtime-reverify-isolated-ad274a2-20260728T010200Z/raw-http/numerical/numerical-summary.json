@@ -1,0 +1,620 @@
+[
+  {
+    "case_id": "entropy-low",
+    "expected_contract": "each step moves finite entropy toward target and PID state resets per request",
+    "started_utc": "2026-07-28T01:18:25.203895Z",
+    "finished_utc": "2026-07-28T01:18:25.226552Z",
+    "elapsed_ms": 22.630900000422116,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "entropy-low"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-ENTROPY-low",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "entropy_control": true,
+          "entropy_phase_targets": {
+            "extraction": 1.0,
+            "questioning": 1.0,
+            "divergence": 1.0,
+            "synthesis": 1.0,
+            "formulation": 1.0
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":4,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ENTROPY-low\",\"include_telemetry\":true,\"telemetry_max_steps\":8,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"entropy_control\":true,\"entropy_phase_targets\":{\"extraction\":1.0,\"questioning\":1.0,\"divergence\":1.0,\"synthesis\":1.0,\"formulation\":1.0}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "entropy-medium",
+    "expected_contract": "each step moves finite entropy toward target and PID state resets per request",
+    "started_utc": "2026-07-28T01:18:25.226995Z",
+    "finished_utc": "2026-07-28T01:18:25.248803Z",
+    "elapsed_ms": 21.789100000205508,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "entropy-medium"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-ENTROPY-medium",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "entropy_control": true,
+          "entropy_phase_targets": {
+            "extraction": 5.0,
+            "questioning": 5.0,
+            "divergence": 5.0,
+            "synthesis": 5.0,
+            "formulation": 5.0
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":4,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ENTROPY-medium\",\"include_telemetry\":true,\"telemetry_max_steps\":8,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"entropy_control\":true,\"entropy_phase_targets\":{\"extraction\":5.0,\"questioning\":5.0,\"divergence\":5.0,\"synthesis\":5.0,\"formulation\":5.0}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "entropy-high",
+    "expected_contract": "each step moves finite entropy toward target and PID state resets per request",
+    "started_utc": "2026-07-28T01:18:25.249283Z",
+    "finished_utc": "2026-07-28T01:18:25.250752Z",
+    "elapsed_ms": 1.4583000001948676,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "entropy-high"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-ENTROPY-high",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "entropy_control": true,
+          "entropy_phase_targets": {
+            "extraction": 10.0,
+            "questioning": 10.0,
+            "divergence": 10.0,
+            "synthesis": 10.0,
+            "formulation": 10.0
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":4,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ENTROPY-high\",\"include_telemetry\":true,\"telemetry_max_steps\":8,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"entropy_control\":true,\"entropy_phase_targets\":{\"extraction\":10.0,\"questioning\":10.0,\"divergence\":10.0,\"synthesis\":10.0,\"formulation\":10.0}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "vector-negative",
+    "expected_contract": "telemetry delta equals coefficient times weight before final force mask",
+    "started_utc": "2026-07-28T01:18:25.251132Z",
+    "finished_utc": "2026-07-28T01:18:25.263298Z",
+    "elapsed_ms": 12.152399999649788,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "vector-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VECTOR-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "vocabulary_logit_vectors": [
+            {
+              "vector_id": "ra-vector",
+              "coefficient": -2.0,
+              "normalize": false,
+              "entries": [
+                {
+                  "token_id": 12095,
+                  "weight": 1.5
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"vocabulary_logit_vectors\":[{\"vector_id\":\"ra-vector\",\"coefficient\":-2.0,\"normalize\":false,\"entries\":[{\"token_id\":12095,\"weight\":1.5}]}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "vector-zero",
+    "expected_contract": "telemetry delta equals coefficient times weight before final force mask",
+    "started_utc": "2026-07-28T01:18:25.264031Z",
+    "finished_utc": "2026-07-28T01:18:25.265882Z",
+    "elapsed_ms": 1.8388000003142224,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "vector-zero"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VECTOR-zero",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "vocabulary_logit_vectors": [
+            {
+              "vector_id": "ra-vector",
+              "coefficient": 0.0,
+              "normalize": false,
+              "entries": [
+                {
+                  "token_id": 12095,
+                  "weight": 1.5
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-zero\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"vocabulary_logit_vectors\":[{\"vector_id\":\"ra-vector\",\"coefficient\":0.0,\"normalize\":false,\"entries\":[{\"token_id\":12095,\"weight\":1.5}]}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "vector-positive",
+    "expected_contract": "telemetry delta equals coefficient times weight before final force mask",
+    "started_utc": "2026-07-28T01:18:25.266368Z",
+    "finished_utc": "2026-07-28T01:18:25.267998Z",
+    "elapsed_ms": 1.6184000000976084,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "vector-positive"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VECTOR-positive",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "vocabulary_logit_vectors": [
+            {
+              "vector_id": "ra-vector",
+              "coefficient": 2.0,
+              "normalize": false,
+              "entries": [
+                {
+                  "token_id": 12095,
+                  "weight": 1.5
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-positive\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"vocabulary_logit_vectors\":[{\"vector_id\":\"ra-vector\",\"coefficient\":2.0,\"normalize\":false,\"entries\":[{\"token_id\":12095,\"weight\":1.5}]}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "soft-negative",
+    "expected_contract": "telemetry delta equals requested signed bias within active window",
+    "started_utc": "2026-07-28T01:18:25.268512Z",
+    "finished_utc": "2026-07-28T01:18:25.269647Z",
+    "elapsed_ms": 1.126399999975547,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "soft-negative"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SOFT-negative",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "soft_token_injections": [
+            {
+              "token_ids": [
+                12095
+              ],
+              "bias": -2.0,
+              "start_step": 0,
+              "end_step": 1
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SOFT-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"soft_token_injections\":[{\"token_ids\":[12095],\"bias\":-2.0,\"start_step\":0,\"end_step\":1}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "soft-zero",
+    "expected_contract": "telemetry delta equals requested signed bias within active window",
+    "started_utc": "2026-07-28T01:18:25.269952Z",
+    "finished_utc": "2026-07-28T01:18:25.270972Z",
+    "elapsed_ms": 1.010599999972328,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "soft-zero"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SOFT-zero",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "soft_token_injections": [
+            {
+              "token_ids": [
+                12095
+              ],
+              "bias": 0.0,
+              "start_step": 0,
+              "end_step": 1
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SOFT-zero\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"soft_token_injections\":[{\"token_ids\":[12095],\"bias\":0.0,\"start_step\":0,\"end_step\":1}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+    "case_id": "soft-positive",
+    "expected_contract": "telemetry delta equals requested signed bias within active window",
+    "started_utc": "2026-07-28T01:18:25.271289Z",
+    "finished_utc": "2026-07-28T01:18:25.272319Z",
+    "elapsed_ms": 1.0213000000476313,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "soft-positive"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SOFT-positive",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "soft_token_injections": [
+            {
+              "token_ids": [
+                12095
+              ],
+              "bias": 2.0,
+              "start_step": 0,
+              "end_step": 1
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SOFT-positive\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"soft_token_injections\":[{\"token_ids\":[12095],\"bias\":2.0,\"start_step\":0,\"end_step\":1}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 429,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+        "server": "uvicorn",
+        "content-length": "31",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+      "json": {
+        "error": "Rate limit exceeded"
+      },
+      "bytes": 31
+    },
+    "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+]

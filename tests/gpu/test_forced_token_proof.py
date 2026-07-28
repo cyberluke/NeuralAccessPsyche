@@ -17,21 +17,26 @@ FORCED_TOKEN_ID = 11064  # live Qwen tokenizer decodes this token as " proof"
 
 
 def _processor_events(request_id: str) -> list[dict]:
-    completed = subprocess.run(
-        ["docker", "logs", "nram-sglang"],
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=30,
-    )
-    events = []
-    for line in (completed.stdout + completed.stderr).splitlines():
-        marker = "NRAM_PROCESSOR_EVENT "
-        if marker not in line:
-            continue
-        event = json.loads(line.split(marker, 1)[1])
-        if event.get("request_id") == request_id:
-            events.append(event)
+    """Fetch processor events from Docker logs with retry logic."""
+    for _ in range(10):
+        completed = subprocess.run(
+            ["docker", "logs", "nram-sglang", "--tail", "1000"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        events = []
+        for line in (completed.stdout + completed.stderr).splitlines():
+            marker = "NRAM_PROCESSOR_EVENT "
+            if marker not in line:
+                continue
+            event = json.loads(line.split(marker, 1)[1])
+            if event.get("request_id") == request_id:
+                events.append(event)
+        if events:
+            return events
+        time.sleep(1.0)
     return events
 
 

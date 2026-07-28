@@ -1,0 +1,5 @@
+ERROR: usage: python -m pytest [options] [file_or_dir] [file_or_dir] [...]
+python -m pytest: error: unrecognized arguments: --timeout=120 -TotalCount
+  inifile: d:\_SATIN_AI\NeuralAccessPsyche\pyproject.toml
+  rootdir: d:\_SATIN_AI\NeuralAccessPsyche
+

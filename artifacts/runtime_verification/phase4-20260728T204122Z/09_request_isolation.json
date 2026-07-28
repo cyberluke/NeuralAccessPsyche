@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "baseline": {
+    "content": "AI is not a replacement for human intelligence but an extension of it, built on the fragile foundation of human-designed algorithms and data. The more we rely on AI to solve complex problems, the more we risk creating systems that reflect our biases, limitations,",
+    "config_hash": "00f89e76b224dfd2a513b7b32607ac2896c76e70f58f7add410e7c9d25fc4e9d",
+    "processor_intervened": true,
+    "request_id": "nram-7357943a19d74059af670e30e1a06a89"
+  },
+  "steered": {
+    "content": "AI is the next stage of human cognition, an extension of our neural networks into the digital realm, enabling machines to learn, adapt, and create with unprecedented autonomy and intelligence. It is not just a tool, but a co-evolving partner in the",
+    "config_hash": "546489ec54b5557d522e5d718f2b7f1553ddc832bbabf1939f243731eb0effb3",
+    "processor_intervened": true,
+    "request_id": "nram-7296276fa1054bb6800fac8513566eff"
+  },
+  "config_hashes_differ": true,
+  "request_ids_differ": true
+}

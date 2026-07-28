@@ -1,0 +1,1 @@
+{"model":"nram-qwen3-14b-awq","messages":[{"role":"user","content":"Hello, respond with one word."}],"max_tokens":10,"seed":42}

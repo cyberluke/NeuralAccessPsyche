@@ -1,0 +1,105 @@
+{
+  "schema": "nram-runtime-reverification-blocked-manifest-v1",
+  "target_commit": "ad274a2c4b0575cf796659073fb69a962dbb66d0",
+  "root": "artifacts/nram_v5_verification/runtime-reverify-ad274a2-20260728T002837Z",
+  "file_count_excluding_manifest": 16,
+  "self_hash_policy": "manifest.json is excluded to avoid impossible recursive self-hashing; its SHA-256 is reported in the final completion record",
+  "files": [
+    {
+      "path": "blocker.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 330,
+      "sha256": "2a5ca4a71ccda2b78cb59154b90be273c2f62126287ac9cfb2acaaebc900ed00"
+    },
+    {
+      "path": "claims-and-controls.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 2391,
+      "sha256": "f94404b30ea20aedc00b6992e63325c66f79fc09d0e70c66fb9f1cb1d1822f4e"
+    },
+    {
+      "path": "collect_blocker_evidence.py",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 8368,
+      "sha256": "0ff7e7060b4464404fe0f3fd9f7c8a07e826f76b5fee02e97d34a2d45601cfbc"
+    },
+    {
+      "path": "command-results.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 2864,
+      "sha256": "7a0857cf67a80fa48234ac0d215a9d24569c56efce6beb8586124cfdd8d15b40"
+    },
+    {
+      "path": "commands.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 492,
+      "sha256": "76b88cfcd22d3ff53f49919fa1bc94a9215630c340d02817e3e088d8a8405c41"
+    },
+    {
+      "path": "context-purity-recheck.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 651,
+      "sha256": "ea1f95b71cfae35a678a2a07f591b48b2c2afddeb79ac922d663d20c29348b61"
+    },
+    {
+      "path": "created-files.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 386,
+      "sha256": "4586985485370f9584075bac830efaa48fcdea0cd811e389dc326140d1f1004b"
+    },
+    {
+      "path": "docker-context-purity.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 1168,
+      "sha256": "9147a621a09167abc8b6cba7874cbe160a394392379a8a790bdff1a98a25baaf"
+    },
+    {
+      "path": "final-git-status.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 24693,
+      "sha256": "7e3cade2e36fc8ab9fddabbaaf2784096fd492a0eb6430eb0b41ba5742e2a6df"
+    },
+    {
+      "path": "finalize_blocked_evidence.py",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 13275,
+      "sha256": "39133479a7d1efd34e86e6c355eea4cd57f2e073a707ccbc392b51b7f1f597a3"
+    },
+    {
+      "path": "findings.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 1253,
+      "sha256": "7d1de7b589cf8c18a98e578cc300ad3bbfc4d8734de5b4269fbba7bf9ac1adaa"
+    },
+    {
+      "path": "issue-verification-table.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 8092,
+      "sha256": "394bc0417e21cd38303da33bdd0409eccca762a76ceb2698997d2e0294fd60d1"
+    },
+    {
+      "path": "spec-identity.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 1189,
+      "sha256": "d309605e93bec12317f6516585522b30d54d7752a11efb2ffccd1311206433ff"
+    },
+    {
+      "path": "starting-git-status.txt",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 23731,
+      "sha256": "96384c220ac9ef25224e9852d1c9db3a17e5b6913c7c5d6b8fe3793ef232fde1"
+    },
+    {
+      "path": "summary.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 608,
+      "sha256": "e64d13a4d6083abfe51ad4f3f277e039f033e2496ded8f7b1508ee6afdb3efda"
+    },
+    {
+      "path": "target-source-authentication.json",
+      "byte_domain": "raw artifact file bytes",
+      "bytes": 98252,
+      "sha256": "df6de5ad4cc0d142746dbccde8587d890a3288f83b6277289e9951006bca916d"
+    }
+  ]
+}

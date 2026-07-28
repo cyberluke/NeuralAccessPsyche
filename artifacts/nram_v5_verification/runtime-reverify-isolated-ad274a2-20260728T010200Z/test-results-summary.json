@@ -1,0 +1,58 @@
+{
+  "adversarial_live": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "first_full_noncanonical_names": {
+    "tests": 246,
+    "failures": 9,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_canonical_names": {
+    "tests": 246,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "gpu": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ruff": "All checks passed!",
+  "mypy": "Success: no issues found in 4 source files",
+  "npm_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "validation_nonfinite_failures": {
+    "temperature-nan": 500,
+    "temperature-inf": 500,
+    "top-p-nan": 500
+  },
+  "unsupported_fail_loud_statuses": {
+    "unsupported-dexperts": 400,
+    "unsupported-activation_addition": 400,
+    "unsupported-actadd": 400,
+    "unsupported-conceptor_steering": 400,
+    "unsupported-hidden_state_probes": 400,
+    "unsupported-latent_closed_loop": 400,
+    "unsupported-semantic_novelty_controller": 400,
+    "unsupported-evidence_guard": 400,
+    "unsupported-branch_tournament": 400,
+    "unsupported-reft": 400,
+    "unsupported-soft_prompts": 400,
+    "unsupported-attention_head_gating": 400,
+    "unsupported-kv_cache_firewall": 400,
+    "unsupported-gpu_native_semantic_control": 400,
+    "persona-unsupported-dexperts": 400
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "case_id": "phenomenon-tangent-nan",
+  "elapsed_ms": 2.44903564453125,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-185",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "phenomenon_weights": {
+        "tangent": NaN
+      }
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-185\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"phenomenon_weights\":{\"tangent\":NaN}}}",
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:42:38 GMT",
+      "server": "uvicorn",
+      "content-length": "186",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"phenomenon_weights.tangent\",\"code\":\"finite_number\",\"message\":\"Input should be a finite number\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "schema": "nram.request.v1",
+        "errors": [
+          {
+            "path": "phenomenon_weights.tangent",
+            "code": "finite_number",
+            "message": "Input should be a finite number"
+          }
+        ]
+      }
+    }
+  },
+  "exception": null
+}

@@ -1,0 +1,78 @@
+{
+  "case_id": "alias-06-persona-normal",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.536438Z",
+  "finished_utc": "2026-07-27T22:49:18.600591Z",
+  "elapsed_ms": 64.11359999765409,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-06-persona-normal"
+    },
+    "body": {
+      "model": "persona-normal",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-06-persona-normal",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-normal\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-06-persona-normal\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:18 GMT",
+      "server": "uvicorn",
+      "content-length": "450",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"b95539ae235842eb9d16564307db4f5c\",\"object\":\"chat.completion\",\"created\":1785192558,\"model\":\"persona-normal\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":141,\"completion_tokens\":1,\"total_tokens\":142},\"nram_correlation\":{\"request_id\":\"RA-ALIAS-06-persona-normal\",\"config_hash\":\"83d49f58c80a638ae358747f0276081fdcd3a929a106aaeb0d9348847eefad64\"}}",
+    "json": {
+      "id": "b95539ae235842eb9d16564307db4f5c",
+      "object": "chat.completion",
+      "created": 1785192558,
+      "model": "persona-normal",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 141,
+        "completion_tokens": 1,
+        "total_tokens": 142
+      },
+      "nram_correlation": {
+        "request_id": "RA-ALIAS-06-persona-normal",
+        "config_hash": "83d49f58c80a638ae358747f0276081fdcd3a929a106aaeb0d9348847eefad64"
+      }
+    },
+    "bytes": 450
+  },
+  "exception": null
+}

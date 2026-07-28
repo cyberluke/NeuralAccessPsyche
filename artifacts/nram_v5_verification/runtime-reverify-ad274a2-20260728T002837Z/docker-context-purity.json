@@ -1,0 +1,36 @@
+{
+  "compose_context": ".",
+  "dockerignore_worktree_exists": false,
+  "dockerignore_tracked_at_target": false,
+  "api_copy_rules": [
+    "main.py",
+    "api/",
+    "core/",
+    "nram_sglang/",
+    "utils/",
+    "evaluation/",
+    "templates/",
+    "static/"
+  ],
+  "sglang_copy_rules": [
+    "inference/sglang/entrypoint.sh",
+    "inference/sglang/healthcheck.py",
+    "nram_sglang/"
+  ],
+  "untracked_consumed": [
+    "core/steering/activation_addition.py",
+    "core/steering/activation_vectors.py",
+    "core/steering/concept_capsules.py",
+    "core/steering/conceptor_steering.py",
+    "core/steering/dexperts.py",
+    "core/steering/entropy_controller.py",
+    "core/steering/forward_hooks.py",
+    "core/steering/hallucination_guard.py",
+    "core/steering/hidden_state_probes.py",
+    "core/steering/multi_vector_controller.py",
+    "core/steering/phrase_constraints.py"
+  ],
+  "api_contaminated": true,
+  "sglang_contaminated": false,
+  "decision": "BLOCKED: do not build or recreate exact-target production containers because untracked production files are included by API COPY rules and no .dockerignore excludes them"
+}

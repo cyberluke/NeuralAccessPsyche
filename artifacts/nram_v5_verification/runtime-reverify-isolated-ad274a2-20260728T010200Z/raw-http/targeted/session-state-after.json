@@ -1,0 +1,47 @@
+{
+  "case": "session-state-after",
+  "elapsed_seconds": 0.03160381317138672,
+  "request": {
+    "path": "/v1/nram/sessions/nram-session-3132ec1fe536/state",
+    "method": "GET",
+    "authorization": "Bearer <redacted>",
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+      "server": "uvicorn",
+      "content-length": "496",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"state\":{\"influence\":0.705,\"entropy\":0.6861999999999999,\"coherence\":0.7,\"momentum\":0.05,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":0.73,\"token_steering_counts\":{\"model_generated\":1,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":1,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+    "json": {
+      "id": "nram-session-3132ec1fe536",
+      "state": {
+        "influence": 0.705,
+        "entropy": 0.6861999999999999,
+        "coherence": 0.7,
+        "momentum": 0.05,
+        "rhetorical_phase": "idle"
+      },
+      "profile": "peak",
+      "intensity": 0.73,
+      "token_steering_counts": {
+        "model_generated": 1,
+        "positive_logit_bias": 0,
+        "negative_logit_bias": 0,
+        "hard_mask": 0,
+        "forced_injection": 0,
+        "memory_recall": 0,
+        "planner_constraint": 0,
+        "postprocess": 0
+      },
+      "phenomenon_counts": {},
+      "request_count": 1,
+      "note": "These are simulation and control metrics, NOT measurements of consciousness."
+    }
+  },
+  "exception": null
+}

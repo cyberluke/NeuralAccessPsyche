@@ -1,0 +1,5 @@
+
+> neuralaccesspsyche@1.0.0 test
+> node -e "require('openai'); console.log('Node dependency smoke passed')"
+
+Node dependency smoke passed

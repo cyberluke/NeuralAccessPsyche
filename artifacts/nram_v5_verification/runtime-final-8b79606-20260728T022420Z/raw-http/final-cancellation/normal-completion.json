@@ -1,0 +1,23 @@
+{
+  "case_id": "normal-completion",
+  "request_id": "FINAL-CANCEL-NORMAL",
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:03:02 GMT",
+      "server": "uvicorn",
+      "content-length": "775",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b\",\"object\":\"chat.completion\",\"created\":1785207783,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":16,\"completion_tokens\":1,\"total_tokens\":17},\"nram_correlation\":{\"request_id\":\"FINAL-CANCEL-NORMAL\",\"scheduler_request_id\":\"nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b\",\"config_hash\":\"a45af0eb46aa2b0294f9a7bab6c62d8cd6bd4e735aff1b136e295ddcdc8abfc1\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "elapsed_ms": 316.1808999993809
+  },
+  "event_count": 1,
+  "scheduler_request_ids": [
+    "nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b"
+  ],
+  "abort_access_count_before": 3,
+  "abort_access_count_after": 3,
+  "abort_access_delta": 0,
+  "passed": true
+}

@@ -1,0 +1,183 @@
+{
+  "schema": "nram.final.cancellation.v1",
+  "ordinary": {
+    "case_id": "ordinary-sse-raw-close",
+    "model": "nram-qwen3-14b-awq",
+    "request_id": "FINAL-CANCEL-ORDINARY",
+    "max_tokens": 64,
+    "forced_schedule_length": 64,
+    "elapsed_ms_to_close": 295.37989999880665,
+    "raw_received_hex": "485454502f312e3120323030204f4b0d0a646174653a205475652c203238204a756c20323032362030333a30323a353020474d540d0a7365727665723a20757669636f726e0d0a63616368652d636f6e74726f6c3a206e6f2d63616368650d0a782d616363656c2d627566666572696e673a206e6f0d0a636f6e74656e742d747970653a20746578742f6576656e742d73747265616d3b20636861727365743d7574662d380d0a636f6e6e656374696f6e3a20636c6f73650d0a7472616e736665722d656e636f64696e673a206368756e6b65640d0a0d0a3330350d0a646174613a207b226964223a20226e72616d2d7363686564756c65722d3761313338396565333038323462653161303863623934373265623931306465222c20226f626a656374223a2022636861742e636f6d706c6574696f6e2e6368756e6b222c202263726561746564223a20313738353230373737312c20226d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202263686f69636573223a205b7b22696e646578223a20302c202264656c7461223a207b22726561736f6e696e675f636f6e74656e74223a206e756c6c2c2022636f6e74656e74223a2022207468616e6b227d2c20226c6f6770726f6273223a206e756c6c2c202266696e6973685f726561736f6e223a206e756c6c2c20226d6174636865645f73746f70223a206e756c6c7d5d2c20226e72616d5f636f7272656c6174696f6e223a207b22726571756573745f6964223a202246494e414c2d43414e43454c2d4f5244494e415259222c20227363686564756c65725f726571756573745f6964223a20226e72616d2d7363686564756c65722d3761313338396565333038323462653161303863623934373265623931306465222c2022636f6e6669675f68617368223a202261373466393265376438356238323465663530346462633934343434613231306165366466386131313931343364643064316331336134363861386361393930222c20226170706c6965645f73746174655f736368656d61223a20226e72616d2e6170706c6965642d73746174652e7631222c20227075626c69635f6d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202261637475616c5f626173655f6d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202270726f636573736f725f696e74657276656e6564223a20747275652c202273616d706c65645f746f6b656e5f696473223a205b5d2c202273616d706c65645f746f6b656e73223a205b5d2c202273616d706c655f6a6f696e223a2022756e617661696c61626c655f666f725f73747265616d696e67227d7d0a0a0d0a",
+    "raw_received_utf8": "HTTP/1.1 200 OK\r\ndate: Tue, 28 Jul 2026 03:02:50 GMT\r\nserver: uvicorn\r\ncache-control: no-cache\r\nx-accel-buffering: no\r\ncontent-type: text/event-stream; charset=utf-8\r\nconnection: close\r\ntransfer-encoding: chunked\r\n\r\n305\r\ndata: {\"id\": \"nram-scheduler-7a1389ee30824be1a08cb9472eb910de\", \"object\": \"chat.completion.chunk\", \"created\": 1785207771, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-ORDINARY\", \"scheduler_request_id\": \"nram-scheduler-7a1389ee30824be1a08cb9472eb910de\", \"config_hash\": \"a74f92e7d85b824ef504dbc94444a210ae6df8a119143dd0d1c13a468a8ca990\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"nram-qwen3-14b-awq\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}\n\n\r\n",
+    "first_data_line_utf8": "data: {\"id\": \"nram-scheduler-7a1389ee30824be1a08cb9472eb910de\", \"object\": \"chat.completion.chunk\", \"created\": 1785207771, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-ORDINARY\", \"scheduler_request_id\": \"nram-scheduler-7a1389ee30824be1a08cb9472eb910de\", \"config_hash\": \"a74f92e7d85b824ef504dbc94444a210ae6df8a119143dd0d1c13a468a8ca990\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"nram-qwen3-14b-awq\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}",
+    "closed_immediately_after_first_data_line": true,
+    "samples": [
+      {
+        "seconds_after_close": 0.0,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-7a1389ee30824be1a08cb9472eb910de"
+        ]
+      },
+      {
+        "seconds_after_close": 0.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-7a1389ee30824be1a08cb9472eb910de"
+        ]
+      },
+      {
+        "seconds_after_close": 3.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-7a1389ee30824be1a08cb9472eb910de"
+        ]
+      }
+    ],
+    "abort_access_count_before": 0,
+    "abort_access_count_after": 1,
+    "abort_access_delta": 1,
+    "new_abort_access_lines": [
+      "2026-07-28T03:02:51.804709660Z [2026-07-28 03:02:51] INFO:     172.22.0.3:53734 - \"POST /abort_request HTTP/1.1\" 200 OK"
+    ],
+    "passed": true
+  },
+  "persona": {
+    "case_id": "persona-sse-raw-close",
+    "model": "persona-peak",
+    "request_id": "FINAL-CANCEL-PERSONA",
+    "max_tokens": 64,
+    "forced_schedule_length": 64,
+    "elapsed_ms_to_close": 203.07920000050217,
+    "raw_received_hex": "485454502f312e3120323030204f4b0d0a646174653a205475652c203238204a756c20323032362030333a30323a353420474d540d0a7365727665723a20757669636f726e0d0a63616368652d636f6e74726f6c3a206e6f2d63616368650d0a782d616363656c2d627566666572696e673a206e6f0d0a636f6e74656e742d747970653a20746578742f6576656e742d73747265616d3b20636861727365743d7574662d380d0a636f6e6e656374696f6e3a20636c6f73650d0a7472616e736665722d656e636f64696e673a206368756e6b65640d0a0d0a3266380d0a646174613a207b226964223a20226e72616d2d7363686564756c65722d3661363565333837636264653434316539613733373230613861393961386463222c20226f626a656374223a2022636861742e636f6d706c6574696f6e2e6368756e6b222c202263726561746564223a20313738353230373737352c20226d6f64656c223a2022706572736f6e612d7065616b222c202263686f69636573223a205b7b22696e646578223a20302c202264656c7461223a207b22726561736f6e696e675f636f6e74656e74223a206e756c6c2c2022636f6e74656e74223a2022207468616e6b227d2c20226c6f6770726f6273223a206e756c6c2c202266696e6973685f726561736f6e223a206e756c6c2c20226d6174636865645f73746f70223a206e756c6c7d5d2c20226e72616d5f636f7272656c6174696f6e223a207b22726571756573745f6964223a202246494e414c2d43414e43454c2d504552534f4e41222c20227363686564756c65725f726571756573745f6964223a20226e72616d2d7363686564756c65722d3661363565333837636264653434316539613733373230613861393961386463222c2022636f6e6669675f68617368223a202235666536323231653466333266646263663664666165643434373366393366653434353638636265356331663862386261356135343236303532626361663333222c20226170706c6965645f73746174655f736368656d61223a20226e72616d2e6170706c6965642d73746174652e7631222c20227075626c69635f6d6f64656c223a2022706572736f6e612d7065616b222c202261637475616c5f626173655f6d6f64656c223a20226e72616d2d7177656e332d3134622d617771222c202270726f636573736f725f696e74657276656e6564223a20747275652c202273616d706c65645f746f6b656e5f696473223a205b5d2c202273616d706c65645f746f6b656e73223a205b5d2c202273616d706c655f6a6f696e223a2022756e617661696c61626c655f666f725f73747265616d696e67227d7d0a0a0d0a",
+    "raw_received_utf8": "HTTP/1.1 200 OK\r\ndate: Tue, 28 Jul 2026 03:02:54 GMT\r\nserver: uvicorn\r\ncache-control: no-cache\r\nx-accel-buffering: no\r\ncontent-type: text/event-stream; charset=utf-8\r\nconnection: close\r\ntransfer-encoding: chunked\r\n\r\n2f8\r\ndata: {\"id\": \"nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc\", \"object\": \"chat.completion.chunk\", \"created\": 1785207775, \"model\": \"persona-peak\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-PERSONA\", \"scheduler_request_id\": \"nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc\", \"config_hash\": \"5fe6221e4f32fdbcf6dfaed4473f93fe44568cbe5c1f8b8ba5a5426052bcaf33\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"persona-peak\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}\n\n\r\n",
+    "first_data_line_utf8": "data: {\"id\": \"nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc\", \"object\": \"chat.completion.chunk\", \"created\": 1785207775, \"model\": \"persona-peak\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \" thank\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"FINAL-CANCEL-PERSONA\", \"scheduler_request_id\": \"nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc\", \"config_hash\": \"5fe6221e4f32fdbcf6dfaed4473f93fe44568cbe5c1f8b8ba5a5426052bcaf33\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"persona-peak\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}",
+    "closed_immediately_after_first_data_line": true,
+    "samples": [
+      {
+        "seconds_after_close": 0.0,
+        "event_count": 2,
+        "max_invocation_count": 2,
+        "scheduler_request_ids": [
+          "nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc"
+        ]
+      },
+      {
+        "seconds_after_close": 0.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc"
+        ]
+      },
+      {
+        "seconds_after_close": 3.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-6a65e387cbde441e9a73720a8a99a8dc"
+        ]
+      }
+    ],
+    "abort_access_count_before": 1,
+    "abort_access_count_after": 2,
+    "abort_access_delta": 1,
+    "new_abort_access_lines": [
+      "2026-07-28T03:02:55.715427439Z [2026-07-28 03:02:55] INFO:     172.22.0.3:53750 - \"POST /abort_request HTTP/1.1\" 200 OK"
+    ],
+    "passed": true
+  },
+  "nonstream": {
+    "case_id": "nonstream-raw-close-50ms",
+    "request_id": "FINAL-CANCEL-NONSTREAM",
+    "max_tokens": 64,
+    "forced_schedule_length": 64,
+    "elapsed_ms_to_close": 50.854199998866534,
+    "closed_at_target_50ms": true,
+    "samples": [
+      {
+        "seconds_after_close": 0.0,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-8fab5d98ea4e47cd966ae2fb9f687dfd"
+        ]
+      },
+      {
+        "seconds_after_close": 0.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-8fab5d98ea4e47cd966ae2fb9f687dfd"
+        ]
+      },
+      {
+        "seconds_after_close": 3.5,
+        "event_count": 3,
+        "max_invocation_count": 3,
+        "scheduler_request_ids": [
+          "nram-scheduler-8fab5d98ea4e47cd966ae2fb9f687dfd"
+        ]
+      }
+    ],
+    "abort_access_count_before": 2,
+    "abort_access_count_after": 3,
+    "abort_access_delta": 1,
+    "new_abort_access_lines": [
+      "2026-07-28T03:02:59.481148405Z [2026-07-28 03:02:59] INFO:     172.22.0.3:56252 - \"POST /abort_request HTTP/1.1\" 200 OK"
+    ],
+    "retry": {
+      "request_id": "FINAL-CANCEL-RETRY",
+      "started_seconds_after_close": 9.000013960758224e-07,
+      "finished_seconds_after_close": 0.1436628000010387,
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Tue, 28 Jul 2026 03:02:58 GMT",
+          "server": "uvicorn",
+          "content-length": "774",
+          "content-type": "application/json"
+        },
+        "body_utf8": "{\"id\":\"nram-scheduler-bf410f2306374dc2bd2243fef34f41ac\",\"object\":\"chat.completion\",\"created\":1785207779,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":16,\"completion_tokens\":1,\"total_tokens\":17},\"nram_correlation\":{\"request_id\":\"FINAL-CANCEL-RETRY\",\"scheduler_request_id\":\"nram-scheduler-bf410f2306374dc2bd2243fef34f41ac\",\"config_hash\":\"a45af0eb46aa2b0294f9a7bab6c62d8cd6bd4e735aff1b136e295ddcdc8abfc1\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+        "elapsed_ms": 143.5712999991665
+      },
+      "event_count": 1,
+      "invocation_counts": [
+        1
+      ],
+      "scheduler_request_ids": [
+        "nram-scheduler-bf410f2306374dc2bd2243fef34f41ac"
+      ],
+      "distinct_scheduler_id": true,
+      "invocation_reset": true
+    },
+    "passed": true
+  },
+  "normal": {
+    "case_id": "normal-completion",
+    "request_id": "FINAL-CANCEL-NORMAL",
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 03:03:02 GMT",
+        "server": "uvicorn",
+        "content-length": "775",
+        "content-type": "application/json"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b\",\"object\":\"chat.completion\",\"created\":1785207783,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":16,\"completion_tokens\":1,\"total_tokens\":17},\"nram_correlation\":{\"request_id\":\"FINAL-CANCEL-NORMAL\",\"scheduler_request_id\":\"nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b\",\"config_hash\":\"a45af0eb46aa2b0294f9a7bab6c62d8cd6bd4e735aff1b136e295ddcdc8abfc1\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "elapsed_ms": 316.1808999993809
+    },
+    "event_count": 1,
+    "scheduler_request_ids": [
+      "nram-scheduler-928e80aa34fc4e7e9cd26ace1513885b"
+    ],
+    "abort_access_count_before": 3,
+    "abort_access_count_after": 3,
+    "abort_access_delta": 0,
+    "passed": true
+  },
+  "passed": true
+}

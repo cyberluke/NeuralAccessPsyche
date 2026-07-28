@@ -1,0 +1,78 @@
+{
+  "case_id": "alias-08-persona-threshold",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.693322Z",
+  "finished_utc": "2026-07-27T22:49:18.777797Z",
+  "elapsed_ms": 84.44530000269879,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-08-persona-threshold"
+    },
+    "body": {
+      "model": "persona-threshold",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-08-persona-threshold",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-threshold\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-08-persona-threshold\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:18 GMT",
+      "server": "uvicorn",
+      "content-length": "456",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"96b8e9a100374cd8be34ae072f92f170\",\"object\":\"chat.completion\",\"created\":1785192558,\"model\":\"persona-threshold\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":165,\"completion_tokens\":1,\"total_tokens\":166},\"nram_correlation\":{\"request_id\":\"RA-ALIAS-08-persona-threshold\",\"config_hash\":\"ae214755c74bfce7c52ef202d2c368f31e602e6ffe3a22f5bbfae99c8ff69ffd\"}}",
+    "json": {
+      "id": "96b8e9a100374cd8be34ae072f92f170",
+      "object": "chat.completion",
+      "created": 1785192558,
+      "model": "persona-threshold",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 165,
+        "completion_tokens": 1,
+        "total_tokens": 166
+      },
+      "nram_correlation": {
+        "request_id": "RA-ALIAS-08-persona-threshold",
+        "config_hash": "ae214755c74bfce7c52ef202d2c368f31e602e6ffe3a22f5bbfae99c8ff69ffd"
+      }
+    },
+    "bytes": 456
+  },
+  "exception": null
+}

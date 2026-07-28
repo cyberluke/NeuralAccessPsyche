@@ -1,0 +1,335 @@
+[
+  {
+    "case_id": "session-create-peak",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.301328Z",
+    "finished_utc": "2026-07-27T23:13:03.331623Z",
+    "elapsed_ms": 30.257399994297884,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/nram/sessions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-create-peak"
+      },
+      "body": {
+        "profile": "peak",
+        "intensity": 1.0,
+        "seed": 424242,
+        "auto_temperature": true,
+        "memory": {
+          "enabled": true
+        }
+      },
+      "wire_body_utf8": "{\"profile\":\"peak\",\"intensity\":1.0,\"seed\":424242,\"auto_temperature\":true,\"memory\":{\"enabled\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:02 GMT",
+        "server": "uvicorn",
+        "content-length": "162",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-8bb680358b15\",\"profile\":\"peak\",\"revision\":1,\"state\":{\"influence\":1.0,\"entropy\":0.94,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"}}",
+      "json": {
+        "id": "nram-session-8bb680358b15",
+        "profile": "peak",
+        "revision": 1,
+        "state": {
+          "influence": 1.0,
+          "entropy": 0.94,
+          "coherence": 0.7,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        }
+      },
+      "bytes": 162
+    },
+    "exception": null
+  },
+  {
+    "case_id": "session-state-before",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.332935Z",
+    "finished_utc": "2026-07-27T23:13:03.358246Z",
+    "elapsed_ms": 25.26949999446515,
+    "request": {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15/state",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-state-before"
+      },
+      "body": null,
+      "wire_body_utf8": null,
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:02 GMT",
+        "server": "uvicorn",
+        "content-length": "478",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-8bb680358b15\",\"state\":{\"influence\":1.0,\"entropy\":0.94,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":1.0,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":0,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+      "json": {
+        "id": "nram-session-8bb680358b15",
+        "state": {
+          "influence": 1.0,
+          "entropy": 0.94,
+          "coherence": 0.7,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        },
+        "profile": "peak",
+        "intensity": 1.0,
+        "token_steering_counts": {
+          "model_generated": 0,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "request_count": 0,
+        "note": "These are simulation and control metrics, NOT measurements of consciousness."
+      },
+      "bytes": 478
+    },
+    "exception": null
+  },
+  {
+    "case_id": "session-bound-chat",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.359082Z",
+    "finished_utc": "2026-07-27T23:13:03.720689Z",
+    "elapsed_ms": 361.5817999962019,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-bound-chat"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SESSION-CHAT",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "session_id": "nram-session-8bb680358b15",
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SESSION-CHAT\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"session_id\":\"nram-session-8bb680358b15\",\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:02 GMT",
+        "server": "uvicorn",
+        "content-length": "443",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"86f90b6bf9f54b70b681f5c672e6ed63\",\"object\":\"chat.completion\",\"created\":1785193983,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-SESSION-CHAT\",\"config_hash\":\"d7db79e95c7f838aeae508ef729766f8339edf5ad32c42a92f7d06ce128d9d5f\"}}",
+      "json": {
+        "id": "86f90b6bf9f54b70b681f5c672e6ed63",
+        "object": "chat.completion",
+        "created": 1785193983,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RA-SESSION-CHAT",
+          "config_hash": "d7db79e95c7f838aeae508ef729766f8339edf5ad32c42a92f7d06ce128d9d5f"
+        }
+      },
+      "bytes": 443
+    },
+    "exception": null
+  },
+  {
+    "case_id": "session-state-after",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.721225Z",
+    "finished_utc": "2026-07-27T23:13:03.740595Z",
+    "elapsed_ms": 19.34320000145817,
+    "request": {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15/state",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-state-after"
+      },
+      "body": null,
+      "wire_body_utf8": null,
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+        "server": "uvicorn",
+        "content-length": "478",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-8bb680358b15\",\"state\":{\"influence\":1.0,\"entropy\":0.94,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":1.0,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":0,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+      "json": {
+        "id": "nram-session-8bb680358b15",
+        "state": {
+          "influence": 1.0,
+          "entropy": 0.94,
+          "coherence": 0.7,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        },
+        "profile": "peak",
+        "intensity": 1.0,
+        "token_steering_counts": {
+          "model_generated": 0,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "request_count": 0,
+        "note": "These are simulation and control metrics, NOT measurements of consciousness."
+      },
+      "bytes": 478
+    },
+    "exception": null
+  },
+  {
+    "case_id": "session-events-after",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.741626Z",
+    "finished_utc": "2026-07-27T23:13:03.756371Z",
+    "elapsed_ms": 14.723899999808054,
+    "request": {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15/events",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-events-after"
+      },
+      "body": null,
+      "wire_body_utf8": null,
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+        "server": "uvicorn",
+        "content-length": "281",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"session_id\":\"nram-session-8bb680358b15\",\"request_count\":0,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"events\":[]}",
+      "json": {
+        "session_id": "nram-session-8bb680358b15",
+        "request_count": 0,
+        "token_steering_counts": {
+          "model_generated": 0,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "events": []
+      },
+      "bytes": 281
+    },
+    "exception": null
+  },
+  {
+    "case_id": "session-delete",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:13:03.756922Z",
+    "finished_utc": "2026-07-27T23:13:03.772192Z",
+    "elapsed_ms": 15.250799995556008,
+    "request": {
+      "method": "DELETE",
+      "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "session-delete"
+      },
+      "body": null,
+      "wire_body_utf8": null,
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+        "server": "uvicorn",
+        "content-length": "49",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"deleted\":true,\"id\":\"nram-session-8bb680358b15\"}",
+      "json": {
+        "deleted": true,
+        "id": "nram-session-8bb680358b15"
+      },
+      "bytes": 49
+    },
+    "exception": null
+  }
+]

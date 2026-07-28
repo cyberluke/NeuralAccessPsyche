@@ -1,0 +1,38 @@
+All paths are relative to the primary repository root. Secrets are redacted.
+
+1. Read complete canonical specification and issue ledger.
+2. git cat-file -t ad274a2c4b0575cf796659073fb69a962dbb66d0
+3. git rev-parse ad274a2c4b0575cf796659073fb69a962dbb66d0^{commit}
+4. git archive --format=tar --output=<evidence>/target-commit.tar ad274a2c4b0575cf796659073fb69a962dbb66d0
+5. Initial Windows tar extraction and byte authentication (failed: CRLF conversion and Unicode path corruption).
+6. python <evidence>/extract_exact_commit.py ad274a2c4b0575cf796659073fb69a962dbb66d0 <isolated-context>
+7. python <evidence>/authenticate_isolated_context.py <isolated-context> <evidence> ad274a2c4b0575cf796659073fb69a962dbb66d0
+8. docker build --no-cache --pull=false --label org.opencontainers.image.revision=ad274a2c4b0575cf796659073fb69a962dbb66d0 -f <isolated-context>/inference/sglang/Dockerfile -t nram-rvr-ad274a2-sglang:20260728t010200z <isolated-context>
+9. docker build --no-cache --pull=false --label org.opencontainers.image.revision=ad274a2c4b0575cf796659073fb69a962dbb66d0 -f <isolated-context>/Dockerfile -t nram-rvr-ad274a2-api:20260728t010200z <isolated-context>
+10. python <evidence>/authenticate_images.py <isolated-context> <evidence>
+11. docker stop nram-api nram-sglang
+12. docker network create nram-rvr-ad274a2-net
+13. docker run -d --name nram-rvr-ad274a2-sglang --network nram-rvr-ad274a2-net --network-alias sglang --gpus all --ipc host --shm-size 16g --mount type=bind,source=<Qwen-snapshot>,target=/models,readonly <exact target environment> nram-rvr-ad274a2-sglang:20260728t010200z
+14. Poll isolated SGLang health to healthy; preserve cold-start log.
+15. docker run -d --name nram-rvr-ad274a2-api --network nram-rvr-ad274a2-net -p 127.0.0.1:8000:8000 -p 127.0.0.1:18080:8000 --mount type=bind,source=<Qwen-snapshot>,target=/models,readonly -e NRAM_API_KEY=<redacted> <exact target environment> nram-rvr-ad274a2-api:20260728t010200z
+16. NRAM_RUNTIME_ADVERSARY=1 NRAM_BASE_URL=http://127.0.0.1:18080 python -m pytest tests/runtime_adversary/test_confirmed_runtime_defects.py -vv -ra --junitxml=<evidence>/adversarial-live-junit.xml
+17. python tests/runtime_adversary/runtime_campaign.py <aliases|validation|forced|stream|config-hash|structural|numerical|lifecycle> --out <evidence>/raw-http/<suite> --base-url http://127.0.0.1:8000
+18. Restart API and repeat numerical and lifecycle suites in clean rate-limit windows.
+19. Run API/SGLang dill 0.4.1 class serialization, cross-container payload copy, SGLang CustomLogitProcessor.from_str, zero-arg constructor, and pickletools diagnostics.
+20. python <evidence>/hash_model_mount.py inside isolated SGLang; hash every model/tokenizer file.
+21. python <evidence>/targeted_runtime_probes.py <evidence>/raw-http/targeted
+22. Initial full test run against noncanonical isolated container names (237 passed, 9 failed because tracked GPU tests docker exec hard-coded nram-api/nram-sglang).
+23. Rename stopped original containers aside and isolated exact-target containers to canonical test names.
+24. NRAM_RUNTIME_ADVERSARY=1 NRAM_BASE_URL=http://127.0.0.1:8000 NRAM_TEST_API_URL=http://127.0.0.1:8000/v1/chat/completions python -m pytest tests -vv -ra -p no:cacheprovider --junitxml=<evidence>/full-test-results-canonical-names.xml
+25. python -m pytest --collect-only -q -p no:cacheprovider > <evidence>/pytest-collect-only.txt
+26. NRAM_TEST_API_URL=http://127.0.0.1:8000/v1/chat/completions python -m pytest tests/gpu -vv -ra -p no:cacheprovider --junitxml=<evidence>/gpu-test-results.xml
+27. python -m ruff check .
+28. python -m mypy nram_sglang/processor.py core/steering/serialization.py core/engines/sglang_engine.py api/routes.py
+29. Copy exact package.json/package-lock.json into <evidence>/node-gate; npm ci --ignore-scripts; npm test; npm run build; npm audit --json.
+30. docker compose -p nram-rvr-ad274a2 -f <isolated-context>/compose.yaml config
+31. docker compose -p nram-rvr-ad274a2 -f <isolated-context>/compose.yaml build --pull=false
+32. Recreate isolated API with NRAM_REQUEST_TIMEOUT_SECONDS=0.001 and run python <evidence>/deadline_probe.py; preserve HTTP 504, zero post-deadline processor events, and official POST /abort_request 200 log.
+33. Validate committed builder artifact manifest hashes against both Git-blob and normalized Windows CRLF byte domains.
+34. Re-extract the isolated source from Git objects, re-authenticate all 269 blobs with zero extras, and repeat Compose config/build from the clean context.
+35. Stop/remove isolated containers; rename original containers back; start originals; poll both healthy and /ready HTTP 200.
+36. git status --short --branch (before and after); no reset, clean, stash, checkout, or primary source modification.

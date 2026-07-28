@@ -1,0 +1,72 @@
+{
+  "case_id": "vector-negative",
+  "expected_contract": "telemetry delta equals coefficient times weight before final force mask",
+  "started_utc": "2026-07-28T01:18:25.251132Z",
+  "finished_utc": "2026-07-28T01:18:25.263298Z",
+  "elapsed_ms": 12.152399999649788,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "vector-negative"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VECTOR-negative",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": true,
+        "forced_token_id": 9702,
+        "vocabulary_logit_vectors": [
+          {
+            "vector_id": "ra-vector",
+            "coefficient": -2.0,
+            "normalize": false,
+            "entries": [
+              {
+                "token_id": 12095,
+                "weight": 1.5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"vocabulary_logit_vectors\":[{\"vector_id\":\"ra-vector\",\"coefficient\":-2.0,\"normalize\":false,\"entries\":[{\"token_id\":12095,\"weight\":1.5}]}]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:24 GMT",
+      "server": "uvicorn",
+      "content-length": "31",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"Rate limit exceeded\"}",
+    "json": {
+      "error": "Rate limit exceeded"
+    },
+    "bytes": 31
+  },
+  "exception": "HTTPError: HTTP Error 429: Too Many Requests"
+}

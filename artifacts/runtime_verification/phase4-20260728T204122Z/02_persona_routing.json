@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "elapsed_seconds": 4.75,
+  "public_model": "persona-peak",
+  "actual_base_model": "nram-qwen3-14b-awq",
+  "content": "A self-evolving AI that dynamically restructures its neural architecture in real-time to adapt to any human interaction, creating a seamless fusion of human intuition and machine precision. This product doesn't just respond to the world — it co-creates with it, transforming every interaction into a catalyst for collective intelligence and accelerated human progress.",
+  "tokens": 65,
+  "processor_intervened": true,
+  "config_hash": "54b1a766a9d0d3b468754c813023bffe2bef2aa8e6efc008ada2fb60b3cafa62",
+  "request_id": "nram-e73c9a8e059c453f897fd8e5184c527a"
+}

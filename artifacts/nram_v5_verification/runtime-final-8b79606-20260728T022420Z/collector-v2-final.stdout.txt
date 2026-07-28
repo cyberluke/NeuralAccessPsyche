@@ -1,0 +1,4 @@
+{
+  "artifact_dir": "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\v2-collector-final",
+  "manifest": "manifest.json"
+}

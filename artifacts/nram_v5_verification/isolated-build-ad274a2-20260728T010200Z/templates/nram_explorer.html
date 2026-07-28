@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NRAM Architecture Explorer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="/static/css/nram_explorer.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>NRAM Explorer</h2>
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('memory')">
+                    <span>Memory State</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="memory" class="section-content">
+                    <div class="memory-grid" id="memory-grid"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('heatmap')">
+                    <span>Performance Heatmap</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="heatmap" class="section-content">
+                    <div class="heatmap-controls">
+                        <select id="metric-selector" onchange="updateHeatmapMetric(this.value)">
+                            <option value="activity">Neural Activity</option>
+                            <option value="efficiency">Processing Efficiency</option>
+                            <option value="coherence">Pattern Coherence</option>
+                        </select>
+                    </div>
+                    <div id="performance-heatmap"></div>
+                    <div class="heatmap-legend"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('patterns')">
+                    <span>Pattern Recognition</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="patterns" class="section-content">
+                    <div class="pattern-matrix" id="pattern-matrix"></div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('stats')">
+                    <span>Neural Statistics</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="stats" class="section-content">
+                    <div class="stats-panel">
+                        <div class="stat-card">
+                            <div>Consciousness Level</div>
+                            <div class="stat-value" id="consciousness-level">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div>Pattern Intensity</div>
+                            <div class="stat-value" id="pattern-intensity">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('animation-controls')">
+                    <span>Neural Controls</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="animation-controls" class="section-content">
+                    <div class="control-panel">
+                        <div class="control-group">
+                            <label>Animation Speed: <span id="speed-value">1.0</span>x</label>
+                            <input type="range" min="0.1" max="3" step="0.1" value="1.0" 
+                                   onchange="updateAnimationSpeed(this.value)" 
+                                   class="slider">
+                        </div>
+                        <div class="control-group">
+                            <label>Network Complexity: <span id="complexity-value">1.0</span>x</label>
+                            <input type="range" min="0.1" max="2" step="0.1" value="1.0" 
+                                   onchange="updateNetworkComplexity(this.value)" 
+                                   class="slider">
+                            <div class="complexity-info">Adjusts neural network depth and interconnections</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-section">
+                <div class="section-header" onclick="toggleSection('config')">
+                    <span>Configuration Suggestions</span>
+                    <span class="toggle">▼</span>
+                </div>
+                <div id="config" class="section-content">
+                    <div class="config-panel">
+                        <div class="suggestion-card">
+                            <h3>AI Suggestions</h3>
+                            <div id="suggestions-content">Loading...</div>
+                        </div>
+                        <div class="controls">
+                            <button onclick="applyConfiguration()">Apply Suggestions</button>
+                            <button onclick="resetConfiguration()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1>Neural Random Access Memory</h1>
+            <div class="visualization" id="network-visualization"></div>
+            <div class="controls">
+                <button id="pause-button" onclick="toggleSimulation()">Pause</button>
+                <button onclick="resetSimulation()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/nram_explorer.js"></script>
+</body>
+</html>

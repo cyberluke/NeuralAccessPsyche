@@ -1,0 +1,203 @@
+{
+  "checks": {
+    "schema_v2": true,
+    "implementation_commit": true,
+    "implementation_tree": true,
+    "clean_detached": true,
+    "evidence_commit_null": true,
+    "spec_commit": true,
+    "spec_git_blob_sha256": true,
+    "spec_git_blob_bytes": true,
+    "spec_lf_checkout_equal": true,
+    "source_auth": true,
+    "container_ids_present": true,
+    "runtime_complete": true,
+    "launch_complete": true,
+    "junit_counts": true,
+    "tracked_nodes": true,
+    "no_stale_7aa_or_ad_current": true,
+    "fb_only_spec_domain": true
+  },
+  "all_passed": true,
+  "identity": {
+    "run_id": "v2-collector",
+    "implementation_commit": "8b796066ec6fed3f3260e9aea1e1ab19489e6ae8",
+    "tree": "18829ce184fc05427187aaf0a9a201d26b82c27e",
+    "evidence_commit": null,
+    "git": {
+      "implementation_commit": "8b796066ec6fed3f3260e9aea1e1ab19489e6ae8",
+      "implementation_tree_oid": "18829ce184fc05427187aaf0a9a201d26b82c27e",
+      "checkout_head_commit": "8b796066ec6fed3f3260e9aea1e1ab19489e6ae8",
+      "checkout_head_tree_oid": "18829ce184fc05427187aaf0a9a201d26b82c27e",
+      "branch": null,
+      "detached": true,
+      "dirty": false,
+      "porcelain_v1": [],
+      "included_dirty_status": [],
+      "excluded_dirty_status": [],
+      "excluded_path_selectors": []
+    }
+  },
+  "specification": {
+    "canonical_specification_commit": "fb3690d7884bdbcaef0e82608776065e19332990",
+    "path": "docs/NRAM_V5_SCIENTIFIC_VALIDATION_SPEC.md",
+    "git_blob_oid_sha1": "d42656c1c04f49074b9a55afeac7ef300137c4e6",
+    "git_blob_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+    "git_blob_bytes": 14523,
+    "checkout_bytes_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+    "checkout_bytes": 14523,
+    "lf_normalized_checkout_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+    "lf_normalized_checkout_bytes": 14523,
+    "byte_domain_definitions": {
+      "git_blob_sha256": "SHA-256 over bytes returned by git cat-file blob",
+      "checkout_bytes_sha256": "SHA-256 over unmodified filesystem bytes",
+      "lf_normalized_checkout_sha256": "SHA-256 after CRLF and lone CR bytes are normalized to LF"
+    }
+  },
+  "containers": [
+    {
+      "service": "nram-api",
+      "container_name": "nram-api",
+      "container_id": "035e805418ddffcf262296bc846846e6c29cf559a44bdeaffcc3f6a6bc185257",
+      "image_reference": "nram-final-8b79606-api:20260728t022420z",
+      "image_id": "sha256:efa2d7173f61b117a7e9057dab6a49322413523b96ae9e576023c32e339ed5f4",
+      "repo_digests": [
+        "nram-final-8b79606-api@sha256:efa2d7173f61b117a7e9057dab6a49322413523b96ae9e576023c32e339ed5f4"
+      ],
+      "created": "2026-07-28T03:34:40.896647204Z"
+    },
+    {
+      "service": "sglang",
+      "container_name": "nram-sglang",
+      "container_id": "318ba1897b961c8d57eaa809cfa5b7fa637e6a02b98a46d70f4c0c27b7a2aa9c",
+      "image_reference": "nram-final-8b79606-sglang:20260728t022420z",
+      "image_id": "sha256:01de0ad632051a445044c1e7ab6b93128a86b7a6731a150403b1b7ecbb5b91d1",
+      "repo_digests": [
+        "nram-final-8b79606-sglang@sha256:01de0ad632051a445044c1e7ab6b93128a86b7a6731a150403b1b7ecbb5b91d1"
+      ],
+      "created": "2026-07-28T03:34:32.474181836Z"
+    }
+  ],
+  "source_hashes": [
+    {
+      "service": "nram-api",
+      "container_path": "/app/api/routes.py",
+      "repository_path": "api/routes.py",
+      "container_file_sha256": "1940621543247d3bdc0dd7a0aa5129a12192d75ca169c9d4d8b5b72157fcc59a",
+      "container_file_bytes": 34118,
+      "implementation_git_blob_oid_sha1": "515433156b1acb3fce36f05fe0cc2154dcd7bba8",
+      "implementation_git_blob_sha256": "1940621543247d3bdc0dd7a0aa5129a12192d75ca169c9d4d8b5b72157fcc59a",
+      "authenticated_equal": true
+    },
+    {
+      "service": "nram-api",
+      "container_path": "/app/api/middleware.py",
+      "repository_path": "api/middleware.py",
+      "container_file_sha256": "350898effc04e5bc8a375f445f616a330986c8534ed80d9247a1c1b76b12c662",
+      "container_file_bytes": 4118,
+      "implementation_git_blob_oid_sha1": "7dfe359450af6882d838405348c76f387b23e978",
+      "implementation_git_blob_sha256": "350898effc04e5bc8a375f445f616a330986c8534ed80d9247a1c1b76b12c662",
+      "authenticated_equal": true
+    },
+    {
+      "service": "nram-api",
+      "container_path": "/app/core/contracts/openai.py",
+      "repository_path": "core/contracts/openai.py",
+      "container_file_sha256": "f1c4927d2f13544fc247963ba34b1444d701ae3c4eaa8de0175820ea0210c4c4",
+      "container_file_bytes": 3356,
+      "implementation_git_blob_oid_sha1": "4443f553de5fd1ca42321555c55845866c7036aa",
+      "implementation_git_blob_sha256": "f1c4927d2f13544fc247963ba34b1444d701ae3c4eaa8de0175820ea0210c4c4",
+      "authenticated_equal": true
+    },
+    {
+      "service": "nram-api",
+      "container_path": "/app/core/engines/sglang_engine.py",
+      "repository_path": "core/engines/sglang_engine.py",
+      "container_file_sha256": "d8cb56cbebe807ad0fa4585af6f8c71a2f89c57a59828303469e47ff42f1c092",
+      "container_file_bytes": 42735,
+      "implementation_git_blob_oid_sha1": "c9741b6997cf55a2d16196b8399f80b5cc04683e",
+      "implementation_git_blob_sha256": "d8cb56cbebe807ad0fa4585af6f8c71a2f89c57a59828303469e47ff42f1c092",
+      "authenticated_equal": true
+    },
+    {
+      "service": "nram-api",
+      "container_path": "/app/main.py",
+      "repository_path": "main.py",
+      "container_file_sha256": "317a5f54156dbfa8854c69608b16216663df2d5f76934ea34e8ca01bd806684e",
+      "container_file_bytes": 4090,
+      "implementation_git_blob_oid_sha1": "c2b5cf4726142475f0485c0e49b8884c3d864d4d",
+      "implementation_git_blob_sha256": "317a5f54156dbfa8854c69608b16216663df2d5f76934ea34e8ca01bd806684e",
+      "authenticated_equal": true
+    },
+    {
+      "service": "sglang",
+      "container_path": "/opt/nram_python/nram_sglang/processor.py",
+      "repository_path": "nram_sglang/processor.py",
+      "container_file_sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8",
+      "container_file_bytes": 39063,
+      "implementation_git_blob_oid_sha1": "3a377917620e328fd8d461c6be8bff39e50fe5a0",
+      "implementation_git_blob_sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8",
+      "authenticated_equal": true
+    },
+    {
+      "service": "sglang",
+      "container_path": "/opt/nram/entrypoint.sh",
+      "repository_path": "inference/sglang/entrypoint.sh",
+      "container_file_sha256": "d22d684b38a0ad061b005458d4122b5d9ea9dcba904d31bfd3f1fdc7f8906489",
+      "container_file_bytes": 7010,
+      "implementation_git_blob_oid_sha1": "d8a0033a08d967f800ea97cd3cf32e40c57ebd72",
+      "implementation_git_blob_sha256": "d22d684b38a0ad061b005458d4122b5d9ea9dcba904d31bfd3f1fdc7f8906489",
+      "authenticated_equal": true
+    }
+  ],
+  "runtime": {
+    "cuda_available": true,
+    "dill_version": "0.4.1",
+    "python": "3.12.3",
+    "pytorch_version": "2.11.0+cu130",
+    "sglang_source_commit": "fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1",
+    "sglang_source_root": "/sgl-workspace/sglang",
+    "sglang_version": "0.5.16",
+    "torch_cuda_version": "13.0"
+  },
+  "launch_command": "python3 -m sglang.launch_server --model-path /models --tokenizer-path /models --served-model-name nram-qwen3-14b-awq --context-length 32768 --mem-fraction-static 0.72 --enable-custom-logit-processor --grammar-backend xgrammar --disable-overlap-schedule --max-running-requests 1 --enable-hierarchical-cache --hicache-ratio 2.0 --hicache-write-policy write_through_selective --reasoning-parser qwen3 --host 0.0.0.0 --port 30000 --disable-prefill-cuda-graph --disable-decode-cuda-graph --default-chat-template-kwargs {\"enable_thinking\": false}",
+  "tests": {
+    "counts": {
+      "tests": 401,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tracked_node_count": 343,
+    "junit_files": [
+      {
+        "path": "..\\runtime-final-8b79606-20260728T022420Z\\full-test-results.xml",
+        "sha256": "9f71c2f7e065f29845fdb189c85335d5f54949283e46999884585024c41c34d4"
+      },
+      {
+        "path": "..\\runtime-final-8b79606-20260728T022420Z\\gpu-test-results.xml",
+        "sha256": "5415ba517f421ea0bb42baa1662bb63c4cca04254a80469719e3ea7e66a9ce41"
+      },
+      {
+        "path": "..\\runtime-final-8b79606-20260728T022420Z\\adversarial-live-junit.xml",
+        "sha256": "8991ea24d0f21689e9e1ca3750f4e078ed24938170ed0e0543e3c5f1cc424c94"
+      },
+      {
+        "path": "..\\runtime-final-8b79606-20260728T022420Z\\streamlit-api-integration.xml",
+        "sha256": "2b8ff4da5fb6b4f1f6b7586e1a238231e988acd1db5f5cfd2188586221561185"
+      }
+    ]
+  },
+  "model": {
+    "service": "sglang",
+    "root": "/models",
+    "file_count": 12,
+    "manifest_sha256": "325aeb57a1e76057c9a154a25595962b52db9abc0129aacd6ebd26fc0ee1572d"
+  },
+  "tokenizer": {
+    "service": "sglang",
+    "root": "/models",
+    "file_count": 12,
+    "manifest_sha256": "325aeb57a1e76057c9a154a25595962b52db9abc0129aacd6ebd26fc0ee1572d"
+  }
+}

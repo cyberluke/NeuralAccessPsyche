@@ -1,0 +1,67 @@
+{
+  "case_id": "top-p-nan",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.438032Z",
+  "finished_utc": "2026-07-28T02:59:17.452532Z",
+  "elapsed_ms": 14.469100000496837,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "top-p-nan"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": NaN,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-top-p-nan",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":NaN,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-top-p-nan\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "143",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"details\":[{\"type\":\"finite_number\",\"loc\":[\"body\",\"top_p\"],\"msg\":\"Input should be a finite number\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "details": [
+          {
+            "type": "finite_number",
+            "loc": [
+              "body",
+              "top_p"
+            ],
+            "msg": "Input should be a finite number"
+          }
+        ]
+      }
+    },
+    "bytes": 143
+  },
+  "exception": "HTTPError: HTTP Error 422: Unprocessable Entity"
+}

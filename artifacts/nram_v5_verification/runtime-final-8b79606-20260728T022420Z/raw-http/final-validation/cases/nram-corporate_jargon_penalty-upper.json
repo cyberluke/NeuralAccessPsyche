@@ -1,0 +1,49 @@
+{
+  "case_id": "nram-corporate_jargon_penalty-upper",
+  "elapsed_ms": 2.924680709838867,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-124",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "corporate_jargon_penalty": 2.5
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-124\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"corporate_jargon_penalty\":2.5}}",
+  "response": {
+    "status": 500,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:58:10 GMT",
+      "server": "uvicorn",
+      "content-length": "342",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"error\":{\"message\":\"1 validation error for NRAMState\\ncorporate_jargon_penalty\\n  Input should be less than or equal to 1 [type=less_than_equal, input_value=2.5, input_type=float]\\n    For further information visit https://errors.pydantic.dev/2.13/v/less_than_equal\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+    "json": {
+      "error": {
+        "message": "1 validation error for NRAMState\ncorporate_jargon_penalty\n  Input should be less than or equal to 1 [type=less_than_equal, input_value=2.5, input_type=float]\n    For further information visit https://errors.pydantic.dev/2.13/v/less_than_equal",
+        "type": "inference_error",
+        "param": null,
+        "code": "upstream_inference_failed"
+      }
+    }
+  },
+  "exception": null
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "case_id": "generation-with-synthetic-provenance",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:16:58.059624Z",
+    "finished_utc": "2026-07-27T23:16:58.466201Z",
+    "elapsed_ms": 406.5206999948714,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "generation-with-synthetic-provenance"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 4,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SYNTHETIC-PROVENANCE-2",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 5,
+          "session_id": "RA-SYNTHETIC-SESSION-2",
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            9702,
+            9702,
+            9702
+          ],
+          "phenomenon_weights": {
+            "overlap": 1.0
+          }
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":4,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SYNTHETIC-PROVENANCE-2\",\"include_telemetry\":true,\"telemetry_max_steps\":8,\"telemetry_top_k\":5,\"session_id\":\"RA-SYNTHETIC-SESSION-2\",\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,9702,9702,9702],\"phenomenon_weights\":{\"overlap\":1.0}}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:16:57 GMT",
+        "server": "uvicorn",
+        "content-length": "471",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"efc7b481ec1d4c23a6f012c5740aae0e\",\"object\":\"chat.completion\",\"created\":1785194218,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank thank thank thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":4,\"total_tokens\":23},\"nram_correlation\":{\"request_id\":\"RA-SYNTHETIC-PROVENANCE-2\",\"config_hash\":\"ae178d0ab8a49106fd7b75fe948e7ac4ff08aebd522c6dac459231dc51a5317c\"}}",
+      "json": {
+        "id": "efc7b481ec1d4c23a6f012c5740aae0e",
+        "object": "chat.completion",
+        "created": 1785194218,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank thank thank thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 4,
+          "total_tokens": 23
+        },
+        "nram_correlation": {
+          "request_id": "RA-SYNTHETIC-PROVENANCE-2",
+          "config_hash": "ae178d0ab8a49106fd7b75fe948e7ac4ff08aebd522c6dac459231dc51a5317c"
+        }
+      },
+      "bytes": 471
+    },
+    "exception": null
+  },
+  {
+    "case_id": "synthetic-provenance-summary",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:16:58.466730Z",
+    "finished_utc": "2026-07-27T23:16:58.469833Z",
+    "elapsed_ms": 3.071999999519903,
+    "request": {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/v1/features/telemetry/RA-SYNTHETIC-SESSION-2",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "synthetic-provenance-summary"
+      },
+      "body": null,
+      "wire_body_utf8": null,
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:16:58 GMT",
+        "server": "uvicorn",
+        "content-length": "445",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"session_id\":\"RA-SYNTHETIC-SESSION-2\",\"total_requests\":1,\"total_tokens\":4,\"token_origin_counts\":{\"model_generated\":0,\"positive_logit_bias\":4,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0,\"applied_policy\":0},\"avg_latency_ms\":378.2,\"profiles_used\":{\"baseline\":1},\"phenomena_triggered\":{\"overlap\":4},\"last_request_at\":1785194218.4646435,\"dominant_origin\":\"positive_logit_bias\"}",
+      "json": {
+        "session_id": "RA-SYNTHETIC-SESSION-2",
+        "total_requests": 1,
+        "total_tokens": 4,
+        "token_origin_counts": {
+          "model_generated": 0,
+          "positive_logit_bias": 4,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0,
+          "applied_policy": 0
+        },
+        "avg_latency_ms": 378.2,
+        "profiles_used": {
+          "baseline": 1
+        },
+        "phenomena_triggered": {
+          "overlap": 4
+        },
+        "last_request_at": 1785194218.4646435,
+        "dominant_origin": "positive_logit_bias"
+      },
+      "bytes": 445
+    },
+    "exception": null
+  }
+]

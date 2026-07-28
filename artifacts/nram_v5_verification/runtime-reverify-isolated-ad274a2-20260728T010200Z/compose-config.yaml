@@ -1,0 +1,109 @@
+name: nram-rvr-ad274a2
+services:
+  nram-api:
+    build:
+      context: d:\_SATIN_AI\NeuralAccessPsyche\artifacts\nram_v5_verification\isolated-build-ad274a2-20260728T010200Z
+      dockerfile: Dockerfile
+    container_name: nram-api
+    depends_on:
+      sglang:
+        condition: service_healthy
+        required: true
+    environment:
+      NRAM_API_KEY: dev-nram-key
+      NRAM_ENGINE: sglang
+      NRAM_TOKENIZER_PATH: /models
+      OPENAI_API_KEY: legacy-placeholder-not-used
+      PYTHONUNBUFFERED: "1"
+      SGLANG_BASE_URL: http://sglang:30000/v1
+      SGLANG_MODEL: nram-qwen3-14b-awq
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready',
+          timeout=5)
+      timeout: 10s
+      interval: 5s
+      retries: 30
+      start_period: 1m0s
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: 8000
+        published: "8000"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3
+        target: /models
+        read_only: true
+        bind: {}
+      - type: volume
+        source: workflow-data
+        target: /app/data
+        volume: {}
+  sglang:
+    build:
+      context: d:\_SATIN_AI\NeuralAccessPsyche\artifacts\nram_v5_verification\isolated-build-ad274a2-20260728T010200Z
+      dockerfile: inference/sglang/Dockerfile
+      args:
+        SGLANG_IMAGE: lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda
+    container_name: nram-sglang
+    environment:
+      CONTEXT_LENGTH: "32768"
+      CUDA_GRAPH_BS_DECODE: ""
+      ENABLE_THINKING: "false"
+      GRAMMAR_BACKEND: xgrammar
+      HF_HOME: /root/.cache/huggingface
+      HF_TOKEN: ""
+      HICACHE_RATIO: "2.0"
+      HICACHE_WRITE_POLICY: write_through_selective
+      MAX_RUNNING_REQUESTS: "1"
+      MEM_FRACTION_STATIC: "0.72"
+      MODEL_PATH: /models
+      MODEL_TYPE: awq
+      REASONING_PARSER: qwen3
+      SERVED_MODEL_NAME: nram-qwen3-14b-awq
+      SGLANG_HOST: 0.0.0.0
+      SGLANG_PORT: "30000"
+      TOKENIZER_PATH: /models
+    gpus:
+      - count: -1
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - /opt/nram/healthcheck.py
+      timeout: 10s
+      interval: 15s
+      retries: 60
+      start_period: 5m0s
+    image: nram-rvr-ad274a2-sglang:20260728t010200z
+    ipc: host
+    networks:
+      default: null
+    restart: unless-stopped
+    shm_size: "17179869184"
+    volumes:
+      - type: bind
+        source: E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3
+        target: /models
+        read_only: true
+        bind: {}
+      - type: volume
+        source: hf-cache
+        target: /root/.cache/huggingface
+        volume: {}
+networks:
+  default:
+    name: nram-rvr-ad274a2_default
+volumes:
+  hf-cache:
+    name: nram-rvr-ad274a2_hf-cache
+  workflow-data:
+    name: nram-rvr-ad274a2_workflow-data

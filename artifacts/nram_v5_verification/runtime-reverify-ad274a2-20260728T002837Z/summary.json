@@ -1,0 +1,17 @@
+{
+  "status": "BLOCKED",
+  "requested_mode": "runtime-adversary",
+  "actual_mode": "runtime-adversary",
+  "branch_or_worktree": "main; dirty protected worktree; clean index",
+  "starting_commit": "ad274a2c4b0575cf796659073fb69a962dbb66d0",
+  "resulting_commit": "no commit created",
+  "production_files_changed": [],
+  "tests_created": [],
+  "diagnostic_artifacts_created": true,
+  "builds_executed": 0,
+  "containers_recreated": 0,
+  "tests_executed": 0,
+  "runtime_claims_proven": [],
+  "runtime_claims_not_proven": "all NRAM-001 through NRAM-024 runtime claims",
+  "blocker": "RVR-001"
+}

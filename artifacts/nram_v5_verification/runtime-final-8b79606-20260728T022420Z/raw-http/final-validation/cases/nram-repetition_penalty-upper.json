@@ -1,0 +1,49 @@
+{
+  "case_id": "nram-repetition_penalty-upper",
+  "elapsed_ms": 25.610685348510742,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-119",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "repetition_penalty": 2.0
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-119\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"repetition_penalty\":2.0}}",
+  "response": {
+    "status": 500,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:58:10 GMT",
+      "server": "uvicorn",
+      "content-length": "336",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"error\":{\"message\":\"1 validation error for NRAMState\\nrepetition_penalty\\n  Input should be less than or equal to 1 [type=less_than_equal, input_value=2.0, input_type=float]\\n    For further information visit https://errors.pydantic.dev/2.13/v/less_than_equal\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+    "json": {
+      "error": {
+        "message": "1 validation error for NRAMState\nrepetition_penalty\n  Input should be less than or equal to 1 [type=less_than_equal, input_value=2.0, input_type=float]\n    For further information visit https://errors.pydantic.dev/2.13/v/less_than_equal",
+        "type": "inference_error",
+        "param": null,
+        "code": "upstream_inference_failed"
+      }
+    }
+  },
+  "exception": null
+}

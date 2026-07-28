@@ -1,0 +1,330 @@
+[
+  {
+    "case_id": "active-concept-nan-strength",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-27T23:14:35.190949Z",
+    "finished_utc": "2026-07-27T23:14:35.220872Z",
+    "elapsed_ms": 29.891800004406832,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "active-concept-nan-strength"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-CONCEPT-NAN",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "concepts": [
+            {
+              "concept_id": "nan",
+              "en_tokens": [
+                " Paris"
+              ],
+              "cs_tokens": [],
+              "synonyms": []
+            }
+          ],
+          "concept_strength": NaN
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-CONCEPT-NAN\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"concepts\":[{\"concept_id\":\"nan\",\"en_tokens\":[\" Paris\"],\"cs_tokens\":[],\"synonyms\":[]}],\"concept_strength\":NaN}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+        "server": "uvicorn",
+        "content-length": "145",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":{\"message\":\"Out of range float values are not JSON compliant\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+      "json": {
+        "error": {
+          "message": "Out of range float values are not JSON compliant",
+          "type": "inference_error",
+          "param": null,
+          "code": "upstream_inference_failed"
+        }
+      },
+      "bytes": 145
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  },
+  {
+    "case_id": "vector-tokenizer-padding-id",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-27T23:14:35.221830Z",
+    "finished_utc": "2026-07-27T23:14:35.500659Z",
+    "elapsed_ms": 278.7943000002997,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "vector-tokenizer-padding-id"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-VECTOR-PADDING",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "vocabulary_logit_vectors": [
+            {
+              "vector_id": "padding",
+              "coefficient": 1.0,
+              "entries": [
+                {
+                  "token_id": 151700,
+                  "weight": 1.0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-PADDING\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"vocabulary_logit_vectors\":[{\"vector_id\":\"padding\",\"coefficient\":1.0,\"entries\":[{\"token_id\":151700,\"weight\":1.0}]}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+        "server": "uvicorn",
+        "content-length": "445",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"ea3e20fb625d42b59c8d9437489c80e4\",\"object\":\"chat.completion\",\"created\":1785194075,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-VECTOR-PADDING\",\"config_hash\":\"8bfaf57e515a32928bb6a348910b56ff4014a14654a797b81a65970549ef642a\"}}",
+      "json": {
+        "id": "ea3e20fb625d42b59c8d9437489c80e4",
+        "object": "chat.completion",
+        "created": 1785194075,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Yes"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 378,
+          "completion_tokens": 1,
+          "total_tokens": 379
+        },
+        "nram_correlation": {
+          "request_id": "RA-VECTOR-PADDING",
+          "config_hash": "8bfaf57e515a32928bb6a348910b56ff4014a14654a797b81a65970549ef642a"
+        }
+      },
+      "bytes": 445
+    },
+    "exception": null
+  },
+  {
+    "case_id": "soft-tokenizer-padding-id",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-27T23:14:35.501473Z",
+    "finished_utc": "2026-07-27T23:14:35.612838Z",
+    "elapsed_ms": 111.33089999930235,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "soft-tokenizer-padding-id"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-SOFT-PADDING",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "soft_token_injections": [
+            {
+              "token_ids": [
+                151700
+              ],
+              "bias": 1.0
+            }
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SOFT-PADDING\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"soft_token_injections\":[{\"token_ids\":[151700],\"bias\":1.0}]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+        "server": "uvicorn",
+        "content-length": "443",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"6df8ce9d641642229427fc6d84e599a4\",\"object\":\"chat.completion\",\"created\":1785194075,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-SOFT-PADDING\",\"config_hash\":\"96978dd7462901993b5ff8ce7f77eb0db8d875a1f1ccdeafb8c49dc8a7fe856a\"}}",
+      "json": {
+        "id": "6df8ce9d641642229427fc6d84e599a4",
+        "object": "chat.completion",
+        "created": 1785194075,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Yes"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 378,
+          "completion_tokens": 1,
+          "total_tokens": 379
+        },
+        "nram_correlation": {
+          "request_id": "RA-SOFT-PADDING",
+          "config_hash": "96978dd7462901993b5ff8ce7f77eb0db8d875a1f1ccdeafb8c49dc8a7fe856a"
+        }
+      },
+      "bytes": 443
+    },
+    "exception": null
+  },
+  {
+    "case_id": "hard-tokenizer-padding-id",
+    "expected_contract": "stable 4xx before generation",
+    "started_utc": "2026-07-27T23:14:35.613564Z",
+    "finished_utc": "2026-07-27T23:14:35.673325Z",
+    "elapsed_ms": 59.73369999992428,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "hard-tokenizer-padding-id"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-HARD-PADDING",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5,
+          "hard_token_schedule": [
+            151700
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HARD-PADDING\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hard_token_schedule\":[151700]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+        "server": "uvicorn",
+        "content-length": "441",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"ea288b028150425a890f6cdc30ac1341\",\"object\":\"chat.completion\",\"created\":1785194075,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"!\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-HARD-PADDING\",\"config_hash\":\"d2c8d78ed3368a3c1b071842d699ff4ca158afe45a8bde081fe31d92df2fef9e\"}}",
+      "json": {
+        "id": "ea288b028150425a890f6cdc30ac1341",
+        "object": "chat.completion",
+        "created": 1785194075,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "!"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 378,
+          "completion_tokens": 1,
+          "total_tokens": 379
+        },
+        "nram_correlation": {
+          "request_id": "RA-HARD-PADDING",
+          "config_hash": "d2c8d78ed3368a3c1b071842d699ff4ca158afe45a8bde081fe31d92df2fef9e"
+        }
+      },
+      "bytes": 441
+    },
+    "exception": null
+  }
+]

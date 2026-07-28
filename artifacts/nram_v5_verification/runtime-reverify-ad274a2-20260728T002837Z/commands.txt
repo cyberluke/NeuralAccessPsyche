@@ -1,0 +1,3 @@
+READ-ONLY PRE-PROBE: git rev-parse HEAD; git status --porcelain=v2 --branch --untracked-files=all; git diff --cached --name-status; git diff --name-status; git diff --name-status ad274a2c4b0575cf796659073fb69a962dbb66d0 --; git ls-files --others --exclude-standard
+EVIDENCE PROBE: python artifacts/nram_v5_verification/runtime-reverify-ad274a2-20260728T002837Z/collect_blocker_evidence.py
+NOT EXECUTED BY DESIGN: docker compose build; docker compose down/up; runtime tests; complete gates

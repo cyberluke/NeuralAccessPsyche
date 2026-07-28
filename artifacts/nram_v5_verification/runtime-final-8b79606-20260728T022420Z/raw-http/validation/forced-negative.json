@@ -1,0 +1,67 @@
+{
+  "case_id": "forced-negative",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T02:59:17.323105Z",
+  "finished_utc": "2026-07-28T02:59:17.344204Z",
+  "elapsed_ms": 21.070799999506562,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "forced-negative"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-forced-negative",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "forced_token_enabled": true,
+        "forced_token_id": -1
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-forced-negative\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"forced_token_enabled\":true,\"forced_token_id\":-1}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:59:16 GMT",
+      "server": "uvicorn",
+      "content-length": "191",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"forced_token_id\",\"code\":\"greater_than_equal\",\"message\":\"Input should be greater than or equal to 0\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "schema": "nram.request.v1",
+        "errors": [
+          {
+            "path": "forced_token_id",
+            "code": "greater_than_equal",
+            "message": "Input should be greater than or equal to 0"
+          }
+        ]
+      }
+    },
+    "bytes": 191
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

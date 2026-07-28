@@ -1,0 +1,61 @@
+{
+  "case_id": "unsupported-kv_cache_firewall",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T22:51:19.152759Z",
+  "finished_utc": "2026-07-27T22:51:19.155648Z",
+  "elapsed_ms": 2.8738999972119927,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unsupported-kv_cache_firewall"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unsupported-kv_cache_firewall",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "kv_cache_firewall": true
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-kv_cache_firewall\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"kv_cache_firewall\":true}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:51:18 GMT",
+      "server": "uvicorn",
+      "content-length": "151",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"message\":\"Unsupported NRAM runtime feature(s): kv_cache_firewall\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+    "json": {
+      "error": {
+        "message": "Unsupported NRAM runtime feature(s): kv_cache_firewall",
+        "type": "inference_error",
+        "param": null,
+        "code": "upstream_inference_failed"
+      }
+    },
+    "bytes": 151
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

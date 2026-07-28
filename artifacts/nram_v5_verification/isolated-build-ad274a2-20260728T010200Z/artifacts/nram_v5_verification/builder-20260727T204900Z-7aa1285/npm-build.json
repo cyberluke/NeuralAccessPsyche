@@ -1,0 +1,30 @@
+
+> neuralaccesspsyche@1.0.0 build
+> npm pack --dry-run --json
+
+[
+  {
+    "id": "neuralaccesspsyche@1.0.0",
+    "name": "neuralaccesspsyche",
+    "version": "1.0.0",
+    "size": 2933,
+    "unpackedSize": 6211,
+    "shasum": "fdd8c2cc02c8bbc56bd8b91db7fddc1becb51a23",
+    "integrity": "sha512-8bTVdf1z5JF6FRIWFcvakJZs8Dn9CAx5ADUv6Tdihd/N31u/cnjtb+TyrBQxFdVnXPaHg7cJAMQRnvkUweOHCQ==",
+    "filename": "neuralaccesspsyche-1.0.0.tgz",
+    "files": [
+      {
+        "path": "README.md",
+        "size": 5801,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 410,
+        "mode": 420
+      }
+    ],
+    "entryCount": 2,
+    "bundled": []
+  }
+]

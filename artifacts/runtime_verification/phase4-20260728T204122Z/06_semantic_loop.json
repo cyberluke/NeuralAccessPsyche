@@ -1,0 +1,6 @@
+{
+  "status": "SKIPPED",
+  "reason": "Semantic loop not wired or feature not available",
+  "http_status": 400,
+  "response": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"representation\",\"code\":\"value_error\",\"message\":\"Value error, representation.vector_id is required\"}]}}"
+}

@@ -1,0 +1,104 @@
+{
+  "case_id": "entropy-low",
+  "expected_contract": "each step moves finite entropy toward target and PID state resets per request",
+  "started_utc": "2026-07-28T01:18:57.445031Z",
+  "finished_utc": "2026-07-28T01:18:57.864434Z",
+  "elapsed_ms": 419.3688000000293,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "entropy-low"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 4,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ENTROPY-low",
+        "include_telemetry": true,
+        "telemetry_max_steps": 8,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "entropy_control": true,
+        "entropy_phase_targets": {
+          "extraction": 1.0,
+          "questioning": 1.0,
+          "divergence": 1.0,
+          "synthesis": 1.0,
+          "formulation": 1.0
+        }
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":4,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ENTROPY-low\",\"include_telemetry\":true,\"telemetry_max_steps\":8,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"entropy_control\":true,\"entropy_phase_targets\":{\"extraction\":1.0,\"questioning\":1.0,\"divergence\":1.0,\"synthesis\":1.0,\"formulation\":1.0}}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:56 GMT",
+      "server": "uvicorn",
+      "content-length": "794",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-1cd960d486da41c6ba6b9f0bec58f2a0\",\"object\":\"chat.completion\",\"created\":1785201537,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay.\"},\"finish_reason\":\"stop\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":3,\"total_tokens\":22},\"nram_correlation\":{\"request_id\":\"RA-ENTROPY-low\",\"scheduler_request_id\":\"nram-scheduler-1cd960d486da41c6ba6b9f0bec58f2a0\",\"config_hash\":\"14784fddcf8d598ec3f6003daea68c3fe49df2e8eb36dc155900c8456d7bf959\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[32313,13,151645],\"sampled_tokens\":[\"Okay\",\".\",\"<|im_end|>\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-1cd960d486da41c6ba6b9f0bec58f2a0",
+      "object": "chat.completion",
+      "created": 1785201537,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay."
+          },
+          "finish_reason": "stop",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 3,
+        "total_tokens": 22
+      },
+      "nram_correlation": {
+        "request_id": "RA-ENTROPY-low",
+        "scheduler_request_id": "nram-scheduler-1cd960d486da41c6ba6b9f0bec58f2a0",
+        "config_hash": "14784fddcf8d598ec3f6003daea68c3fe49df2e8eb36dc155900c8456d7bf959",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          32313,
+          13,
+          151645
+        ],
+        "sampled_tokens": [
+          "Okay",
+          ".",
+          "<|im_end|>"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    },
+    "bytes": 794
+  },
+  "exception": null
+}

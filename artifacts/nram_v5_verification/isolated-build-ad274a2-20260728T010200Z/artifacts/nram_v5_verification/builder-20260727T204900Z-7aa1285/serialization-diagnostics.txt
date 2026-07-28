@@ -1,0 +1,42 @@
+## nram-api
+module=nram_sglang.processor
+qualname=NRAMLogitProcessor
+raw_bytes=59
+hex_chars=118
+payload_chars=134
+raw_sha256=ff2da67fd87cedd80269ddf9bca0e09844d8785a243202412514890556e642e2
+zero_arg=NRAMLogitProcessor
+roundtrip_identity=True
+    0: \x80 PROTO      4
+    2: \x95 FRAME      48
+   11: \x8c SHORT_BINUNICODE 'nram_sglang.processor'
+   34: \x94 MEMOIZE    (as 0)
+   35: \x8c SHORT_BINUNICODE 'NRAMLogitProcessor'
+   55: \x94 MEMOIZE    (as 1)
+   56: \x93 STACK_GLOBAL
+   57: \x94 MEMOIZE    (as 2)
+   58: .    STOP
+highest protocol among opcodes = 4
+
+## nram-sglang
+module=nram_sglang.processor
+qualname=NRAMLogitProcessor
+raw_bytes=59
+hex_chars=118
+payload_chars=134
+raw_sha256=ff2da67fd87cedd80269ddf9bca0e09844d8785a243202412514890556e642e2
+zero_arg=NRAMLogitProcessor
+roundtrip_identity=True
+    0: \x80 PROTO      4
+    2: \x95 FRAME      48
+   11: \x8c SHORT_BINUNICODE 'nram_sglang.processor'
+   34: \x94 MEMOIZE    (as 0)
+   35: \x8c SHORT_BINUNICODE 'NRAMLogitProcessor'
+   55: \x94 MEMOIZE    (as 1)
+   56: \x93 STACK_GLOBAL
+   57: \x94 MEMOIZE    (as 2)
+   58: .    STOP
+highest protocol among opcodes = 4
+
+## exact SGLang from_str
+nram_sglang.processor NRAMLogitProcessor

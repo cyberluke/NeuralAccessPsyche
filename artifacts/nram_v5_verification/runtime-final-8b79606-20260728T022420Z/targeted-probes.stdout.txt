@@ -1,0 +1,18 @@
+auth-correct 200 None
+auth-wrong 401 HTTPError: HTTP Error 401: Unauthorized
+auth-random-long 401 HTTPError: HTTP Error 401: Unauthorized
+auth-missing 401 HTTPError: HTTP Error 401: Unauthorized
+capabilities 200 None
+compare-forced-pair 200 None
+session-create 200 None
+session-generation 200 None
+session-state-after 200 None
+session-events-after 200 None
+session-reset 200 None
+session-state-reset 200 None
+hash-order-a 200 None
+hash-order-b 200 None
+duplicate-caller-a 200 None
+duplicate-caller-b 200 None
+moe-bounded-live 200 None
+persona-disconnect-retry 200 None

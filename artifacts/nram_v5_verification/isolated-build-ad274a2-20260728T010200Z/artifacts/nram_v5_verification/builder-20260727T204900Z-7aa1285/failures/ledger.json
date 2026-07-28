@@ -1,0 +1,13 @@
+{
+  "original_gate": {
+    "passed": 273,
+    "failed": 9,
+    "junit": "../phase0-20260727T180644Z-7aa1285/test-results.xml"
+  },
+  "repair_policy": "Unsafe application-request serialization assertions were replaced by server-trust-boundary tests; stale GPU endpoint/model/tokenizer were replaced by public pinned-runtime proofs; event-loop tests use asyncio.run.",
+  "failed_attempts": [
+    "Initial PowerShell command was interpreted by cmd.exe; rerun through explicit PowerShell.",
+    "Compose could not tag an image by digest; local wrapper tag retained immutable digest in FROM.",
+    "Initial capsule proof sampled at ramp strength zero; rerun at generated step one."
+  ]
+}

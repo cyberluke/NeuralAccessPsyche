@@ -1,0 +1,70 @@
+{
+  "case_id": "unknown-top-level",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T01:18:22.561909Z",
+  "finished_utc": "2026-07-28T01:18:22.588768Z",
+  "elapsed_ms": 26.8261999999595,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unknown-top-level"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unknown-top",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      },
+      "unknown_top_level_control": {
+        "must": "reject"
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unknown-top\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5},\"unknown_top_level_control\":{\"must\":\"reject\"}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+      "server": "uvicorn",
+      "content-length": "147",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"detail\":[{\"type\":\"extra_forbidden\",\"loc\":[\"body\",\"unknown_top_level_control\"],\"msg\":\"Extra inputs are not permitted\",\"input\":{\"must\":\"reject\"}}]}",
+    "json": {
+      "detail": [
+        {
+          "type": "extra_forbidden",
+          "loc": [
+            "body",
+            "unknown_top_level_control"
+          ],
+          "msg": "Extra inputs are not permitted",
+          "input": {
+            "must": "reject"
+          }
+        }
+      ]
+    },
+    "bytes": 147
+  },
+  "exception": "HTTPError: HTTP Error 422: Unprocessable Entity"
+}

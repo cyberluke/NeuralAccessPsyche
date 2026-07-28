@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="282" time="14.462" timestamp="2026-07-27T20:54:22.389913+02:00" hostname="WIN-LECQMSG5OQP"><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_full_generation_simulation_without_req" time="0.002" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_full_generation_simulation_with_req" time="0.001" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_comparison_baseline_vs_nram_without_req" time="0.001" /><testcase classname="tests.adversarial.test_end_to_end_logit_processor.TestEndToEndLogitProcessor" name="test_phase_schedule_without_req" time="0.001" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_uses_baseline_model" time="0.207" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_persona_queries_use_nram" time="0.152" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_loses_persona_characteristics" time="0.148" /><testcase classname="tests.adversarial.test_moe_synthesis.TestMoESynthesisConfiguration" name="test_moe_synthesis_payload_lacks_custom_processor" time="0.149" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_phenomena_not_called_without_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_overlap_fires_with_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_repetition_penalty_requires_req" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_phenomena_gating_line_in_processor" time="0.001" /><testcase classname="tests.adversarial.test_phenomenon_activation.TestPhenomenonMixerActivation" name="test_comparison_overlap_with_vs_without_req" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect1Remediation" name="test_req_is_injected_into_custom_params" time="0.158"><failure message="AssertionError: FIX VERIFIED: __req__ is now injected into custom_params&#10;assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}">self = &lt;test_remediation_verification.TestDefect1Remediation object at 0x00000279D8861BD0&gt;
+
+    @pytest.mark.asyncio
+    async def test_req_is_injected_into_custom_params(self):
+        """VERIFY FIX: __req__ IS present in custom_params after remediation."""
+        # Arrange
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
+        mock_tokenizer.encode.return_value = [1, 2, 3]
+        mock_tokenizer.decode.return_value = "test"
+    
+        engine = SGLangEngine(
+            base_url="http://localhost:30000/v1",
+            model="nram-qwen3-14b-awq",
+            tokenizer=mock_tokenizer,
+        )
+    
+        request = ChatCompletionRequest(
+            model="nram-qwen3-14b-awq",
+            messages=[{"role": "user", "content": "Test prompt"}],
+            nram={
+                "enabled": True,
+                "profile": "peak",
+                "intensity": 0.9,
+                "phenomenon_weights": {"overlap": 0.8, "forgetting": 0.6},
+            },
+            max_tokens=512,
+        )
+    
+        # Act
+        nram_enabled = engine._is_nram_enabled(request)
+        assert nram_enabled, "NRAM should be enabled"
+    
+        payload = engine._build_upstream_payload(
+            request,
+            nram_enabled=True,
+            developer_instruction="Test instruction",
+            plan_fragment=None,
+        )
+    
+        # Assert - FIX VERIFIED
+        assert "custom_params" in payload, "custom_params should be in payload"
+        custom_params = payload["custom_params"]
+    
+&gt;       assert "__req__" in custom_params, \
+            "FIX VERIFIED: __req__ is now injected into custom_params"
+E       AssertionError: FIX VERIFIED: __req__ is now injected into custom_params
+E       assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}
+
+tests\adversarial\test_remediation_verification.py:63: AssertionError</failure></testcase><testcase classname="tests.adversarial.test_remediation_verification.TestDefect1Remediation" name="test_dynamic_repetition_penalty_works" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_overlap_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_forgetting_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_looping_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_associative_jump_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_dissolution_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_synesthesia_phenomenon_fires" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect2Remediation" name="test_phase_scheduling_works" time="0.001" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_moe_synthesis_uses_nram_model" time="0.179" /><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_moe_synthesis_payload_has_custom_processor" time="0.304"><failure message="AssertionError: FIX VERIFIED: synthesis custom_params has __req__&#10;assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 0.9054, ...}">self = &lt;test_remediation_verification.TestDefect3Remediation object at 0x00000279D8862210&gt;
+
+    @pytest.mark.asyncio
+    async def test_moe_synthesis_payload_has_custom_processor(self):
+        """VERIFY FIX: Synthesis payload includes custom_logit_processor."""
+        # Arrange
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2}
+        mock_tokenizer.encode.return_value = [1, 2]
+        mock_tokenizer.decode.return_value = "test"
+    
+        engine = SGLangEngine(
+            base_url="http://localhost:30000/v1",
+            model="qwen3-14b-awq",
+            tokenizer=mock_tokenizer
+        )
+    
+        # Synthesis request with NRAM (FIXED)
+        synth_request = ChatCompletionRequest(
+            model="nram-qwen3-14b-awq",
+            messages=[{"role": "user", "content": "Synthesize"}],
+            nram={
+                "enabled": True,
+                "profile": "visionary-peak",
+                "intensity": 0.7,
+            },
+            max_tokens=2048
+        )
+    
+        # Act
+        nram_enabled = engine._is_nram_enabled(synth_request)
+        payload = engine._build_upstream_payload(
+            synth_request,
+            nram_enabled=nram_enabled,
+            developer_instruction="You are a synthesizer.",
+            plan_fragment=None
+        )
+    
+        # Assert - FIX VERIFIED
+        assert "custom_logit_processor" in payload, \
+            "FIX VERIFIED: synthesis has custom_logit_processor"
+    
+        assert "custom_params" in payload, \
+            "FIX VERIFIED: synthesis has custom_params"
+    
+&gt;       assert "__req__" in payload["custom_params"], \
+            "FIX VERIFIED: synthesis custom_params has __req__"
+E       AssertionError: FIX VERIFIED: synthesis custom_params has __req__
+E       assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 0.9054, ...}
+
+tests\adversarial\test_remediation_verification.py:446: AssertionError</failure></testcase><testcase classname="tests.adversarial.test_remediation_verification.TestDefect3Remediation" name="test_synthesis_preserves_persona_characteristics" time="0.283" /><testcase classname="tests.adversarial.test_remediation_verification.TestIntegrationVerification" name="test_full_nram_pipeline_works" time="0.287"><failure message="AssertionError: Should have __req__ injected&#10;assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}">self = &lt;test_remediation_verification.TestIntegrationVerification object at 0x00000279D8862350&gt;
+
+    @pytest.mark.asyncio
+    async def test_full_nram_pipeline_works(self):
+        """VERIFY FIX: Full NRAM pipeline works end-to-end."""
+        # Arrange
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
+        mock_tokenizer.encode.return_value = [1, 2, 3]
+        mock_tokenizer.decode.return_value = "test"
+    
+        engine = SGLangEngine(
+            base_url="http://localhost:30000/v1",
+            model="nram-qwen3-14b-awq",
+            tokenizer=mock_tokenizer,
+        )
+    
+        request = ChatCompletionRequest(
+            model="nram-qwen3-14b-awq",
+            messages=[{"role": "user", "content": "Test prompt"}],
+            nram={
+                "enabled": True,
+                "profile": "peak",
+                "intensity": 0.9,
+                "phenomenon_weights": {
+                    "overlap": 0.8,
+                    "forgetting": 0.6,
+                    "looping": 0.7,
+                },
+            },
+            max_tokens=512,
+        )
+    
+        # Act
+        nram_enabled = engine._is_nram_enabled(request)
+        payload = engine._build_upstream_payload(
+            request,
+            nram_enabled=True,
+            developer_instruction="Test instruction",
+            plan_fragment=None,
+        )
+    
+        # Assert - All fixes verified
+        assert nram_enabled is True, "NRAM should be enabled"
+        assert "custom_logit_processor" in payload, "Should have custom processor"
+        assert "custom_params" in payload, "Should have custom params"
+    
+        custom_params = payload["custom_params"]
+&gt;       assert "__req__" in custom_params, "Should have __req__ injected"
+E       AssertionError: Should have __req__ injected
+E       assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}
+
+tests\adversarial\test_remediation_verification.py:559: AssertionError</failure></testcase><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_build_custom_params_includes_req" time="0.001"><failure message="AssertionError: FIX VERIFIED: __req__ is present in custom_params&#10;assert '__req__' in {'positive_token_ids': [1, 2, 3], 'negative_token_ids': [4, 5, 6], 'forbidden_token_ids': [7, 8, 9], 'positive_bias': 0.5, ...}">self = &lt;test_req_injection.TestReqInjection object at 0x00000279D8862490&gt;
+
+    def test_build_custom_params_includes_req(self):
+        """VERIFY: build_custom_params() output includes __req__ key."""
+        # Arrange
+        positive_ids = [1, 2, 3]
+        negative_ids = [4, 5, 6]
+        forbidden_ids = [7, 8, 9]
+        positive_bias = 0.5
+        negative_bias = 0.3
+        repetition_penalty = 1.2
+        profile = "peak"
+        max_tokens = 512
+        phenomenon_weights = {"overlap": 0.8, "forgetting": 0.6}
+        mock_request = {"output_ids": [10, 20, 30]}  # Mock request object
+    
+        # Act
+        custom_params = build_custom_params(
+            positive_token_ids=positive_ids,
+            negative_token_ids=negative_ids,
+            forbidden_token_ids=forbidden_ids,
+            positive_bias=positive_bias,
+            negative_bias=negative_bias,
+            repetition_penalty=repetition_penalty,
+            profile=profile,
+            max_tokens=max_tokens,
+            phenomenon_weights=phenomenon_weights,
+            request=mock_request,
+        )
+    
+        # Assert - VERIFY the fix
+&gt;       assert "__req__" in custom_params, \
+            "FIX VERIFIED: __req__ is present in custom_params"
+E       AssertionError: FIX VERIFIED: __req__ is present in custom_params
+E       assert '__req__' in {'positive_token_ids': [1, 2, 3], 'negative_token_ids': [4, 5, 6], 'forbidden_token_ids': [7, 8, 9], 'positive_bias': 0.5, ...}
+
+tests\adversarial\test_req_injection.py:54: AssertionError</failure></testcase><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_sglang_payload_includes_req_in_custom_params" time="0.284"><failure message="AssertionError: FIX VERIFIED: __req__ is injected into custom_params&#10;assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}">self = &lt;test_req_injection.TestReqInjection object at 0x00000279D88625D0&gt;
+
+    @pytest.mark.asyncio
+    async def test_sglang_payload_includes_req_in_custom_params(self):
+        """VERIFY: SGLangEngine._build_upstream_payload() injects __req__."""
+        # Arrange - create mock tokenizer
+        mock_tokenizer = MagicMock()
+        mock_tokenizer.get_vocab.return_value = {"token1": 1, "token2": 2, "token3": 3}
+        mock_tokenizer.encode.return_value = [1, 2, 3]
+        mock_tokenizer.decode.return_value = "test"
+    
+        # Create engine with tokenizer (required for bias compiler)
+        engine = SGLangEngine(
+            base_url="http://localhost:30000/v1",
+            model="nram-qwen3-14b-awq",
+            tokenizer=mock_tokenizer,
+        )
+    
+        # Create request with NRAM enabled
+        request = ChatCompletionRequest(
+            model="nram-qwen3-14b-awq",
+            messages=[{"role": "user", "content": "Test prompt"}],
+            nram={
+                "enabled": True,
+                "profile": "peak",
+                "intensity": 0.9,
+                "phenomenon_weights": {"overlap": 0.8, "forgetting": 0.6},
+            },
+            max_tokens=512,
+        )
+    
+        # Act
+        nram_enabled = engine._is_nram_enabled(request)
+        assert nram_enabled, "NRAM should be enabled for this request"
+    
+        payload = engine._build_upstream_payload(
+            request,
+            nram_enabled=True,
+            developer_instruction="Test instruction",
+            plan_fragment=None,
+        )
+    
+        # Assert - VERIFY the fix
+        assert "custom_params" in payload, "custom_params should be in payload"
+        custom_params = payload["custom_params"]
+    
+&gt;       assert "__req__" in custom_params, \
+            "FIX VERIFIED: __req__ is injected into custom_params"
+E       AssertionError: FIX VERIFIED: __req__ is injected into custom_params
+E       assert '__req__' in {'positive_token_ids': [], 'negative_token_ids': [], 'forbidden_token_ids': [], 'positive_bias': 1.0146, ...}
+
+tests\adversarial\test_req_injection.py:117: AssertionError</failure></testcase><testcase classname="tests.adversarial.test_req_injection.TestReqInjection" name="test_logit_processor_request_is_none" time="0.001" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_missing_auth_returns_401" time="0.525" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_invalid_token_returns_401" time="0.004" /><testcase classname="tests.contract.test_openai_chat_contract.TestAuth" name="test_valid_token_returns_200" time="0.008" /><testcase classname="tests.contract.test_openai_chat_contract.TestRequestValidation" name="test_missing_messages_returns_400" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestRequestValidation" name="test_invalid_message_format_returns_400" time="0.007" /><testcase classname="tests.contract.test_openai_chat_contract.TestErrorHandling" name="test_upstream_failure_returns_openai_error_not_fake_200" time="0.005" /><testcase classname="tests.contract.test_openai_chat_contract.TestContentPreservation" name="test_user_content_not_modified_by_nram" time="0.005" /><testcase classname="tests.contract.test_openai_chat_contract.TestModelAlias" name="test_requested_model_passed_to_llm_handler" time="0.007" /><testcase classname="tests.contract.test_openai_chat_contract.TestModelAlias" name="test_baseline_model_alias_works" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestResponseShape" name="test_response_has_required_openai_fields" time="0.006" /><testcase classname="tests.contract.test_openai_chat_contract.TestResponseShape" name="test_content_is_string_not_dict" time="0.007" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_requires_auth" time="0.005" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_returns_both_aliases" time="0.007" /><testcase classname="tests.contract.test_openai_models_contract.TestModelsEndpoint" name="test_models_have_required_fields" time="0.004" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_both_aliases_map_to_same_upstream" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_only_nram_alias_is_steering_enabled" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_is_nram_enabled_true_for_nram_alias" time="0.282" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_is_nram_enabled_false_for_baseline" time="0.284" /><testcase classname="tests.contract.test_sglang_engine_contract.TestAliasRouting" name="test_nram_disabled_via_option" time="0.289" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_forbidden_fields_constant" time="0.001" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_client_cannot_inject_processor" time="0.284" /><testcase classname="tests.contract.test_sglang_engine_contract.TestSecurityBoundary" name="test_client_cannot_inject_serialized_processor" time="0.283" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_baseline_has_no_processor" time="0.300" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_nram_payload_has_processor_and_params" time="0.287" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_user_content_preserved" time="0.292" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_allowlist_filters_unknown_fields" time="0.285" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_model_alias_resolved_in_payload" time="0.285" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_custom_params_profile_reflects_request" time="0.288" /><testcase classname="tests.contract.test_sglang_engine_contract.TestPayloadConstruction" name="test_bias_values_within_bounds" time="0.292" /><testcase classname="tests.gpu.test_forced_token_proof" name="test_forced_token" time="2.594"><failure message="httpx.ConnectError: All connection attempts failed">@contextlib.contextmanager
+    def map_httpcore_exceptions() -&gt; typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+&gt;           yield
+
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_transports\default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_transports\default.py:394: in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_async\connection_pool.py:256: in handle_async_request
+    raise exc from None
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_async\connection_pool.py:236: in handle_async_request
+    response = await connection.handle_async_request(
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_async\connection.py:101: in handle_async_request
+    raise exc
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_async\connection.py:78: in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_async\connection.py:124: in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_backends\auto.py:31: in connect_tcp
+    return await self._backend.connect_tcp(
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_backends\anyio.py:113: in connect_tcp
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+map = {&lt;class 'TimeoutError'&gt;: &lt;class 'httpcore.ConnectTimeout'&gt;, &lt;class 'OSError'&gt;: &lt;class 'httpcore.ConnectError'&gt;, &lt;class 'anyio.BrokenResourceError'&gt;: &lt;class 'httpcore.ConnectError'&gt;}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -&gt; typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+&gt;                   raise to_exc(exc) from exc
+E                   httpcore.ConnectError: All connection attempts failed
+
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpcore\_exceptions.py:14: ConnectError
+
+The above exception was the direct cause of the following exception:
+
+    @pytest.mark.asyncio
+    @pytest.mark.integration
+    async def test_forced_token():
+        """Send a request with forced-token processor and verify output."""
+        print("=== FORCED-TOKEN PROOF ===")
+        print(f"Forcing token ID: {FORCED_TOKEN_ID}")
+        print(f"Target: {SGLANG_BASE}")
+        print(f"Model: {MODEL_NAME}")
+        print()
+    
+        # Serialize the processor
+        processor_payload = serialize_processor(ForcedTokenProcessor)
+        print(f"Processor serialized: {len(processor_payload)} bytes")
+    
+        # Build the request
+        request_body = {
+            "model": MODEL_NAME,
+            "messages": [
+                {"role": "user", "content": "Say anything."}
+            ],
+            "max_tokens": 1,  # Force exactly one token output
+            "temperature": 1.0,
+            "stream": False,
+            # SGLang custom logit processor injection
+            "custom_logit_processor": processor_payload,
+            "custom_params": [
+                {"forced_token_id": FORCED_TOKEN_ID}
+            ],
+        }
+    
+        print("\nSending request to SGLang...")
+        async with httpx.AsyncClient(timeout=60.0) as client:
+&gt;           response = await client.post(
+                f"{SGLANG_BASE}/chat/completions",
+                json=request_body,
+            )
+
+tests\gpu\test_forced_token_proof.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1859: in post
+    return await self.request(
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1540: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1629: in send
+    response = await self._send_handling_auth(
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1657: in _send_handling_auth
+    response = await self._send_handling_redirects(
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1694: in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1730: in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_transports\default.py:393: in handle_async_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\contextlib.py:162: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -&gt; typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+&gt;           raise mapped_exc(message) from exc
+E           httpx.ConnectError: All connection attempts failed
+
+C:\Users\lukes.COREI9\AppData\Roaming\Python\Python313\site-packages\httpx\_transports\default.py:118: ConnectError</failure></testcase><testcase classname="tests.gpu.test_forced_token_proof" name="test_tokenizer_bias_compiler" time="0.003" /><testcase classname="tests.integration.test_activation_addition.TestActivationVector" name="test_vector_creation" time="0.003" /><testcase classname="tests.integration.test_activation_addition.TestActivationVector" name="test_vector_to_device" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_controller_initialization" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_add_vector" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_remove_vector" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_get_vectors_for_layer" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_apply_to_hidden_states" time="0.004" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_apply_disabled" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationAdditionController" name="test_phase_aware_steering" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestVectorCollector" name="test_collector_initialization" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestVectorCollector" name="test_collect_vector" time="0.007" /><testcase classname="tests.integration.test_activation_addition.TestVectorCollector" name="test_collect_different_aggregations" time="0.010" /><testcase classname="tests.integration.test_activation_addition.TestActivationSteeringHook" name="test_hook_creation" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationSteeringHook" name="test_hook_call" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestActivationSteeringHook" name="test_hook_disabled" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestHookManager" name="test_manager_initialization" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestHookManager" name="test_register_hook" time="0.025" /><testcase classname="tests.integration.test_activation_addition.TestHookManager" name="test_remove_hook" time="0.020" /><testcase classname="tests.integration.test_activation_addition.TestHookManager" name="test_remove_all_hooks" time="0.022" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_registry_initialization" time="0.077" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_get_vector_by_name" time="0.043" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_get_vector_by_name_and_layer" time="0.051" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_list_vectors" time="0.055" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_create_novelty_vector" time="0.056" /><testcase classname="tests.integration.test_activation_addition.TestVectorRegistry" name="test_get_recommended_layers" time="0.051" /><testcase classname="tests.integration.test_activation_addition.TestIntegration" name="test_full_steering_pipeline" time="0.001" /><testcase classname="tests.integration.test_activation_addition.TestIntegration" name="test_phase_aware_steering_integration" time="0.001" /><testcase classname="tests.integration.test_consciousness_quality" name="test_consciousness_state_instructions" time="0.003" /><testcase classname="tests.integration.test_consciousness_quality" name="test_consciousness_state_quality_metrics" time="0.003" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_numeric_claim_detection" time="0.002" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_study_claim_detection" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_customer_claim_detection" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_no_hallucinations" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_sanitize_output" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_risk_score_calculation" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_convenience_functions" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_strict_mode" time="0.001" /><testcase classname="tests.integration.test_hallucination_guard.TestHallucinationGuard" name="test_mixed_content" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestTokenTrie" name="test_insert_and_match" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestTokenTrie" name="test_multiple_sequences" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestTokenTrie" name="test_contains" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestTokenTrieConstraint" name="test_forbidden_phrase_masking" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestTokenTrieConstraint" name="test_no_masking_without_match" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestSourceNgramBlocker" name="test_blocks_source_ngrams" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestSourceNgramBlocker" name="test_allows_non_source_text" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestEntropyController" name="test_entropy_computation" time="0.006" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestEntropyController" name="test_adjustment_toward_target" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestPhaseAwareEntropyController" name="test_phase_transitions" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestConceptCapsules" name="test_capsule_registry" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestConceptCapsules" name="test_usage_limits" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestConceptInjector" name="test_soft_injection" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestNRAMLogitProcessorV5" name="test_phrase_constraint_integration" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestNRAMLogitProcessorV5" name="test_entropy_control_integration" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestNRAMLogitProcessorV5" name="test_concept_injection_integration" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestABMetrics" name="test_ngram_overlap" time="0.001" /><testcase classname="tests.integration.test_nram_v5_ab_testing.TestABMetrics" name="test_novelty_metric" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_add_vector" time="0.003" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_remove_vector" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_get_active_vectors" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_combine_vectors_additive" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_combine_vectors_projected" time="0.003" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_apply_to_hidden_states" time="0.002" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_create_preset" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestMultiVectorController" name="test_apply_preset" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_add_conceptor" time="0.026" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_remove_conceptor" time="0.010" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_blend_conceptors_weighted_sum" time="0.058" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_blend_conceptors_and" time="0.633" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_blend_conceptors_or" time="1.291" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_apply_to_hidden_states" time="0.034" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestConceptorController" name="test_create_conceptor_from_vectors" time="0.009" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestLowRankSubspaceSteering" name="test_add_subspace" time="0.062" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestLowRankSubspaceSteering" name="test_project_to_subspace" time="0.082" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestLowRankSubspaceSteering" name="test_blend_subspaces" time="0.112" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestHiddenStateProbes" name="test_add_probe" time="0.002" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestHiddenStateProbes" name="test_remove_probe" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestHiddenStateProbes" name="test_monitor_layer" time="0.006" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestHiddenStateProbes" name="test_register_callback" time="0.002" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestHiddenStateProbes" name="test_enable_disable_probe" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestClosedLoopController" name="test_add_rule" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestClosedLoopController" name="test_create_novelty_rule" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestClosedLoopController" name="test_create_coherence_rule" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestClosedLoopController" name="test_create_source_similarity_rule" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_register_expert" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_set_phase" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_set_global_weights" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_get_active_experts" time="0.001" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_combine_logits" time="0.003" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestDExpertsController" name="test_combine_logits_without_anti_expert" time="0.002" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestIntegration" name="test_multi_vector_with_probes" time="0.002" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestIntegration" name="test_conceptor_with_closed_loop" time="0.076" /><testcase classname="tests.integration.test_nram_v5_sprint3.TestIntegration" name="test_full_sprint3_pipeline" time="0.031" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_route_persona_sets_internal_model" time="0.002" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_moe_subrequest_sets_internal_model" time="0.003" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_engine_injects_custom_logit_processor" time="0.296" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_persona_model_not_in_nram_enabled_aliases" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestPersonaAliasActivatesLogitProcessor" name="test_nram_enabled_aliases_contains_actual_nram_models" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestTokenizerFailFast" name="test_missing_tokenizer_raises_error" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_exists" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_coherence" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_novelty" time="0.001" /><testcase classname="tests.integration.test_persona_alias_logit_processor.TestVisionaryPeakProfile" name="test_visionary_peak_has_high_product_obsession" time="0.001" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect1Fixed_ContentIsString" name="test_generate_response_returns_string_content" time="0.022" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect2Fixed_Awaited" name="test_get_token_metrics_is_awaited_in_source" time="0.002" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect4Fixed_NoAwaitOnSyncClient" name="test_config_suggester_no_longer_awaits_sync_client" time="0.001" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect5Fixed_ModelReflected" name="test_generate_response_accepts_model_param" time="0.001" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect5Fixed_ModelReflected" name="test_model_field_in_response" time="0.002" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect8Fixed_InferenceErrorRaised" name="test_generate_response_raises_on_failure" time="0.026" /><testcase classname="tests.unit.test_existing_llm_handler.TestDefect8Fixed_InferenceErrorRaised" name="test_inference_error_has_correct_fields" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_numpy_has_no_softmax" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_nram_update_state_no_longer_raises" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect7Fixed_NoNpSoftmax" name="test_attention_weights_are_finite" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_process_messages_returns_unchanged_content" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_no_prefix_added" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_no_symbols_injected" time="0.003" /><testcase classname="tests.unit.test_existing_nram.TestDefect9Fixed_ContentPreserved" name="test_multi_message_preservation" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_nram_initialization" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_get_consciousness_level" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_reset_state" time="0.001" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_get_explorer_state_returns_dict" time="0.004" /><testcase classname="tests.unit.test_existing_nram.TestNRAMBasics" name="test_update_configuration" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_positive_bias_increases_logits" time="0.002" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_negative_bias_decreases_logits" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_forbidden_tokens_negative_infinity" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_repetition_penalty_on_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_out_of_range_ids_ignored" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_invalid_param_types_do_not_crash" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_batch_isolation" time="0.002" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_empty_params_returns_logits" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestLogitProcessor" name="test_bias_clamped_to_bounds" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestProcessorSerialization" name="test_dill_roundtrip_preserves_behavior" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestProcessorSerialization" name="test_serialize_processor_helper_returns_hex" time="0.001" /><testcase classname="tests.unit.test_logit_processor.TestForcedTokenProof" name="test_forced_token_is_argmax" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_default_state_within_bounds" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_extra_fields_forbidden" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_out_of_range_rejected" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestNRAMState" name="test_negative_generated_tokens_rejected" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_is_immutable_copy" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_registered" time="0.001" /><testcase classname="tests.unit.test_nram_state.TestVisionaryProfile" name="test_profile_has_high_visionary_and_jargon_penalty" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestPolicyCompilerDeterminism" name="test_identical_inputs_produce_identical_policy" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestPolicyCompilerDeterminism" name="test_different_inputs_produce_different_hash" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_positive_bias_within_conservative_range" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_negative_bias_within_conservative_range" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_repetition_penalty_bounded" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestBiasBounds" name="test_extreme_state_still_bounds_positive_bias" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_positive_lexemes_present" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_negative_lexemes_are_corporate_filler" time="0.001" /><testcase classname="tests.unit.test_persona_compiler.TestLexemeFamilies" name="test_developer_instruction_does_not_impersonate" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_opening_phase_no_scaling" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_contradiction_phase_boosts_negative" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_revelation_phase_boosts_positive" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_final_turn_boosts_repetition" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_no_max_tokens_disables_schedule" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_schedule_actually_changes_logits" time="0.001" /><testcase classname="tests.unit.test_phase_schedule.TestPhaseSchedule" name="test_request_state_isolated" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_boosts_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_below_threshold_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonOverlap" name="test_overlap_with_empty_history" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonForgetting" name="test_forgetting_penalizes_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonForgetting" name="test_forgetting_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonLooping" name="test_looping_rewards_recent_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonLooping" name="test_looping_window_is_16_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonAssociativeJump" name="test_associative_jump_flattens_logits" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonAssociativeJump" name="test_associative_jump_weight_zero_no_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonSynesthesia" name="test_synesthesia_adds_noise_to_scattered_tokens" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonSynesthesia" name="test_synesthesia_pattern_shifts_with_generation" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonDissolution" name="test_dissolution_scales_logits_toward_zero" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonDissolution" name="test_dissolution_is_strongest_effect" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_25_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_50_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_spikes_at_75_percent" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonInsight" name="test_insight_no_spike_outside_windows" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_overlap_and_forgetting_cancel_partially" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_all_phenomena_no_crash" time="0.001" /><testcase classname="tests.unit.test_phenomena_mixer.TestPhenomenonCombinations" name="test_phenomena_require_request" time="0.001" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_valid_plan_parsed" time="0.003" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_temperature_in_range" time="0.003" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_uses_structured_output" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_failure_returns_none" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_invalid_json_returns_none" time="0.002" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_planner_disabled_returns_none" time="0.001" /><testcase classname="tests.unit.test_planner.TestPlanner" name="test_plan_to_fragment_contains_fields" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_returns_json_string" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_contains_callable" time="0.001" /><testcase classname="tests.unit.test_serialization.TestSerializeProcessor" name="test_serialize_processor_roundtrip" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_basic" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_with_phenomena" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_minimal" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_with_max_tokens" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_preserves_all_fields" time="0.001" /><testcase classname="tests.unit.test_serialization.TestBuildCustomParams" name="test_build_custom_params_no_phenomena_omits_key" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_removes_complete_think_block" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_no_think_block_unchanged" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_multiple_blocks_removed" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_empty_after_strip" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStripReasoning" name="test_multiline_reasoning" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_plain_content_passes_through" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_model_rewritten_to_public_alias" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_complete_reasoning_block_suppressed" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_partial_reasoning_buffered_until_close" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_done_line_yields_nothing" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_unparseable_line_dropped" time="0.001" /><testcase classname="tests.unit.test_stream_reasoning.TestStreamState" name="test_finish_reason_chunk_preserved" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_single_token_lexeme_selected" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_multi_token_lexeme_skipped" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_punctuation_never_biased" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_ids_deduplicated" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_ids_validated_against_vocab" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_bias_values_propagated" time="0.001" /><testcase classname="tests.unit.test_token_bias.TestTokenBiasCompiler" name="test_diagnostics_include_skipped_reason" time="0.001" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_create_workflow" time="0.022" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_workflow" time="0.021" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_nonexistent_workflow" time="0.018" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_update_workflow" time="0.024" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_list_workflows" time="0.028" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_add_event" time="0.023" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_events_ordered_by_sequence" time="0.025" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_store_and_get_artifact" time="0.023" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_get_artifacts_by_type" time="0.027" /><testcase classname="tests.unit.test_workflow_store.TestWorkflowStore" name="test_workflow_persistence_across_store_instances" time="0.025" /></testsuite></testsuites>

@@ -1,0 +1,118 @@
+{
+  "case_id": "source-disabled",
+  "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+  "started_utc": "2026-07-28T01:18:24.603276Z",
+  "finished_utc": "2026-07-28T01:18:24.852599Z",
+  "elapsed_ms": 249.2935000000216,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "source-disabled"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 8,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-STRUCT-source-disabled",
+        "include_telemetry": true,
+        "telemetry_max_steps": 16,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "hard_token_schedule": [
+          9702,
+          498,
+          369,
+          697,
+          16585,
+          3395,
+          3351,
+          4486
+        ],
+        "source_text": null,
+        "source_ngram_size": 8
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":8,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-source-disabled\",\"include_telemetry\":true,\"telemetry_max_steps\":16,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498,369,697,16585,3395,3351,4486],\"source_text\":null,\"source_ngram_size\":8}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+      "server": "uvicorn",
+      "content-length": "917",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank you for your careful review today please\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":8,\"total_tokens\":27},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-source-disabled\",\"scheduler_request_id\":\"nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83\",\"config_hash\":\"5267ee3e5feb83a28ceaa2d2aafa8eb965e404ec236f079dcfe56aa8f38f85da\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,498,369,697,16585,3395,3351,4486],\"sampled_tokens\":[\" thank\",\" you\",\" for\",\" your\",\" careful\",\" review\",\" today\",\" please\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83",
+      "object": "chat.completion",
+      "created": 1785201504,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "thank you for your careful review today please"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 8,
+        "total_tokens": 27
+      },
+      "nram_correlation": {
+        "request_id": "RA-STRUCT-source-disabled",
+        "scheduler_request_id": "nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83",
+        "config_hash": "5267ee3e5feb83a28ceaa2d2aafa8eb965e404ec236f079dcfe56aa8f38f85da",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          9702,
+          498,
+          369,
+          697,
+          16585,
+          3395,
+          3351,
+          4486
+        ],
+        "sampled_tokens": [
+          " thank",
+          " you",
+          " for",
+          " your",
+          " careful",
+          " review",
+          " today",
+          " please"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    },
+    "bytes": 917
+  },
+  "exception": null
+}

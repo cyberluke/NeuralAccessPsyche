@@ -1,0 +1,36 @@
+{
+  "case_id": "session-delete",
+  "expected_contract": "observation",
+  "started_utc": "2026-07-27T23:13:03.756922Z",
+  "finished_utc": "2026-07-27T23:13:03.772192Z",
+  "elapsed_ms": 15.250799995556008,
+  "request": {
+    "method": "DELETE",
+    "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "session-delete"
+    },
+    "body": null,
+    "wire_body_utf8": null,
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+      "server": "uvicorn",
+      "content-length": "49",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"deleted\":true,\"id\":\"nram-session-8bb680358b15\"}",
+    "json": {
+      "deleted": true,
+      "id": "nram-session-8bb680358b15"
+    },
+    "bytes": 49
+  },
+  "exception": null
+}

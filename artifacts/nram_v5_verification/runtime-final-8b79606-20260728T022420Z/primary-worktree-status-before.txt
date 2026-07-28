@@ -1,0 +1,37 @@
+# branch.oid 8b796066ec6fed3f3260e9aea1e1ab19489e6ae8
+# branch.head main
+# branch.upstream origin/main
+# branch.ab +3 -0
+1 .M N... 100644 100644 100644 ac6ec8ea607d33434007019136f9a1af7a846a00 ac6ec8ea607d33434007019136f9a1af7a846a00 ab_test_outputs/01_normal_state.md
+1 .M N... 100644 100644 100644 9ce9eeaef4c57b5577f6c1e978d128245cf7a0fb 9ce9eeaef4c57b5577f6c1e978d128245cf7a0fb ab_test_outputs/02_microdose_state.md
+1 .M N... 100644 100644 100644 741816e2a4375c10d57c1811e01f4bdcb0ce5589 741816e2a4375c10d57c1811e01f4bdcb0ce5589 ab_test_outputs/03_threshold_state.md
+1 .M N... 100644 100644 100644 f59348f47ce621d9f1f148059c71b543b0e0999f f59348f47ce621d9f1f148059c71b543b0e0999f section_by_section_ab_test.py
+? ab_section_outputs/
+? artifacts/nram_v5_verification/builder-baseline-test-results.xml
+? artifacts/nram_v5_verification/builder-gpu-test-results.xml
+? artifacts/nram_v5_verification/isolated-build-ad274a2-20260728T010200Z/
+? artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/
+? artifacts/nram_v5_verification/runtime-final-8b79606-20260728T022420Z/
+? artifacts/nram_v5_verification/runtime-reverify-ad274a2-20260728T002837Z/
+? artifacts/nram_v5_verification/runtime-reverify-isolated-ad274a2-20260728T010200Z/
+? core/steering/activation_addition.py
+? core/steering/activation_vectors.py
+? core/steering/concept_capsules.py
+? core/steering/conceptor_steering.py
+? core/steering/dexperts.py
+? core/steering/entropy_controller.py
+? core/steering/forward_hooks.py
+? core/steering/hallucination_guard.py
+? core/steering/hidden_state_probes.py
+? core/steering/multi_vector_controller.py
+? core/steering/phrase_constraints.py
+? docs/FORENSIC_AUDIT_NRAM_V5.md
+? processor-wire.json
+? scripts/collect_activation_vectors.py
+? scripts/nram_v5_e2e_verification.py
+? scripts/test_nram_v5_proofs.py
+? sglang_logs.txt
+? tests/integration/test_activation_addition.py
+? tests/integration/test_hallucination_guard.py
+? tests/integration/test_nram_v5_ab_testing.py
+? tests/integration/test_nram_v5_sprint3.py

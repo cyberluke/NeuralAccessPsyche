@@ -1,0 +1,33 @@
+## main...origin/main [ahead 2]
+ M ab_test_outputs/01_normal_state.md
+ M ab_test_outputs/02_microdose_state.md
+ M ab_test_outputs/03_threshold_state.md
+ M section_by_section_ab_test.py
+?? ab_section_outputs/
+?? artifacts/nram_v5_verification/builder-baseline-test-results.xml
+?? artifacts/nram_v5_verification/builder-gpu-test-results.xml
+?? artifacts/nram_v5_verification/isolated-build-ad274a2-20260728T010200Z/
+?? artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/
+?? artifacts/nram_v5_verification/runtime-reverify-ad274a2-20260728T002837Z/
+?? artifacts/nram_v5_verification/runtime-reverify-isolated-ad274a2-20260728T010200Z/
+?? core/steering/activation_addition.py
+?? core/steering/activation_vectors.py
+?? core/steering/concept_capsules.py
+?? core/steering/conceptor_steering.py
+?? core/steering/dexperts.py
+?? core/steering/entropy_controller.py
+?? core/steering/forward_hooks.py
+?? core/steering/hallucination_guard.py
+?? core/steering/hidden_state_probes.py
+?? core/steering/multi_vector_controller.py
+?? core/steering/phrase_constraints.py
+?? docs/FORENSIC_AUDIT_NRAM_V5.md
+?? processor-wire.json
+?? scripts/collect_activation_vectors.py
+?? scripts/nram_v5_e2e_verification.py
+?? scripts/test_nram_v5_proofs.py
+?? sglang_logs.txt
+?? tests/integration/test_activation_addition.py
+?? tests/integration/test_hallucination_guard.py
+?? tests/integration/test_nram_v5_ab_testing.py
+?? tests/integration/test_nram_v5_sprint3.py

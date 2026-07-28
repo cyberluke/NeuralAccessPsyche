@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NRAM State Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        #graph {
+            width: 100%;
+            height: 600px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Neural Random Access Memory State Visualization</h1>
+        <div id="graph"></div>
+    </div>
+    <script>
+        const ws = new WebSocket(`ws://${window.location.host}/ws/nram-state`);
+        let graph = document.getElementById('graph');
+        
+        // Initialize the plot with empty data
+        Plotly.newPlot(graph, [{
+            y: [],
+            type: 'line',
+            name: 'NRAM State'
+        }], {
+            title: 'NRAM State Evolution',
+            xaxis: { title: 'Time' },
+            yaxis: { title: 'State Value' }
+        });
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            
+            Plotly.extendTraces(graph, {
+                y: [[data.state_value]]
+            }, [0]);
+
+            // Keep only last 100 points
+            if(graph.data[0].y.length > 100) {
+                Plotly.relayout(graph, {
+                    xaxis: {
+                        range: [graph.data[0].y.length - 100, graph.data[0].y.length]
+                    }
+                });
+            }
+        };
+    </script>
+</body>
+</html>

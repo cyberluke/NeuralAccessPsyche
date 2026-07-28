@@ -1,0 +1,82 @@
+{
+  "case_id": "forced-disabled-1",
+  "expected_contract": "forced token is not applied and disabled telemetry records that fact",
+  "started_utc": "2026-07-27T23:13:53.500230Z",
+  "finished_utc": "2026-07-27T23:13:53.601295Z",
+  "elapsed_ms": 101.03990000061458,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "forced-disabled-1"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-FORCED-disabled-1",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": false,
+        "forced_token_id": 9702
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-FORCED-disabled-1\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":false,\"forced_token_id\":9702}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:13:52 GMT",
+      "server": "uvicorn",
+      "content-length": "447",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"d55db75d57344bb8a95f17590ce02388\",\"object\":\"chat.completion\",\"created\":1785194033,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-FORCED-disabled-1\",\"config_hash\":\"4738336efb15919db9e839136549922e4cb69b5b6d8b27178c79c1bf4b5079ad\"}}",
+    "json": {
+      "id": "d55db75d57344bb8a95f17590ce02388",
+      "object": "chat.completion",
+      "created": 1785194033,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": {
+        "request_id": "RA-FORCED-disabled-1",
+        "config_hash": "4738336efb15919db9e839136549922e4cb69b5b6d8b27178c79c1bf4b5079ad"
+      }
+    },
+    "bytes": 447
+  },
+  "exception": null
+}

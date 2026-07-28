@@ -1,0 +1,1 @@
+BLOCKED before build. Exact target HEAD and tracked production bytes authenticate, but untracked production files under core/ are consumed by the API image COPY core/ rule. No .dockerignore exists. Building would not produce an exact-target image. Per task instruction, no build, recreate, or runtime verification was attempted.

@@ -1,0 +1,61 @@
+{
+  "case_id": "unsupported-hidden_state_probes",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T22:51:19.030803Z",
+  "finished_utc": "2026-07-27T22:51:19.033335Z",
+  "elapsed_ms": 2.52129999716999,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unsupported-hidden_state_probes"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unsupported-hidden_state_probes",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "hidden_state_probes": true
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-hidden_state_probes\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hidden_state_probes\":true}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:51:18 GMT",
+      "server": "uvicorn",
+      "content-length": "153",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":{\"message\":\"Unsupported NRAM runtime feature(s): hidden_state_probes\",\"type\":\"inference_error\",\"param\":null,\"code\":\"upstream_inference_failed\"}}",
+    "json": {
+      "error": {
+        "message": "Unsupported NRAM runtime feature(s): hidden_state_probes",
+        "type": "inference_error",
+        "param": null,
+        "code": "upstream_inference_failed"
+      }
+    },
+    "bytes": 153
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

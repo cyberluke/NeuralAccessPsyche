@@ -1,0 +1,42 @@
+[
+  {
+    "id": "RVR-001",
+    "status": "RESOLVED",
+    "finding": "Dirty primary Docker context blocker resolved by direct Git-object extraction and per-blob authentication in an isolated context."
+  },
+  {
+    "id": "RVR-002",
+    "status": "OPEN",
+    "finding": "temperature NaN, temperature Infinity, and top_p NaN return middleware HTTP 500, not pre-generation 4xx.",
+    "evidence": {
+      "temperature-nan": 500,
+      "temperature-inf": 500,
+      "top-p-nan": 500
+    }
+  },
+  {
+    "id": "RVR-003",
+    "status": "OPEN",
+    "finding": "Ordinary stream disconnect and non-stream client timeout did not bound upstream generation: both emitted all 64 processor steps. Explicit server deadline separately passed with official abort."
+  },
+  {
+    "id": "RVR-004",
+    "status": "OPEN",
+    "finding": "Committed artifact collector and committed builder manifest retain hard-coded stale 7aa1285/dirty provenance instead of deriving target implementation identity."
+  },
+  {
+    "id": "RVR-005",
+    "status": "TEST_HARNESS_LIMITATION",
+    "finding": "Running all HTTP suites without isolated rate-limit windows produced 11 HTTP 429 responses; clean-window numerical/lifecycle reruns passed apart from the preserved cancellation behavior."
+  },
+  {
+    "id": "RVR-006",
+    "status": "OPERATIONAL_ADAPTATION",
+    "finding": "Tracked GPU tests hard-code docker exec nram-api/nram-sglang; first isolated-name run had 9 false environmental failures, canonical-name rerun passed 246/246."
+  },
+  {
+    "id": "RVR-007",
+    "status": "OPERATIONAL_ADAPTATION",
+    "finding": "Windows tar extraction changed LF bytes and corrupted eight Unicode names; direct git ls-tree/cat-file extraction authenticated all 269 blobs exactly."
+  }
+]

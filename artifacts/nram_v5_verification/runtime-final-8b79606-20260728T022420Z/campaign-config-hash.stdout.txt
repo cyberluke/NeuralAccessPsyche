@@ -1,0 +1,8 @@
+{"case_id": "hash-control", "elapsed_ms": 70.128, "exception": null, "response_bytes": 773, "status": 200}
+{"case_id": "hash-prompt", "elapsed_ms": 47.269, "exception": null, "response_bytes": 773, "status": 200}
+{"case_id": "hash-seed", "elapsed_ms": 45.805, "exception": null, "response_bytes": 773, "status": 200}
+{"case_id": "hash-temperature", "elapsed_ms": 40.249, "exception": null, "response_bytes": 773, "status": 200}
+{"case_id": "hash-top-p", "elapsed_ms": 48.092, "exception": null, "response_bytes": 773, "status": 200}
+{"case_id": "hash-response-format", "elapsed_ms": 39.129, "exception": null, "response_bytes": 768, "status": 200}
+{"case_id": "hash-prompt-steering", "elapsed_ms": 66.179, "exception": null, "response_bytes": 775, "status": 200}
+{"case_id": "hash-application-request-id", "elapsed_ms": 63.4, "exception": null, "response_bytes": 769, "status": 200}

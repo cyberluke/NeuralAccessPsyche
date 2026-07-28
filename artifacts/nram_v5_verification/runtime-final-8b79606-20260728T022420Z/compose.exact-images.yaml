@@ -1,0 +1,5 @@
+services:
+  sglang:
+    image: nram-final-8b79606-sglang:20260728t022420z
+  nram-api:
+    image: nram-final-8b79606-api:20260728t022420z

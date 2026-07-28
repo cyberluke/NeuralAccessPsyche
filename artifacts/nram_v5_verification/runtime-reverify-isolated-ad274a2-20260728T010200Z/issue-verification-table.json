@@ -1,0 +1,122 @@
+[
+  {
+    "issue": "NRAM-001",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Live immutable model list, alias/persona identity, actual base identity, and stale alias rejection passed."
+  },
+  {
+    "issue": "NRAM-002",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Live forced compare returned baseline processor_intervened=false and controlled sampled token 9702 with metrics; unsupported compare rejected preflight."
+  },
+  {
+    "issue": "NRAM-003",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "Independent exact-target tests are reproducible, but the committed collector and committed builder manifest still identify stale 7aa1285/dirty provenance instead of target ad274a2; collector fields are hard-coded."
+  },
+  {
+    "issue": "NRAM-004",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "Ordinary stream disconnect and client-timeout requests each continued through all 64 processor invocations. Server-side 1 ms deadline did call official abort and had zero events; persona disconnect drained 2 extra steps."
+  },
+  {
+    "issue": "NRAM-005",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "Malformed/unknown/token/all-mask/unsupported cases rejected, but JSON NaN/Infinity for temperature/top_p returned HTTP 500 instead of pre-generation 4xx."
+  },
+  {
+    "issue": "NRAM-006",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "Ordinary/persona SSE media type, identity, correlation, chunks, and [DONE] passed; required ordinary disconnect cancellation failed with 64/64 invocations."
+  },
+  {
+    "issue": "NRAM-007",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Non-stream sampled IDs joined SGLang meta_info, explicit target retention unit gate passed, duplicate caller IDs received distinct scheduler IDs/configs, and streaming limitation is explicit."
+  },
+  {
+    "issue": "NRAM-008",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Prompt/seed/temperature/top-p/response-format/prompt-steering sensitivity passed; reversed object order preserved the same hash."
+  },
+  {
+    "issue": "NRAM-009",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Live peak/intensity/memory snapshot entered generation accounting, request count/events updated, unsupported memory semantics were de-scoped, and reset zeroed state."
+  },
+  {
+    "issue": "NRAM-010",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Zero-call unsupported preflight and explicit error/bounds unit gates passed; bounded max_tokens=1 live orchestration returned one-token synthesis and truthful orchestration identity."
+  },
+  {
+    "issue": "NRAM-011",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Nine live GPU gates passed bilingual variants, overlap, exact 8-token source boundary, grammar composition, and streamed history."
+  },
+  {
+    "issue": "NRAM-012",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Capabilities truthfully list supported controls and blocked advanced stacks; unsupported ordinary/persona/MoE/compare paths fail loudly."
+  },
+  {
+    "issue": "NRAM-013",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Configured correct token returned 200; wrong, random long, and missing tokens returned 401; contract fail-closed/helper tests passed."
+  },
+  {
+    "issue": "NRAM-014",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "Cold exact-target recreation succeeded and 282-test historical artifact is retained, but committed collector/manifest provenance remains hard-coded to stale 7aa1285 dirty scope rather than the implementation SHA."
+  },
+  {
+    "issue": "NRAM-015",
+    "result": "FAILED_VERIFICATION",
+    "evidence": "PID/reset/saturation/all-mask/grammar controls passed, but non-finite public sampling controls surface middleware HTTP 500 rather than stable pre-generation 4xx."
+  },
+  {
+    "issue": "NRAM-016",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Live GPU and unit gates passed signed/zero sparse vectors, soft windows, capsule bounds, PID controls, phrase/source masks; claims remain bounded to direct logit effects."
+  },
+  {
+    "issue": "NRAM-017",
+    "result": "VERIFIED_FIXED",
+    "evidence": "Exact API image source authentication included evaluation package; advertised image routes, compare, sessions, telemetry, dashboard/Streamlit tests passed."
+  },
+  {
+    "issue": "NRAM-018",
+    "result": "BLOCKED",
+    "evidence": "DExperts remains absent, advertised blocked, and dexperts requests fail loudly; no simulation."
+  },
+  {
+    "issue": "NRAM-019",
+    "result": "BLOCKED",
+    "evidence": "Representation hooks/vectors/probes/ReFT remain absent and fail loudly; no simulation."
+  },
+  {
+    "issue": "NRAM-020",
+    "result": "BLOCKED",
+    "evidence": "Semantic/evidence closed loop remains absent and fail-loud; no simulation."
+  },
+  {
+    "issue": "NRAM-021",
+    "result": "BLOCKED",
+    "evidence": "Branch-and-tournament remains absent and fail-loud; persona orchestration is not relabeled as tournament."
+  },
+  {
+    "issue": "NRAM-022",
+    "result": "BLOCKED",
+    "evidence": "No full causal/statistical study; bounded mechanism evidence is not converted into scientific validation."
+  },
+  {
+    "issue": "NRAM-023",
+    "result": "BLOCKED",
+    "evidence": "The authentic claimed original 269/273 four-failure artifact remains unavailable; retained phase0 is 282 total / 9 failed and is not substituted."
+  },
+  {
+    "issue": "NRAM-024",
+    "result": "UNCONFIRMED",
+    "evidence": "No exit 137 recurred during exact cold start and bounded campaign; prior cause remains unattributed."
+  }
+]

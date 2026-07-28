@@ -1,0 +1,71 @@
+{
+  "case": "capabilities",
+  "elapsed_seconds": 0.026726961135864258,
+  "request": {
+    "path": "/v1/nram/capabilities",
+    "method": "GET",
+    "authorization": "Bearer <redacted>",
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:15:40 GMT",
+      "server": "uvicorn",
+      "content-length": "1118",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"engine\":\"sglang\",\"sglang_enabled\":true,\"loaded_model_ids\":[\"nram-qwen3-14b-awq\"],\"virtual_routes\":{\"baseline_aliases\":[\"qwen3-14b-awq-baseline\"],\"persona_profiles\":{\"persona-normal\":\"normal\",\"persona-microdose\":\"microdose\",\"persona-threshold\":\"threshold\",\"persona-psychedelic\":\"psychedelic\",\"persona-peak\":\"peak\",\"persona-dissociative\":\"dissociative\",\"persona-keynote\":\"visionary-psychedelic-keynote\"},\"persona_orchestration\":\"nram-moe-orchestrator\"},\"actual_base_model\":\"nram-qwen3-14b-awq\",\"controls\":{\"prompt_steering\":true,\"hard_token_masking\":true,\"soft_logit_biasing\":true,\"dynamic_repetition_penalty\":true,\"phrase_and_source_masks\":true,\"entropy_pid\":true,\"vocabulary_logit_vectors\":true},\"verified\":{\"pre_sampling_logit_modification\":true,\"forced_token_proof\":true,\"streaming\":true},\"blocked_not_implemented\":[\"dexperts\",\"representation_control\",\"semantic_evidence_closed_loop\",\"branch_and_tournament\",\"full_causal_statistical_study\"],\"telemetry\":{\"processor_events\":\"causal_log_events\",\"nonstream_sample_join\":\"sglang_meta_info\",\"stream_sample_token_ids\":\"not_available_without_supported_post_sample_hook\"}}",
+    "json": {
+      "engine": "sglang",
+      "sglang_enabled": true,
+      "loaded_model_ids": [
+        "nram-qwen3-14b-awq"
+      ],
+      "virtual_routes": {
+        "baseline_aliases": [
+          "qwen3-14b-awq-baseline"
+        ],
+        "persona_profiles": {
+          "persona-normal": "normal",
+          "persona-microdose": "microdose",
+          "persona-threshold": "threshold",
+          "persona-psychedelic": "psychedelic",
+          "persona-peak": "peak",
+          "persona-dissociative": "dissociative",
+          "persona-keynote": "visionary-psychedelic-keynote"
+        },
+        "persona_orchestration": "nram-moe-orchestrator"
+      },
+      "actual_base_model": "nram-qwen3-14b-awq",
+      "controls": {
+        "prompt_steering": true,
+        "hard_token_masking": true,
+        "soft_logit_biasing": true,
+        "dynamic_repetition_penalty": true,
+        "phrase_and_source_masks": true,
+        "entropy_pid": true,
+        "vocabulary_logit_vectors": true
+      },
+      "verified": {
+        "pre_sampling_logit_modification": true,
+        "forced_token_proof": true,
+        "streaming": true
+      },
+      "blocked_not_implemented": [
+        "dexperts",
+        "representation_control",
+        "semantic_evidence_closed_loop",
+        "branch_and_tournament",
+        "full_causal_statistical_study"
+      ],
+      "telemetry": {
+        "processor_events": "causal_log_events",
+        "nonstream_sample_join": "sglang_meta_info",
+        "stream_sample_token_ids": "not_available_without_supported_post_sample_hook"
+      }
+    }
+  },
+  "exception": null
+}

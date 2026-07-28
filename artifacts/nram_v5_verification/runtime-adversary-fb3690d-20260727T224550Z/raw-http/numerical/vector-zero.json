@@ -1,0 +1,95 @@
+{
+  "case_id": "vector-zero",
+  "expected_contract": "telemetry delta equals coefficient times weight before final force mask",
+  "started_utc": "2026-07-27T22:58:01.827516Z",
+  "finished_utc": "2026-07-27T22:58:01.917417Z",
+  "elapsed_ms": 89.87940000224626,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "vector-zero"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VECTOR-zero",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": true,
+        "forced_token_id": 9702,
+        "vocabulary_logit_vectors": [
+          {
+            "vector_id": "ra-vector",
+            "coefficient": 0.0,
+            "normalize": false,
+            "entries": [
+              {
+                "token_id": 12095,
+                "weight": 1.5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VECTOR-zero\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"forced_token_enabled\":true,\"forced_token_id\":9702,\"vocabulary_logit_vectors\":[{\"vector_id\":\"ra-vector\",\"coefficient\":0.0,\"normalize\":false,\"entries\":[{\"token_id\":12095,\"weight\":1.5}]}]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:58:01 GMT",
+      "server": "uvicorn",
+      "content-length": "442",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"5914827fcd1248c2ac0ca5e9698fbb26\",\"object\":\"chat.completion\",\"created\":1785193081,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RA-VECTOR-zero\",\"config_hash\":\"661911e0c9a4caf649949200fbaf49a3f0cbbedf1220d48ac0972ba7efcd0b1d\"}}",
+    "json": {
+      "id": "5914827fcd1248c2ac0ca5e9698fbb26",
+      "object": "chat.completion",
+      "created": 1785193081,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "thank"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": {
+        "request_id": "RA-VECTOR-zero",
+        "config_hash": "661911e0c9a4caf649949200fbaf49a3f0cbbedf1220d48ac0972ba7efcd0b1d"
+      }
+    },
+    "bytes": 442
+  },
+  "exception": null
+}

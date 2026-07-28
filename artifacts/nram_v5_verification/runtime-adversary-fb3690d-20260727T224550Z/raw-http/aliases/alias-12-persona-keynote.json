@@ -1,0 +1,78 @@
+{
+  "case_id": "alias-12-persona-keynote",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:19.038949Z",
+  "finished_utc": "2026-07-27T22:49:19.137072Z",
+  "elapsed_ms": 98.09720000339439,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-12-persona-keynote"
+    },
+    "body": {
+      "model": "persona-keynote",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-12-persona-keynote",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-keynote\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-12-persona-keynote\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:18 GMT",
+      "server": "uvicorn",
+      "content-length": "452",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"43e3cec1a9fc4b95bf6e984d65862824\",\"object\":\"chat.completion\",\"created\":1785192559,\"model\":\"persona-keynote\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":452,\"completion_tokens\":1,\"total_tokens\":453},\"nram_correlation\":{\"request_id\":\"RA-ALIAS-12-persona-keynote\",\"config_hash\":\"c4d600f1585525cb63f3d318112df2404c5f8ba353884cd0f2058d2b756838de\"}}",
+    "json": {
+      "id": "43e3cec1a9fc4b95bf6e984d65862824",
+      "object": "chat.completion",
+      "created": 1785192559,
+      "model": "persona-keynote",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 452,
+        "completion_tokens": 1,
+        "total_tokens": 453
+      },
+      "nram_correlation": {
+        "request_id": "RA-ALIAS-12-persona-keynote",
+        "config_hash": "c4d600f1585525cb63f3d318112df2404c5f8ba353884cd0f2058d2b756838de"
+      }
+    },
+    "bytes": 452
+  },
+  "exception": null
+}

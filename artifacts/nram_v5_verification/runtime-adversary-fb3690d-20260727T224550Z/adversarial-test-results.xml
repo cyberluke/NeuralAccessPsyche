@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="8" tests="9" time="1.605" timestamp="2026-07-28T01:07:12.150834+02:00" hostname="WIN-LECQMSG5OQP"><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_public_models_do_not_advertise_unloaded_immutable_models" time="0.001"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:42: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;0]" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:56: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;1]" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:56: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;2]" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:56: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;3]" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:56: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_persona_stream_obeys_sse_contract_and_terminates" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:82: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_configuration_hash_covers_prompt_seed_sampling_and_grammar" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:101: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_compare_route_reaches_processor_and_rejects_unsupported_controls" time="0.000"><skipped type="pytest.skip" message="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime">d:\_SATIN_AI\NeuralAccessPsyche\tests\runtime_adversary\test_confirmed_runtime_defects.py:141: set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime</skipped></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_moe_rejects_unsupported_before_first_generation" time="1.466"><failure message="AssertionError: AssertionError('generation was reached before outer validation')&#10;assert not True&#10; +  where True = isinstance(AssertionError('generation was reached before outer validation'), AssertionError)&#10; +    where AssertionError('generation was reached before outer validation') = &lt;ExceptionInfo AssertionError('generation was reached before outer validation') tblen=3&gt;.value">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000027614724180&gt;
+
+    @pytest.mark.asyncio
+    async def test_moe_rejects_unsupported_before_first_generation(monkeypatch):
+        """Non-runtime structural proof: recording double checks call ordering only."""
+        from api import routes
+    
+        class RecordingEngine:
+            def __init__(self):
+                self.calls = []
+    
+            async def complete(self, request):
+                self.calls.append(request)
+                raise AssertionError("generation was reached before outer validation")
+    
+        engine = RecordingEngine()
+        monkeypatch.setattr(routes, "get_sglang_engine", lambda: engine)
+        request = routes.ChatCompletionRequest(
+            model="nram-moe-orchestrator",
+            messages=[{"role": "user", "content": "bounded"}],
+            max_tokens=1,
+            nram={"dexperts": True},
+        )
+        with pytest.raises(Exception) as exc_info:
+            await routes._route_moe(request)
+&gt;       assert not isinstance(exc_info.value, AssertionError), exc_info.value
+E       AssertionError: AssertionError('generation was reached before outer validation')
+E       assert not True
+E        +  where True = isinstance(AssertionError('generation was reached before outer validation'), AssertionError)
+E        +    where AssertionError('generation was reached before outer validation') = &lt;ExceptionInfo AssertionError('generation was reached before outer validation') tblen=3&gt;.value
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:182: AssertionError</failure></testcase></testsuite></testsuites>

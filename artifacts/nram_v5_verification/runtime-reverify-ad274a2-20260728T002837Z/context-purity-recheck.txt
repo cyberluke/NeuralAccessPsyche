@@ -1,0 +1,22 @@
+UTC_RECHECK=2026-07-28T00:58:51.6178983Z 
+TARGET_HEAD= 
+ad274a2c4b0575cf796659073fb69a962dbb66d0
+DOCKERIGNORE_EXISTS= 
+false
+API_COPY_RULE= 
+36:COPY core/ ./core/
+COMPOSE_API_CONTEXT= 
+18:      context: .
+117:      context: .
+UNTRACKED_DOCKER_CONSUMED= 
+core/steering/activation_addition.py
+core/steering/activation_vectors.py
+core/steering/concept_capsules.py
+core/steering/conceptor_steering.py
+core/steering/dexperts.py
+core/steering/entropy_controller.py
+core/steering/forward_hooks.py
+core/steering/hallucination_guard.py
+core/steering/hidden_state_probes.py
+core/steering/multi_vector_controller.py
+core/steering/phrase_constraints.py

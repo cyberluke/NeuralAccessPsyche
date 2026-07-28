@@ -1,0 +1,15 @@
+{
+  "python": "3.11.15 (main, Jul 14 2026, 02:08:37) [GCC 14.2.0]",
+  "dill": "0.4.1",
+  "cloudpickle": "3.1.2",
+  "transformers": "5.12.1",
+  "tokenizers": "0.22.2",
+  "module": "nram_sglang.processor",
+  "qualname": "NRAMLogitProcessor",
+  "raw_bytes": 59,
+  "hex_chars": 118,
+  "payload_chars": 134,
+  "payload_sha256": "23729b2a6ecbc243ba97980fd8a8235eb8643da1f9dae7ec6d94ebccf3614fa8",
+  "roundtrip_identity": true,
+  "zero_arg_type": "NRAMLogitProcessor"
+}

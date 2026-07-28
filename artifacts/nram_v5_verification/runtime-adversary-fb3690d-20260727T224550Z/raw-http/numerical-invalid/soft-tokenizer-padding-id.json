@@ -1,0 +1,86 @@
+{
+  "case_id": "soft-tokenizer-padding-id",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T23:14:35.501473Z",
+  "finished_utc": "2026-07-27T23:14:35.612838Z",
+  "elapsed_ms": 111.33089999930235,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "soft-tokenizer-padding-id"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-SOFT-PADDING",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "soft_token_injections": [
+          {
+            "token_ids": [
+              151700
+            ],
+            "bias": 1.0
+          }
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-SOFT-PADDING\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"soft_token_injections\":[{\"token_ids\":[151700],\"bias\":1.0}]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+      "server": "uvicorn",
+      "content-length": "443",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"6df8ce9d641642229427fc6d84e599a4\",\"object\":\"chat.completion\",\"created\":1785194075,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-SOFT-PADDING\",\"config_hash\":\"96978dd7462901993b5ff8ce7f77eb0db8d875a1f1ccdeafb8c49dc8a7fe856a\"}}",
+    "json": {
+      "id": "6df8ce9d641642229427fc6d84e599a4",
+      "object": "chat.completion",
+      "created": 1785194075,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 378,
+        "completion_tokens": 1,
+        "total_tokens": 379
+      },
+      "nram_correlation": {
+        "request_id": "RA-SOFT-PADDING",
+        "config_hash": "96978dd7462901993b5ff8ce7f77eb0db8d875a1f1ccdeafb8c49dc8a7fe856a"
+      }
+    },
+    "bytes": 443
+  },
+  "exception": null
+}

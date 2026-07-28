@@ -139,4 +139,13 @@ if [ "${ENABLE_THINKING}" = "false" ]; then
     LAUNCH_ARGS+=(--default-chat-template-kwargs '{"enable_thinking": false}')
 fi
 
+# NRAM v5 representation control hooks
+# Register forward hooks on Qwen decoder layers for hidden-state interventions
+# The hook factory is loaded from nram_sglang.hooks.factory and targets model.layers.*
+if [ "${NRAM_ENABLE_HOOKS:-true}" = "true" ]; then
+    FORWARD_HOOKS_CONFIG='[{"name":"nram_actadd","target_modules":["model.layers.*"],"hook_factory":"nram_sglang.hooks.factory:make_nram_hook","config":{"enabled":true}}]'
+    LAUNCH_ARGS+=(--forward-hooks "${FORWARD_HOOKS_CONFIG}")
+    echo "[nram-sglang]   forward-hooks       = enabled (nram_actadd on model.layers.*)"
+fi
+
 exec python3 -m sglang.launch_server "${LAUNCH_ARGS[@]}" "$@"

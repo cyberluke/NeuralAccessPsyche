@@ -1,0 +1,2 @@
+2026-07-28T01:15:33.3149887Z The underlying connection was closed: The connection was closed unexpectedly.
+2026-07-28T01:15:38.9843977Z status=200 body={"status":"ready","engine":"sglang","detail":{"engine":"sglang","healthy":true,"models":["nram-qwen3-14b-awq"]}}

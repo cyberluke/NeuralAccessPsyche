@@ -1,0 +1,57 @@
+{
+  "case_id": "session-state-after",
+  "expected_contract": "observation",
+  "started_utc": "2026-07-27T23:13:03.721225Z",
+  "finished_utc": "2026-07-27T23:13:03.740595Z",
+  "elapsed_ms": 19.34320000145817,
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/v1/nram/sessions/nram-session-8bb680358b15/state",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "session-state-after"
+    },
+    "body": null,
+    "wire_body_utf8": null,
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:13:03 GMT",
+      "server": "uvicorn",
+      "content-length": "478",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-session-8bb680358b15\",\"state\":{\"influence\":1.0,\"entropy\":0.94,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":1.0,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":0,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+    "json": {
+      "id": "nram-session-8bb680358b15",
+      "state": {
+        "influence": 1.0,
+        "entropy": 0.94,
+        "coherence": 0.7,
+        "momentum": 0.0,
+        "rhetorical_phase": "idle"
+      },
+      "profile": "peak",
+      "intensity": 1.0,
+      "token_steering_counts": {
+        "model_generated": 0,
+        "positive_logit_bias": 0,
+        "negative_logit_bias": 0,
+        "hard_mask": 0,
+        "forced_injection": 0,
+        "memory_recall": 0,
+        "planner_constraint": 0,
+        "postprocess": 0
+      },
+      "phenomenon_counts": {},
+      "request_count": 0,
+      "note": "These are simulation and control metrics, NOT measurements of consciousness."
+    },
+    "bytes": 478
+  },
+  "exception": null
+}

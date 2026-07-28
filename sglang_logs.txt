@@ -1,0 +1,14 @@
+[nram-sglang] Launching SGLang server
+[nram-sglang]   model-path        = /models
+[nram-sglang]   tokenizer-path    = /models
+[nram-sglang]   served-model-name = nram-qwen3-14b-awq
+[nram-sglang]   load-format       = auto
+[nram-sglang]   quantization      = awq
+[nram-sglang]   context-length    = 32768
+[nram-sglang]   mem-fraction      = 0.72
+[nram-sglang]   grammar-backend   = xgrammar
+[nram-sglang]   reasoning-parser  = qwen3
+[nram-sglang]   hicache-ratio     = 2.0
+[nram-sglang]   hicache-write     = write_through_selective
+[nram-sglang]   host:port         = 0.0.0.0:30000
+[nram-sglang]   forward-hooks       = enabled (nram_actadd on model.layers.*)

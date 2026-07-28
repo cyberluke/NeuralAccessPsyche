@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED",
+  "reason": "DExperts requires multiple model instances; VRAM constraint (24GB RTX 4090 with 14B model leaves no room for expert/anti-expert copies)",
+  "http_status": 400,
+  "response": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"dexperts\",\"code\":\"bool_type\",\"message\":\"Input should be a valid boolean\"}]}}",
+  "vram_constraint": "Qwen3-14B-AWQ uses ~8GB; three instances would need ~24GB minimum plus KV cache overhead"
+}

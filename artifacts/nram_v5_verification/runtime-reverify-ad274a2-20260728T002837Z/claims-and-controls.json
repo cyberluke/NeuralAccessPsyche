@@ -1,0 +1,52 @@
+{
+  "claims_tested": [
+    {
+      "claim": "HEAD is the exact remediation commit with the expected parent and branch",
+      "supporting_observable": "Git object IDs and branch name",
+      "falsification": "Any unequal HEAD, parent, or branch",
+      "control": "Resolve immutable target and parent objects directly",
+      "result": "SUPPORTED"
+    },
+    {
+      "claim": "Canonical specification is unchanged at the remediation commit",
+      "supporting_observable": "Equal parent/target Git blob bytes and expected SHA-256",
+      "falsification": "Blob inequality or hash mismatch",
+      "control": "Separate Git-blob and Windows-checkout byte domains",
+      "result": "SUPPORTED"
+    },
+    {
+      "claim": "Tracked production source matches the target commit",
+      "supporting_observable": "Git clean-filter object identity for every consumed tracked file",
+      "falsification": "Any canonical object mismatch",
+      "control": "Retain raw checkout byte comparison separately to expose CRLF normalization",
+      "result": "SUPPORTED: 89/89 canonical source files match"
+    },
+    {
+      "claim": "The current Docker context can produce an exact-target API image",
+      "supporting_observable": "No non-target file reaches a Docker COPY source",
+      "falsification": "Any untracked file included by a COPY rule without an ignore exclusion",
+      "control": "Compare untracked paths against both image COPY rules and ignore policy",
+      "result": "FALSIFIED: 11 untracked core/steering modules are consumed by COPY core/"
+    }
+  ],
+  "runtime_claims": {
+    "result": "NOT TESTED",
+    "reason": "Mandatory exact-target container build gate failed before build",
+    "includes": [
+      "public API to exact rebuilt SGLang to Qwen3-14B-AWQ to RTX 4090",
+      "model identity and alias rejection",
+      "comparison processor causality",
+      "cancellation and deadline abort",
+      "ordinary and persona SSE",
+      "strict pre-generation validation",
+      "telemetry correlation and retention",
+      "applied-state hashing",
+      "session accounting",
+      "MoE preflight and failures",
+      "structural masks and numerical controls",
+      "capability and authentication routes",
+      "blocked mechanism fail-loud behavior",
+      "all tracked, GPU, quality, Node, and Compose build gates"
+    ]
+  }
+}

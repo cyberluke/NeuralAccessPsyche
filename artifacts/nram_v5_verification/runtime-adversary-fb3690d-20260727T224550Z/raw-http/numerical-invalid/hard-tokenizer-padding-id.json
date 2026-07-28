@@ -1,0 +1,81 @@
+{
+  "case_id": "hard-tokenizer-padding-id",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-27T23:14:35.613564Z",
+  "finished_utc": "2026-07-27T23:14:35.673325Z",
+  "elapsed_ms": 59.73369999992428,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "hard-tokenizer-padding-id"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-HARD-PADDING",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "hard_token_schedule": [
+          151700
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-HARD-PADDING\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"hard_token_schedule\":[151700]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:14:34 GMT",
+      "server": "uvicorn",
+      "content-length": "441",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"ea288b028150425a890f6cdc30ac1341\",\"object\":\"chat.completion\",\"created\":1785194075,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"!\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":378,\"completion_tokens\":1,\"total_tokens\":379},\"nram_correlation\":{\"request_id\":\"RA-HARD-PADDING\",\"config_hash\":\"d2c8d78ed3368a3c1b071842d699ff4ca158afe45a8bde081fe31d92df2fef9e\"}}",
+    "json": {
+      "id": "ea288b028150425a890f6cdc30ac1341",
+      "object": "chat.completion",
+      "created": 1785194075,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "!"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 378,
+        "completion_tokens": 1,
+        "total_tokens": 379
+      },
+      "nram_correlation": {
+        "request_id": "RA-HARD-PADDING",
+        "config_hash": "d2c8d78ed3368a3c1b071842d699ff4ca158afe45a8bde081fe31d92df2fef9e"
+      }
+    },
+    "bytes": 441
+  },
+  "exception": null
+}

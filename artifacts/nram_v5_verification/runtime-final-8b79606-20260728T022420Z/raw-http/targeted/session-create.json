@@ -1,0 +1,43 @@
+{
+  "case": "session-create",
+  "elapsed_seconds": 0.004706144332885742,
+  "request": {
+    "path": "/v1/nram/sessions",
+    "method": "POST",
+    "authorization": "Bearer <redacted>",
+    "body": {
+      "profile": "peak",
+      "intensity": 0.73,
+      "seed": 424242,
+      "memory": {
+        "enabled": true,
+        "max_recent_tokens": 3,
+        "decay": 0.25
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:15:41 GMT",
+      "server": "uvicorn",
+      "content-length": "177",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-session-79a5c2c9cd52\",\"profile\":\"peak\",\"revision\":1,\"state\":{\"influence\":0.73,\"entropy\":0.6861999999999999,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"}}",
+    "json": {
+      "id": "nram-session-79a5c2c9cd52",
+      "profile": "peak",
+      "revision": 1,
+      "state": {
+        "influence": 0.73,
+        "entropy": 0.6861999999999999,
+        "coherence": 0.7,
+        "momentum": 0.0,
+        "rhetorical_phase": "idle"
+      }
+    }
+  },
+  "exception": null
+}

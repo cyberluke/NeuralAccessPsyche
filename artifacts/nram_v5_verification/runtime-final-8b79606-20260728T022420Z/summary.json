@@ -1,0 +1,63 @@
+{
+  "status": "FAILED",
+  "requested_mode": "runtime-adversary",
+  "actual_mode": "runtime-adversary",
+  "target_commit": "8b796066ec6fed3f3260e9aea1e1ab19489e6ae8",
+  "target_tree": "18829ce184fc05427187aaf0a9a201d26b82c27e",
+  "spec_commit": "fb3690d7884bdbcaef0e82608776065e19332990",
+  "spec_git_blob_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+  "validation": {
+    "total": 210,
+    "rejections": 126,
+    "boundaries": 84,
+    "passed": 207,
+    "failed": 3,
+    "zero_event_rejections": 126
+  },
+  "cancellation_passed": true,
+  "forced_pair": {
+    "enabled_pass": true,
+    "disabled_pass": true
+  },
+  "junit": [
+    {
+      "path": "full-test-results-current-image.xml",
+      "sha256": "4b96dd8bd57408b49c236f6e05b08c54c423b7418c915257e6a4f0abb6262b00",
+      "tests": 343,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "gpu-test-results-current-image.xml",
+      "sha256": "0e8b8fdcf555cb4f268140c0e4d3ef60b01571ca02d44861a0abf650e442afeb",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "adversarial-live-current-image.xml",
+      "sha256": "1e18a75773ea9ce8aeff07f06af001530270b41c43a456a250de33f01744b9f9",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "streamlit-api-current-image.xml",
+      "sha256": "e79c27d746e38750b49db8eb7ef258b6307b520ef0e028843aacc2ae1b7da673",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "runtime_event_count": 199,
+  "new_findings": [
+    "RVR2-001",
+    "RVR2-002",
+    "RVR2-003"
+  ],
+  "scientific_verdict": "PARTIALLY FUNCTIONAL"
+}

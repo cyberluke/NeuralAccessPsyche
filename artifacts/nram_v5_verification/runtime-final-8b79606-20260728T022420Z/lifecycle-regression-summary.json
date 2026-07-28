@@ -1,0 +1,21 @@
+{
+  "events": {
+    "RA-CANCEL-STREAM": 3,
+    "RA-CANCEL-NONSTREAM": 3,
+    "RA-CANCEL-RETRY": 1
+  },
+  "scheduler_ids": {
+    "RA-CANCEL-STREAM": [
+      "nram-scheduler-85615c7291044ec4bc468d07ae0b7a58"
+    ],
+    "RA-CANCEL-NONSTREAM": [
+      "nram-scheduler-84dd434cbe1540feb4dd4d6654efd6a3"
+    ],
+    "RA-CANCEL-RETRY": [
+      "nram-scheduler-1172be248bb847eebd42f8593113737c"
+    ]
+  },
+  "abort_access_total": 6,
+  "expected_prior_abort_total": 4,
+  "abort_access_delta": 2
+}

@@ -1,0 +1,15 @@
+{
+  "status": 504,
+  "elapsed_seconds": 0.04118657112121582,
+  "processor_event_count": 2,
+  "scheduler_request_ids": [
+    "nram-scheduler-fdf3df2e28d8400f8f0e3baa6e4c411c"
+  ],
+  "abort_access_total": 4,
+  "expected_prior_abort_total": 3,
+  "abort_access_delta": 1,
+  "new_abort_access_lines": [
+    "2026-07-28T03:04:58.472313565Z [2026-07-28 03:04:58] INFO:     172.22.0.3:41992 - \"POST /abort_request HTTP/1.1\" 200 OK"
+  ],
+  "passed": true
+}

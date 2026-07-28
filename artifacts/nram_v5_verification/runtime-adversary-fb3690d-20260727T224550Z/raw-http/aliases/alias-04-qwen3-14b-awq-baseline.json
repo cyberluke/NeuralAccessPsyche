@@ -1,0 +1,75 @@
+{
+  "case_id": "alias-04-qwen3-14b-awq-baseline",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.398913Z",
+  "finished_utc": "2026-07-27T22:49:18.453155Z",
+  "elapsed_ms": 54.21669999486767,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-04-qwen3-14b-awq-baseline"
+    },
+    "body": {
+      "model": "qwen3-14b-awq-baseline",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-04-qwen3-14b-awq-baseline",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"qwen3-14b-awq-baseline\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-04-qwen3-14b-awq-baseline\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:17 GMT",
+      "server": "uvicorn",
+      "content-length": "337",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"39b2d013e1c042d6a12d3af4890fdfeb\",\"object\":\"chat.completion\",\"created\":1785192558,\"model\":\"qwen3-14b-awq-baseline\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":null}",
+    "json": {
+      "id": "39b2d013e1c042d6a12d3af4890fdfeb",
+      "object": "chat.completion",
+      "created": 1785192558,
+      "model": "qwen3-14b-awq-baseline",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": null
+    },
+    "bytes": 337
+  },
+  "exception": null
+}

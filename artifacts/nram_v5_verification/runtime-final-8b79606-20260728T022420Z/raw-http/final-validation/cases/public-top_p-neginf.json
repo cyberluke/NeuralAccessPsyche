@@ -1,0 +1,55 @@
+{
+  "case_id": "public-top_p-neginf",
+  "elapsed_ms": 15.185117721557617,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": -Infinity,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-007",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":-Infinity,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-007\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false}}",
+  "response": {
+    "status": 422,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:57:56 GMT",
+      "server": "uvicorn",
+      "content-length": "143",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"error\":{\"code\":\"invalid_request_schema\",\"details\":[{\"type\":\"finite_number\",\"loc\":[\"body\",\"top_p\"],\"msg\":\"Input should be a finite number\"}]}}",
+    "json": {
+      "error": {
+        "code": "invalid_request_schema",
+        "details": [
+          {
+            "type": "finite_number",
+            "loc": [
+              "body",
+              "top_p"
+            ],
+            "msg": "Input should be a finite number"
+          }
+        ]
+      }
+    }
+  },
+  "exception": null
+}

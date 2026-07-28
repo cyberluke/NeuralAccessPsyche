@@ -1,0 +1,56 @@
+{
+  "case_id": "concept-strength-inf",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T01:18:22.770481Z",
+  "finished_utc": "2026-07-28T01:18:22.786525Z",
+  "elapsed_ms": 16.028600000026927,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "concept-strength-inf"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-concept-strength-inf",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "concept_strength": Infinity
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-concept-strength-inf\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"concept_strength\":Infinity}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+      "server": "uvicorn",
+      "content-length": "188",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}\"}",
+    "json": {
+      "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': 'concept_strength', 'code': 'finite_number', 'message': 'Input should be a finite number'}]}"
+    },
+    "bytes": 188
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

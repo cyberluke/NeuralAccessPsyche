@@ -1,0 +1,143 @@
+{
+  "target_commit": "fb3690d7884bdbcaef0e82608776065e19332990",
+  "specification_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+  "run_id": "runtime-adversary-fb3690d-20260727T224550Z",
+  "findings": [
+    {
+      "id": "RA-001",
+      "severity": "critical",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Every advertised model alias resolves to its declared immutable model.",
+      "contradiction": "The public API advertised 14 IDs while SGLang exposed only nram-qwen3-14b-awq. GPT-OSS and DeepSeek aliases returned HTTP 200 and Qwen-generated output relabeled with the requested public ID.",
+      "evidence": ["raw-http/aliases/aliases-summary.json", "raw-logs/sglang-aliases.log"]
+    },
+    {
+      "id": "RA-002",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Malformed and unknown controls fail loudly before generation.",
+      "contradiction": "Of 38 validation probes, 11 generated with HTTP 200 and 5 returned unsafe 5xx responses. Unknown top-level/nested keys, unknown profile, malformed vector/soft/hard shapes, fractional forced ID, NaN/Inf strengths, and a forced-versus-forbidden conflict reached generation.",
+      "evidence": ["raw-http/validation/validation-summary.json", "raw-logs/sglang-validation.log"]
+    },
+    {
+      "id": "RA-003",
+      "severity": "critical",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Disconnect and timeout bound continued generation and state mutation.",
+      "contradiction": "After closing a stream immediately after the first SSE line, the processor ran all 64 forced steps. A non-stream client timeout likewise ran all 64 steps. The retry succeeded with a fresh scheduler ID.",
+      "evidence": ["raw-http/lifecycle-forced/lifecycle-summary.json", "raw-logs/sglang-lifecycle-forced.log"]
+    },
+    {
+      "id": "RA-004",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Ordinary and persona streaming obey the public SSE contract.",
+      "contradiction": "Persona streaming returned application/json and a non-stream completion. Ordinary baseline/NRAM SSE omitted terminal data: [DONE].",
+      "evidence": ["raw-http/stream/stream-summary.json"]
+    },
+    {
+      "id": "RA-005",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Configuration hash covers all behaviorally relevant state.",
+      "contradiction": "Prompt, seed, temperature, top_p, response_format, and prompt-steering changes all returned d7db79e95c7f838aeae508ef729766f8339edf5ad32c42a92f7d06ce128d9d5f. The response-format arm sampled different grammar-constrained text without changing the hash.",
+      "evidence": ["raw-http/config-hash/config-hash-summary.json", "raw-logs/sglang-config-hash.log"]
+    },
+    {
+      "id": "RA-006",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "The comparison route reaches the NRAM processor and fails unsupported controls before generation.",
+      "contradiction": "Both bounded compare requests returned HTTP 500 because the image lacks the evaluation package. The route had already sent baseline and purported NRAM calls directly to SGLang without a custom processor.",
+      "evidence": ["raw-http/compare/compare-summary.json", "raw-logs/sglang-compare.log"]
+    },
+    {
+      "id": "RA-007",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Session profile, intensity, memory, counts, and events affect or truthfully track inference.",
+      "contradiction": "A peak/intensity-1/memory-enabled session remained byte-for-byte unchanged after a session-bound forced generation: request_count 0, all steering counts 0, and events empty.",
+      "evidence": ["raw-http/session/session-summary.json"]
+    },
+    {
+      "id": "RA-008",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Telemetry is causal, complete, and one-to-one joinable with public sampled tokens.",
+      "contradiction": "Public responses/SSE omit scheduler ID and sampled token ID. telemetry_max_steps=1 omitted the second-step phrase mask entirely. Synthetic provenance labeled all four hard-forced tokens positive_logit_bias and zero forced_injection based on post-response estimates.",
+      "evidence": ["raw-http/telemetry-truncation/telemetry-truncation-summary.json", "raw-logs/sglang-telemetry-truncation.log", "raw-http/synthetic-telemetry-2/synthetic-telemetry-summary.json"]
+    },
+    {
+      "id": "RA-009",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "MoE outer validation rejects unsupported controls before any generation.",
+      "contradiction": "A recording engine was called before outer validation; the route overwrites outer NRAM options and overrides each persona generation to 1024 tokens, then forces synthesis to at least 1024 tokens.",
+      "evidence": ["adversarial-test-results.xml", "adversarial-live-test-results.xml"],
+      "evidence_class": "non-runtime structural call-order proof"
+    },
+    {
+      "id": "RA-010",
+      "severity": "high",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Numerical controls and token IDs are validated against tokenizer-defined IDs before generation.",
+      "contradiction": "Active concept NaN strength caused HTTP 500. Tokenizer-undefined model padding ID 151700 was accepted with HTTP 200 for vector, soft, and hard controls.",
+      "evidence": ["raw-http/numerical-invalid/numerical-invalid-summary.json", "raw-logs/sglang-numerical-invalid.log"]
+    },
+    {
+      "id": "RA-011",
+      "severity": "medium",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Committed artifact manifests validate cross-platform against Git object bytes and identify the target tree.",
+      "contradiction": "The builder manifest identifies starting commit 7aa1285, not the target. Only 3 of 46 expected hashes match target Git blob bytes; all 46 match the CRLF working copies.",
+      "evidence": ["builder-manifest-validation.json"]
+    },
+    {
+      "id": "RA-012",
+      "severity": "medium",
+      "confidence": "medium",
+      "status": "UNCONFIRMED",
+      "claim": "Runtime remains available through the bounded campaign.",
+      "contradiction": "Both containers exited with code 137 after numerical probes; Docker reported OOMKilled=false and API logged graceful shutdown. External cause was not attributable. Existing containers were restarted and restored healthy.",
+      "evidence": ["cold-restart.txt"]
+    },
+    {
+      "id": "RA-013",
+      "severity": "medium",
+      "confidence": "high",
+      "status": "CONFIRMED",
+      "claim": "Phrase blocking handles leading-space/no-space tokenizer variants.",
+      "contradiction": "The exact leading-space encoding of ' thank you' was blocked at token 498, but configuring 'thank you' did not block the same generated leading-space phrase.",
+      "evidence": ["raw-http/structural/structural-summary.json", "raw-logs/sglang-structural.log"]
+    }
+  ],
+  "bounded_claims_not_falsified": [
+    "Direct unsupported-feature keys in the explicit allowlist returned stable HTTP 400 before processor events for 14 tested keys.",
+    "Forced token 9702 produced decoded 'thank' twice while disabled controls produced 'Okay' twice, with one processor event and unique scheduler ID per request.",
+    "Forced-token enabled/disabled behavior survived a cold restart of the same container and image IDs.",
+    "Exact phrase completion masking and exact eight-token source-continuation masking occurred at the pre-sampling boundary while disabled controls completed the forced schedules.",
+    "Sparse vocabulary-vector sign reversal/zero control and soft-bias sign reversal/zero control produced the requested causal deltas in processor telemetry.",
+    "Nine observed entropy PID steps were finite and moved entropy toward their configured targets; request integrals restarted from fresh first-step values.",
+    "Seven requests sharing one spoofed application request ID received seven unique scheduler IDs and invocation_count reset to one.",
+    "Tracked target test modules collected 216 tests and passed 216 locally; this is not a clean-worktree runtime proof."
+  ],
+  "limits": [
+    "No unavailable-model/tokenizer destructive outage probe was performed.",
+    "No live MoE request was run because production overrides bounded max_tokens to five generations of at least 1024 tokens.",
+    "Grammar all-mask composition, Czech Unicode normalization, capsules, retries, queued cancellation, failed MCP, and unavailable activation-vector paths remain incomplete.",
+    "No broad multi-prompt/multi-seed research-validity campaign or confidence intervals were run.",
+    "The unexpected exit-137 event has no proven causal relationship to the probes.",
+    "The D: volume briefly reached zero free bytes; one redundant exact spec copy was deleted after its hash and Git blob identity had been recorded."
+  ]
+}

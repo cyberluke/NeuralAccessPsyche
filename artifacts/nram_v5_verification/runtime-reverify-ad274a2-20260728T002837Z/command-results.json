@@ -1,0 +1,64 @@
+[
+  {
+    "sequence": 1,
+    "purpose": "Initial combined provenance probe",
+    "exit": 255,
+    "result": "The system cannot find the file specified; no output and no workspace change"
+  },
+  {
+    "sequence": 2,
+    "command": "Get-Location; git rev-parse HEAD; git status --porcelain=v2 --branch --untracked-files=all",
+    "exit": 1,
+    "result": "Command runner was cmd.exe, not PowerShell; Get-Location was not recognized"
+  },
+  {
+    "sequence": 3,
+    "command": "cd && git rev-parse HEAD && git rev-parse --abbrev-ref HEAD && git show -s --format=... HEAD && git status --porcelain=v2 --branch --untracked-files=all && git diff --cached --name-status && git diff --name-status && git diff --name-status ad274a2c4b0575cf796659073fb69a962dbb66d0 -- && git ls-files --others --exclude-standard",
+    "exit": 0,
+    "raw_tool_artifact": "cmd-1785198528495.txt"
+  },
+  {
+    "sequence": 4,
+    "purpose": "One-line evidence collector attempt",
+    "exit": 1,
+    "result": "Command-line quoting SyntaxError before script body execution; no directory created",
+    "raw_tool_artifact": "cmd-1785198583484.txt"
+  },
+  {
+    "sequence": 5,
+    "command": "python artifacts\\nram_v5_verification\\runtime-reverify-ad274a2-20260728T002837Z\\collect_blocker_evidence.py",
+    "exit": 0,
+    "result": "Initial evidence pass; exposed raw-byte versus canonical-source domain ambiguity"
+  },
+  {
+    "sequence": 6,
+    "command": "python artifacts\\nram_v5_verification\\runtime-reverify-ad274a2-20260728T002837Z\\collect_blocker_evidence.py",
+    "exit": 0,
+    "result": "Corrected domain-aware source authentication and contamination decision"
+  },
+  {
+    "sequence": 7,
+    "command": "python artifacts\\nram_v5_verification\\runtime-reverify-ad274a2-20260728T002837Z\\finalize_blocked_evidence.py",
+    "exit": 0,
+    "result": "Final evidence and manifest generation"
+  },
+  {
+    "sequence": 8,
+    "command": "git rev-parse HEAD; git status --porcelain=v2 --branch --untracked-files=all; dir /b core\\steering; git ls-files --others --exclude-standard core api nram_sglang utils evaluation templates static inference/sglang",
+    "exit": 0,
+    "raw_tool_artifact": "cmd-1785200329708.txt",
+    "result": "Late context-purity recheck confirmed exact target HEAD and the same 11 untracked production modules remain consumed by the API COPY core/ rule"
+  },
+  {
+    "sequence": 9,
+    "command": "Persist late context-purity recheck to context-purity-recheck.txt",
+    "exit": 0,
+    "result": "Direct raw recheck captured inside evidence bundle"
+  },
+  {
+    "sequence": 10,
+    "command": "python artifacts\\nram_v5_verification\\runtime-reverify-ad274a2-20260728T002837Z\\finalize_blocked_evidence.py",
+    "exit": 0,
+    "result": "Final post-recheck evidence and manifest generation"
+  }
+]

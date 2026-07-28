@@ -1,0 +1,190 @@
+[
+  {
+    "case_id": "stream-qwen3-14b-awq-baseline",
+    "expected_contract": "HTTP 200 text/event-stream, valid chunks, public model identity, terminal [DONE]",
+    "started_utc": "2026-07-27T22:53:12.108731Z",
+    "finished_utc": "2026-07-27T22:53:12.496546Z",
+    "elapsed_ms": 387.76180000422755,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "stream-qwen3-14b-awq-baseline"
+      },
+      "body": {
+        "model": "qwen3-14b-awq-baseline",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 3,
+        "seed": 424242,
+        "stream": true,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STREAM-qwen3-14b-awq-baseline",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"qwen3-14b-awq-baseline\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":3,\"seed\":424242,\"stream\":true,\"tools\":[],\"nram\":{\"request_id\":\"RA-STREAM-qwen3-14b-awq-baseline\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 22:53:12 GMT",
+        "server": "uvicorn",
+        "cache-control": "no-cache",
+        "x-accel-buffering": "no",
+        "content-type": "text/event-stream; charset=utf-8",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "body_utf8": "data: {\"id\": \"287355d2297f437f91d1ed1108218430\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"qwen3-14b-awq-baseline\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \"Okay\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}]}\n\ndata: {\"id\": \"287355d2297f437f91d1ed1108218430\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"qwen3-14b-awq-baseline\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \".\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}]}\n\ndata: {\"id\": \"287355d2297f437f91d1ed1108218430\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"qwen3-14b-awq-baseline\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null}, \"logprobs\": null, \"finish_reason\": \"length\", \"matched_stop\": null}]}\n\n",
+      "json": null,
+      "bytes": 852
+    },
+    "exception": null
+  },
+  {
+    "case_id": "stream-nram-qwen3-14b-awq",
+    "expected_contract": "HTTP 200 text/event-stream, valid chunks, public model identity, terminal [DONE]",
+    "started_utc": "2026-07-27T22:53:12.497148Z",
+    "finished_utc": "2026-07-27T22:53:12.629603Z",
+    "elapsed_ms": 132.39469999825815,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "stream-nram-qwen3-14b-awq"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 3,
+        "seed": 424242,
+        "stream": true,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STREAM-nram-qwen3-14b-awq",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":3,\"seed\":424242,\"stream\":true,\"tools\":[],\"nram\":{\"request_id\":\"RA-STREAM-nram-qwen3-14b-awq\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 22:53:12 GMT",
+        "server": "uvicorn",
+        "cache-control": "no-cache",
+        "x-accel-buffering": "no",
+        "content-type": "text/event-stream; charset=utf-8",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "body_utf8": "data: {\"id\": \"15f26f5500a14acb83b18d9817553f2b\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \"Yes\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}]}\n\ndata: {\"id\": \"15f26f5500a14acb83b18d9817553f2b\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \".\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}]}\n\ndata: {\"id\": \"15f26f5500a14acb83b18d9817553f2b\", \"object\": \"chat.completion.chunk\", \"created\": 1785192792, \"model\": \"nram-qwen3-14b-awq\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null}, \"logprobs\": null, \"finish_reason\": \"length\", \"matched_stop\": null}]}\n\n",
+      "json": null,
+      "bytes": 839
+    },
+    "exception": null
+  },
+  {
+    "case_id": "stream-persona-peak",
+    "expected_contract": "HTTP 200 text/event-stream, valid chunks, public model identity, terminal [DONE]",
+    "started_utc": "2026-07-27T22:53:12.630569Z",
+    "finished_utc": "2026-07-27T22:53:12.780429Z",
+    "elapsed_ms": 149.83639999991283,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "stream-persona-peak"
+      },
+      "body": {
+        "model": "persona-peak",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 3,
+        "seed": 424242,
+        "stream": true,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STREAM-persona-peak",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 5
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"persona-peak\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":3,\"seed\":424242,\"stream\":true,\"tools\":[],\"nram\":{\"request_id\":\"RA-STREAM-persona-peak\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 22:53:12 GMT",
+        "server": "uvicorn",
+        "content-length": "448",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"dacf2397e2cc4769a958743939373953\",\"object\":\"chat.completion\",\"created\":1785192792,\"model\":\"persona-peak\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Evolve.\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":201,\"completion_tokens\":3,\"total_tokens\":204},\"nram_correlation\":{\"request_id\":\"RA-STREAM-persona-peak\",\"config_hash\":\"92e7a23c24aa335d3a3d0f0e9a76035ff54652c44d3a32acd2c06213c06a8cb1\"}}",
+      "json": {
+        "id": "dacf2397e2cc4769a958743939373953",
+        "object": "chat.completion",
+        "created": 1785192792,
+        "model": "persona-peak",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Evolve."
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 201,
+          "completion_tokens": 3,
+          "total_tokens": 204
+        },
+        "nram_correlation": {
+          "request_id": "RA-STREAM-persona-peak",
+          "config_hash": "92e7a23c24aa335d3a3d0f0e9a76035ff54652c44d3a32acd2c06213c06a8cb1"
+        }
+      },
+      "bytes": 448
+    },
+    "exception": null
+  }
+]

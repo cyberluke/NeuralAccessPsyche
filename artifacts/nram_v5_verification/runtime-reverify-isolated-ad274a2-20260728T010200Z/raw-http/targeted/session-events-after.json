@@ -1,0 +1,57 @@
+{
+  "case": "session-events-after",
+  "elapsed_seconds": 0.02246713638305664,
+  "request": {
+    "path": "/v1/nram/sessions/nram-session-3132ec1fe536/events",
+    "method": "GET",
+    "authorization": "Bearer <redacted>",
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+      "server": "uvicorn",
+      "content-length": "740",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"session_id\":\"nram-session-3132ec1fe536\",\"request_count\":1,\"token_steering_counts\":{\"model_generated\":1,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"events\":[{\"type\":\"unsupported_session_controls_omitted\",\"controls\":[\"fragmentation\"],\"causal_processor_event\":false},{\"type\":\"response_correlation\",\"causal_processor_event\":false,\"scheduler_request_id\":\"nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047\",\"config_hash\":\"6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191\",\"sampled_token_ids\":[9702],\"completion_tokens\":1}],\"event_semantics\":\"response correlation/accounting; not synthetic causal attribution\"}",
+    "json": {
+      "session_id": "nram-session-3132ec1fe536",
+      "request_count": 1,
+      "token_steering_counts": {
+        "model_generated": 1,
+        "positive_logit_bias": 0,
+        "negative_logit_bias": 0,
+        "hard_mask": 0,
+        "forced_injection": 0,
+        "memory_recall": 0,
+        "planner_constraint": 0,
+        "postprocess": 0
+      },
+      "phenomenon_counts": {},
+      "events": [
+        {
+          "type": "unsupported_session_controls_omitted",
+          "controls": [
+            "fragmentation"
+          ],
+          "causal_processor_event": false
+        },
+        {
+          "type": "response_correlation",
+          "causal_processor_event": false,
+          "scheduler_request_id": "nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047",
+          "config_hash": "6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191",
+          "sampled_token_ids": [
+            9702
+          ],
+          "completion_tokens": 1
+        }
+      ],
+      "event_semantics": "response correlation/accounting; not synthetic causal attribution"
+    }
+  },
+  "exception": null
+}

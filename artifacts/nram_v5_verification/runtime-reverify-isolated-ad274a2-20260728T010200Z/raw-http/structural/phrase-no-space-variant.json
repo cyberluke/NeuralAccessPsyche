@@ -1,0 +1,101 @@
+{
+  "case_id": "phrase-no-space-variant",
+  "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+  "started_utc": "2026-07-28T01:18:24.512134Z",
+  "finished_utc": "2026-07-28T01:18:24.602748Z",
+  "elapsed_ms": 90.5894000002263,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "phrase-no-space-variant"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 2,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-STRUCT-phrase-no-space-variant",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "hard_token_schedule": [
+          9702,
+          498
+        ],
+        "forbidden_phrases": [
+          "thank you"
+        ]
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":2,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-phrase-no-space-variant\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498],\"forbidden_phrases\":[\"thank you\"]}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+      "server": "uvicorn",
+      "content-length": "797",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-2874dccb40024095bdd059556ed9cc04\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank.\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":2,\"total_tokens\":21},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-phrase-no-space-variant\",\"scheduler_request_id\":\"nram-scheduler-2874dccb40024095bdd059556ed9cc04\",\"config_hash\":\"6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,13],\"sampled_tokens\":[\" thank\",\".\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-2874dccb40024095bdd059556ed9cc04",
+      "object": "chat.completion",
+      "created": 1785201504,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "thank."
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 2,
+        "total_tokens": 21
+      },
+      "nram_correlation": {
+        "request_id": "RA-STRUCT-phrase-no-space-variant",
+        "scheduler_request_id": "nram-scheduler-2874dccb40024095bdd059556ed9cc04",
+        "config_hash": "6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          9702,
+          13
+        ],
+        "sampled_tokens": [
+          " thank",
+          "."
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    },
+    "bytes": 797
+  },
+  "exception": null
+}

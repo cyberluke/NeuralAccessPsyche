@@ -1,0 +1,158 @@
+# ---------------------------------------------------------------------------
+# NeuralAccessPsyche (NRAM) — Docker Compose
+#
+# Two services:
+#   - sglang:   SGLang 0.5.16 OpenAI-compatible server backed by the LOCAL
+#               Qwen3-14B-AWQ snapshot mounted READ-ONLY from the host.
+#   - nram-api: FastAPI wrapper that steers SGLang via NRAM.
+#
+# Runtime source commit: fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1.
+# ---------------------------------------------------------------------------
+name: neuralaccesspsyche
+
+services:
+  sglang:
+    # Local thin wrapper; its FROM image is pinned by immutable digest below.
+    image: ${NRAM_SGLANG_IMAGE:-neuralaccesspsyche-nram-sglang:0.5.16-nram}
+    build:
+      context: .
+      dockerfile: inference/sglang/Dockerfile
+      args:
+        SGLANG_IMAGE: ${SGLANG_IMAGE:-lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda}
+    container_name: nram-sglang
+
+    # GPU access + shared memory tuning required by SGLang/torch.
+    gpus: all
+    ipc: host
+    shm_size: "16gb"
+
+    environment:
+      # Hugging Face cache is redirected to a named volume so tokenizer /
+      # config downloads (NOT the model weights) persist across restarts.
+      HF_HOME: /root/.cache/huggingface
+      # Optional token for gated HF resources; empty by default.
+      HF_TOKEN: ${HF_TOKEN:-}
+      # Launch parameters consumed by inference/sglang/entrypoint.sh.
+      # Qwen3-14B-AWQ: safetensors + AWQ 4-bit, auto-detected from config.json.
+      MODEL_PATH: /models
+      TOKENIZER_PATH: /models
+      MODEL_TYPE: awq
+      SERVED_MODEL_NAME: nram-qwen3-14b-awq
+      # Context window: Qwen3-14B supports up to 40k natively.
+      CONTEXT_LENGTH: "32768"
+      # Static memory fraction = weights + KV cache. Lowered from 0.80 -> 0.72
+      # to free ~1.9 GB of VRAM headroom so DECODE CUDA graph capture succeeds
+      # (capture needs scratch VRAM; without it decode runs at <1 tok/s).
+      # ~17.3 GB static leaves ~7.8 GB for KV (plenty for 32k single-stream).
+      MEM_FRACTION_STATIC: "0.72"
+      # Decode CUDA graph batch sizes (space-separated). Small list = fast,
+      # low-VRAM capture. Covers 1-8 concurrent generations. Empty = no graphs.
+      # Stateful custom logit processors execute Python on every decode step.
+      # Disable decode graphs for deterministic single-request runtime proof.
+      CUDA_GRAPH_BS_DECODE: ""
+      MAX_RUNNING_REQUESTS: "1"
+      # Grammar backend for structured output (json_schema/regex/ebnf).
+      # llguidance has a GuidanceBackend vocab-mask bug in this SGLang version;
+      # xgrammar is the mature, stable backend for constrained decoding.
+      GRAMMAR_BACKEND: xgrammar
+      REASONING_PARSER: qwen3
+      # Disable thinking mode for faster, direct responses (Qwen3 best practice:
+      # non-thinking mode uses Temperature=0.7, TopP=0.8, TopK=20).
+      ENABLE_THINKING: "false"
+      # Hierarchical cache: offload KV cache to system RAM (128 GB DDR5) when VRAM
+      # is insufficient for the full 32k context. Ratio 2.0 means 2x the VRAM KV
+      # cache size is available in host memory.
+      HICACHE_RATIO: "2.0"
+      HICACHE_WRITE_POLICY: write_through_selective
+      SGLANG_HOST: 0.0.0.0
+      SGLANG_PORT: "30000"
+
+    volumes:
+      # LOCAL Qwen3-14B-AWQ model, mounted READ-ONLY. Never copied or re-downloaded.
+      # Snapshot hash: 31c69efc29464b6bb0aee1398b5a7b50a99340c3
+      - E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3:/models:ro
+      # Persistent HF cache (tokenizers / configs), NOT the model weights.
+      - hf-cache:/root/.cache/huggingface
+
+    # The sglang server must ONLY be reachable on the compose network by
+    # nram-api. We deliberately do NOT publish its port to the host.
+    #
+    # To debug SGLang directly, TEMPORARILY uncomment the mapping below,
+    # then hit http://127.0.0.1:30000/health or /v1/models from the host.
+    # WARNING: remove this mapping again before any non-local use — exposing
+    # the inference server on the host is a security risk.
+    # ports:
+    #   - "127.0.0.1:30000:30000"
+
+    # Healthcheck hits the SGLang /health endpoint.
+    healthcheck:
+      test: ["CMD", "python3", "/opt/nram/healthcheck.py"]
+      interval: 15s
+      timeout: 10s
+      retries: 60
+      start_period: 300s
+
+    restart: unless-stopped
+
+    # -----------------------------------------------------------------------
+    # PINNED QWEN3-AWQ LAUNCH CONTRACT:
+    # The entrypoint launches SGLang with:
+    #   python3 -m sglang.launch_server \
+    #     --model-path /models --tokenizer-path /models \
+    #     --served-model-name nram-qwen3-14b-awq \
+    #     --context-length 32768 --mem-fraction-static 0.72 \
+    #     --enable-custom-logit-processor \
+    #     --grammar-backend xgrammar --disable-overlap-schedule \
+    #     --max-running-requests 1 \
+    #     --host 0.0.0.0 \
+    #     --port 30000
+    #
+    # Verify flags against the pinned image before launch:
+    #   docker compose run --rm sglang python3 -m sglang.launch_server --help
+    # The entrypoint fail-fast checks SGLang version/source compatibility.
+    # -----------------------------------------------------------------------
+
+  nram-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nram-api
+    depends_on:
+      sglang:
+        condition: service_healthy
+    ports:
+      # Bind only to loopback — the API is not exposed on the network.
+      - "127.0.0.1:8000:8000"
+    environment:
+      NRAM_ENGINE: sglang
+      SGLANG_BASE_URL: http://sglang:30000/v1
+      SGLANG_MODEL: nram-qwen3-14b-awq
+      NRAM_API_KEY: ${NRAM_API_KEY:-dev-nram-key}
+      # CRITICAL: Tokenizer path for logit processor - must match sglang model
+      NRAM_TOKENIZER_PATH: /models
+      # Placeholder for legacy LLMHandler/GuidanceHandler, which are instantiated
+      # at module import (module-level singletons in api/routes.py). They are NOT
+      # used when NRAM_ENGINE=sglang, but their constructors require a non-empty
+      # key or import crashes. Never used for real calls on the SGLang path.
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-legacy-placeholder-not-used}
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      # CRITICAL: Mount model directory for tokenizer access (read-only)
+      # TokenBiasCompiler needs tokenizer to enable logit steering
+      - E:\_MODELS\huggingface\hub\models--Qwen--Qwen3-14B-AWQ\snapshots\31c69efc29464b6bb0aee1398b5a7b50a99340c3:/models:ro
+      # Persist workflow state, artifacts, and events across container restarts
+      - workflow-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=5)"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  # Persistent Hugging Face cache for the sglang service (tokenizers/configs,
+  # not model weights).
+  hf-cache:
+  # Persistent storage for workflow state, artifacts, and events
+  workflow-data:

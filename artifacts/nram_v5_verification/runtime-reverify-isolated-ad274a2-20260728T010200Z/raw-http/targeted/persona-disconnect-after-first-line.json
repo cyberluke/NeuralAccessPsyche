@@ -1,0 +1,37 @@
+{
+  "case": "persona-disconnect-after-first-line",
+  "status": 200,
+  "headers": {
+    "date": "Tue, 28 Jul 2026 01:24:16 GMT",
+    "server": "uvicorn",
+    "cache-control": "no-cache",
+    "x-accel-buffering": "no",
+    "content-type": "text/event-stream; charset=utf-8",
+    "transfer-encoding": "chunked"
+  },
+  "first_line_utf8": "data: {\"id\": \"nram-scheduler-e420ce9103fd4af48388c04545bf198f\", \"object\": \"chat.completion.chunk\", \"created\": 1785201857, \"model\": \"persona-peak\", \"choices\": [{\"index\": 0, \"delta\": {\"reasoning_content\": null, \"content\": \"Okay\"}, \"logprobs\": null, \"finish_reason\": null, \"matched_stop\": null}], \"nram_correlation\": {\"request_id\": \"RVR-PERSONA-DISCONNECT\", \"scheduler_request_id\": \"nram-scheduler-e420ce9103fd4af48388c04545bf198f\", \"config_hash\": \"1ac99ef8d2cff6ee521b7a3fd13aba1fe4d764cbd0e92db876c7d7f14ecf11a3\", \"applied_state_schema\": \"nram.applied-state.v1\", \"public_model\": \"persona-peak\", \"actual_base_model\": \"nram-qwen3-14b-awq\", \"processor_intervened\": true, \"sampled_token_ids\": [], \"sampled_tokens\": [], \"sample_join\": \"unavailable_for_streaming\"}}\n",
+  "closed_after_first_line": true,
+  "request": {
+    "model": "persona-peak",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with exactly one short word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 32,
+    "seed": 424242,
+    "stream": true,
+    "tools": [],
+    "nram": {
+      "request_id": "RVR-PERSONA-DISCONNECT",
+      "include_telemetry": true,
+      "telemetry_max_steps": 8,
+      "telemetry_top_k": 20,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false
+    }
+  }
+}

@@ -1,0 +1,62 @@
+[project]
+name = "repl-nix-neuralaccesspsyche"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.6",
+    "guidance>=0.1.16",
+    "httpx>=0.27.0",
+    "dill==0.4.1",
+    "cloudpickle>=3.0.0",
+    "jinja2>=3.1.5",
+    "numpy>=2.2.1",
+    "openai>=1.58.1",
+    "plotly>=5.24.1",
+    "pydantic>=2.10.4",
+    "python-multipart>=0.0.20",
+    "st-annotated-text>=4.0.2",
+    "starlette>=0.41.3",
+    "streamlit>=1.51.0",
+    "transformers==5.12.1",
+    "tokenizers==0.22.2",
+    "uvicorn>=0.34.0",
+    "websockets>=14.1",
+    "agent-framework>=1.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3,<10",
+    "pytest-asyncio>=0.24,<2",
+    "torch>=2.6",
+]
+quality = [
+    "mypy>=1.15,<2",
+    "ruff>=0.11,<1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: marks tests as integration tests requiring live servers (deselect with '-m \"not integration\"')",
+    "gpu: marks tests requiring the live pinned SGLang model and NVIDIA GPU",
+]
+
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["api*", "core*", "nram_sglang*", "utils*"]
+
+[tool.ruff.lint]
+# The repository had no lint gate. Start with correctness rules that detect
+# syntax errors, invalid control flow, and undefined names without mass-formatting
+# unrelated historical files.
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.mypy]
+ignore_missing_imports = true
+explicit_package_bases = true
+follow_imports = "skip"

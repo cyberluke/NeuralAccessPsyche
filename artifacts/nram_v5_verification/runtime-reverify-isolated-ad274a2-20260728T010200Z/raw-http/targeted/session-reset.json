@@ -1,0 +1,35 @@
+{
+  "case": "session-reset",
+  "elapsed_seconds": 0.014899492263793945,
+  "request": {
+    "path": "/v1/nram/sessions/nram-session-3132ec1fe536/reset",
+    "method": "POST",
+    "authorization": "Bearer <redacted>",
+    "body": {}
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+      "server": "uvicorn",
+      "content-length": "216",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"profile\":\"peak\",\"revision\":2,\"state\":{\"influence\":0.5,\"entropy\":0.0,\"coherence\":1.0,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"message\":\"Session state and all NRAM memory cleared.\"}",
+    "json": {
+      "id": "nram-session-3132ec1fe536",
+      "profile": "peak",
+      "revision": 2,
+      "state": {
+        "influence": 0.5,
+        "entropy": 0.0,
+        "coherence": 1.0,
+        "momentum": 0.0,
+        "rhetorical_phase": "idle"
+      },
+      "message": "Session state and all NRAM memory cleared."
+    }
+  },
+  "exception": null
+}

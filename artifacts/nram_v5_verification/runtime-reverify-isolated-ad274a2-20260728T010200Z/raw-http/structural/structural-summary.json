@@ -1,0 +1,539 @@
+[
+  {
+    "case_id": "phrase-disabled",
+    "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+    "started_utc": "2026-07-28T01:18:24.308529Z",
+    "finished_utc": "2026-07-28T01:18:24.423430Z",
+    "elapsed_ms": 114.8643000001357,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "phrase-disabled"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 2,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STRUCT-phrase-disabled",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            498
+          ],
+          "forbidden_phrases": []
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":2,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-phrase-disabled\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498],\"forbidden_phrases\":[]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "796",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-37f95d95041c4615985a47ec0d2c6b91\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank you\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":2,\"total_tokens\":21},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-phrase-disabled\",\"scheduler_request_id\":\"nram-scheduler-37f95d95041c4615985a47ec0d2c6b91\",\"config_hash\":\"8229fdc0fd2adfd93fd846f71f8a48ce11f1d6f740a29434952383494941b4f5\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,498],\"sampled_tokens\":[\" thank\",\" you\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-37f95d95041c4615985a47ec0d2c6b91",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank you"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 2,
+          "total_tokens": 21
+        },
+        "nram_correlation": {
+          "request_id": "RA-STRUCT-phrase-disabled",
+          "scheduler_request_id": "nram-scheduler-37f95d95041c4615985a47ec0d2c6b91",
+          "config_hash": "8229fdc0fd2adfd93fd846f71f8a48ce11f1d6f740a29434952383494941b4f5",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702,
+            498
+          ],
+          "sampled_tokens": [
+            " thank",
+            " you"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 796
+    },
+    "exception": null
+  },
+  {
+    "case_id": "phrase-leading-space-exact",
+    "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+    "started_utc": "2026-07-28T01:18:24.424058Z",
+    "finished_utc": "2026-07-28T01:18:24.511126Z",
+    "elapsed_ms": 87.04040000020541,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "phrase-leading-space-exact"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 2,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STRUCT-phrase-leading-space-exact",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            498
+          ],
+          "forbidden_phrases": [
+            " thank you"
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":2,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-phrase-leading-space-exact\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498],\"forbidden_phrases\":[\" thank you\"]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "800",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-be4291c3f4454c02a95f7f6a72890d35\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank.\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":2,\"total_tokens\":21},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-phrase-leading-space-exact\",\"scheduler_request_id\":\"nram-scheduler-be4291c3f4454c02a95f7f6a72890d35\",\"config_hash\":\"6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,13],\"sampled_tokens\":[\" thank\",\".\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-be4291c3f4454c02a95f7f6a72890d35",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank."
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 2,
+          "total_tokens": 21
+        },
+        "nram_correlation": {
+          "request_id": "RA-STRUCT-phrase-leading-space-exact",
+          "scheduler_request_id": "nram-scheduler-be4291c3f4454c02a95f7f6a72890d35",
+          "config_hash": "6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702,
+            13
+          ],
+          "sampled_tokens": [
+            " thank",
+            "."
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 800
+    },
+    "exception": null
+  },
+  {
+    "case_id": "phrase-no-space-variant",
+    "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+    "started_utc": "2026-07-28T01:18:24.512134Z",
+    "finished_utc": "2026-07-28T01:18:24.602748Z",
+    "elapsed_ms": 90.5894000002263,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "phrase-no-space-variant"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 2,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STRUCT-phrase-no-space-variant",
+          "include_telemetry": true,
+          "telemetry_max_steps": 4,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            498
+          ],
+          "forbidden_phrases": [
+            "thank you"
+          ]
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":2,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-phrase-no-space-variant\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498],\"forbidden_phrases\":[\"thank you\"]}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "797",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-2874dccb40024095bdd059556ed9cc04\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank.\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":2,\"total_tokens\":21},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-phrase-no-space-variant\",\"scheduler_request_id\":\"nram-scheduler-2874dccb40024095bdd059556ed9cc04\",\"config_hash\":\"6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,13],\"sampled_tokens\":[\" thank\",\".\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-2874dccb40024095bdd059556ed9cc04",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank."
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 2,
+          "total_tokens": 21
+        },
+        "nram_correlation": {
+          "request_id": "RA-STRUCT-phrase-no-space-variant",
+          "scheduler_request_id": "nram-scheduler-2874dccb40024095bdd059556ed9cc04",
+          "config_hash": "6ad3dfbf71d78b51f68524502c8e230b29540a4d60c58c4257d4869746d49455",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702,
+            13
+          ],
+          "sampled_tokens": [
+            " thank",
+            "."
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 797
+    },
+    "exception": null
+  },
+  {
+    "case_id": "source-disabled",
+    "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+    "started_utc": "2026-07-28T01:18:24.603276Z",
+    "finished_utc": "2026-07-28T01:18:24.852599Z",
+    "elapsed_ms": 249.2935000000216,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "source-disabled"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 8,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STRUCT-source-disabled",
+          "include_telemetry": true,
+          "telemetry_max_steps": 16,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            498,
+            369,
+            697,
+            16585,
+            3395,
+            3351,
+            4486
+          ],
+          "source_text": null,
+          "source_ngram_size": 8
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":8,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-source-disabled\",\"include_telemetry\":true,\"telemetry_max_steps\":16,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498,369,697,16585,3395,3351,4486],\"source_text\":null,\"source_ngram_size\":8}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "917",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83\",\"object\":\"chat.completion\",\"created\":1785201504,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank you for your careful review today please\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":8,\"total_tokens\":27},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-source-disabled\",\"scheduler_request_id\":\"nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83\",\"config_hash\":\"5267ee3e5feb83a28ceaa2d2aafa8eb965e404ec236f079dcfe56aa8f38f85da\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,498,369,697,16585,3395,3351,4486],\"sampled_tokens\":[\" thank\",\" you\",\" for\",\" your\",\" careful\",\" review\",\" today\",\" please\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83",
+        "object": "chat.completion",
+        "created": 1785201504,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank you for your careful review today please"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 8,
+          "total_tokens": 27
+        },
+        "nram_correlation": {
+          "request_id": "RA-STRUCT-source-disabled",
+          "scheduler_request_id": "nram-scheduler-9a5730de1b7c42d7a640dce76ecf8e83",
+          "config_hash": "5267ee3e5feb83a28ceaa2d2aafa8eb965e404ec236f079dcfe56aa8f38f85da",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702,
+            498,
+            369,
+            697,
+            16585,
+            3395,
+            3351,
+            4486
+          ],
+          "sampled_tokens": [
+            " thank",
+            " you",
+            " for",
+            " your",
+            " careful",
+            " review",
+            " today",
+            " please"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 917
+    },
+    "exception": null
+  },
+  {
+    "case_id": "source-enabled",
+    "expected_contract": "hard schedule proves exact completing-token mask without masking unrelated prefix tokens",
+    "started_utc": "2026-07-28T01:18:24.853087Z",
+    "finished_utc": "2026-07-28T01:18:25.117928Z",
+    "elapsed_ms": 264.8156000000199,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/chat/completions",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "source-enabled"
+      },
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 8,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RA-STRUCT-source-enabled",
+          "include_telemetry": true,
+          "telemetry_max_steps": 16,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "hard_token_schedule": [
+            9702,
+            498,
+            369,
+            697,
+            16585,
+            3395,
+            3351,
+            4486
+          ],
+          "source_text": " thank you for your careful review today please",
+          "source_ngram_size": 8
+        }
+      },
+      "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":8,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-STRUCT-source-enabled\",\"include_telemetry\":true,\"telemetry_max_steps\":16,\"telemetry_top_k\":20,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"hard_token_schedule\":[9702,498,369,697,16585,3395,3351,4486],\"source_text\":\" thank you for your careful review today please\",\"source_ngram_size\":8}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:18:23 GMT",
+        "server": "uvicorn",
+        "content-length": "902",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-9c588bf7b7de41238687bd1cc0b59a9c\",\"object\":\"chat.completion\",\"created\":1785201505,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank you for your careful review today.\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":8,\"total_tokens\":27},\"nram_correlation\":{\"request_id\":\"RA-STRUCT-source-enabled\",\"scheduler_request_id\":\"nram-scheduler-9c588bf7b7de41238687bd1cc0b59a9c\",\"config_hash\":\"55335f7ff85170fc2480d1f7ccc63c52ec422ae3ac0b350c07640064c1d1d430\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702,498,369,697,16585,3395,3351,13],\"sampled_tokens\":[\" thank\",\" you\",\" for\",\" your\",\" careful\",\" review\",\" today\",\".\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-9c588bf7b7de41238687bd1cc0b59a9c",
+        "object": "chat.completion",
+        "created": 1785201505,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank you for your careful review today."
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 8,
+          "total_tokens": 27
+        },
+        "nram_correlation": {
+          "request_id": "RA-STRUCT-source-enabled",
+          "scheduler_request_id": "nram-scheduler-9c588bf7b7de41238687bd1cc0b59a9c",
+          "config_hash": "55335f7ff85170fc2480d1f7ccc63c52ec422ae3ac0b350c07640064c1d1d430",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702,
+            498,
+            369,
+            697,
+            16585,
+            3395,
+            3351,
+            13
+          ],
+          "sampled_tokens": [
+            " thank",
+            " you",
+            " for",
+            " your",
+            " careful",
+            " review",
+            " today",
+            "."
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      },
+      "bytes": 902
+    },
+    "exception": null
+  }
+]

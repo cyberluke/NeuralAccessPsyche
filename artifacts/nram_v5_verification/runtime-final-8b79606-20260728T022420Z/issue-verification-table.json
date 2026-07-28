@@ -1,0 +1,110 @@
+{
+  "NRAM-001": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current 343-test/full adversarial model identity gates pass; bounded alias campaign HTTP 200."
+  },
+  "NRAM-002": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current unchanged live adversarial compare test passes; forced compare bounded proof retained."
+  },
+  "NRAM-003": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Final v2 manifest authenticates exact target/tree/current image IDs and 401 JUnit records."
+  },
+  "NRAM-004": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Raw-socket ordinary/persona/non-stream drain at 3 events with exactly-once abort; deadline 504."
+  },
+  "NRAM-005": {
+    "status": "FAILED_VERIFICATION",
+    "evidence": "Non-finite and prior invalid matrices reject pre-engine, but three declared boundary controls fail late with 500/502."
+  },
+  "NRAM-006": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Ordinary/persona SSE close drains; normal streams and persona contract gates pass."
+  },
+  "NRAM-007": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current GPU telemetry correlation, duplicate caller-ID regressions, and event retention gates pass."
+  },
+  "NRAM-008": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current full suite and one-field config-hash campaign pass."
+  },
+  "NRAM-009": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Session propagation/reset gates pass; bounded live session artifacts retained."
+  },
+  "NRAM-010": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "MoE validation/bounds unit gates and bounded live route pass."
+  },
+  "NRAM-011": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current standalone GPU structural suite passes 5/5 structural cases."
+  },
+  "NRAM-012": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Unsupported advanced-feature contract matrix fails loudly; capability gate passes."
+  },
+  "NRAM-013": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Configured token 200; wrong/random-long/missing tokens 401."
+  },
+  "NRAM-014": {
+    "status": "VERIFIED_FIXED_WITH_OPERATIONAL_FINDING",
+    "evidence": "Final v2 provenance passes after fail-loud dangling-image-ID detection and cold recreation."
+  },
+  "NRAM-015": {
+    "status": "FAILED_VERIFICATION",
+    "evidence": "Finite/non-finite and GPU numerical gates pass, but accepted public/state bounds disagree for two NRAM penalties and top_p."
+  },
+  "NRAM-016": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current GPU PID/capsule/vector/soft-window controls pass."
+  },
+  "NRAM-017": {
+    "status": "VERIFIED_FIXED",
+    "evidence": "Current 40-test Streamlit/API image-route integration and full suite pass."
+  },
+  "NRAM-018": {
+    "status": "BLOCKED",
+    "evidence": "No DExperts artifacts/runtime; fail-loud contract retained."
+  },
+  "NRAM-019": {
+    "status": "BLOCKED",
+    "evidence": "No representation hidden-state runtime/artifacts; fail-loud contract retained."
+  },
+  "NRAM-020": {
+    "status": "BLOCKED",
+    "evidence": "No semantic/evidence closed-loop runtime/artifacts; fail-loud contract retained."
+  },
+  "NRAM-021": {
+    "status": "BLOCKED",
+    "evidence": "No branch-and-tournament runtime; fail-loud contract retained."
+  },
+  "NRAM-022": {
+    "status": "BLOCKED",
+    "evidence": "No full preregistered causal/statistical study."
+  },
+  "NRAM-023": {
+    "status": "BLOCKED",
+    "evidence": "Original 269/273 four-failure artifact remains unavailable and was not fabricated."
+  },
+  "NRAM-024": {
+    "status": "UNCONFIRMED",
+    "evidence": "No exit 137 occurred in this bounded run; historical cause not reproduced."
+  },
+  "FINAL-001": {
+    "status": "FAILED",
+    "evidence": "207/210 pass; 126/126 non-finite zero-event rejects; three exact-boundary integration failures."
+  },
+  "FINAL-002": {
+    "status": "PASSED",
+    "evidence": "All raw-socket cancellation, deadline, retry-isolation, and normal-completion controls pass."
+  },
+  "FINAL-003": {
+    "status": "PASSED_WITH_OPERATIONAL_FINDING",
+    "evidence": "Final v2 self-check passes; collector correctly failed loud on uninspectable live image ID."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "case": "moe-bounded-live",
+  "elapsed_seconds": 0.23987102508544922,
+  "request": {
+    "path": "/v1/chat/completions",
+    "method": "POST",
+    "authorization": "Bearer <redacted>",
+    "body": {
+      "model": "nram-moe-orchestrator",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RVR-MOE-BOUNDED",
+        "include_telemetry": true,
+        "telemetry_max_steps": 8,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 03:15:41 GMT",
+      "server": "uvicorn",
+      "content-length": "774",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-afa72eefc5424cc3811f0c85eac735dc\",\"object\":\"chat.completion\",\"created\":1785208541,\"model\":\"nram-moe-orchestrator\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":144,\"completion_tokens\":1,\"total_tokens\":145},\"nram_correlation\":{\"request_id\":\"RVR-MOE-BOUNDED\",\"scheduler_request_id\":\"nram-scheduler-afa72eefc5424cc3811f0c85eac735dc\",\"config_hash\":\"6c7bda541af14f8e9f8836f9593ef01873a9928219f36d94cc16c970512aa1ad\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-moe-orchestrator\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9454],\"sampled_tokens\":[\"Yes\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-afa72eefc5424cc3811f0c85eac735dc",
+      "object": "chat.completion",
+      "created": 1785208541,
+      "model": "nram-moe-orchestrator",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 144,
+        "completion_tokens": 1,
+        "total_tokens": 145
+      },
+      "nram_correlation": {
+        "request_id": "RVR-MOE-BOUNDED",
+        "scheduler_request_id": "nram-scheduler-afa72eefc5424cc3811f0c85eac735dc",
+        "config_hash": "6c7bda541af14f8e9f8836f9593ef01873a9928219f36d94cc16c970512aa1ad",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-moe-orchestrator",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          9454
+        ],
+        "sampled_tokens": [
+          "Yes"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    }
+  },
+  "exception": null
+}

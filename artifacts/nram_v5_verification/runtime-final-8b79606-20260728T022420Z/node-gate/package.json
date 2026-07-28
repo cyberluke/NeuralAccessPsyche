@@ -1,0 +1,19 @@
+{
+  "name": "neuralaccesspsyche",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node -e \"require('openai'); console.log('Node dependency smoke passed')\"",
+    "build": "npm pack --dry-run --json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "files": [
+    "package.json"
+  ],
+  "dependencies": {
+    "openai": "^4.77.0"
+  }
+}

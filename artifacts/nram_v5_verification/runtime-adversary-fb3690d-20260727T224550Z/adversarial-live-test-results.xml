@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="2.489" timestamp="2026-07-28T01:07:27.742319+02:00" hostname="WIN-LECQMSG5OQP"><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_public_models_do_not_advertise_unloaded_immutable_models" time="0.062"><failure message="AssertionError: public aliases must resolve to a declared immutable loaded model; advertised-only=['deepseek-r1-qwen-7b-baseline', 'gpt-oss-20b-baseline', 'nram-deepseek-r1-qwen-7b', 'nram-gpt-oss-20b', 'nram-moe-orchestrator', 'persona-dissociative', 'persona-keynote', 'persona-microdose', 'persona-normal', 'persona-peak', 'persona-psychedelic', 'persona-threshold', 'qwen3-14b-awq-baseline']&#10;assert {'deepseek-r1...14b-awq', ...} &lt;= {'nram-qwen3-14b-awq'}&#10;  &#10;  Extra items in the left set:&#10;  'persona-peak'&#10;  'gpt-oss-20b-baseline'&#10;  'persona-normal'&#10;  'persona-keynote'&#10;  'nram-deepseek-r1-qwen-7b'...&#10;  &#10;  ...Full output truncated (8 lines hidden), use '-vv' to show">@pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    def test_public_models_do_not_advertise_unloaded_immutable_models():
+        _, public = get("/v1/models")
+        _, ready = get("/ready")
+        public_ids = {item["id"] for item in public["data"]}
+        actual_ids = set(ready["detail"]["models"])
+&gt;       assert public_ids &lt;= actual_ids, (
+            "public aliases must resolve to a declared immutable loaded model; "
+            f"advertised-only={sorted(public_ids - actual_ids)}"
+        )
+E       AssertionError: public aliases must resolve to a declared immutable loaded model; advertised-only=['deepseek-r1-qwen-7b-baseline', 'gpt-oss-20b-baseline', 'nram-deepseek-r1-qwen-7b', 'nram-gpt-oss-20b', 'nram-moe-orchestrator', 'persona-dissociative', 'persona-keynote', 'persona-microdose', 'persona-normal', 'persona-peak', 'persona-psychedelic', 'persona-threshold', 'qwen3-14b-awq-baseline']
+E       assert {'deepseek-r1...14b-awq', ...} &lt;= {'nram-qwen3-14b-awq'}
+E         
+E         Extra items in the left set:
+E         'persona-peak'
+E         'gpt-oss-20b-baseline'
+E         'persona-normal'
+E         'persona-keynote'
+E         'nram-deepseek-r1-qwen-7b'...
+E         
+E         ...Full output truncated (8 lines hidden), use '-vv' to show
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:50: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;0]" time="0.053"><failure message="AssertionError: (200, '{&quot;id&quot;:&quot;bcf510926cde4ea39a12ddd5004075e3&quot;,&quot;object&quot;:&quot;chat.completion&quot;,&quot;created&quot;:1785193647,&quot;model&quot;:&quot;nram-qwen3-14...est_id&quot;:&quot;RA-REGRESSION-VALIDATION&quot;,&quot;config_hash&quot;:&quot;061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7&quot;}}')&#10;assert 400 &lt;= 200">mutation = &lt;function &lt;lambda&gt; at 0x000002032EFCEC00&gt;
+
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    @pytest.mark.parametrize(
+        "mutation",
+        [
+            lambda p: p.__setitem__("unknown_top_level_control", True),
+            lambda p: p["nram"].__setitem__("unknown_nested_control", True),
+            lambda p: p["nram"].__setitem__("profile", "does-not-exist"),
+            lambda p: p["nram"].__setitem__("soft_token_injections", {"bad": "shape"}),
+        ],
+    )
+    def test_malformed_or_unknown_controls_fail_before_generation(mutation):
+        payload = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "one word"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "seed": 424242,
+            "nram": {"request_id": "RA-REGRESSION-VALIDATION", "include_telemetry": True},
+        }
+        mutation(payload)
+        status, _, body = post("/v1/chat/completions", payload)
+&gt;       assert 400 &lt;= status &lt; 500, (status, body.decode(errors="replace"))
+E       AssertionError: (200, '{"id":"bcf510926cde4ea39a12ddd5004075e3","object":"chat.completion","created":1785193647,"model":"nram-qwen3-14...est_id":"RA-REGRESSION-VALIDATION","config_hash":"061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7"}}')
+E       assert 400 &lt;= 200
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:79: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;1]" time="0.061"><failure message="AssertionError: (200, '{&quot;id&quot;:&quot;24e61249db654b5caf76497492785a83&quot;,&quot;object&quot;:&quot;chat.completion&quot;,&quot;created&quot;:1785193647,&quot;model&quot;:&quot;nram-qwen3-14...est_id&quot;:&quot;RA-REGRESSION-VALIDATION&quot;,&quot;config_hash&quot;:&quot;061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7&quot;}}')&#10;assert 400 &lt;= 200">mutation = &lt;function &lt;lambda&gt; at 0x000002032F079B20&gt;
+
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    @pytest.mark.parametrize(
+        "mutation",
+        [
+            lambda p: p.__setitem__("unknown_top_level_control", True),
+            lambda p: p["nram"].__setitem__("unknown_nested_control", True),
+            lambda p: p["nram"].__setitem__("profile", "does-not-exist"),
+            lambda p: p["nram"].__setitem__("soft_token_injections", {"bad": "shape"}),
+        ],
+    )
+    def test_malformed_or_unknown_controls_fail_before_generation(mutation):
+        payload = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "one word"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "seed": 424242,
+            "nram": {"request_id": "RA-REGRESSION-VALIDATION", "include_telemetry": True},
+        }
+        mutation(payload)
+        status, _, body = post("/v1/chat/completions", payload)
+&gt;       assert 400 &lt;= status &lt; 500, (status, body.decode(errors="replace"))
+E       AssertionError: (200, '{"id":"24e61249db654b5caf76497492785a83","object":"chat.completion","created":1785193647,"model":"nram-qwen3-14...est_id":"RA-REGRESSION-VALIDATION","config_hash":"061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7"}}')
+E       assert 400 &lt;= 200
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:79: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;2]" time="0.071"><failure message="AssertionError: (200, '{&quot;id&quot;:&quot;6eb3c8e31ce2427abe19ad54cf100e13&quot;,&quot;object&quot;:&quot;chat.completion&quot;,&quot;created&quot;:1785193648,&quot;model&quot;:&quot;nram-qwen3-14...est_id&quot;:&quot;RA-REGRESSION-VALIDATION&quot;,&quot;config_hash&quot;:&quot;90c419fcd04bd44668c6fe85f20e8ce96ba947ae7b10baf81d84d1c6c84f2d51&quot;}}')&#10;assert 400 &lt;= 200">mutation = &lt;function &lt;lambda&gt; at 0x000002032F079BC0&gt;
+
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    @pytest.mark.parametrize(
+        "mutation",
+        [
+            lambda p: p.__setitem__("unknown_top_level_control", True),
+            lambda p: p["nram"].__setitem__("unknown_nested_control", True),
+            lambda p: p["nram"].__setitem__("profile", "does-not-exist"),
+            lambda p: p["nram"].__setitem__("soft_token_injections", {"bad": "shape"}),
+        ],
+    )
+    def test_malformed_or_unknown_controls_fail_before_generation(mutation):
+        payload = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "one word"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "seed": 424242,
+            "nram": {"request_id": "RA-REGRESSION-VALIDATION", "include_telemetry": True},
+        }
+        mutation(payload)
+        status, _, body = post("/v1/chat/completions", payload)
+&gt;       assert 400 &lt;= status &lt; 500, (status, body.decode(errors="replace"))
+E       AssertionError: (200, '{"id":"6eb3c8e31ce2427abe19ad54cf100e13","object":"chat.completion","created":1785193648,"model":"nram-qwen3-14...est_id":"RA-REGRESSION-VALIDATION","config_hash":"90c419fcd04bd44668c6fe85f20e8ce96ba947ae7b10baf81d84d1c6c84f2d51"}}')
+E       assert 400 &lt;= 200
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:79: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_malformed_or_unknown_controls_fail_before_generation[&lt;lambda&gt;3]" time="0.058"><failure message="AssertionError: (200, '{&quot;id&quot;:&quot;bb79b57f482440eb8d55761b4062ecb4&quot;,&quot;object&quot;:&quot;chat.completion&quot;,&quot;created&quot;:1785193648,&quot;model&quot;:&quot;nram-qwen3-14...est_id&quot;:&quot;RA-REGRESSION-VALIDATION&quot;,&quot;config_hash&quot;:&quot;061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7&quot;}}')&#10;assert 400 &lt;= 200">mutation = &lt;function &lt;lambda&gt; at 0x000002032F079C60&gt;
+
+    @pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    @pytest.mark.parametrize(
+        "mutation",
+        [
+            lambda p: p.__setitem__("unknown_top_level_control", True),
+            lambda p: p["nram"].__setitem__("unknown_nested_control", True),
+            lambda p: p["nram"].__setitem__("profile", "does-not-exist"),
+            lambda p: p["nram"].__setitem__("soft_token_injections", {"bad": "shape"}),
+        ],
+    )
+    def test_malformed_or_unknown_controls_fail_before_generation(mutation):
+        payload = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "one word"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "seed": 424242,
+            "nram": {"request_id": "RA-REGRESSION-VALIDATION", "include_telemetry": True},
+        }
+        mutation(payload)
+        status, _, body = post("/v1/chat/completions", payload)
+&gt;       assert 400 &lt;= status &lt; 500, (status, body.decode(errors="replace"))
+E       AssertionError: (200, '{"id":"bb79b57f482440eb8d55761b4062ecb4","object":"chat.completion","created":1785193648,"model":"nram-qwen3-14...est_id":"RA-REGRESSION-VALIDATION","config_hash":"061164addbe42dcfe8112c0388a0397b50b6e9a217ebb8a5808f011be4c7adb7"}}')
+E       assert 400 &lt;= 200
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:79: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_persona_stream_obeys_sse_contract_and_terminates" time="0.075"><failure message="AssertionError: assert False&#10; +  where False = &lt;built-in method startswith of str object at 0x000002032F0E3670&gt;('text/event-stream')&#10; +    where &lt;built-in method startswith of str object at 0x000002032F0E3670&gt; = 'application/json'.startswith&#10; +      where 'application/json' = &lt;built-in method get of dict object at 0x000002032F0E3CC0&gt;('content-type', '')&#10; +        where &lt;built-in method get of dict object at 0x000002032F0E3CC0&gt; = {'date': 'Mon, 27 Jul 2026 23:07:27 GMT', 'server': 'uvicorn', 'content-length': '450', 'content-type': 'application/json', ...}.get">@pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    def test_persona_stream_obeys_sse_contract_and_terminates():
+        payload = {
+            "model": "persona-peak",
+            "messages": [{"role": "user", "content": "one word"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "seed": 424242,
+            "stream": True,
+            "nram": {"request_id": "RA-REGRESSION-PERSONA-STREAM"},
+        }
+        status, headers, body = post("/v1/chat/completions", payload)
+        assert status == 200
+&gt;       assert headers.get("content-type", "").startswith("text/event-stream")
+E       AssertionError: assert False
+E        +  where False = &lt;built-in method startswith of str object at 0x000002032F0E3670&gt;('text/event-stream')
+E        +    where &lt;built-in method startswith of str object at 0x000002032F0E3670&gt; = 'application/json'.startswith
+E        +      where 'application/json' = &lt;built-in method get of dict object at 0x000002032F0E3CC0&gt;('content-type', '')
+E        +        where &lt;built-in method get of dict object at 0x000002032F0E3CC0&gt; = {'date': 'Mon, 27 Jul 2026 23:07:27 GMT', 'server': 'uvicorn', 'content-length': '450', 'content-type': 'application/json', ...}.get
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:97: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_configuration_hash_covers_prompt_seed_sampling_and_grammar" time="0.748"><failure message="AssertionError: {'811ecec8b6159596d56c3a9b432c8b779d6dc14e31a5c91b1399716a1b136696'}&#10;assert 1 == (1 + 5)&#10; +  where 1 = len({'811ecec8b6159596d56c3a9b432c8b779d6dc14e31a5c91b1399716a1b136696'})&#10; +  and   5 = len([{'model': 'nram-qwen3-14b-awq', 'messages': [{'role': 'user', 'content': 'prompt B'}], 'max_tokens': 1, 'temperature'...'nram-qwen3-14b-awq', 'messages': [{'role': 'user', 'content': 'prompt A'}], 'max_tokens': 1, 'temperature': 0.0, ...}])">@pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    def test_configuration_hash_covers_prompt_seed_sampling_and_grammar():
+        base = {
+            "model": "nram-qwen3-14b-awq",
+            "messages": [{"role": "user", "content": "prompt A"}],
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "top_p": 1.0,
+            "seed": 424242,
+            "nram": {
+                "request_id": "RA-REGRESSION-HASH",
+                "prompt_steering_enabled": False,
+                "profile_logit_steering_enabled": False,
+                "forced_token_enabled": True,
+                "forced_token_id": 9702,
+            },
+        }
+        variants = []
+        for field, value in (
+            ("messages", [{"role": "user", "content": "prompt B"}]),
+            ("seed", 424243),
+            ("temperature", 0.7),
+            ("top_p", 0.8),
+            ("response_format", {"type": "json_object"}),
+        ):
+            changed = json.loads(json.dumps(base))
+            changed[field] = value
+            variants.append(changed)
+    
+        def config_hash(payload):
+            status, _, body = post("/v1/chat/completions", payload)
+            assert status == 200, body
+            return json.loads(body)["nram_correlation"]["config_hash"]
+    
+        hashes = {config_hash(base), *(config_hash(item) for item in variants)}
+&gt;       assert len(hashes) == 1 + len(variants), hashes
+E       AssertionError: {'811ecec8b6159596d56c3a9b432c8b779d6dc14e31a5c91b1399716a1b136696'}
+E       assert 1 == (1 + 5)
+E        +  where 1 = len({'811ecec8b6159596d56c3a9b432c8b779d6dc14e31a5c91b1399716a1b136696'})
+E        +  and   5 = len([{'model': 'nram-qwen3-14b-awq', 'messages': [{'role': 'user', 'content': 'prompt B'}], 'max_tokens': 1, 'temperature'...'nram-qwen3-14b-awq', 'messages': [{'role': 'user', 'content': 'prompt A'}], 'max_tokens': 1, 'temperature': 0.0, ...}])
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:138: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_compare_route_reaches_processor_and_rejects_unsupported_controls" time="0.068"><failure message="AssertionError: (500, '{&quot;error&quot;:&quot;Middleware error: No module named \'evaluation\'&quot;}')&#10;assert 500 &lt; 500">@pytest.mark.integration
+    @pytest.mark.gpu
+    @pytest.mark.skipif(not LIVE, reason="set NRAM_RUNTIME_ADVERSARY=1 for pinned live runtime")
+    def test_compare_route_reaches_processor_and_rejects_unsupported_controls():
+        body = {
+            "prompt": "one word",
+            "model": "nram-qwen3-14b-awq",
+            "baseline_model": "qwen3-14b-awq-baseline",
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "top_p": 1.0,
+            "seed": 424242,
+            "nram": {"dexperts": True},
+        }
+        status, _, response = post("/v1/nram/compare", body)
+&gt;       assert 400 &lt;= status &lt; 500, (status, response.decode(errors="replace"))
+E       AssertionError: (500, '{"error":"Middleware error: No module named \'evaluation\'"}')
+E       assert 500 &lt; 500
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:156: AssertionError</failure></testcase><testcase classname="tests.runtime_adversary.test_confirmed_runtime_defects" name="test_moe_rejects_unsupported_before_first_generation" time="1.216"><failure message="AssertionError: AssertionError('generation was reached before outer validation')&#10;assert not True&#10; +  where True = isinstance(AssertionError('generation was reached before outer validation'), AssertionError)&#10; +    where AssertionError('generation was reached before outer validation') = &lt;ExceptionInfo AssertionError('generation was reached before outer validation') tblen=3&gt;.value">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002032F0074D0&gt;
+
+    @pytest.mark.asyncio
+    async def test_moe_rejects_unsupported_before_first_generation(monkeypatch):
+        """Non-runtime structural proof: recording double checks call ordering only."""
+        from api import routes
+    
+        class RecordingEngine:
+            def __init__(self):
+                self.calls = []
+    
+            async def complete(self, request):
+                self.calls.append(request)
+                raise AssertionError("generation was reached before outer validation")
+    
+        engine = RecordingEngine()
+        monkeypatch.setattr(routes, "get_sglang_engine", lambda: engine)
+        request = routes.ChatCompletionRequest(
+            model="nram-moe-orchestrator",
+            messages=[{"role": "user", "content": "bounded"}],
+            max_tokens=1,
+            nram={"dexperts": True},
+        )
+        with pytest.raises(Exception) as exc_info:
+            await routes._route_moe(request)
+&gt;       assert not isinstance(exc_info.value, AssertionError), exc_info.value
+E       AssertionError: AssertionError('generation was reached before outer validation')
+E       assert not True
+E        +  where True = isinstance(AssertionError('generation was reached before outer validation'), AssertionError)
+E        +    where AssertionError('generation was reached before outer validation') = &lt;ExceptionInfo AssertionError('generation was reached before outer validation') tblen=3&gt;.value
+
+tests\runtime_adversary\test_confirmed_runtime_defects.py:182: AssertionError</failure></testcase></testsuite></testsuites>

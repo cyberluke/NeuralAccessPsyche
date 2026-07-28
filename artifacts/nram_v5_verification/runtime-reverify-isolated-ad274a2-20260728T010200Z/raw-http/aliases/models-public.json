@@ -1,0 +1,44 @@
+{
+  "case_id": "models-public",
+  "expected_contract": "observation",
+  "started_utc": "2026-07-28T01:18:21.969655Z",
+  "finished_utc": "2026-07-28T01:18:21.994034Z",
+  "elapsed_ms": 24.346199999854434,
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/v1/models",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "models-public"
+    },
+    "body": null,
+    "wire_body_utf8": null,
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:21 GMT",
+      "server": "uvicorn",
+      "content-length": "131",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"object\":\"list\",\"data\":[{\"id\":\"nram-qwen3-14b-awq\",\"object\":\"model\",\"created\":0,\"owned_by\":\"neuralaccesspsyche\",\"permission\":[]}]}",
+    "json": {
+      "object": "list",
+      "data": [
+        {
+          "id": "nram-qwen3-14b-awq",
+          "object": "model",
+          "created": 0,
+          "owned_by": "neuralaccesspsyche",
+          "permission": []
+        }
+      ]
+    },
+    "bytes": 131
+  },
+  "exception": null
+}

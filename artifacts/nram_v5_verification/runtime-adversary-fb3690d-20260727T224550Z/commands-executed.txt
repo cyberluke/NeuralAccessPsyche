@@ -1,0 +1,44 @@
+All commands ran from d:/_SATIN_AI/NeuralAccessPsyche under Windows cmd semantics unless noted.
+
+1. FAILED exit 1: PowerShell-form metadata command beginning `$ErrorActionPreference = 'Continue'`; command runner used cmd.exe and rejected the variable.
+2. exit 0: git rev-parse --show-toplevel & git branch --show-current & git rev-parse HEAD & git rev-parse fb3690d7884bdbcaef0e82608776065e19332990 & git merge-base --is-ancestor 6b92283d8fee480fe6355faed6fa24a2f0d75a56 fb3690d7884bdbcaef0e82608776065e19332990 & git status --porcelain=v2 --branch --untracked-files=all
+3. exit 0: Python subprocess git cat-file blob target spec; SHA-256/Git blob/live-byte comparison.
+4. exit 0: docker version; docker compose ps --all; docker ps --no-trunc; docker image ls --digests --no-trunc; nvidia-smi inventory/pmon; docker compose config.
+5. exit 0: git show fb3690d7884bdbcaef0e82608776065e19332990:docs/NRAM_V5_SCIENTIFIC_VALIDATION_SPEC.md
+6. exit 0: git diff --exit-code fb3690d7884bdbcaef0e82608776065e19332990 -- docs/NRAM_V5_SCIENTIFIC_VALIDATION_SPEC.md
+7. exit 0: curl.exe health, ready, unauthenticated/authenticated /v1/models and /openapi.json route enumeration; internal SGLang /v1/models; docker inspect; package/runtime/model/tokenizer/process identity.
+8. exit 0: python tests/runtime_adversary/runtime_campaign.py aliases --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/aliases
+9. exit 0: python tests/runtime_adversary/runtime_campaign.py validation --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/validation
+10. exit 0: python tests/runtime_adversary/runtime_campaign.py forced --forced-token-id 9702 --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/forced
+11. exit 0: python tests/runtime_adversary/runtime_campaign.py stream --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/stream
+12. exit 0: python tests/runtime_adversary/runtime_campaign.py config-hash --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/config-hash
+13. exit 0: python tests/runtime_adversary/runtime_campaign.py structural --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/structural
+14. exit 0: python tests/runtime_adversary/runtime_campaign.py numerical --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/numerical
+15. FAILED exit 1: python tests/runtime_adversary/runtime_campaign.py lifecycle --out .../raw-http/lifecycle; connection refused because both runtime containers had exited 137.
+16. exit 0: docker compose ps --all; docker inspect nram-api nram-sglang; docker logs --tail 120 for both containers.
+17. exit 0: docker compose start sglang; bounded health polling; docker compose start nram-api; bounded health polling; curl.exe /ready.
+18. exit 0: python tests/runtime_adversary/runtime_campaign.py lifecycle --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/lifecycle
+19. exit 0: python tests/runtime_adversary/runtime_campaign.py lifecycle --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/lifecycle-forced
+20. exit 1 expected discovery: pytest -q tests/runtime_adversary/test_confirmed_runtime_defects.py --junitxml=.../adversarial-test-results.xml => 1 failed, 8 skipped.
+21. exit 1 expected discovery: set NRAM_RUNTIME_ADVERSARY=1&& pytest -q tests/runtime_adversary/test_confirmed_runtime_defects.py --junitxml=.../adversarial-live-test-results.xml => 9 failed.
+22. exit 0: direct bounded /v1/nram/compare forced and unsupported probes via Recorder; 2 requests, each max_tokens=1.
+23. exit 0: direct session create/state/chat/state/events/delete sequence via Recorder; one generation, max_tokens=1.
+24. exit 0: direct telemetry-truncation phrase-mask probe via Recorder; one generation, max_tokens=2, telemetry_max_steps=1.
+25. exit 0: direct numerical-invalid probes via Recorder; four requests, max_tokens=1 each.
+26. exit 0: direct synthetic-provenance generation/summary via Recorder; one generation, max_tokens=4.
+27. exit 0: python tests/runtime_adversary/runtime_campaign.py forced --forced-token-id 9702 --out artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/raw-http/forced-after-restart
+28. exit 0: docker exec nram-sglang git -C /sgl-workspace/sglang rev-parse HEAD
+29. exit 0: inspect installed CustomLogitProcessor source, /get_server_info, nvidia-smi, docker top.
+30. exit 0: Git-object/API/SGLang source hash comparison written to source-hash-comparison.json.
+31. exit 0: builder manifest SHA-256 validation against target Git blob bytes and working bytes.
+32. exit 0: git ls-tree -r --name-only fb3690d7884bdbcaef0e82608776065e19332990 tests
+33. exit 0: Python pytest --collect-only against the 27 target-tracked test modules => 216 tests collected.
+34. exit 0: Python pytest against the 27 target-tracked test modules => 216 passed, 2 warnings, 68.65 seconds.
+35. FAILED exit 1: first synthetic-provenance artifact write => OSError ENOSPC after generation completed.
+36. exit 0: wmic logicaldisk free-space check showed D: zero bytes free.
+37. exit 0: del artifacts/nram_v5_verification/runtime-adversary-fb3690d-20260727T224550Z/canonical-spec-target.bin; deleted only redundant adversary-created 14,523-byte exact spec copy after hash/blob identity had been recorded. D: subsequently reported 20,098,088,960 free bytes due external cleanup/reclamation.
+
+Recorded HTTP case files: 105.
+Recorded HTTP status counts: 200=73, 400=21, 422=1, 500=6, 502=2, no response/timeout=2.
+Sum of declared per-request max_tokens across recorded case files: 385. Largest single bound: 64.
+The live MoE endpoint was not invoked because production overrides the caller's bound to four 1024-token persona generations plus a synthesis of at least 1024 tokens.

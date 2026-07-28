@@ -1,0 +1,98 @@
+[
+  {
+    "case_id": "compare-forced-routing",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:06:01.196423Z",
+    "finished_utc": "2026-07-27T23:06:01.481362Z",
+    "elapsed_ms": 284.9077999999281,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/nram/compare",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "compare-forced-routing"
+      },
+      "body": {
+        "prompt": "Reply with one word.",
+        "model": "nram-qwen3-14b-awq",
+        "baseline_model": "qwen3-14b-awq-baseline",
+        "seed": 424242,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "nram": {
+          "request_id": "RA-COMPARE-FORCED",
+          "include_telemetry": true,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      },
+      "wire_body_utf8": "{\"prompt\":\"Reply with one word.\",\"model\":\"nram-qwen3-14b-awq\",\"baseline_model\":\"qwen3-14b-awq-baseline\",\"seed\":424242,\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"nram\":{\"request_id\":\"RA-COMPARE-FORCED\",\"include_telemetry\":true,\"forced_token_enabled\":true,\"forced_token_id\":9702}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:06:00 GMT",
+        "server": "uvicorn",
+        "content-length": "58",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Middleware error: No module named 'evaluation'\"}",
+      "json": {
+        "error": "Middleware error: No module named 'evaluation'"
+      },
+      "bytes": 58
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  },
+  {
+    "case_id": "compare-unsupported-dexperts",
+    "expected_contract": "observation",
+    "started_utc": "2026-07-27T23:06:01.483791Z",
+    "finished_utc": "2026-07-27T23:06:01.569636Z",
+    "elapsed_ms": 85.82710000337102,
+    "request": {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/v1/nram/compare",
+      "headers": {
+        "Authorization": "Bearer <redacted>",
+        "Content-Type": "application/json",
+        "X-Runtime-Adversary-Case": "compare-unsupported-dexperts"
+      },
+      "body": {
+        "prompt": "Reply with one word.",
+        "model": "nram-qwen3-14b-awq",
+        "baseline_model": "qwen3-14b-awq-baseline",
+        "seed": 424242,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "nram": {
+          "request_id": "RA-COMPARE-UNSUPPORTED",
+          "dexperts": true
+        }
+      },
+      "wire_body_utf8": "{\"prompt\":\"Reply with one word.\",\"model\":\"nram-qwen3-14b-awq\",\"baseline_model\":\"qwen3-14b-awq-baseline\",\"seed\":424242,\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"nram\":{\"request_id\":\"RA-COMPARE-UNSUPPORTED\",\"dexperts\":true}}",
+      "timeout_seconds": 180.0
+    },
+    "response": {
+      "status": 500,
+      "headers": {
+        "date": "Mon, 27 Jul 2026 23:06:01 GMT",
+        "server": "uvicorn",
+        "content-length": "58",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Middleware error: No module named 'evaluation'\"}",
+      "json": {
+        "error": "Middleware error: No module named 'evaluation'"
+      },
+      "bytes": 58
+    },
+    "exception": "HTTPError: HTTP Error 500: Internal Server Error"
+  }
+]

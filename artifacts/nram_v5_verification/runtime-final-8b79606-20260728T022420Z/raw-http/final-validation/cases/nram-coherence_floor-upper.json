@@ -1,0 +1,79 @@
+{
+  "case_id": "nram-coherence_floor-upper",
+  "elapsed_ms": 40.18545150756836,
+  "request": {
+    "model": "nram-qwen3-14b-awq",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply with one word."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 1,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "seed": 424242,
+    "tools": [],
+    "nram": {
+      "request_id": "FINAL-VAL-109",
+      "include_telemetry": true,
+      "telemetry_max_steps": 1,
+      "telemetry_top_k": 1,
+      "prompt_steering_enabled": false,
+      "profile_logit_steering_enabled": false,
+      "coherence_floor": 1.0
+    }
+  },
+  "wire_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with one word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"frequency_penalty\":0.0,\"presence_penalty\":0.0,\"seed\":424242,\"tools\":[],\"nram\":{\"request_id\":\"FINAL-VAL-109\",\"include_telemetry\":true,\"telemetry_max_steps\":1,\"telemetry_top_k\":1,\"prompt_steering_enabled\":false,\"profile_logit_steering_enabled\":false,\"coherence_floor\":1.0}}",
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 02:58:09 GMT",
+      "server": "uvicorn",
+      "content-length": "767",
+      "content-type": "application/json"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-ca8a832c8b8f468d9f583b4a8fbdb65d\",\"object\":\"chat.completion\",\"created\":1785207490,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":17,\"completion_tokens\":1,\"total_tokens\":18},\"nram_correlation\":{\"request_id\":\"FINAL-VAL-109\",\"scheduler_request_id\":\"nram-scheduler-ca8a832c8b8f468d9f583b4a8fbdb65d\",\"config_hash\":\"1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[32313],\"sampled_tokens\":[\"Okay\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-ca8a832c8b8f468d9f583b4a8fbdb65d",
+      "object": "chat.completion",
+      "created": 1785207490,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Okay"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 17,
+        "completion_tokens": 1,
+        "total_tokens": 18
+      },
+      "nram_correlation": {
+        "request_id": "FINAL-VAL-109",
+        "scheduler_request_id": "nram-scheduler-ca8a832c8b8f468d9f583b4a8fbdb65d",
+        "config_hash": "1e2cc745843a13cba0bb940a5a13706c50ca2cb863c9b9c03ce9f8c8c2ba37bb",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          32313
+        ],
+        "sampled_tokens": [
+          "Okay"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    }
+  },
+  "exception": null
+}

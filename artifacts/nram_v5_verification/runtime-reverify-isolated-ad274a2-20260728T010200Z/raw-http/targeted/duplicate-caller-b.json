@@ -1,0 +1,84 @@
+{
+  "case": "duplicate-caller-b",
+  "elapsed_seconds": 0.09660720825195312,
+  "request": {
+    "path": "/v1/chat/completions",
+    "method": "POST",
+    "authorization": "Bearer <redacted>",
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RVR-DUPLICATE-CALLER-ID",
+        "include_telemetry": true,
+        "telemetry_max_steps": 8,
+        "telemetry_top_k": 20,
+        "prompt_steering_enabled": false,
+        "profile_logit_steering_enabled": false,
+        "forced_token_enabled": true,
+        "forced_token_id": 12095
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:24:16 GMT",
+      "server": "uvicorn",
+      "content-length": "780",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"nram-scheduler-5616763dce16417f9388e1bb0004269d\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Paris\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-DUPLICATE-CALLER-ID\",\"scheduler_request_id\":\"nram-scheduler-5616763dce16417f9388e1bb0004269d\",\"config_hash\":\"8ea49ae3b505c698a9aad2045f83fcce579cbb20262fe7d6603472d4faa9dda6\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[12095],\"sampled_tokens\":[\" Paris\"],\"sample_join\":\"sglang_meta_info\"}}",
+    "json": {
+      "id": "nram-scheduler-5616763dce16417f9388e1bb0004269d",
+      "object": "chat.completion",
+      "created": 1785201856,
+      "model": "nram-qwen3-14b-awq",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Paris"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 19,
+        "completion_tokens": 1,
+        "total_tokens": 20
+      },
+      "nram_correlation": {
+        "request_id": "RVR-DUPLICATE-CALLER-ID",
+        "scheduler_request_id": "nram-scheduler-5616763dce16417f9388e1bb0004269d",
+        "config_hash": "8ea49ae3b505c698a9aad2045f83fcce579cbb20262fe7d6603472d4faa9dda6",
+        "applied_state_schema": "nram.applied-state.v1",
+        "public_model": "nram-qwen3-14b-awq",
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "processor_intervened": true,
+        "sampled_token_ids": [
+          12095
+        ],
+        "sampled_tokens": [
+          " Paris"
+        ],
+        "sample_join": "sglang_meta_info"
+      }
+    }
+  },
+  "exception": null
+}

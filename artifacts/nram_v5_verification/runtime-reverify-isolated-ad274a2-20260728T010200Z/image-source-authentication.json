@@ -1,0 +1,1130 @@
+{
+  "api_image": "nram-rvr-ad274a2-api:20260728t010200z",
+  "sglang_image": "nram-rvr-ad274a2-sglang:20260728t010200z",
+  "api": {
+    "expected_count": 84,
+    "actual_count": 84,
+    "missing": [],
+    "extra": [],
+    "mismatches": [],
+    "ignored_generated": [],
+    "authenticated": true,
+    "expected": {
+      "/app/pyproject.toml": {
+        "sha256": "c262c196e1a482dee2eb5561aad42d6121070ee577320e5e439426736a28e4fa",
+        "bytes": 1573,
+        "source_path": "pyproject.toml"
+      },
+      "/app/main.py": {
+        "sha256": "8870f93862ced235a5a3cbc81d27d4b0b574f8ee4a77f55b9c3912b655d2794f",
+        "bytes": 3419,
+        "source_path": "main.py"
+      },
+      "/app/api/features_routes.py": {
+        "sha256": "ac2c5e059d27556f2954a4c46d20510f13f12717f214996e06ac1c4b5e6e1371",
+        "bytes": 9646,
+        "source_path": "api/features_routes.py"
+      },
+      "/app/api/maf_routes.py": {
+        "sha256": "aaf417877f753a09079e665761a9bfb6deeedea2f9a242b392e5c3a8653b8e22",
+        "bytes": 4694,
+        "source_path": "api/maf_routes.py"
+      },
+      "/app/api/middleware.py": {
+        "sha256": "ef108cd0129ad0362178f870f39c7e83014daccfd9fdec86487632973e17bea6",
+        "bytes": 3329,
+        "source_path": "api/middleware.py"
+      },
+      "/app/api/nram_routes.py": {
+        "sha256": "b0baca4c584ebf366a6071751c83077750a54ea5ab940fafb45f2e3b6870ea38",
+        "bytes": 17072,
+        "source_path": "api/nram_routes.py"
+      },
+      "/app/api/routes.py": {
+        "sha256": "908eafa39b84310a961445d301c5ced1567453368bb2bc198c1068e3a210bbb4",
+        "bytes": 29970,
+        "source_path": "api/routes.py"
+      },
+      "/app/api/workflow_routes.py": {
+        "sha256": "c6305bb8acc9564dd2058cc20d0a6b0182eded442f419dbc0a85806dc2524aa7",
+        "bytes": 13726,
+        "source_path": "api/workflow_routes.py"
+      },
+      "/app/core/config_suggester.py": {
+        "sha256": "0e7edae0613f94e50cf2d8abfa0f253569d0aaad6d9fcf228262cb8990b838e3",
+        "bytes": 5815,
+        "source_path": "core/config_suggester.py"
+      },
+      "/app/core/guidance_handler.py": {
+        "sha256": "5650fd0eb1c6fa31af4492a877540c22ed34ed75e80e0b8cfbd4286019c982e3",
+        "bytes": 17877,
+        "source_path": "core/guidance_handler.py"
+      },
+      "/app/core/llm_handler.py": {
+        "sha256": "773cea7a0c39dd7bb96fdf2f1f54c7248cd9ce8e7bb119f761e8d6d2e80502a4",
+        "bytes": 4042,
+        "source_path": "core/llm_handler.py"
+      },
+      "/app/core/agentic/client.py": {
+        "sha256": "563c6f04393d1d4ea97091ac616500822b8a8ebef6c969394eef48e134987282",
+        "bytes": 6467,
+        "source_path": "core/agentic/client.py"
+      },
+      "/app/core/agentic/contracts.py": {
+        "sha256": "6e22e54db74fc5bd2c4cc04e2544b6b334f793e830249e81e60e1ad4b9ba341c",
+        "bytes": 11290,
+        "source_path": "core/agentic/contracts.py"
+      },
+      "/app/core/agentic/document_innovation_workflow.py": {
+        "sha256": "9b4bdc3242ff1d4acafe2017bf7b2f5dd9a236072eb223e081ca7c84ea448cbf",
+        "bytes": 28719,
+        "source_path": "core/agentic/document_innovation_workflow.py"
+      },
+      "/app/core/agentic/evidence_ledger.py": {
+        "sha256": "c1dc9270aae988eb4d13aab050cf27afb6a913c04f6edf37488421a138195a1f",
+        "bytes": 4241,
+        "source_path": "core/agentic/evidence_ledger.py"
+      },
+      "/app/core/agentic/maf_client.py": {
+        "sha256": "c959f0f87b262d8a96c8a90744226e8031dd76d450946689a1051024f1290859",
+        "bytes": 7043,
+        "source_path": "core/agentic/maf_client.py"
+      },
+      "/app/core/agentic/maf_workflow.py": {
+        "sha256": "f3d58f39767dfefa0eacb6a109a8af5a65200acd331722ae34779332f7dd1e8f",
+        "bytes": 8497,
+        "source_path": "core/agentic/maf_workflow.py"
+      },
+      "/app/core/agentic/memory.py": {
+        "sha256": "c0dc32023ed266a2eb5476617ba3159312cd74dd4cdd6c0585622fb8501e268e",
+        "bytes": 12926,
+        "source_path": "core/agentic/memory.py"
+      },
+      "/app/core/agentic/orchestrator.py": {
+        "sha256": "b7de7bb6768491783f4e258ebf225383f86e00e6c3f2ee5908686ac590cab5b2",
+        "bytes": 18561,
+        "source_path": "core/agentic/orchestrator.py"
+      },
+      "/app/core/agentic/persona_agents.py": {
+        "sha256": "4a0bded72d2964568afb088a8cf23a40d45ddb8f6545b7ba71b9fac6e9fa21c3",
+        "bytes": 7975,
+        "source_path": "core/agentic/persona_agents.py"
+      },
+      "/app/core/agentic/persona_schemas.py": {
+        "sha256": "7d92b86ab17968c83084298c896f23851edcba005b2d8332a6ed2b01c77d2b4f",
+        "bytes": 3391,
+        "source_path": "core/agentic/persona_schemas.py"
+      },
+      "/app/core/agentic/workflow_store.py": {
+        "sha256": "42437357843f9d25006eeb4cae012f76feab4ceda0ebfac414cebf009bdbed61",
+        "bytes": 6507,
+        "source_path": "core/agentic/workflow_store.py"
+      },
+      "/app/core/agentic/__init__.py": {
+        "sha256": "fa5577a5108bf567168d2860058bd39a5b0ce879e768aa11a64641f95d3652bc",
+        "bytes": 43,
+        "source_path": "core/agentic/__init__.py"
+      },
+      "/app/core/contracts/nram.py": {
+        "sha256": "29d8655d7ef61934cbadafa64da0f7e3c9a5128eab970ad64116c3ab33ff11a6",
+        "bytes": 2015,
+        "source_path": "core/contracts/nram.py"
+      },
+      "/app/core/contracts/nram_runtime.py": {
+        "sha256": "43c16ed29db0a4661434bbf7cb361ca5dc0f50176ea095102a944b819ddb6681",
+        "bytes": 13004,
+        "source_path": "core/contracts/nram_runtime.py"
+      },
+      "/app/core/contracts/openai.py": {
+        "sha256": "f78ca7690909e5461952e72b1fa39cdb2fa29680b76d699d8fd40916d8b3e93d",
+        "bytes": 3150,
+        "source_path": "core/contracts/openai.py"
+      },
+      "/app/core/contracts/__init__.py": {
+        "sha256": "34c4d0b2ee3149ab4b3571d2f6714805189f07360aebd1e2c471c60f443c6670",
+        "bytes": 47,
+        "source_path": "core/contracts/__init__.py"
+      },
+      "/app/core/engines/base.py": {
+        "sha256": "292fe374a680832f24bf54e6ec1cacb55703953f1f86190c30f062c1865d559b",
+        "bytes": 470,
+        "source_path": "core/engines/base.py"
+      },
+      "/app/core/engines/legacy_engine.py": {
+        "sha256": "bdf5dcc77e72ccd1a611c48b147a4532b8cf6fbd953f9eda5922f4cf448a4fe2",
+        "bytes": 1363,
+        "source_path": "core/engines/legacy_engine.py"
+      },
+      "/app/core/engines/registry.py": {
+        "sha256": "cdd106635fe4e42a811316c926529d11a2115a782a4adceab4cd3376bd2eee3d",
+        "bytes": 4165,
+        "source_path": "core/engines/registry.py"
+      },
+      "/app/core/engines/sglang_engine.py": {
+        "sha256": "6bc3b7f53c7f873f7467b0797f4606e33a34aacf31774dce04126204798b53e9",
+        "bytes": 42146,
+        "source_path": "core/engines/sglang_engine.py"
+      },
+      "/app/core/engines/__init__.py": {
+        "sha256": "ecd165ba13e12068adfe3f18cd83b4631f624e62f6d9a11705d04ff59f822df1",
+        "bytes": 27,
+        "source_path": "core/engines/__init__.py"
+      },
+      "/app/core/nram/batch.py": {
+        "sha256": "283303fa2eb6a39c278bcdd27a13fc4429608244ab406a066cd3b3e40dafd70e",
+        "bytes": 1015,
+        "source_path": "core/nram/batch.py"
+      },
+      "/app/core/nram/events.py": {
+        "sha256": "2c7efa8cd4c6379afdfc2ac471f158a6ea190f6a2406474223c80aba2060df45",
+        "bytes": 6229,
+        "source_path": "core/nram/events.py"
+      },
+      "/app/core/nram/injection.py": {
+        "sha256": "053de621a8e726d1ac8a2454d6831683538c448304995626e3084612215a56a3",
+        "bytes": 11170,
+        "source_path": "core/nram/injection.py"
+      },
+      "/app/core/nram/legacy.py": {
+        "sha256": "e348493bc850fa1e918756c1093c91500840f9599eb53fa6a6edf7ae9a0ee83d",
+        "bytes": 14343,
+        "source_path": "core/nram/legacy.py"
+      },
+      "/app/core/nram/persistence.py": {
+        "sha256": "7fe08d0e49e3e01cd856ea09075419a60ac646665f2c5773fe33a7895756a2d8",
+        "bytes": 3892,
+        "source_path": "core/nram/persistence.py"
+      },
+      "/app/core/nram/phenomena.py": {
+        "sha256": "14a0f520acac23dfae405bd550de38b5a80b85bbe254b56d529447ffdbd8bec9",
+        "bytes": 10727,
+        "source_path": "core/nram/phenomena.py"
+      },
+      "/app/core/nram/provenance_map.py": {
+        "sha256": "8c1d8bb3b9f38e4bc14db4fa565d040fce9cbe38a595e2ceeccf7038752f50be",
+        "bytes": 2587,
+        "source_path": "core/nram/provenance_map.py"
+      },
+      "/app/core/nram/session.py": {
+        "sha256": "77730367e762a123f6d53d21563ab5a0ade3df59e977ea78c48e53d316c3e5f9",
+        "bytes": 9942,
+        "source_path": "core/nram/session.py"
+      },
+      "/app/core/nram/telemetry.py": {
+        "sha256": "57b40b781dd0d4d10aa9936a8499e5796d85a331037fc7a8eddd7ac1dcbc414f",
+        "bytes": 5885,
+        "source_path": "core/nram/telemetry.py"
+      },
+      "/app/core/nram/telemetry_agg.py": {
+        "sha256": "e26996516f75d58c2aea85775387383e3deff6e51c172f4d41dada4db26c781d",
+        "bytes": 4198,
+        "source_path": "core/nram/telemetry_agg.py"
+      },
+      "/app/core/nram/__init__.py": {
+        "sha256": "f48574e332e0a9ab874ddabb24532114ed64c1cd242e609b1a71e6b633d9abcf",
+        "bytes": 466,
+        "source_path": "core/nram/__init__.py"
+      },
+      "/app/core/nram_controller/controller.py": {
+        "sha256": "d5dc90f5bb0b7b9f120b1e78efaacac82d6cfe6eb123bcef03c06028e86f4b15",
+        "bytes": 2638,
+        "source_path": "core/nram_controller/controller.py"
+      },
+      "/app/core/nram_controller/metrics.py": {
+        "sha256": "3adec3d5fd6a3d3572779d6ed0032772e897b6be6d1f50eadfb8fb8fc89a7236",
+        "bytes": 2416,
+        "source_path": "core/nram_controller/metrics.py"
+      },
+      "/app/core/nram_controller/state.py": {
+        "sha256": "a50543b8217b0ec2ea9552f699f57039cc13cf7e66adcffcee7f1c3912833146",
+        "bytes": 874,
+        "source_path": "core/nram_controller/state.py"
+      },
+      "/app/core/nram_controller/__init__.py": {
+        "sha256": "27d318b99591c0688b65edd8f70b265c363071eaf50ccad18e59e84eb447519c",
+        "bytes": 31,
+        "source_path": "core/nram_controller/__init__.py"
+      },
+      "/app/core/persona/compiler.py": {
+        "sha256": "fd28c707ab5eb3d9a3ca4dc0abab227d0bdf5f36106b29f5e005c9f654e756de",
+        "bytes": 11989,
+        "source_path": "core/persona/compiler.py"
+      },
+      "/app/core/persona/planner.py": {
+        "sha256": "ff51148280b30154a4e501416fb4fa67a4754e5ae10018d422161fecad6d5a17",
+        "bytes": 3288,
+        "source_path": "core/persona/planner.py"
+      },
+      "/app/core/persona/profiles.py": {
+        "sha256": "889b619e1e8bc29f1b8ada0e27edaa5442cd3f6f730c2393f57c7fc88809bd1b",
+        "bytes": 4991,
+        "source_path": "core/persona/profiles.py"
+      },
+      "/app/core/persona/__init__.py": {
+        "sha256": "b2c93a2977180e3807658d0b9d7441f1c155711d91b62383841008129a976194",
+        "bytes": 55,
+        "source_path": "core/persona/__init__.py"
+      },
+      "/app/core/steering/grammar.py": {
+        "sha256": "dab7cc58920b7218a65c1258240733e5287e8ece9ec0b3784332f4a1708c8677",
+        "bytes": 2754,
+        "source_path": "core/steering/grammar.py"
+      },
+      "/app/core/steering/nram_logit_processor.py": {
+        "sha256": "7b5169e847a7898a82b5bea51b45e892fafd1c6a9fde08a05f5ddd512391b0c5",
+        "bytes": 416,
+        "source_path": "core/steering/nram_logit_processor.py"
+      },
+      "/app/core/steering/policy.py": {
+        "sha256": "21e68c8b262dcbb30844320e7dbd6c0f45e7a7650d049d3a72d561b48ef1923b",
+        "bytes": 381,
+        "source_path": "core/steering/policy.py"
+      },
+      "/app/core/steering/serialization.py": {
+        "sha256": "852bf1b0434c95cb08db4d0dff16a277977845eaf3239263d2e7e59d4c4ab861",
+        "bytes": 4876,
+        "source_path": "core/steering/serialization.py"
+      },
+      "/app/core/steering/tokenizer_bias.py": {
+        "sha256": "7955ae65de2c5c5591d1770acb3cfca871c514867f394a42c1722011d97ad0f8",
+        "bytes": 5998,
+        "source_path": "core/steering/tokenizer_bias.py"
+      },
+      "/app/core/steering/__init__.py": {
+        "sha256": "07a078fbad0485843f68bc16e5b98e1d88d1d4bea9d8ec510791c894133a58fe",
+        "bytes": 79,
+        "source_path": "core/steering/__init__.py"
+      },
+      "/app/core/tools/searxng_client.py": {
+        "sha256": "5d55aec683d76788c73694db712352e10d7d8f651ab5b700cc8c9cddda6d8f60",
+        "bytes": 4971,
+        "source_path": "core/tools/searxng_client.py"
+      },
+      "/app/core/agentic/personas/archaeologist.py": {
+        "sha256": "03b8b647e2211bd3432a59cf7cd2d9aa5b619ab2a501a635552ee0c73553fb30",
+        "bytes": 3576,
+        "source_path": "core/agentic/personas/archaeologist.py"
+      },
+      "/app/core/agentic/personas/base.py": {
+        "sha256": "c10ce5bd18c894d43055ef5b4a7695d6e4a497ae1bcd98fd69354a055bc00b9d",
+        "bytes": 8133,
+        "source_path": "core/agentic/personas/base.py"
+      },
+      "/app/core/agentic/personas/heretic.py": {
+        "sha256": "9d7f093b9213e834dfd3b07d52f34635f6f459017ad77fd7e028288678a93959",
+        "bytes": 3397,
+        "source_path": "core/agentic/personas/heretic.py"
+      },
+      "/app/core/agentic/personas/product_dictator.py": {
+        "sha256": "86f60399f13a6871f2372fe32c6d6efbf27e122a7552f33d07b6a17217096a7c",
+        "bytes": 11314,
+        "source_path": "core/agentic/personas/product_dictator.py"
+      },
+      "/app/core/agentic/personas/psychedelic_synthesizer.py": {
+        "sha256": "d60d5544a33d665c400032bbc9ca2af56cae9c93c1b58648f1c9dec33662c8fb",
+        "bytes": 5256,
+        "source_path": "core/agentic/personas/psychedelic_synthesizer.py"
+      },
+      "/app/core/agentic/personas/ruthless_cto.py": {
+        "sha256": "f0f7c841491223628a8a746ce15da01c10a0784994b06b0151e0e0e43d1a3cd3",
+        "bytes": 4497,
+        "source_path": "core/agentic/personas/ruthless_cto.py"
+      },
+      "/app/core/agentic/personas/__init__.py": {
+        "sha256": "a3e7fb644aa04a4850e905a959e2a82ae104c1bfb252af8d944d6e4b2dad77be",
+        "bytes": 32,
+        "source_path": "core/agentic/personas/__init__.py"
+      },
+      "/app/nram_sglang/processor.py": {
+        "sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8",
+        "bytes": 39063,
+        "source_path": "nram_sglang/processor.py"
+      },
+      "/app/nram_sglang/version.py": {
+        "sha256": "b4f68980e0604301e3fe248ba8468854ac383770c8c7a6966f1c1692fddb7a44",
+        "bytes": 62,
+        "source_path": "nram_sglang/version.py"
+      },
+      "/app/nram_sglang/__init__.py": {
+        "sha256": "aa94e097b9b8aa833800d6f493319864eeefa82ab0f36ffcb107fc6cf821d66f",
+        "bytes": 148,
+        "source_path": "nram_sglang/__init__.py"
+      },
+      "/app/utils/api_logger.py": {
+        "sha256": "257362911959cfb6cf0f25f4de68de1483916a601bb3f407cfece6822cf15f5f",
+        "bytes": 6293,
+        "source_path": "utils/api_logger.py"
+      },
+      "/app/utils/auth.py": {
+        "sha256": "60af1630ca52dc566b7d112281c4088807234c7678963f8ef82c10911a8f159c",
+        "bytes": 979,
+        "source_path": "utils/auth.py"
+      },
+      "/app/utils/rate_limiter.py": {
+        "sha256": "f760ffea97f4426c02e2f0f742ef48b20044cedd283a0acef3650cf9a4d010cd",
+        "bytes": 840,
+        "source_path": "utils/rate_limiter.py"
+      },
+      "/app/utils/validators.py": {
+        "sha256": "b85a0f311c53e98222cbeaf956106e0a40a81253d892349071b4faf8dbff6076",
+        "bytes": 4178,
+        "source_path": "utils/validators.py"
+      },
+      "/app/evaluation/metrics.py": {
+        "sha256": "6e48e6f43678cc283efe842bc6bae8621abf158e240aecce8004d8f558c67003",
+        "bytes": 6813,
+        "source_path": "evaluation/metrics.py"
+      },
+      "/app/evaluation/nram_v5_paired.py": {
+        "sha256": "51f11d354a939560ada28f7fd57f9f0f6ae67802430392a43c535791aa8c924c",
+        "bytes": 9310,
+        "source_path": "evaluation/nram_v5_paired.py"
+      },
+      "/app/evaluation/prompts.jsonl": {
+        "sha256": "9c98b376334baa091837fe0df61a4f6a51ac50e04caabac842a1e57e82f85ba0",
+        "bytes": 3463,
+        "source_path": "evaluation/prompts.jsonl"
+      },
+      "/app/evaluation/report.py": {
+        "sha256": "cb510a538935eacdcca6399fc6d332591e96b49d86078b31c6275957214481f2",
+        "bytes": 6583,
+        "source_path": "evaluation/report.py"
+      },
+      "/app/evaluation/results.jsonl": {
+        "sha256": "f2d413c4e1bae4387bfe766bfa8091ffe33f77af1ce8431ec23af73fb10fd2b6",
+        "bytes": 118388,
+        "source_path": "evaluation/results.jsonl"
+      },
+      "/app/evaluation/run_ab.py": {
+        "sha256": "719003543398de8019719ca2159bbb03a11f4d7c92530d4aae23110a6c812a58",
+        "bytes": 6708,
+        "source_path": "evaluation/run_ab.py"
+      },
+      "/app/evaluation/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "source_path": "evaluation/__init__.py"
+      },
+      "/app/templates/api_visualization.html": {
+        "sha256": "73881c24f4dcb87b14a57e7d4e88278e7002b9cd67dc79ad7dc3f3264920b918",
+        "bytes": 10948,
+        "source_path": "templates/api_visualization.html"
+      },
+      "/app/templates/nram_explorer.html": {
+        "sha256": "60eac743beadecccd96e8eed0108313f0dc7effe1b9c365e9434e6a79745ab6f",
+        "bytes": 5697,
+        "source_path": "templates/nram_explorer.html"
+      },
+      "/app/templates/visualization.html": {
+        "sha256": "e66d9c73ba3172881d033121736d9596d2fc8d14253e19de968580be89fe7341",
+        "bytes": 1525,
+        "source_path": "templates/visualization.html"
+      },
+      "/app/static/css/nram_explorer.css": {
+        "sha256": "38e5d54780c8a25ff30ae40383c3bf2c78717aa6c7a97bd89529f391378094a5",
+        "bytes": 6461,
+        "source_path": "static/css/nram_explorer.css"
+      },
+      "/app/static/js/nram_explorer.js": {
+        "sha256": "5f502bec80c82585da768668348d6455d3e49669aab09f5452972d40cf28c5ac",
+        "bytes": 18798,
+        "source_path": "static/js/nram_explorer.js"
+      }
+    },
+    "actual": {
+      "/app/api/features_routes.py": {
+        "bytes": 9646,
+        "sha256": "ac2c5e059d27556f2954a4c46d20510f13f12717f214996e06ac1c4b5e6e1371"
+      },
+      "/app/api/maf_routes.py": {
+        "bytes": 4694,
+        "sha256": "aaf417877f753a09079e665761a9bfb6deeedea2f9a242b392e5c3a8653b8e22"
+      },
+      "/app/api/middleware.py": {
+        "bytes": 3329,
+        "sha256": "ef108cd0129ad0362178f870f39c7e83014daccfd9fdec86487632973e17bea6"
+      },
+      "/app/api/nram_routes.py": {
+        "bytes": 17072,
+        "sha256": "b0baca4c584ebf366a6071751c83077750a54ea5ab940fafb45f2e3b6870ea38"
+      },
+      "/app/api/routes.py": {
+        "bytes": 29970,
+        "sha256": "908eafa39b84310a961445d301c5ced1567453368bb2bc198c1068e3a210bbb4"
+      },
+      "/app/api/workflow_routes.py": {
+        "bytes": 13726,
+        "sha256": "c6305bb8acc9564dd2058cc20d0a6b0182eded442f419dbc0a85806dc2524aa7"
+      },
+      "/app/core/agentic/__init__.py": {
+        "bytes": 43,
+        "sha256": "fa5577a5108bf567168d2860058bd39a5b0ce879e768aa11a64641f95d3652bc"
+      },
+      "/app/core/agentic/client.py": {
+        "bytes": 6467,
+        "sha256": "563c6f04393d1d4ea97091ac616500822b8a8ebef6c969394eef48e134987282"
+      },
+      "/app/core/agentic/contracts.py": {
+        "bytes": 11290,
+        "sha256": "6e22e54db74fc5bd2c4cc04e2544b6b334f793e830249e81e60e1ad4b9ba341c"
+      },
+      "/app/core/agentic/document_innovation_workflow.py": {
+        "bytes": 28719,
+        "sha256": "9b4bdc3242ff1d4acafe2017bf7b2f5dd9a236072eb223e081ca7c84ea448cbf"
+      },
+      "/app/core/agentic/evidence_ledger.py": {
+        "bytes": 4241,
+        "sha256": "c1dc9270aae988eb4d13aab050cf27afb6a913c04f6edf37488421a138195a1f"
+      },
+      "/app/core/agentic/maf_client.py": {
+        "bytes": 7043,
+        "sha256": "c959f0f87b262d8a96c8a90744226e8031dd76d450946689a1051024f1290859"
+      },
+      "/app/core/agentic/maf_workflow.py": {
+        "bytes": 8497,
+        "sha256": "f3d58f39767dfefa0eacb6a109a8af5a65200acd331722ae34779332f7dd1e8f"
+      },
+      "/app/core/agentic/memory.py": {
+        "bytes": 12926,
+        "sha256": "c0dc32023ed266a2eb5476617ba3159312cd74dd4cdd6c0585622fb8501e268e"
+      },
+      "/app/core/agentic/orchestrator.py": {
+        "bytes": 18561,
+        "sha256": "b7de7bb6768491783f4e258ebf225383f86e00e6c3f2ee5908686ac590cab5b2"
+      },
+      "/app/core/agentic/persona_agents.py": {
+        "bytes": 7975,
+        "sha256": "4a0bded72d2964568afb088a8cf23a40d45ddb8f6545b7ba71b9fac6e9fa21c3"
+      },
+      "/app/core/agentic/persona_schemas.py": {
+        "bytes": 3391,
+        "sha256": "7d92b86ab17968c83084298c896f23851edcba005b2d8332a6ed2b01c77d2b4f"
+      },
+      "/app/core/agentic/personas/__init__.py": {
+        "bytes": 32,
+        "sha256": "a3e7fb644aa04a4850e905a959e2a82ae104c1bfb252af8d944d6e4b2dad77be"
+      },
+      "/app/core/agentic/personas/archaeologist.py": {
+        "bytes": 3576,
+        "sha256": "03b8b647e2211bd3432a59cf7cd2d9aa5b619ab2a501a635552ee0c73553fb30"
+      },
+      "/app/core/agentic/personas/base.py": {
+        "bytes": 8133,
+        "sha256": "c10ce5bd18c894d43055ef5b4a7695d6e4a497ae1bcd98fd69354a055bc00b9d"
+      },
+      "/app/core/agentic/personas/heretic.py": {
+        "bytes": 3397,
+        "sha256": "9d7f093b9213e834dfd3b07d52f34635f6f459017ad77fd7e028288678a93959"
+      },
+      "/app/core/agentic/personas/product_dictator.py": {
+        "bytes": 11314,
+        "sha256": "86f60399f13a6871f2372fe32c6d6efbf27e122a7552f33d07b6a17217096a7c"
+      },
+      "/app/core/agentic/personas/psychedelic_synthesizer.py": {
+        "bytes": 5256,
+        "sha256": "d60d5544a33d665c400032bbc9ca2af56cae9c93c1b58648f1c9dec33662c8fb"
+      },
+      "/app/core/agentic/personas/ruthless_cto.py": {
+        "bytes": 4497,
+        "sha256": "f0f7c841491223628a8a746ce15da01c10a0784994b06b0151e0e0e43d1a3cd3"
+      },
+      "/app/core/agentic/workflow_store.py": {
+        "bytes": 6507,
+        "sha256": "42437357843f9d25006eeb4cae012f76feab4ceda0ebfac414cebf009bdbed61"
+      },
+      "/app/core/config_suggester.py": {
+        "bytes": 5815,
+        "sha256": "0e7edae0613f94e50cf2d8abfa0f253569d0aaad6d9fcf228262cb8990b838e3"
+      },
+      "/app/core/contracts/__init__.py": {
+        "bytes": 47,
+        "sha256": "34c4d0b2ee3149ab4b3571d2f6714805189f07360aebd1e2c471c60f443c6670"
+      },
+      "/app/core/contracts/nram.py": {
+        "bytes": 2015,
+        "sha256": "29d8655d7ef61934cbadafa64da0f7e3c9a5128eab970ad64116c3ab33ff11a6"
+      },
+      "/app/core/contracts/nram_runtime.py": {
+        "bytes": 13004,
+        "sha256": "43c16ed29db0a4661434bbf7cb361ca5dc0f50176ea095102a944b819ddb6681"
+      },
+      "/app/core/contracts/openai.py": {
+        "bytes": 3150,
+        "sha256": "f78ca7690909e5461952e72b1fa39cdb2fa29680b76d699d8fd40916d8b3e93d"
+      },
+      "/app/core/engines/__init__.py": {
+        "bytes": 27,
+        "sha256": "ecd165ba13e12068adfe3f18cd83b4631f624e62f6d9a11705d04ff59f822df1"
+      },
+      "/app/core/engines/base.py": {
+        "bytes": 470,
+        "sha256": "292fe374a680832f24bf54e6ec1cacb55703953f1f86190c30f062c1865d559b"
+      },
+      "/app/core/engines/legacy_engine.py": {
+        "bytes": 1363,
+        "sha256": "bdf5dcc77e72ccd1a611c48b147a4532b8cf6fbd953f9eda5922f4cf448a4fe2"
+      },
+      "/app/core/engines/registry.py": {
+        "bytes": 4165,
+        "sha256": "cdd106635fe4e42a811316c926529d11a2115a782a4adceab4cd3376bd2eee3d"
+      },
+      "/app/core/engines/sglang_engine.py": {
+        "bytes": 42146,
+        "sha256": "6bc3b7f53c7f873f7467b0797f4606e33a34aacf31774dce04126204798b53e9"
+      },
+      "/app/core/guidance_handler.py": {
+        "bytes": 17877,
+        "sha256": "5650fd0eb1c6fa31af4492a877540c22ed34ed75e80e0b8cfbd4286019c982e3"
+      },
+      "/app/core/llm_handler.py": {
+        "bytes": 4042,
+        "sha256": "773cea7a0c39dd7bb96fdf2f1f54c7248cd9ce8e7bb119f761e8d6d2e80502a4"
+      },
+      "/app/core/nram/__init__.py": {
+        "bytes": 466,
+        "sha256": "f48574e332e0a9ab874ddabb24532114ed64c1cd242e609b1a71e6b633d9abcf"
+      },
+      "/app/core/nram/batch.py": {
+        "bytes": 1015,
+        "sha256": "283303fa2eb6a39c278bcdd27a13fc4429608244ab406a066cd3b3e40dafd70e"
+      },
+      "/app/core/nram/events.py": {
+        "bytes": 6229,
+        "sha256": "2c7efa8cd4c6379afdfc2ac471f158a6ea190f6a2406474223c80aba2060df45"
+      },
+      "/app/core/nram/injection.py": {
+        "bytes": 11170,
+        "sha256": "053de621a8e726d1ac8a2454d6831683538c448304995626e3084612215a56a3"
+      },
+      "/app/core/nram/legacy.py": {
+        "bytes": 14343,
+        "sha256": "e348493bc850fa1e918756c1093c91500840f9599eb53fa6a6edf7ae9a0ee83d"
+      },
+      "/app/core/nram/persistence.py": {
+        "bytes": 3892,
+        "sha256": "7fe08d0e49e3e01cd856ea09075419a60ac646665f2c5773fe33a7895756a2d8"
+      },
+      "/app/core/nram/phenomena.py": {
+        "bytes": 10727,
+        "sha256": "14a0f520acac23dfae405bd550de38b5a80b85bbe254b56d529447ffdbd8bec9"
+      },
+      "/app/core/nram/provenance_map.py": {
+        "bytes": 2587,
+        "sha256": "8c1d8bb3b9f38e4bc14db4fa565d040fce9cbe38a595e2ceeccf7038752f50be"
+      },
+      "/app/core/nram/session.py": {
+        "bytes": 9942,
+        "sha256": "77730367e762a123f6d53d21563ab5a0ade3df59e977ea78c48e53d316c3e5f9"
+      },
+      "/app/core/nram/telemetry.py": {
+        "bytes": 5885,
+        "sha256": "57b40b781dd0d4d10aa9936a8499e5796d85a331037fc7a8eddd7ac1dcbc414f"
+      },
+      "/app/core/nram/telemetry_agg.py": {
+        "bytes": 4198,
+        "sha256": "e26996516f75d58c2aea85775387383e3deff6e51c172f4d41dada4db26c781d"
+      },
+      "/app/core/nram_controller/__init__.py": {
+        "bytes": 31,
+        "sha256": "27d318b99591c0688b65edd8f70b265c363071eaf50ccad18e59e84eb447519c"
+      },
+      "/app/core/nram_controller/controller.py": {
+        "bytes": 2638,
+        "sha256": "d5dc90f5bb0b7b9f120b1e78efaacac82d6cfe6eb123bcef03c06028e86f4b15"
+      },
+      "/app/core/nram_controller/metrics.py": {
+        "bytes": 2416,
+        "sha256": "3adec3d5fd6a3d3572779d6ed0032772e897b6be6d1f50eadfb8fb8fc89a7236"
+      },
+      "/app/core/nram_controller/state.py": {
+        "bytes": 874,
+        "sha256": "a50543b8217b0ec2ea9552f699f57039cc13cf7e66adcffcee7f1c3912833146"
+      },
+      "/app/core/persona/__init__.py": {
+        "bytes": 55,
+        "sha256": "b2c93a2977180e3807658d0b9d7441f1c155711d91b62383841008129a976194"
+      },
+      "/app/core/persona/compiler.py": {
+        "bytes": 11989,
+        "sha256": "fd28c707ab5eb3d9a3ca4dc0abab227d0bdf5f36106b29f5e005c9f654e756de"
+      },
+      "/app/core/persona/planner.py": {
+        "bytes": 3288,
+        "sha256": "ff51148280b30154a4e501416fb4fa67a4754e5ae10018d422161fecad6d5a17"
+      },
+      "/app/core/persona/profiles.py": {
+        "bytes": 4991,
+        "sha256": "889b619e1e8bc29f1b8ada0e27edaa5442cd3f6f730c2393f57c7fc88809bd1b"
+      },
+      "/app/core/steering/__init__.py": {
+        "bytes": 79,
+        "sha256": "07a078fbad0485843f68bc16e5b98e1d88d1d4bea9d8ec510791c894133a58fe"
+      },
+      "/app/core/steering/grammar.py": {
+        "bytes": 2754,
+        "sha256": "dab7cc58920b7218a65c1258240733e5287e8ece9ec0b3784332f4a1708c8677"
+      },
+      "/app/core/steering/nram_logit_processor.py": {
+        "bytes": 416,
+        "sha256": "7b5169e847a7898a82b5bea51b45e892fafd1c6a9fde08a05f5ddd512391b0c5"
+      },
+      "/app/core/steering/policy.py": {
+        "bytes": 381,
+        "sha256": "21e68c8b262dcbb30844320e7dbd6c0f45e7a7650d049d3a72d561b48ef1923b"
+      },
+      "/app/core/steering/serialization.py": {
+        "bytes": 4876,
+        "sha256": "852bf1b0434c95cb08db4d0dff16a277977845eaf3239263d2e7e59d4c4ab861"
+      },
+      "/app/core/steering/tokenizer_bias.py": {
+        "bytes": 5998,
+        "sha256": "7955ae65de2c5c5591d1770acb3cfca871c514867f394a42c1722011d97ad0f8"
+      },
+      "/app/core/tools/searxng_client.py": {
+        "bytes": 4971,
+        "sha256": "5d55aec683d76788c73694db712352e10d7d8f651ab5b700cc8c9cddda6d8f60"
+      },
+      "/app/evaluation/__init__.py": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "/app/evaluation/metrics.py": {
+        "bytes": 6813,
+        "sha256": "6e48e6f43678cc283efe842bc6bae8621abf158e240aecce8004d8f558c67003"
+      },
+      "/app/evaluation/nram_v5_paired.py": {
+        "bytes": 9310,
+        "sha256": "51f11d354a939560ada28f7fd57f9f0f6ae67802430392a43c535791aa8c924c"
+      },
+      "/app/evaluation/prompts.jsonl": {
+        "bytes": 3463,
+        "sha256": "9c98b376334baa091837fe0df61a4f6a51ac50e04caabac842a1e57e82f85ba0"
+      },
+      "/app/evaluation/report.py": {
+        "bytes": 6583,
+        "sha256": "cb510a538935eacdcca6399fc6d332591e96b49d86078b31c6275957214481f2"
+      },
+      "/app/evaluation/results.jsonl": {
+        "bytes": 118388,
+        "sha256": "f2d413c4e1bae4387bfe766bfa8091ffe33f77af1ce8431ec23af73fb10fd2b6"
+      },
+      "/app/evaluation/run_ab.py": {
+        "bytes": 6708,
+        "sha256": "719003543398de8019719ca2159bbb03a11f4d7c92530d4aae23110a6c812a58"
+      },
+      "/app/main.py": {
+        "bytes": 3419,
+        "sha256": "8870f93862ced235a5a3cbc81d27d4b0b574f8ee4a77f55b9c3912b655d2794f"
+      },
+      "/app/nram_sglang/__init__.py": {
+        "bytes": 148,
+        "sha256": "aa94e097b9b8aa833800d6f493319864eeefa82ab0f36ffcb107fc6cf821d66f"
+      },
+      "/app/nram_sglang/processor.py": {
+        "bytes": 39063,
+        "sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8"
+      },
+      "/app/nram_sglang/version.py": {
+        "bytes": 62,
+        "sha256": "b4f68980e0604301e3fe248ba8468854ac383770c8c7a6966f1c1692fddb7a44"
+      },
+      "/app/pyproject.toml": {
+        "bytes": 1573,
+        "sha256": "c262c196e1a482dee2eb5561aad42d6121070ee577320e5e439426736a28e4fa"
+      },
+      "/app/static/css/nram_explorer.css": {
+        "bytes": 6461,
+        "sha256": "38e5d54780c8a25ff30ae40383c3bf2c78717aa6c7a97bd89529f391378094a5"
+      },
+      "/app/static/js/nram_explorer.js": {
+        "bytes": 18798,
+        "sha256": "5f502bec80c82585da768668348d6455d3e49669aab09f5452972d40cf28c5ac"
+      },
+      "/app/templates/api_visualization.html": {
+        "bytes": 10948,
+        "sha256": "73881c24f4dcb87b14a57e7d4e88278e7002b9cd67dc79ad7dc3f3264920b918"
+      },
+      "/app/templates/nram_explorer.html": {
+        "bytes": 5697,
+        "sha256": "60eac743beadecccd96e8eed0108313f0dc7effe1b9c365e9434e6a79745ab6f"
+      },
+      "/app/templates/visualization.html": {
+        "bytes": 1525,
+        "sha256": "e66d9c73ba3172881d033121736d9596d2fc8d14253e19de968580be89fe7341"
+      },
+      "/app/utils/api_logger.py": {
+        "bytes": 6293,
+        "sha256": "257362911959cfb6cf0f25f4de68de1483916a601bb3f407cfece6822cf15f5f"
+      },
+      "/app/utils/auth.py": {
+        "bytes": 979,
+        "sha256": "60af1630ca52dc566b7d112281c4088807234c7678963f8ef82c10911a8f159c"
+      },
+      "/app/utils/rate_limiter.py": {
+        "bytes": 840,
+        "sha256": "f760ffea97f4426c02e2f0f742ef48b20044cedd283a0acef3650cf9a4d010cd"
+      },
+      "/app/utils/validators.py": {
+        "bytes": 4178,
+        "sha256": "b85a0f311c53e98222cbeaf956106e0a40a81253d892349071b4faf8dbff6076"
+      }
+    }
+  },
+  "sglang": {
+    "expected_count": 5,
+    "actual_count": 5,
+    "missing": [],
+    "extra": [],
+    "mismatches": [],
+    "ignored_generated": [
+      "/opt/nram_python/nram_sglang/__pycache__/__init__.cpython-313.pyc",
+      "/opt/nram_python/nram_sglang/__pycache__/processor.cpython-313.pyc"
+    ],
+    "authenticated": true,
+    "expected": {
+      "/opt/nram/entrypoint.sh": {
+        "sha256": "d22d684b38a0ad061b005458d4122b5d9ea9dcba904d31bfd3f1fdc7f8906489",
+        "bytes": 7010,
+        "source_path": "inference/sglang/entrypoint.sh"
+      },
+      "/opt/nram/healthcheck.py": {
+        "sha256": "e70feb858bcdb90e18baea24d241040c9b06b9cbf35199148c41e7ecc31edf1e",
+        "bytes": 1225,
+        "source_path": "inference/sglang/healthcheck.py"
+      },
+      "/opt/nram_python/nram_sglang/processor.py": {
+        "sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8",
+        "bytes": 39063,
+        "source_path": "nram_sglang/processor.py"
+      },
+      "/opt/nram_python/nram_sglang/version.py": {
+        "sha256": "b4f68980e0604301e3fe248ba8468854ac383770c8c7a6966f1c1692fddb7a44",
+        "bytes": 62,
+        "source_path": "nram_sglang/version.py"
+      },
+      "/opt/nram_python/nram_sglang/__init__.py": {
+        "sha256": "aa94e097b9b8aa833800d6f493319864eeefa82ab0f36ffcb107fc6cf821d66f",
+        "bytes": 148,
+        "source_path": "nram_sglang/__init__.py"
+      }
+    },
+    "actual": {
+      "/opt/nram/entrypoint.sh": {
+        "bytes": 7010,
+        "sha256": "d22d684b38a0ad061b005458d4122b5d9ea9dcba904d31bfd3f1fdc7f8906489"
+      },
+      "/opt/nram/healthcheck.py": {
+        "bytes": 1225,
+        "sha256": "e70feb858bcdb90e18baea24d241040c9b06b9cbf35199148c41e7ecc31edf1e"
+      },
+      "/opt/nram_python/nram_sglang/__init__.py": {
+        "bytes": 148,
+        "sha256": "aa94e097b9b8aa833800d6f493319864eeefa82ab0f36ffcb107fc6cf821d66f"
+      },
+      "/opt/nram_python/nram_sglang/processor.py": {
+        "bytes": 39063,
+        "sha256": "30aa863f4ebf7ae313674ae19fba4c0073fabc02872741fd41e93070623988b8"
+      },
+      "/opt/nram_python/nram_sglang/version.py": {
+        "bytes": 62,
+        "sha256": "b4f68980e0604301e3fe248ba8468854ac383770c8c7a6966f1c1692fddb7a44"
+      }
+    }
+  },
+  "image_inspect": [
+    {
+      "Id": "sha256:c9e6a1146ceb76babc31640f86ed98e4b960a884ea73c78b2ebedda93e73de40",
+      "RepoTags": [
+        "nram-rvr-ad274a2-api:20260728t010200z"
+      ],
+      "RepoDigests": [
+        "nram-rvr-ad274a2-api@sha256:c9e6a1146ceb76babc31640f86ed98e4b960a884ea73c78b2ebedda93e73de40"
+      ],
+      "Comment": "buildkit.dockerfile.v0",
+      "Created": "2026-07-28T01:08:27.894240055Z",
+      "Config": {
+        "ExposedPorts": {
+          "8000/tcp": {}
+        },
+        "Env": [
+          "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG=C.UTF-8",
+          "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D",
+          "PYTHON_VERSION=3.11.15",
+          "PYTHON_SHA256=272179ddd9a2e41a0fc8e42e33dfbdca0b3711aa5abf372d3f2d51543d09b625",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONUNBUFFERED=1",
+          "PIP_NO_CACHE_DIR=1",
+          "PIP_DISABLE_PIP_VERSION_CHECK=1"
+        ],
+        "Cmd": [
+          "uvicorn",
+          "main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8000"
+        ],
+        "WorkingDir": "/app",
+        "Labels": {
+          "nram.verification.context-sha256": "490bb25b6fbad71c1e7a2c89010dca2b28bbb2e7e33356e3ef37b43d838b55f3",
+          "org.opencontainers.image.revision": "ad274a2c4b0575cf796659073fb69a962dbb66d0"
+        },
+        "ArgsEscaped": true
+      },
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Size": 582288820,
+      "RootFS": {
+        "Type": "layers",
+        "Layers": [
+          "sha256:f2ec4de84f559f5c7be4233b589cdbdbb5507807e05621b77320edd55a1f2a0f",
+          "sha256:1d1e59fb358647027ab521a60f44f87f158376fd9477b6542ef8e88992301dd1",
+          "sha256:99ab40bce873c6bc2ef49d1441dcbd1752681c34a02f4655fb3f68f8f2b34523",
+          "sha256:fc95983f78e7d6f0a6a727cef3214722721b65d6d2710fc433fc381cac671ec2",
+          "sha256:e361d63e007e68ac2630702b58904b217ea4bf20a8dbcc95595174d91c81fb2a",
+          "sha256:c462d29f3adb03b33134c70d2156a2cb24da5e9b0ceb60eb498cd9eff6b4666a",
+          "sha256:3dc5d30b32ad3331ae0968c28d1dc16f487c741c9e682403c53993d74755e995",
+          "sha256:c32bb9f6b0063c9b6fd87636a57ed03af1128dc26e255e8b3ccced10b5cc358b",
+          "sha256:90d501af89864dfc277a7db6213997f9faa6384c9c2f05c85a4fbd5c0418c792",
+          "sha256:52857363d81c6c9fb792e26de6f78ede568939f717b3d42c0a66f855d962c47f",
+          "sha256:abf7996d1b293a5f41d8656150afb193568c01183258461c4ae1c565af373570",
+          "sha256:208ed8fed1c2553e21d70afc6d603ec780a6c9fbc097460c261d9604c0cd35f4",
+          "sha256:ad7258ccdc15b19bf8e2d33c78f0d943918bf59ea53655c8521798562d674827",
+          "sha256:35bb89e5f51eaecd1f971248f369182d1837ddfe30583bf7e5fddad7c7cfcc05",
+          "sha256:d42489526a58f47c6d4bed15b5b286c25a9d86d5b1ba83f18675c014484fcfc6"
+        ]
+      },
+      "Metadata": {
+        "LastTagTime": "2026-07-28T01:08:57.681984645Z"
+      },
+      "Descriptor": {
+        "mediaType": "application/vnd.oci.image.index.v1+json",
+        "digest": "sha256:c9e6a1146ceb76babc31640f86ed98e4b960a884ea73c78b2ebedda93e73de40",
+        "size": 856
+      },
+      "Identity": {
+        "Build": [
+          {
+            "Ref": "s2iinoiyqfmxfa8l1th71g5d3",
+            "CreatedAt": "2026-07-28T01:09:03.513395342Z"
+          }
+        ]
+      }
+    },
+    {
+      "Id": "sha256:bf6d462ff8903f0d0163f1396a516198abd1734d6978317d2d1de96e7cad18e5",
+      "RepoTags": [
+        "nram-rvr-ad274a2-sglang:20260728t010200z"
+      ],
+      "RepoDigests": [
+        "nram-rvr-ad274a2-sglang@sha256:bf6d462ff8903f0d0163f1396a516198abd1734d6978317d2d1de96e7cad18e5"
+      ],
+      "Comment": "buildkit.dockerfile.v0",
+      "Created": "2026-07-28T01:05:25.84362917Z",
+      "Config": {
+        "Env": [
+          "PATH=/root/.cargo/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/nvidia/bin",
+          "NVARCH=x86_64",
+          "NVIDIA_REQUIRE_CUDA=cuda>=13.0 brand=unknown,driver>=535,driver<536 brand=grid,driver>=535,driver<536 brand=tesla,driver>=535,driver<536 brand=nvidia,driver>=535,driver<536 brand=quadro,driver>=535,driver<536 brand=quadrortx,driver>=535,driver<536 brand=nvidiartx,driver>=535,driver<536 brand=vapps,driver>=535,driver<536 brand=vpc,driver>=535,driver<536 brand=vcs,driver>=535,driver<536 brand=vws,driver>=535,driver<536 brand=cloudgaming,driver>=535,driver<536 brand=unknown,driver>=550,driver<551 brand=grid,driver>=550,driver<551 brand=tesla,driver>=550,driver<551 brand=nvidia,driver>=550,driver<551 brand=quadro,driver>=550,driver<551 brand=quadrortx,driver>=550,driver<551 brand=nvidiartx,driver>=550,driver<551 brand=vapps,driver>=550,driver<551 brand=vpc,driver>=550,driver<551 brand=vcs,driver>=550,driver<551 brand=vws,driver>=550,driver<551 brand=cloudgaming,driver>=550,driver<551 brand=unknown,driver>=565,driver<566 brand=grid,driver>=565,driver<566 brand=tesla,driver>=565,driver<566 brand=nvidia,driver>=565,driver<566 brand=quadro,driver>=565,driver<566 brand=quadrortx,driver>=565,driver<566 brand=nvidiartx,driver>=565,driver<566 brand=vapps,driver>=565,driver<566 brand=vpc,driver>=565,driver<566 brand=vcs,driver>=565,driver<566 brand=vws,driver>=565,driver<566 brand=cloudgaming,driver>=565,driver<566 brand=unknown,driver>=570,driver<571 brand=grid,driver>=570,driver<571 brand=tesla,driver>=570,driver<571 brand=nvidia,driver>=570,driver<571 brand=quadro,driver>=570,driver<571 brand=quadrortx,driver>=570,driver<571 brand=nvidiartx,driver>=570,driver<571 brand=vapps,driver>=570,driver<571 brand=vpc,driver>=570,driver<571 brand=vcs,driver>=570,driver<571 brand=vws,driver>=570,driver<571 brand=cloudgaming,driver>=570,driver<571 brand=unknown,driver>=575,driver<576 brand=grid,driver>=575,driver<576 brand=tesla,driver>=575,driver<576 brand=nvidia,driver>=575,driver<576 brand=quadro,driver>=575,driver<576 brand=quadrortx,driver>=575,driver<576 brand=nvidiartx,driver>=575,driver<576 brand=vapps,driver>=575,driver<576 brand=vpc,driver>=575,driver<576 brand=vcs,driver>=575,driver<576 brand=vws,driver>=575,driver<576 brand=cloudgaming,driver>=575,driver<576",
+          "NV_CUDA_CUDART_VERSION=13.0.88-1",
+          "CUDA_VERSION=13.0.1",
+          "LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+          "NVIDIA_VISIBLE_DEVICES=all",
+          "NVIDIA_DRIVER_CAPABILITIES=compute,utility",
+          "NV_CUDA_LIB_VERSION=13.0.1-1",
+          "NV_NVTX_VERSION=13.0.85-1",
+          "NV_LIBNPP_VERSION=13.0.1.2-1",
+          "NV_LIBNPP_PACKAGE=libnpp-13-0=13.0.1.2-1",
+          "NV_LIBCUSPARSE_VERSION=12.6.3.3-1",
+          "NV_LIBCUBLAS_PACKAGE_NAME=libcublas-13-0",
+          "NV_LIBCUBLAS_VERSION=13.0.2.14-1",
+          "NV_LIBCUBLAS_PACKAGE=libcublas-13-0=13.0.2.14-1",
+          "NV_LIBNCCL_PACKAGE_NAME=libnccl2",
+          "NV_LIBNCCL_PACKAGE_VERSION=2.28.3-1",
+          "NCCL_VERSION=2.28.3-1",
+          "NV_LIBNCCL_PACKAGE=libnccl2=2.28.3-1+cuda13.0",
+          "NVIDIA_PRODUCT_NAME=CUDA",
+          "NV_CUDA_CUDART_DEV_VERSION=13.0.88-1",
+          "NV_NVML_DEV_VERSION=13.0.87-1",
+          "NV_LIBCUSPARSE_DEV_VERSION=12.6.3.3-1",
+          "NV_LIBNPP_DEV_VERSION=13.0.1.2-1",
+          "NV_LIBNPP_DEV_PACKAGE=libnpp-dev-13-0=13.0.1.2-1",
+          "NV_LIBCUBLAS_DEV_VERSION=13.0.2.14-1",
+          "NV_LIBCUBLAS_DEV_PACKAGE_NAME=libcublas-dev-13-0",
+          "NV_LIBCUBLAS_DEV_PACKAGE=libcublas-dev-13-0=13.0.2.14-1",
+          "NV_CUDA_NSIGHT_COMPUTE_VERSION=13.0.1-1",
+          "NV_CUDA_NSIGHT_COMPUTE_DEV_PACKAGE=cuda-nsight-compute-13-0=13.0.1-1",
+          "NV_LIBNCCL_DEV_PACKAGE_NAME=libnccl-dev",
+          "NV_LIBNCCL_DEV_PACKAGE_VERSION=2.28.3-1",
+          "NV_LIBNCCL_DEV_PACKAGE=libnccl-dev=2.28.3-1+cuda13.0",
+          "LIBRARY_PATH=/usr/local/cuda/lib64/stubs",
+          "NV_CUDNN_VERSION=9.13.0.50-1",
+          "NV_CUDNN_PACKAGE_NAME=libcudnn9-cuda-13",
+          "NV_CUDNN_PACKAGE=libcudnn9-cuda-13=9.13.0.50-1",
+          "NV_CUDNN_PACKAGE_DEV=libcudnn9-dev-cuda-13=9.13.0.50-1",
+          "NV_CUDNN_PACKAGE_DEV_HEADERS=libcudnn9-headers-cuda-13=9.13.0.50-1",
+          "DEBIAN_FRONTEND=noninteractive",
+          "CUDA_HOME=/usr/local/cuda",
+          "GDRCOPY_HOME=/usr/src/gdrdrv-2.5.1/",
+          "FLASHINFER_VERSION=0.6.14",
+          "LANG=en_US.UTF-8",
+          "LANGUAGE=en_US:en",
+          "LC_ALL=en_US.UTF-8",
+          "SGLANG_BUILD_COMMIT=fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1",
+          "SGLANG_BUILD_URL=https://github.com/sgl-project/sglang/actions/runs/30124153106",
+          "SGLANG_IMAGE_TAG=lmsysorg/sglang:v0.5.16",
+          "PYTHONPATH=/opt/nram_python"
+        ],
+        "Entrypoint": [
+          "/opt/nram/entrypoint.sh"
+        ],
+        "WorkingDir": "/sgl-workspace/sglang",
+        "Labels": {
+          "ai.sglang.build.commit": "fdebc938f7f4d16fe6b9f55dcd9a767cf0899ea1",
+          "ai.sglang.build.url": "https://github.com/sgl-project/sglang/actions/runs/30124153106",
+          "ai.sglang.image.tag": "lmsysorg/sglang:v0.5.16",
+          "com.docker.compose.project": "neuralaccesspsyche",
+          "com.docker.compose.service": "sglang",
+          "com.docker.compose.version": "5.3.1",
+          "com.nvidia.cudnn.version": "9.13.0.50-1",
+          "maintainer": "NVIDIA CORPORATION <cudatools@nvidia.com>",
+          "nram.verification.context-sha256": "490bb25b6fbad71c1e7a2c89010dca2b28bbb2e7e33356e3ef37b43d838b55f3",
+          "org.opencontainers.image.ref.name": "ubuntu",
+          "org.opencontainers.image.revision": "ad274a2c4b0575cf796659073fb69a962dbb66d0",
+          "org.opencontainers.image.source": "https://github.com/sgl-project/sglang",
+          "org.opencontainers.image.url": "https://github.com/sgl-project/sglang/actions/runs/30124153106",
+          "org.opencontainers.image.version": "lmsysorg/sglang:v0.5.16"
+        },
+        "Healthcheck": {
+          "Test": [
+            "CMD-SHELL",
+            "python3 /opt/nram/healthcheck.py || exit 1"
+          ],
+          "Interval": 15000000000,
+          "Timeout": 10000000000,
+          "StartPeriod": 300000000000,
+          "Retries": 60
+        }
+      },
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Size": 13535087641,
+      "RootFS": {
+        "Type": "layers",
+        "Layers": [
+          "sha256:9d592720ced4a7a4ddf16adef8a126e4c8c49f22114de769343320b37674321e",
+          "sha256:66d3d8a459d5610ab77c9e2541f7de7c977629fc89134ce000e29922c8326924",
+          "sha256:6e7fca69a642c3dfa6e52b07f4bb96c93c57dcf7e2ee4dd5d96682b1aaa9398c",
+          "sha256:b800df4a565ef7287963fe8ee2de71a600389b25eba88ef56c15482209449e39",
+          "sha256:495bbaf4cc5ca53d8286fe305d2fc2fd3ecb2c8791cfdd4473e984d2eb0f3ea1",
+          "sha256:d6429da8e0adab7358ff80766fcc14c2f158a5ec45fe223bbe597070ba891ff4",
+          "sha256:bac4e3e37f04e8ed0ddf3539d8b9442e0b9571aba2efea5040ced367b820112b",
+          "sha256:4076b08c958d231f75437340dbfbb24d0f393fe79369c3ce2256f89bce8d5b57",
+          "sha256:cb4f3baf13cf2bd475654f1bbba2001cfb3ffe2ca7c3d5200602cb1250299342",
+          "sha256:16adf212c88e344ae0510016f125c8040cdb7a369a9f0ab2ad0f41320e8555f9",
+          "sha256:6265f25f914da0c2494e93c738a8a0decef66efdf86d426aa7ee499c1f8c0f1d",
+          "sha256:8720459fd8dacd4db6f35ae69460cd012a8eb661b9f6711cbfbc9403bae01cab",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:371c717386e17a8afc5fd23e9a9302078a33cf24e2a0305b7fe672eabe400b6b",
+          "sha256:755856cc2c6ba9cf468baced3af8f3de88ef6d0b4056b350116369787e1d1353",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:6751ff76db57ed2d3d2941a8be1510d979725a1224de4c625691b05334c3bcef",
+          "sha256:0c0a109dc2084e3b19b15f1b71fabaecbb1a187bdeb40e5a6cdbfa1aa6113fc8",
+          "sha256:e03fbce35f59a8e656ae9d3514d97ff621b8909eabd39087346930e4ce277e69",
+          "sha256:8e411ed87077951dda8cd4cc7704678200d88f672f8814e6a3d180c14f1e745f",
+          "sha256:dda8766c0dad066ad7097a5a84db029497edd53241ffb9e0a1d60521ca5f8eaf",
+          "sha256:0ae897eec0b80f1e601129c4af534b556b7ee39dfb6e4a0e8aabef2b6ef8339d",
+          "sha256:ba6d931045dcb03c07ed77541616a1dfd770dd20bfa9c6fa2850210e60ef8878",
+          "sha256:dbf9f6470ac021545a4dd5df0ea5b0f9116a16c00f8a91b616582df56c8052e7",
+          "sha256:a606585b6463baa8b19f4ea639720422c916f22c74a49d3495ca55e4a60c7464",
+          "sha256:37ca6ad298d946cae5df97904231c41f4eb619fe6aa14b692d3d27893f3fc4e4",
+          "sha256:c027469768e100c90493213f4d145e5aacb7d155f6eca0ddf92162a1f285c237",
+          "sha256:b6e4376d0ffe273d559e7e7f6ecc500d0e3ce01d06f5911e2b31ea915628a634",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:7275a5971a6a96d620e38597604d2f5d570c9ce0adec656886f11a87c4cc43fc",
+          "sha256:158927e8811c739e0f8f58fb783326ebd11dbda443039c8d5c384e62f2d7d3d9",
+          "sha256:448345017fd698eac04674940cdb037ba40d6d73a27fe61ef2623421e97a1962",
+          "sha256:59c717bd950c5dc0566d43fb862221231a8076057454591245e288e856e294e3",
+          "sha256:e8074f2fd8d709cd1df3f24e5589df5bcf0cba461c059a72e38bbceddea777ad",
+          "sha256:685e073bf32e9f7ee1a701332abf874aaa0ca60a156b2586655cd66028eab404",
+          "sha256:414101528ac5ce7a12f5a5ddbb5cd919c2787bb79c14abc1595c79ce4a952eea",
+          "sha256:4e03d5763aafd962457822a86079fc69a84ecc0e2e88c71c2d90b8f70cbe5f5d",
+          "sha256:db5dc1aaa60a76d03e4cf6f2bc43fd6089e29c1a34a95153aeca5300e8713aa2",
+          "sha256:0b7273661ab59d1cb7536ec8e5e7c9c37aa22f09300c52e8fe967787c742f1d0",
+          "sha256:fd981986ff3bff72fe81e90235989b31c4130aec5b6cbb1240feb70bffce5b79",
+          "sha256:1d15332932bac98df0f561ff3a88ec2860c3d6ad57bc75d26150ceb7c71ba499",
+          "sha256:9db5d2223558dbcc803203c960565efeeffb184d8522a103271a187d186df193",
+          "sha256:52637610beb651be7151c909a9754074367d14fbaf71bb7b0e80c2b80a70a8cb",
+          "sha256:7ec0784d3dfbd5d1b113df67dadddc9a1808ffd35a149515b93888f8fe5b17b5",
+          "sha256:92020237a49b943aa28391852a4e0141254b58b6f2bf9f5f44331feda47c5744",
+          "sha256:1f9a90c71dd585c9b03b11f3fe73bed0cceb183b9f99eae9b63a59a16a5e4794",
+          "sha256:6ec5c5b86c5616ca49d08ae9a66ffca38eb8bd36c147b54d673634fcad63fcf2",
+          "sha256:e758e510e0fb6ca243f89cdb23c10d2585b3aef838b2dcd21b06e8df7ca43ddf",
+          "sha256:e1363bb8c656cda6cbcdca95b8e4481006c4f24c7899f0a791c59493115d0ab7",
+          "sha256:daf4d52c2284d955c9bbf02a70fc0730b0c56957f2f440f952dff65da0b0542c",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:f1ad40552ebb611c046af623ca7731894d193248d6b9c993fe0f9d97251a2401",
+          "sha256:0193ba8c5848fe360802c837c292a96a2a8cc188b97f4f4018057d3f90cc4566",
+          "sha256:16b8e3238031bd1fac3ec4a8a022ec6abefad7eb6d34697f56c5338f4611f1a3",
+          "sha256:3169dee71b1340c883f35cc38bf7a2015b076a8f91346f752bd12f16fb7165c1",
+          "sha256:8ecfa4a28cb023759f27d21d966bfec3eb263152294173fde12dc0f2f8a45f5c",
+          "sha256:f150bb8295f4275a051c354d0c5c06814dee171deca626b07c11d54dc45e1991",
+          "sha256:8d400bb4d61da4acc6db2d91a6aa059ff5185ad5a9ee1c6751e38f74d9da62b7",
+          "sha256:dc7d18537967e274463e9092f4474250b19a51281280aa3cbcf1e172d2242f56",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:2b56d20ff15881513ab8767bc4a9d268be8171eeb23e381578d487dcaecbe564",
+          "sha256:b918d01d0e2b025dc5e95cd1b2c295e12d41b6f5333a926362fc456f49e8b20d",
+          "sha256:fb2443aed86e5f5c9ddc76e98292d96bb7e859e581693f917491071949834f8c",
+          "sha256:a05330a1591b3aeddc7b6dccb9011f6e7f6b717240d5882f46e0179d050594da",
+          "sha256:c3a0786be09a0e9cd46b81db14445c5df28e4a692fb6c426603e081825ae5806",
+          "sha256:79ed560339ffa5c870bee51a85b5b33434b2167eb2ead363e5c6e8d902038336",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:4fae1a0258e2a4d52ed01247994e51a428ea9da067a0f87d9534f95b43d4a1e2",
+          "sha256:a78eb172ce05503b5cde815982e07e3c9292b46240956fcd0c201f39db37ed8b",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:b484b2bd47cb000b150e9399d0e1c94394ff9bca4fdf1b7e4b6f064499b9011a",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:c152d35fd03b23e19c99f73046286bc075feb0f102c670580b7611156d3cdb5d",
+          "sha256:2082024eb2b6a200b4d1e0d227326cfb00a11c639ced05447942df081d8a977b",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:72f7bcf69f647352924e81fcf81f39970c1d6266fee1ca526b66ef9745bb7d34",
+          "sha256:3c8413afd0d30c4bd912b1ba225fd1bcf6e05e87261119ad615752c64113b46d",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:9f22adc9e7827ad3bc130defe9963fa829036315c748134e19fb73ea451a3f40",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:cae0b2a87936536611b636dc6b32020b519f69354f8490ba7635b6567212707d",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+          "sha256:67b6b2864c69686d3ea4c025738b799c13e9d242eb546ef7a593163fcefd3439",
+          "sha256:699e76eb1eafb82da3084dcaeded38fa88e795b33144f8807f7585b4c8dd0a88",
+          "sha256:baf09fe0754a58e76077e11cd495112f45bc4b3a94c7f44670c4d79c4ba3deec",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ]
+      },
+      "Metadata": {
+        "LastTagTime": "2026-07-28T01:05:26.566440253Z"
+      },
+      "Descriptor": {
+        "mediaType": "application/vnd.oci.image.index.v1+json",
+        "digest": "sha256:bf6d462ff8903f0d0163f1396a516198abd1734d6978317d2d1de96e7cad18e5",
+        "size": 857
+      },
+      "Identity": {
+        "Build": [
+          {
+            "Ref": "pnj8u3rxw6h88202kfo8h5scd",
+            "CreatedAt": "2026-07-28T01:05:26.765695252Z"
+          }
+        ]
+      }
+    }
+  ],
+  "authenticated": true
+}

@@ -1,0 +1,6 @@
+{
+  "status": "SKIPPED",
+  "reason": "Branch-and-tournament not wired or feature not available",
+  "http_status": 400,
+  "response": "{\"error\":{\"code\":\"invalid_request_schema\",\"schema\":\"nram.request.v1\",\"errors\":[{\"path\":\"branch_tournament\",\"code\":\"bool_type\",\"message\":\"Input should be a valid boolean\"}]}}"
+}

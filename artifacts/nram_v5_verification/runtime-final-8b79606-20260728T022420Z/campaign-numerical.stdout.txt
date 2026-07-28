@@ -1,0 +1,9 @@
+{"case_id": "entropy-low", "elapsed_ms": 140.331, "exception": null, "response_bytes": 794, "status": 200}
+{"case_id": "entropy-medium", "elapsed_ms": 135.809, "exception": null, "response_bytes": 797, "status": 200}
+{"case_id": "entropy-high", "elapsed_ms": 128.341, "exception": null, "response_bytes": 795, "status": 200}
+{"case_id": "vector-negative", "elapsed_ms": 78.651, "exception": null, "response_bytes": 774, "status": 200}
+{"case_id": "vector-zero", "elapsed_ms": 81.73, "exception": null, "response_bytes": 770, "status": 200}
+{"case_id": "vector-positive", "elapsed_ms": 68.338, "exception": null, "response_bytes": 774, "status": 200}
+{"case_id": "soft-negative", "elapsed_ms": 81.332, "exception": null, "response_bytes": 772, "status": 200}
+{"case_id": "soft-zero", "elapsed_ms": 70.96, "exception": null, "response_bytes": 768, "status": 200}
+{"case_id": "soft-positive", "elapsed_ms": 79.784, "exception": null, "response_bytes": 772, "status": 200}

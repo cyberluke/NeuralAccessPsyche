@@ -1,0 +1,6 @@
+=== ORIGINAL CONTAINERS === 
+nram-api|6c254b358178b37d2f8b446a7b07e414f2b0e68625dbf69f178a4d2196ddcf43|neuralaccesspsyche-nram-api|Up 31 minutes (healthy)
+nram-sglang|48be80a04618f45c5845e34d3774cd98e2bf92cd3534df5b3dc36d398d60b57e|neuralaccesspsyche-nram-sglang:0.5.16-nram|Up About an hour (healthy)
+=== ORIGINAL SAFE IDENTITY === 
+nram-api|image_id=sha256:0574970fec30e44d76106e9eeab6f105871cd1b85767d0515025b5f383207d55|path=uvicorn|args=["main:app","--host","0.0.0.0","--port","8000"]|project=neuralaccesspsyche|service=nram-api
+nram-sglang|image_id=sha256:f024c1401943af0dc5375fcf953354c6b8a972530ae6e62787656a18cb69465b|path=/opt/nram/entrypoint.sh|args=[]|project=neuralaccesspsyche|service=sglang

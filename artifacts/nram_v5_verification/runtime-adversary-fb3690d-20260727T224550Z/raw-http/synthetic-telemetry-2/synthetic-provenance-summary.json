@@ -1,0 +1,57 @@
+{
+  "case_id": "synthetic-provenance-summary",
+  "expected_contract": "observation",
+  "started_utc": "2026-07-27T23:16:58.466730Z",
+  "finished_utc": "2026-07-27T23:16:58.469833Z",
+  "elapsed_ms": 3.071999999519903,
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/v1/features/telemetry/RA-SYNTHETIC-SESSION-2",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "synthetic-provenance-summary"
+    },
+    "body": null,
+    "wire_body_utf8": null,
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 23:16:58 GMT",
+      "server": "uvicorn",
+      "content-length": "445",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"session_id\":\"RA-SYNTHETIC-SESSION-2\",\"total_requests\":1,\"total_tokens\":4,\"token_origin_counts\":{\"model_generated\":0,\"positive_logit_bias\":4,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0,\"applied_policy\":0},\"avg_latency_ms\":378.2,\"profiles_used\":{\"baseline\":1},\"phenomena_triggered\":{\"overlap\":4},\"last_request_at\":1785194218.4646435,\"dominant_origin\":\"positive_logit_bias\"}",
+    "json": {
+      "session_id": "RA-SYNTHETIC-SESSION-2",
+      "total_requests": 1,
+      "total_tokens": 4,
+      "token_origin_counts": {
+        "model_generated": 0,
+        "positive_logit_bias": 4,
+        "negative_logit_bias": 0,
+        "hard_mask": 0,
+        "forced_injection": 0,
+        "memory_recall": 0,
+        "planner_constraint": 0,
+        "postprocess": 0,
+        "applied_policy": 0
+      },
+      "avg_latency_ms": 378.2,
+      "profiles_used": {
+        "baseline": 1
+      },
+      "phenomena_triggered": {
+        "overlap": 4
+      },
+      "last_request_at": 1785194218.4646435,
+      "dominant_origin": "positive_logit_bias"
+    },
+    "bytes": 445
+  },
+  "exception": null
+}

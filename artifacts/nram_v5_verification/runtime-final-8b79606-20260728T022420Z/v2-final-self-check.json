@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "schema": true,
+    "commit": true,
+    "tree": true,
+    "clean_detached": true,
+    "evidence_commit_null": true,
+    "spec_hash": true,
+    "sources": true,
+    "tests_401": true,
+    "nodes_343": true,
+    "artifacts_hash": true
+  },
+  "all_passed": true,
+  "bad_artifacts": [],
+  "manifest_sha256": "a5fb13b9e29fe911108e5d4c42fa435be5cf2daed6729d4d3425a7f6695eb01f",
+  "image_ids": [
+    "sha256:efa2d7173f61b117a7e9057dab6a49322413523b96ae9e576023c32e339ed5f4",
+    "sha256:01de0ad632051a445044c1e7ab6b93128a86b7a6731a150403b1b7ecbb5b91d1"
+  ],
+  "container_ids": [
+    "035e805418ddffcf262296bc846846e6c29cf559a44bdeaffcc3f6a6bc185257",
+    "318ba1897b961c8d57eaa809cfa5b7fa637e6a02b98a46d70f4c0c27b7a2aa9c"
+  ],
+  "junit_files": [
+    {
+      "path": "..\\runtime-final-8b79606-20260728T022420Z\\full-test-results-current-image.xml",
+      "sha256": "4b96dd8bd57408b49c236f6e05b08c54c423b7418c915257e6a4f0abb6262b00"
+    },
+    {
+      "path": "..\\runtime-final-8b79606-20260728T022420Z\\gpu-test-results-current-image.xml",
+      "sha256": "0e8b8fdcf555cb4f268140c0e4d3ef60b01571ca02d44861a0abf650e442afeb"
+    },
+    {
+      "path": "..\\runtime-final-8b79606-20260728T022420Z\\adversarial-live-current-image.xml",
+      "sha256": "1e18a75773ea9ce8aeff07f06af001530270b41c43a456a250de33f01744b9f9"
+    },
+    {
+      "path": "..\\runtime-final-8b79606-20260728T022420Z\\streamlit-api-current-image.xml",
+      "sha256": "e79c27d746e38750b49db8eb7ef258b6307b520ef0e028843aacc2ae1b7da673"
+    }
+  ]
+}

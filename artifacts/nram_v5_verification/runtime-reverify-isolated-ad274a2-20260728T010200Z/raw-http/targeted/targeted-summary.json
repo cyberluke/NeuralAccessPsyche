@@ -1,0 +1,1105 @@
+[
+  {
+    "case": "auth-correct",
+    "elapsed_seconds": 0.031124353408813477,
+    "request": {
+      "path": "/v1/models",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "131",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"object\":\"list\",\"data\":[{\"id\":\"nram-qwen3-14b-awq\",\"object\":\"model\",\"created\":0,\"owned_by\":\"neuralaccesspsyche\",\"permission\":[]}]}",
+      "json": {
+        "object": "list",
+        "data": [
+          {
+            "id": "nram-qwen3-14b-awq",
+            "object": "model",
+            "created": 0,
+            "owned_by": "neuralaccesspsyche",
+            "permission": []
+          }
+        ]
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "auth-wrong",
+    "elapsed_seconds": 0.015245199203491211,
+    "request": {
+      "path": "/v1/models",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 401,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "40",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Invalid authentication token\"}",
+      "json": {
+        "error": "Invalid authentication token"
+      }
+    },
+    "exception": "HTTPError: HTTP Error 401: Unauthorized"
+  },
+  {
+    "case": "auth-random-long",
+    "elapsed_seconds": 0.013299226760864258,
+    "request": {
+      "path": "/v1/models",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 401,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "40",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Invalid authentication token\"}",
+      "json": {
+        "error": "Invalid authentication token"
+      }
+    },
+    "exception": "HTTPError: HTTP Error 401: Unauthorized"
+  },
+  {
+    "case": "auth-missing",
+    "elapsed_seconds": 0.0150146484375,
+    "request": {
+      "path": "/v1/models",
+      "method": "GET",
+      "authorization": "missing",
+      "body": null
+    },
+    "response": {
+      "status": 401,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "40",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"error\":\"Invalid authentication token\"}",
+      "json": {
+        "error": "Invalid authentication token"
+      }
+    },
+    "exception": "HTTPError: HTTP Error 401: Unauthorized"
+  },
+  {
+    "case": "capabilities",
+    "elapsed_seconds": 0.017786264419555664,
+    "request": {
+      "path": "/v1/nram/capabilities",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "1118",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"engine\":\"sglang\",\"sglang_enabled\":true,\"loaded_model_ids\":[\"nram-qwen3-14b-awq\"],\"virtual_routes\":{\"baseline_aliases\":[\"qwen3-14b-awq-baseline\"],\"persona_profiles\":{\"persona-normal\":\"normal\",\"persona-microdose\":\"microdose\",\"persona-threshold\":\"threshold\",\"persona-psychedelic\":\"psychedelic\",\"persona-peak\":\"peak\",\"persona-dissociative\":\"dissociative\",\"persona-keynote\":\"visionary-psychedelic-keynote\"},\"persona_orchestration\":\"nram-moe-orchestrator\"},\"actual_base_model\":\"nram-qwen3-14b-awq\",\"controls\":{\"prompt_steering\":true,\"hard_token_masking\":true,\"soft_logit_biasing\":true,\"dynamic_repetition_penalty\":true,\"phrase_and_source_masks\":true,\"entropy_pid\":true,\"vocabulary_logit_vectors\":true},\"verified\":{\"pre_sampling_logit_modification\":true,\"forced_token_proof\":true,\"streaming\":true},\"blocked_not_implemented\":[\"dexperts\",\"representation_control\",\"semantic_evidence_closed_loop\",\"branch_and_tournament\",\"full_causal_statistical_study\"],\"telemetry\":{\"processor_events\":\"causal_log_events\",\"nonstream_sample_join\":\"sglang_meta_info\",\"stream_sample_token_ids\":\"not_available_without_supported_post_sample_hook\"}}",
+      "json": {
+        "engine": "sglang",
+        "sglang_enabled": true,
+        "loaded_model_ids": [
+          "nram-qwen3-14b-awq"
+        ],
+        "virtual_routes": {
+          "baseline_aliases": [
+            "qwen3-14b-awq-baseline"
+          ],
+          "persona_profiles": {
+            "persona-normal": "normal",
+            "persona-microdose": "microdose",
+            "persona-threshold": "threshold",
+            "persona-psychedelic": "psychedelic",
+            "persona-peak": "peak",
+            "persona-dissociative": "dissociative",
+            "persona-keynote": "visionary-psychedelic-keynote"
+          },
+          "persona_orchestration": "nram-moe-orchestrator"
+        },
+        "actual_base_model": "nram-qwen3-14b-awq",
+        "controls": {
+          "prompt_steering": true,
+          "hard_token_masking": true,
+          "soft_logit_biasing": true,
+          "dynamic_repetition_penalty": true,
+          "phrase_and_source_masks": true,
+          "entropy_pid": true,
+          "vocabulary_logit_vectors": true
+        },
+        "verified": {
+          "pre_sampling_logit_modification": true,
+          "forced_token_proof": true,
+          "streaming": true
+        },
+        "blocked_not_implemented": [
+          "dexperts",
+          "representation_control",
+          "semantic_evidence_closed_loop",
+          "branch_and_tournament",
+          "full_causal_statistical_study"
+        ],
+        "telemetry": {
+          "processor_events": "causal_log_events",
+          "nonstream_sample_join": "sglang_meta_info",
+          "stream_sample_token_ids": "not_available_without_supported_post_sample_hook"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "compare-forced-pair",
+    "elapsed_seconds": 0.3667874336242676,
+    "request": {
+      "path": "/v1/nram/compare",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "prompt": "Reply with exactly one short word.",
+        "model": "nram-qwen3-14b-awq",
+        "baseline_model": "qwen3-14b-awq-baseline",
+        "seed": 424242,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "nram": {
+          "request_id": "RVR-COMPARE-FORCED",
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "1607",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"request_id\":\"compare-f38fb8aa\",\"prompt\":\"Reply with exactly one short word.\",\"model\":\"nram-qwen3-14b-awq\",\"baseline_model\":\"qwen3-14b-awq-baseline\",\"seed\":424242,\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"baseline\":{\"output\":\"Okay\",\"latency_ms\":275.1,\"tokens\":1,\"finish_reason\":\"length\",\"metrics\":{\"corporate_jargon_count\":0,\"repeated_phrase_ratio\":0.0,\"average_sentence_length\":1.0,\"short_declarative_ratio\":1.0,\"product_noun_count\":0,\"metaphor_marker_count\":0,\"forbidden_cliche_count\":0,\"output_length\":1},\"processor_intervened\":false,\"correlation\":{\"scheduler_request_id\":\"nram-scheduler-f2b5d6d1e3714a78b1e56ced3077e943\",\"public_model\":\"qwen3-14b-awq-baseline\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":false,\"sampled_token_ids\":[],\"sampled_tokens\":[],\"sample_join\":\"not_requested\"}},\"nram\":{\"output\":\"thank\",\"latency_ms\":71.5,\"tokens\":1,\"finish_reason\":\"length\",\"metrics\":{\"corporate_jargon_count\":0,\"repeated_phrase_ratio\":0.0,\"average_sentence_length\":1.0,\"short_declarative_ratio\":1.0,\"product_noun_count\":0,\"metaphor_marker_count\":0,\"forbidden_cliche_count\":0,\"output_length\":1},\"profile\":\"normal\",\"processor_intervened\":true,\"correlation\":{\"request_id\":\"RVR-COMPARE-FORCED\",\"scheduler_request_id\":\"nram-scheduler-181c2baf257d4284b6641572b4c33c29\",\"config_hash\":\"56c90911bce79013d0ebc1c830dd6afbbf25d269429f22aa6327346a70cfa10e\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}}",
+      "json": {
+        "request_id": "compare-f38fb8aa",
+        "prompt": "Reply with exactly one short word.",
+        "model": "nram-qwen3-14b-awq",
+        "baseline_model": "qwen3-14b-awq-baseline",
+        "seed": 424242,
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "baseline": {
+          "output": "Okay",
+          "latency_ms": 275.1,
+          "tokens": 1,
+          "finish_reason": "length",
+          "metrics": {
+            "corporate_jargon_count": 0,
+            "repeated_phrase_ratio": 0.0,
+            "average_sentence_length": 1.0,
+            "short_declarative_ratio": 1.0,
+            "product_noun_count": 0,
+            "metaphor_marker_count": 0,
+            "forbidden_cliche_count": 0,
+            "output_length": 1
+          },
+          "processor_intervened": false,
+          "correlation": {
+            "scheduler_request_id": "nram-scheduler-f2b5d6d1e3714a78b1e56ced3077e943",
+            "public_model": "qwen3-14b-awq-baseline",
+            "actual_base_model": "nram-qwen3-14b-awq",
+            "processor_intervened": false,
+            "sampled_token_ids": [],
+            "sampled_tokens": [],
+            "sample_join": "not_requested"
+          }
+        },
+        "nram": {
+          "output": "thank",
+          "latency_ms": 71.5,
+          "tokens": 1,
+          "finish_reason": "length",
+          "metrics": {
+            "corporate_jargon_count": 0,
+            "repeated_phrase_ratio": 0.0,
+            "average_sentence_length": 1.0,
+            "short_declarative_ratio": 1.0,
+            "product_noun_count": 0,
+            "metaphor_marker_count": 0,
+            "forbidden_cliche_count": 0,
+            "output_length": 1
+          },
+          "profile": "normal",
+          "processor_intervened": true,
+          "correlation": {
+            "request_id": "RVR-COMPARE-FORCED",
+            "scheduler_request_id": "nram-scheduler-181c2baf257d4284b6641572b4c33c29",
+            "config_hash": "56c90911bce79013d0ebc1c830dd6afbbf25d269429f22aa6327346a70cfa10e",
+            "applied_state_schema": "nram.applied-state.v1",
+            "public_model": "nram-qwen3-14b-awq",
+            "actual_base_model": "nram-qwen3-14b-awq",
+            "processor_intervened": true,
+            "sampled_token_ids": [
+              9702
+            ],
+            "sampled_tokens": [
+              " thank"
+            ],
+            "sample_join": "sglang_meta_info"
+          }
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-create",
+    "elapsed_seconds": 0.03286337852478027,
+    "request": {
+      "path": "/v1/nram/sessions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "profile": "peak",
+        "intensity": 0.73,
+        "seed": 424242,
+        "memory": {
+          "enabled": true,
+          "max_recent_tokens": 3,
+          "decay": 0.25
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "177",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"profile\":\"peak\",\"revision\":1,\"state\":{\"influence\":0.73,\"entropy\":0.6861999999999999,\"coherence\":0.7,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"}}",
+      "json": {
+        "id": "nram-session-3132ec1fe536",
+        "profile": "peak",
+        "revision": 1,
+        "state": {
+          "influence": 0.73,
+          "entropy": 0.6861999999999999,
+          "coherence": 0.7,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-generation",
+    "elapsed_seconds": 0.12484192848205566,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-SESSION-GENERATE",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "session_id": "nram-session-3132ec1fe536",
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "776",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-SESSION-GENERATE\",\"scheduler_request_id\":\"nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047\",\"config_hash\":\"6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-SESSION-GENERATE",
+          "scheduler_request_id": "nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047",
+          "config_hash": "6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-state-after",
+    "elapsed_seconds": 0.03160381317138672,
+    "request": {
+      "path": "/v1/nram/sessions/nram-session-3132ec1fe536/state",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "496",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"state\":{\"influence\":0.705,\"entropy\":0.6861999999999999,\"coherence\":0.7,\"momentum\":0.05,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":0.73,\"token_steering_counts\":{\"model_generated\":1,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":1,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+      "json": {
+        "id": "nram-session-3132ec1fe536",
+        "state": {
+          "influence": 0.705,
+          "entropy": 0.6861999999999999,
+          "coherence": 0.7,
+          "momentum": 0.05,
+          "rhetorical_phase": "idle"
+        },
+        "profile": "peak",
+        "intensity": 0.73,
+        "token_steering_counts": {
+          "model_generated": 1,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "request_count": 1,
+        "note": "These are simulation and control metrics, NOT measurements of consciousness."
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-events-after",
+    "elapsed_seconds": 0.02246713638305664,
+    "request": {
+      "path": "/v1/nram/sessions/nram-session-3132ec1fe536/events",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "740",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"session_id\":\"nram-session-3132ec1fe536\",\"request_count\":1,\"token_steering_counts\":{\"model_generated\":1,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"events\":[{\"type\":\"unsupported_session_controls_omitted\",\"controls\":[\"fragmentation\"],\"causal_processor_event\":false},{\"type\":\"response_correlation\",\"causal_processor_event\":false,\"scheduler_request_id\":\"nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047\",\"config_hash\":\"6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191\",\"sampled_token_ids\":[9702],\"completion_tokens\":1}],\"event_semantics\":\"response correlation/accounting; not synthetic causal attribution\"}",
+      "json": {
+        "session_id": "nram-session-3132ec1fe536",
+        "request_count": 1,
+        "token_steering_counts": {
+          "model_generated": 1,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "events": [
+          {
+            "type": "unsupported_session_controls_omitted",
+            "controls": [
+              "fragmentation"
+            ],
+            "causal_processor_event": false
+          },
+          {
+            "type": "response_correlation",
+            "causal_processor_event": false,
+            "scheduler_request_id": "nram-scheduler-bf0f9b1e219a4df385bfe59c2e630047",
+            "config_hash": "6e1d31acdec541bf0b958a4bcfdf8661fd59cfa680a913055aff5a8c1de06191",
+            "sampled_token_ids": [
+              9702
+            ],
+            "completion_tokens": 1
+          }
+        ],
+        "event_semantics": "response correlation/accounting; not synthetic causal attribution"
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-reset",
+    "elapsed_seconds": 0.014899492263793945,
+    "request": {
+      "path": "/v1/nram/sessions/nram-session-3132ec1fe536/reset",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {}
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "216",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"profile\":\"peak\",\"revision\":2,\"state\":{\"influence\":0.5,\"entropy\":0.0,\"coherence\":1.0,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"message\":\"Session state and all NRAM memory cleared.\"}",
+      "json": {
+        "id": "nram-session-3132ec1fe536",
+        "profile": "peak",
+        "revision": 2,
+        "state": {
+          "influence": 0.5,
+          "entropy": 0.0,
+          "coherence": 1.0,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        },
+        "message": "Session state and all NRAM memory cleared."
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "session-state-reset",
+    "elapsed_seconds": 0.014695405960083008,
+    "request": {
+      "path": "/v1/nram/sessions/nram-session-3132ec1fe536/state",
+      "method": "GET",
+      "authorization": "Bearer <redacted>",
+      "body": null
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "478",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-session-3132ec1fe536\",\"state\":{\"influence\":0.5,\"entropy\":0.0,\"coherence\":1.0,\"momentum\":0.0,\"rhetorical_phase\":\"idle\"},\"profile\":\"peak\",\"intensity\":0.73,\"token_steering_counts\":{\"model_generated\":0,\"positive_logit_bias\":0,\"negative_logit_bias\":0,\"hard_mask\":0,\"forced_injection\":0,\"memory_recall\":0,\"planner_constraint\":0,\"postprocess\":0},\"phenomenon_counts\":{},\"request_count\":0,\"note\":\"These are simulation and control metrics, NOT measurements of consciousness.\"}",
+      "json": {
+        "id": "nram-session-3132ec1fe536",
+        "state": {
+          "influence": 0.5,
+          "entropy": 0.0,
+          "coherence": 1.0,
+          "momentum": 0.0,
+          "rhetorical_phase": "idle"
+        },
+        "profile": "peak",
+        "intensity": 0.73,
+        "token_steering_counts": {
+          "model_generated": 0,
+          "positive_logit_bias": 0,
+          "negative_logit_bias": 0,
+          "hard_mask": 0,
+          "forced_injection": 0,
+          "memory_recall": 0,
+          "planner_constraint": 0,
+          "postprocess": 0
+        },
+        "phenomenon_counts": {},
+        "request_count": 0,
+        "note": "These are simulation and control metrics, NOT measurements of consciousness."
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "hash-order-a",
+    "elapsed_seconds": 0.09851360321044922,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-HASH-ORDER",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "770",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-a6919266156e4905a97b9d909714222e\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-HASH-ORDER\",\"scheduler_request_id\":\"nram-scheduler-a6919266156e4905a97b9d909714222e\",\"config_hash\":\"5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-a6919266156e4905a97b9d909714222e",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-HASH-ORDER",
+          "scheduler_request_id": "nram-scheduler-a6919266156e4905a97b9d909714222e",
+          "config_hash": "5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "hash-order-b",
+    "elapsed_seconds": 0.10682916641235352,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "forced_token_id": 9702,
+          "forced_token_enabled": true,
+          "profile_logit_steering_enabled": false,
+          "prompt_steering_enabled": false,
+          "telemetry_top_k": 20,
+          "telemetry_max_steps": 8,
+          "include_telemetry": true,
+          "request_id": "RVR-HASH-ORDER"
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:15 GMT",
+        "server": "uvicorn",
+        "content-length": "770",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-7ede47701b5f43a2a64717c4b7781b82\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-HASH-ORDER\",\"scheduler_request_id\":\"nram-scheduler-7ede47701b5f43a2a64717c4b7781b82\",\"config_hash\":\"5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-7ede47701b5f43a2a64717c4b7781b82",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-HASH-ORDER",
+          "scheduler_request_id": "nram-scheduler-7ede47701b5f43a2a64717c4b7781b82",
+          "config_hash": "5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "duplicate-caller-a",
+    "elapsed_seconds": 0.1067817211151123,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-DUPLICATE-CALLER-ID",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 9702
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:16 GMT",
+        "server": "uvicorn",
+        "content-length": "779",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-27a321269e11413280c90841fad33eb0\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-DUPLICATE-CALLER-ID\",\"scheduler_request_id\":\"nram-scheduler-27a321269e11413280c90841fad33eb0\",\"config_hash\":\"5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-27a321269e11413280c90841fad33eb0",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "thank"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-DUPLICATE-CALLER-ID",
+          "scheduler_request_id": "nram-scheduler-27a321269e11413280c90841fad33eb0",
+          "config_hash": "5bb55adbf0b631cf7e5f5b1b7bb0dfa531231a887a06e081a42e91fb9898c58c",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9702
+          ],
+          "sampled_tokens": [
+            " thank"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "duplicate-caller-b",
+    "elapsed_seconds": 0.09660720825195312,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-DUPLICATE-CALLER-ID",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false,
+          "forced_token_enabled": true,
+          "forced_token_id": 12095
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:16 GMT",
+        "server": "uvicorn",
+        "content-length": "780",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-5616763dce16417f9388e1bb0004269d\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Paris\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-DUPLICATE-CALLER-ID\",\"scheduler_request_id\":\"nram-scheduler-5616763dce16417f9388e1bb0004269d\",\"config_hash\":\"8ea49ae3b505c698a9aad2045f83fcce579cbb20262fe7d6603472d4faa9dda6\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[12095],\"sampled_tokens\":[\" Paris\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-5616763dce16417f9388e1bb0004269d",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Paris"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-DUPLICATE-CALLER-ID",
+          "scheduler_request_id": "nram-scheduler-5616763dce16417f9388e1bb0004269d",
+          "config_hash": "8ea49ae3b505c698a9aad2045f83fcce579cbb20262fe7d6603472d4faa9dda6",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            12095
+          ],
+          "sampled_tokens": [
+            " Paris"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "moe-bounded-live",
+    "elapsed_seconds": 0.3390491008758545,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-moe-orchestrator",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-MOE-BOUNDED",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:16 GMT",
+        "server": "uvicorn",
+        "content-length": "774",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-0d08ba23c7254f14a5f301a8d007020f\",\"object\":\"chat.completion\",\"created\":1785201856,\"model\":\"nram-moe-orchestrator\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":144,\"completion_tokens\":1,\"total_tokens\":145},\"nram_correlation\":{\"request_id\":\"RVR-MOE-BOUNDED\",\"scheduler_request_id\":\"nram-scheduler-0d08ba23c7254f14a5f301a8d007020f\",\"config_hash\":\"6c7bda541af14f8e9f8836f9593ef01873a9928219f36d94cc16c970512aa1ad\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-moe-orchestrator\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9454],\"sampled_tokens\":[\"Yes\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-0d08ba23c7254f14a5f301a8d007020f",
+        "object": "chat.completion",
+        "created": 1785201856,
+        "model": "nram-moe-orchestrator",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Yes"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 144,
+          "completion_tokens": 1,
+          "total_tokens": 145
+        },
+        "nram_correlation": {
+          "request_id": "RVR-MOE-BOUNDED",
+          "scheduler_request_id": "nram-scheduler-0d08ba23c7254f14a5f301a8d007020f",
+          "config_hash": "6c7bda541af14f8e9f8836f9593ef01873a9928219f36d94cc16c970512aa1ad",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-moe-orchestrator",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            9454
+          ],
+          "sampled_tokens": [
+            "Yes"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  },
+  {
+    "case": "persona-disconnect-retry",
+    "elapsed_seconds": 0.06918525695800781,
+    "request": {
+      "path": "/v1/chat/completions",
+      "method": "POST",
+      "authorization": "Bearer <redacted>",
+      "body": {
+        "model": "nram-qwen3-14b-awq",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply with exactly one short word."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "max_tokens": 1,
+        "seed": 424242,
+        "stream": false,
+        "tools": [],
+        "nram": {
+          "request_id": "RVR-PERSONA-RETRY",
+          "include_telemetry": true,
+          "telemetry_max_steps": 8,
+          "telemetry_top_k": 20,
+          "prompt_steering_enabled": false,
+          "profile_logit_steering_enabled": false
+        }
+      }
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 01:24:19 GMT",
+        "server": "uvicorn",
+        "content-length": "771",
+        "content-type": "application/json",
+        "connection": "close"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-fd7c4883dd674a259423c3fbc95b4144\",\"object\":\"chat.completion\",\"created\":1785201860,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Okay\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":19,\"completion_tokens\":1,\"total_tokens\":20},\"nram_correlation\":{\"request_id\":\"RVR-PERSONA-RETRY\",\"scheduler_request_id\":\"nram-scheduler-fd7c4883dd674a259423c3fbc95b4144\",\"config_hash\":\"f31a51ac3c6a112979e8b76cf712abcd808c7180ce06074298f8b4eda9b2d787\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[32313],\"sampled_tokens\":[\"Okay\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "json": {
+        "id": "nram-scheduler-fd7c4883dd674a259423c3fbc95b4144",
+        "object": "chat.completion",
+        "created": 1785201860,
+        "model": "nram-qwen3-14b-awq",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Okay"
+            },
+            "finish_reason": "length",
+            "reasoning_content": null
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 19,
+          "completion_tokens": 1,
+          "total_tokens": 20
+        },
+        "nram_correlation": {
+          "request_id": "RVR-PERSONA-RETRY",
+          "scheduler_request_id": "nram-scheduler-fd7c4883dd674a259423c3fbc95b4144",
+          "config_hash": "f31a51ac3c6a112979e8b76cf712abcd808c7180ce06074298f8b4eda9b2d787",
+          "applied_state_schema": "nram.applied-state.v1",
+          "public_model": "nram-qwen3-14b-awq",
+          "actual_base_model": "nram-qwen3-14b-awq",
+          "processor_intervened": true,
+          "sampled_token_ids": [
+            32313
+          ],
+          "sampled_tokens": [
+            "Okay"
+          ],
+          "sample_join": "sglang_meta_info"
+        }
+      }
+    },
+    "exception": null
+  }
+]

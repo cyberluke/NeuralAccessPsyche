@@ -1,0 +1,15 @@
+{
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "sglang": "0.5.16",
+  "dill": "0.4.1",
+  "module": "nram_sglang.processor",
+  "qualname": "NRAMLogitProcessor",
+  "raw_bytes": 59,
+  "hex_chars": 118,
+  "payload_chars": 134,
+  "payload_sha256": "23729b2a6ecbc243ba97980fd8a8235eb8643da1f9dae7ec6d94ebccf3614fa8",
+  "from_str_type_module": "nram_sglang.processor",
+  "from_str_type_qualname": "NRAMLogitProcessor",
+  "zero_arg_type": "NRAMLogitProcessor",
+  "pickletools": "    0: \\x80 PROTO      4\n    2: \\x95 FRAME      48\n   11: \\x8c SHORT_BINUNICODE 'nram_sglang.processor'\n   34: \\x94 MEMOIZE    (as 0)\n   35: \\x8c SHORT_BINUNICODE 'NRAMLogitProcessor'\n   55: \\x94 MEMOIZE    (as 1)\n   56: \\x93 STACK_GLOBAL\n   57: \\x94 MEMOIZE    (as 2)\n   58: .    STOP\nhighest protocol among opcodes = 4\n"
+}

@@ -1,0 +1,37 @@
+{
+  "junit": [
+    {
+      "path": "full-test-results-current-image.xml",
+      "sha256": "4b96dd8bd57408b49c236f6e05b08c54c423b7418c915257e6a4f0abb6262b00",
+      "tests": 343,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "gpu-test-results-current-image.xml",
+      "sha256": "0e8b8fdcf555cb4f268140c0e4d3ef60b01571ca02d44861a0abf650e442afeb",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "adversarial-live-current-image.xml",
+      "sha256": "1e18a75773ea9ce8aeff07f06af001530270b41c43a456a250de33f01744b9f9",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "streamlit-api-current-image.xml",
+      "sha256": "e79c27d746e38750b49db8eb7ef258b6307b520ef0e028843aacc2ae1b7da673",
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "total_records_in_manifest": 401
+}

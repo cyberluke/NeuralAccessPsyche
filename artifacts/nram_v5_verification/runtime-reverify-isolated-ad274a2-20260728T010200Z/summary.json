@@ -1,0 +1,79 @@
+{
+  "status": "PARTIAL",
+  "requested_mode": "runtime-adversary",
+  "actual_mode": "runtime-adversary",
+  "branch_or_worktree": "main primary worktree plus artifacts/nram_v5_verification/isolated-build-ad274a2-20260728T010200Z",
+  "starting_commit": "ad274a2c4b0575cf796659073fb69a962dbb66d0",
+  "resulting_commit": "no commit created",
+  "target_tree": "cb0457f4f09f00cd6e7c94dca15bd15ddd4fe128",
+  "canonical_specification_commit": "fb3690d7884bdbcaef0e82608776065e19332990",
+  "canonical_specification_git_blob_sha256": "9bbd2e93a2750ab1d1094e823487f862b080512025128247e8d7d00f27675506",
+  "isolated_context_authenticated_blobs": 269,
+  "isolated_context_failures": 0,
+  "runtime_image_source_authenticated": true,
+  "verdict_counts": {
+    "BLOCKED": 6,
+    "FAILED_VERIFICATION": 6,
+    "UNCONFIRMED": 1,
+    "VERIFIED_FIXED": 11
+  },
+  "test_results": {
+    "adversarial_live": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "first_full_noncanonical_names": {
+      "tests": 246,
+      "failures": 9,
+      "errors": 0,
+      "skipped": 0
+    },
+    "full_canonical_names": {
+      "tests": 246,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "gpu": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ruff": "All checks passed!",
+    "mypy": "Success: no issues found in 4 source files",
+    "npm_audit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "validation_nonfinite_failures": {
+      "temperature-nan": 500,
+      "temperature-inf": 500,
+      "top-p-nan": 500
+    },
+    "unsupported_fail_loud_statuses": {
+      "unsupported-dexperts": 400,
+      "unsupported-activation_addition": 400,
+      "unsupported-actadd": 400,
+      "unsupported-conceptor_steering": 400,
+      "unsupported-hidden_state_probes": 400,
+      "unsupported-latent_closed_loop": 400,
+      "unsupported-semantic_novelty_controller": 400,
+      "unsupported-evidence_guard": 400,
+      "unsupported-branch_tournament": 400,
+      "unsupported-reft": 400,
+      "unsupported-soft_prompts": 400,
+      "unsupported-attention_head_gating": 400,
+      "unsupported-kv_cache_firewall": 400,
+      "unsupported-gpu_native_semantic_control": 400,
+      "persona-unsupported-dexperts": 400
+    }
+  },
+  "processor_event_count": 307
+}

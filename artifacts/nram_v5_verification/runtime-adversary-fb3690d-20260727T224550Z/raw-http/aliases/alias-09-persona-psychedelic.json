@@ -1,0 +1,78 @@
+{
+  "case_id": "alias-09-persona-psychedelic",
+  "expected_contract": "bounded one-token completion or pre-generation model-identity rejection",
+  "started_utc": "2026-07-27T22:49:18.778478Z",
+  "finished_utc": "2026-07-27T22:49:18.859406Z",
+  "elapsed_ms": 80.90090000041528,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "alias-09-persona-psychedelic"
+    },
+    "body": {
+      "model": "persona-psychedelic",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-ALIAS-09-persona-psychedelic",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"persona-psychedelic\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-ALIAS-09-persona-psychedelic\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "date": "Mon, 27 Jul 2026 22:49:18 GMT",
+      "server": "uvicorn",
+      "content-length": "460",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"id\":\"bc4034868ec3454aa90c6b708d7eed8b\",\"object\":\"chat.completion\",\"created\":1785192558,\"model\":\"persona-psychedelic\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"Yes\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":202,\"completion_tokens\":1,\"total_tokens\":203},\"nram_correlation\":{\"request_id\":\"RA-ALIAS-09-persona-psychedelic\",\"config_hash\":\"73b9ee3ce26f0c131989a23a2b36512516bbfd39fa6e07259d4318066b55baf6\"}}",
+    "json": {
+      "id": "bc4034868ec3454aa90c6b708d7eed8b",
+      "object": "chat.completion",
+      "created": 1785192558,
+      "model": "persona-psychedelic",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Yes"
+          },
+          "finish_reason": "length",
+          "reasoning_content": null
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 1,
+        "total_tokens": 203
+      },
+      "nram_correlation": {
+        "request_id": "RA-ALIAS-09-persona-psychedelic",
+        "config_hash": "73b9ee3ce26f0c131989a23a2b36512516bbfd39fa6e07259d4318066b55baf6"
+      }
+    },
+    "bytes": 460
+  },
+  "exception": null
+}

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Call Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        #dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        .panel {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        #visualization {
+            height: calc(100vh - 40px);
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+        }
+
+        #flow-diagram, #heatmap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .metric-card {
+            background: #333;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .metric-title {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .node {
+            fill: #4CAF50;
+        }
+
+        .link {
+            stroke: #666;
+            stroke-opacity: 0.6;
+        }
+
+        .success {
+            fill: #4CAF50;
+        }
+
+        .error {
+            fill: #f44336;
+        }
+
+        .heatmap-cell {
+            fill: #333;
+            stroke: #1a1a1a;
+            stroke-width: 1px;
+            transition: fill 0.3s ease;
+        }
+
+        .heatmap-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="dashboard">
+        <div class="panel" id="visualization">
+            <div id="flow-diagram">
+                <h2>API Call Flow</h2>
+                <svg width="100%" height="90%"></svg>
+            </div>
+            <div id="heatmap">
+                <h2>Token Flow Heatmap</h2>
+                <svg width="100%" height="90%"></svg>
+                <div class="heatmap-tooltip" style="display: none;"></div>
+            </div>
+        </div>
+        <div class="panel" id="metrics">
+            <h2>Real-time Metrics</h2>
+            <div class="metric-card">
+                <div class="metric-title">Total Calls</div>
+                <div class="metric-value" id="total-calls">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Success Rate</div>
+                <div class="metric-value" id="success-rate">0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Average Latency</div>
+                <div class="metric-value" id="avg-latency">0ms</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Total Tokens</div>
+                <div class="metric-value" id="total-tokens">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Flow Diagram Setup
+        const flowWidth = document.querySelector('#flow-diagram svg').clientWidth;
+        const flowHeight = document.querySelector('#flow-diagram svg').clientHeight;
+
+        const flowSvg = d3.select('#flow-diagram svg');
+        const simulation = d3.forceSimulation()
+            .force('link', d3.forceLink().id(d => d.id).distance(100))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(flowWidth / 2, flowHeight / 2));
+
+        let nodes = [
+            {id: 'Client', fixed: true, x: flowWidth * 0.2, y: flowHeight * 0.5},
+            {id: 'NRAM', fixed: true, x: flowWidth * 0.5, y: flowHeight * 0.5},
+            {id: 'OpenAI', fixed: true, x: flowWidth * 0.8, y: flowHeight * 0.5}
+        ];
+
+        let links = [];
+
+        // Heatmap Setup
+        const heatmapWidth = document.querySelector('#heatmap svg').clientWidth;
+        const heatmapHeight = document.querySelector('#heatmap svg').clientHeight;
+        const heatmapSvg = d3.select('#heatmap svg');
+        const tooltip = d3.select('.heatmap-tooltip');
+
+        const gridSize = 20;
+        const columns = Math.floor(heatmapWidth / gridSize);
+        const rows = Math.floor(heatmapHeight / gridSize);
+        let heatmapData = new Array(rows * columns).fill(0);
+
+        // Create heatmap grid
+        const heatmapGrid = heatmapSvg.append('g')
+            .attr('class', 'heatmap-grid');
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < columns; col++) {
+                heatmapGrid.append('rect')
+                    .attr('class', 'heatmap-cell')
+                    .attr('x', col * gridSize)
+                    .attr('y', row * gridSize)
+                    .attr('width', gridSize - 1)
+                    .attr('height', gridSize - 1)
+                    .attr('data-row', row)
+                    .attr('data-col', col)
+                    .on('mouseover', function(event) {
+                        const rect = d3.select(this);
+                        const value = heatmapData[row * columns + col];
+                        tooltip.style('display', 'block')
+                            .html(`Token Flow: ${value.toFixed(2)}`)
+                            .style('left', (event.pageX + 10) + 'px')
+                            .style('top', (event.pageY - 10) + 'px');
+                    })
+                    .on('mouseout', function() {
+                        tooltip.style('display', 'none');
+                    });
+            }
+        }
+
+        // Color scale for heatmap
+        const colorScale = d3.scaleSequential()
+            .domain([0, 1])
+            .interpolator(d3.interpolateViridis);
+
+        function updateHeatmap(tokenFlow) {
+            // Decay existing values
+            heatmapData = heatmapData.map(v => v * 0.95);
+
+            // Add new token flow
+            const idx = Math.floor(Math.random() * heatmapData.length);
+            heatmapData[idx] = Math.min(1, heatmapData[idx] + tokenFlow);
+
+            // Update visualization
+            heatmapGrid.selectAll('.heatmap-cell')
+                .data(heatmapData)
+                .transition()
+                .duration(300)
+                .style('fill', d => colorScale(d));
+        }
+
+        // Initialize WebSocket connection
+        const ws = new WebSocket(`ws://${window.location.host}/ws/api-viz`);
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'metrics') {
+                updateMetrics(data.metrics);
+            } else if (data.type === 'call') {
+                animateAPICall(data.call);
+                if (data.call.tokens) {
+                    updateHeatmap(data.call.tokens / 1000);  // Normalize token count
+                }
+            }
+        };
+
+        function updateMetrics(metrics) {
+            document.getElementById('total-calls').textContent = metrics.total_calls;
+            document.getElementById('success-rate').textContent = metrics.success_rate;
+            document.getElementById('avg-latency').textContent = metrics.average_latency;
+            document.getElementById('total-tokens').textContent = metrics.total_tokens;
+        }
+
+        function animateAPICall(call) {
+            // Create temporary nodes for the API call
+            const requestNode = {
+                id: `request-${call.id}`,
+                type: 'request',
+                timestamp: Date.now()
+            };
+
+            // Add new nodes and links
+            nodes = nodes.concat(requestNode);
+            links = links.concat([
+                {source: 'Client', target: requestNode.id},
+                {target: 'NRAM', source: requestNode.id},
+                {source: 'NRAM', target: 'OpenAI'}
+            ]);
+
+            // Update visualization
+            updateVisualization();
+
+            // Remove temporary nodes after animation
+            setTimeout(() => {
+                nodes = nodes.filter(n => n.id !== requestNode.id);
+                links = links.filter(l => 
+                    l.source.id !== requestNode.id && 
+                    l.target.id !== requestNode.id
+                );
+                updateVisualization();
+            }, 3000);
+        }
+
+        function updateVisualization() {
+            // Update links
+            const link = flowSvg.selectAll('.link')
+                .data(links, d => `${d.source.id}-${d.target.id}`);
+
+            link.exit().remove();
+
+            const linkEnter = link.enter()
+                .append('line')
+                .attr('class', 'link');
+
+            // Update nodes
+            const node = flowSvg.selectAll('.node')
+                .data(nodes, d => d.id);
+
+            node.exit().remove();
+
+            const nodeEnter = node.enter()
+                .append('circle')
+                .attr('class', d => `node ${d.type || ''}`)
+                .attr('r', d => d.fixed ? 20 : 8)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+
+            nodeEnter.append('title')
+                .text(d => d.id);
+
+            // Update simulation
+            simulation
+                .nodes(nodes)
+                .on('tick', ticked);
+
+            simulation.force('link')
+                .links(links);
+
+            simulation.alpha(1).restart();
+
+            function ticked() {
+                linkEnter
+                    .merge(link)
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                nodeEnter
+                    .merge(node)
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+            }
+        }
+
+        function dragstarted(event) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }
+
+        function dragged(event) {
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }
+
+        function dragended(event) {
+            if (!event.active) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }
+
+        // Initial visualization update
+        updateVisualization();
+    </script>
+</body>
+</html>

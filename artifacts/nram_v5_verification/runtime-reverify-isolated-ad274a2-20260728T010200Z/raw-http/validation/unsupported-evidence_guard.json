@@ -1,0 +1,56 @@
+{
+  "case_id": "unsupported-evidence_guard",
+  "expected_contract": "stable 4xx before generation",
+  "started_utc": "2026-07-28T01:18:22.910162Z",
+  "finished_utc": "2026-07-28T01:18:22.926093Z",
+  "elapsed_ms": 15.916800000013609,
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/v1/chat/completions",
+    "headers": {
+      "Authorization": "Bearer <redacted>",
+      "Content-Type": "application/json",
+      "X-Runtime-Adversary-Case": "unsupported-evidence_guard"
+    },
+    "body": {
+      "model": "nram-qwen3-14b-awq",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Reply with exactly one short word."
+        }
+      ],
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_tokens": 1,
+      "seed": 424242,
+      "stream": false,
+      "tools": [],
+      "nram": {
+        "request_id": "RA-VALID-unsupported-evidence_guard",
+        "include_telemetry": true,
+        "telemetry_max_steps": 4,
+        "telemetry_top_k": 5,
+        "evidence_guard": true
+      }
+    },
+    "wire_body_utf8": "{\"model\":\"nram-qwen3-14b-awq\",\"messages\":[{\"role\":\"user\",\"content\":\"Reply with exactly one short word.\"}],\"temperature\":0.0,\"top_p\":1.0,\"max_tokens\":1,\"seed\":424242,\"stream\":false,\"tools\":[],\"nram\":{\"request_id\":\"RA-VALID-unsupported-evidence_guard\",\"include_telemetry\":true,\"telemetry_max_steps\":4,\"telemetry_top_k\":5,\"evidence_guard\":true}}",
+    "timeout_seconds": 180.0
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "date": "Tue, 28 Jul 2026 01:18:22 GMT",
+      "server": "uvicorn",
+      "content-length": "192",
+      "content-type": "application/json",
+      "connection": "close"
+    },
+    "body_utf8": "{\"error\":\"{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:evidence_guard'}]}\"}",
+    "json": {
+      "error": "{'code': 'invalid_request_schema', 'schema': 'nram.request.v1', 'errors': [{'path': '', 'code': 'value_error', 'message': 'Value error, unsupported_nram_features:evidence_guard'}]}"
+    },
+    "bytes": 192
+  },
+  "exception": "HTTPError: HTTP Error 400: Bad Request"
+}

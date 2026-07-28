@@ -1,0 +1,66 @@
+{
+  "case_id": "nonstream-raw-close-50ms",
+  "request_id": "FINAL-CANCEL-NONSTREAM",
+  "max_tokens": 64,
+  "forced_schedule_length": 64,
+  "elapsed_ms_to_close": 50.362599999061786,
+  "closed_at_target_50ms": true,
+  "samples": [
+    {
+      "seconds_after_close": 0.0,
+      "event_count": 2,
+      "max_invocation_count": 2,
+      "scheduler_request_ids": [
+        "nram-scheduler-231167a1f9b0403f9a899e6d4caa69f3"
+      ]
+    },
+    {
+      "seconds_after_close": 0.5,
+      "event_count": 2,
+      "max_invocation_count": 2,
+      "scheduler_request_ids": [
+        "nram-scheduler-231167a1f9b0403f9a899e6d4caa69f3"
+      ]
+    },
+    {
+      "seconds_after_close": 3.5,
+      "event_count": 2,
+      "max_invocation_count": 2,
+      "scheduler_request_ids": [
+        "nram-scheduler-231167a1f9b0403f9a899e6d4caa69f3"
+      ]
+    }
+  ],
+  "abort_access_count_before": 2,
+  "abort_access_count_after": 3,
+  "abort_access_delta": 1,
+  "new_abort_access_lines": [
+    "2026-07-28T03:43:28.229320010Z [2026-07-28 03:43:28] INFO:     172.22.0.3:58398 - \"POST /abort_request HTTP/1.1\" 200 OK"
+  ],
+  "retry": {
+    "request_id": "FINAL-CANCEL-RETRY",
+    "started_seconds_after_close": 6.000009307172149e-07,
+    "finished_seconds_after_close": 0.2448608000013337,
+    "response": {
+      "status": 200,
+      "headers": {
+        "date": "Tue, 28 Jul 2026 03:43:28 GMT",
+        "server": "uvicorn",
+        "content-length": "774",
+        "content-type": "application/json"
+      },
+      "body_utf8": "{\"id\":\"nram-scheduler-3dba73489ebe4eb9a2cfcd2da19158ec\",\"object\":\"chat.completion\",\"created\":1785210208,\"model\":\"nram-qwen3-14b-awq\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"thank\"},\"finish_reason\":\"length\",\"reasoning_content\":null}],\"usage\":{\"prompt_tokens\":16,\"completion_tokens\":1,\"total_tokens\":17},\"nram_correlation\":{\"request_id\":\"FINAL-CANCEL-RETRY\",\"scheduler_request_id\":\"nram-scheduler-3dba73489ebe4eb9a2cfcd2da19158ec\",\"config_hash\":\"a45af0eb46aa2b0294f9a7bab6c62d8cd6bd4e735aff1b136e295ddcdc8abfc1\",\"applied_state_schema\":\"nram.applied-state.v1\",\"public_model\":\"nram-qwen3-14b-awq\",\"actual_base_model\":\"nram-qwen3-14b-awq\",\"processor_intervened\":true,\"sampled_token_ids\":[9702],\"sampled_tokens\":[\" thank\"],\"sample_join\":\"sglang_meta_info\"}}",
+      "elapsed_ms": 244.77289999958884
+    },
+    "event_count": 1,
+    "invocation_counts": [
+      1
+    ],
+    "scheduler_request_ids": [
+      "nram-scheduler-3dba73489ebe4eb9a2cfcd2da19158ec"
+    ],
+    "distinct_scheduler_id": true,
+    "invocation_reset": true
+  },
+  "passed": true
+}
