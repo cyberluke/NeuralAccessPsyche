@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -45,12 +46,28 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # Exception handlers
+@app.exception_handler(RequestValidationError)
+async def request_validation_exception_handler(request, exc):
+    """Return finite, stable validation errors even when input contains NaN/Inf."""
+    errors = []
+    for item in exc.errors():
+        errors.append({
+            "type": item.get("type", "invalid_value"),
+            "loc": list(item.get("loc", ())),
+            "msg": item.get("msg", "Invalid input"),
+        })
+    return JSONResponse(
+        status_code=422,
+        content={"error": {"code": "invalid_request_schema", "details": errors}},
+    )
+
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     logger.error(f"HTTP Exception: {exc.detail}")
     return JSONResponse(
         status_code=exc.status_code,
-        content={"error": str(exc.detail)}
+        content={"error": exc.detail if isinstance(exc.detail, dict) else str(exc.detail)}
     )
 
 @app.exception_handler(Exception)

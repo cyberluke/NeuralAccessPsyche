@@ -350,6 +350,8 @@ class SGLangEngine:
             base_url=self._base_url,
             timeout=httpx.Timeout(timeout, connect=30.0) if timeout else None,
         )
+        self._abort_lock = asyncio.Lock()
+        self._aborted_request_ids: Dict[str, None] = {}
         self._serialized_processor = serialize_processor(NRAMLogitProcessor)
         logger.info(f"SGLangEngine initialized: base_url={base_url}, model={model}")
 
@@ -360,6 +362,14 @@ class SGLangEngine:
         """Abort one real SGLang request through the official 0.5.16 endpoint."""
         if not scheduler_request_id:
             return
+        async with self._abort_lock:
+            if scheduler_request_id in self._aborted_request_ids:
+                return
+            self._aborted_request_ids[scheduler_request_id] = None
+            # Request IDs are unique. Keep bounded history so route cleanup and
+            # engine cancellation cannot issue duplicate official abort calls.
+            if len(self._aborted_request_ids) > 4096:
+                self._aborted_request_ids.pop(next(iter(self._aborted_request_ids)))
         try:
             response = await self._client.post(
                 self._abort_url,

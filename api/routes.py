@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, WebSocket, Request
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict, Any
 from core.llm_handler import LLMHandler, InferenceError
 from core.nram import NRAM
@@ -75,14 +75,14 @@ class ChatCompletionRequest(BaseModel):
 
     model: str
     messages: List[Dict[str, str]]
-    temperature: Optional[float] = 1.0
-    max_tokens: Optional[int] = 100
+    temperature: Optional[float] = Field(1.0, ge=0.0, le=2.0)
+    max_tokens: Optional[int] = Field(100, ge=1, le=8192)
     stream: Optional[bool] = False
-    top_p: Optional[float] = 1.0
+    top_p: Optional[float] = Field(1.0, ge=0.0, le=1.0)
     seed: Optional[int] = None
     stop: Optional[List[str]] = None
-    frequency_penalty: Optional[float] = 0.0
-    presence_penalty: Optional[float] = 0.0
+    frequency_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0)
+    presence_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0)
     response_format: Optional[Dict[str, Any]] = None
     tools: Optional[List[Dict[str, Any]]] = None
     tool_choice: Optional[Any] = None
@@ -206,29 +206,142 @@ def _record_session_result(snapshot: Optional[Any], response: Any) -> None:
     )
 
 
-async def _complete_with_lifecycle(engine: Any, engine_request: EngineRequest, raw_request: Optional[Request] = None):
-    """Abort SGLang if a non-stream client disconnects before completion."""
+async def _wait_for_disconnect(raw_request: Any) -> bool:
+    """Wait for the ASGI disconnect event without depending on response cleanup."""
+    receive = getattr(raw_request, "receive", None)
+    if callable(receive):
+        while True:
+            message = await receive()
+            if message.get("type") == "http.disconnect":
+                return True
+
+    # Small test doubles and older Request implementations may expose only
+    # is_disconnected(). Production Starlette requests use the receive path.
+    while True:
+        if await raw_request.is_disconnected():
+            return True
+        await asyncio.sleep(0.01)
+
+
+async def _complete_with_lifecycle(
+    engine: Any,
+    engine_request: EngineRequest,
+    raw_request: Optional[Request] = None,
+):
+    """Race non-stream completion against a real ASGI disconnect event."""
     task = asyncio.create_task(engine.complete(engine_request))
     if raw_request is None:
         return await task
 
-    async def wait_for_disconnect() -> bool:
-        while not task.done():
-            if await raw_request.is_disconnected():
-                return True
-            await asyncio.sleep(0.05)
-        return False
+    watcher = asyncio.create_task(_wait_for_disconnect(raw_request))
+    try:
+        done, _ = await asyncio.wait({task, watcher}, return_when=asyncio.FIRST_COMPLETED)
+        # A response that completes in the same event-loop turn wins; completed
+        # requests must never receive a spurious abort.
+        if task in done:
+            return await task
+        if watcher.result():
+            await engine.abort(engine_request.runtime_request_id, reason="client_disconnected")
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+            raise HTTPException(status_code=499, detail={"code": "client_disconnected"})
+        return await task
+    except asyncio.CancelledError:
+        if not task.done():
+            await engine.abort(engine_request.runtime_request_id, reason="downstream_cancelled")
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
+        raise
+    finally:
+        watcher.cancel()
+        await asyncio.gather(watcher, return_exceptions=True)
 
-    watcher = asyncio.create_task(wait_for_disconnect())
-    done, _ = await asyncio.wait({task, watcher}, return_when=asyncio.FIRST_COMPLETED)
-    if watcher in done and watcher.result() and not task.done():
-        await engine.abort(engine_request.runtime_request_id, reason="client_disconnected")
-        task.cancel()
-        await asyncio.gather(task, return_exceptions=True)
-        raise HTTPException(status_code=499, detail={"code": "client_disconnected"})
-    watcher.cancel()
-    await asyncio.gather(watcher, return_exceptions=True)
-    return await task
+
+async def _stream_with_lifecycle(
+    engine: Any,
+    engine_request: EngineRequest,
+    raw_request: Optional[Request],
+):
+    """Relay SSE while independently monitoring disconnect and closing upstream."""
+    upstream = engine.stream(engine_request).__aiter__()
+    disconnect = (
+        asyncio.create_task(_wait_for_disconnect(raw_request))
+        if raw_request is not None
+        else None
+    )
+    next_chunk: Optional[asyncio.Task[Any]] = None
+    completed = False
+    aborted = False
+
+    async def abort_once(reason: str) -> None:
+        nonlocal aborted
+        if aborted:
+            return
+        aborted = True
+        await engine.abort(engine_request.runtime_request_id, reason=reason)
+
+    try:
+        while True:
+            next_chunk = asyncio.create_task(anext(upstream))
+            if disconnect is None:
+                done, _ = await asyncio.wait({next_chunk})
+            else:
+                done, _ = await asyncio.wait(
+                    {next_chunk, disconnect},
+                    return_when=asyncio.FIRST_COMPLETED,
+                )
+            if next_chunk in done:
+                try:
+                    chunk = next_chunk.result()
+                except StopAsyncIteration:
+                    completed = True
+                    break
+                if chunk.strip() == b"data: [DONE]":
+                    completed = True
+                yield chunk
+                if completed:
+                    break
+                continue
+
+            await abort_once("client_disconnected")
+            next_chunk.cancel()
+            await asyncio.gather(next_chunk, return_exceptions=True)
+            break
+    except asyncio.CancelledError:
+        if not completed:
+            await abort_once("stream_cancelled")
+        raise
+    finally:
+        if disconnect is not None:
+            disconnect.cancel()
+            await asyncio.gather(disconnect, return_exceptions=True)
+        if next_chunk is not None and not next_chunk.done():
+            next_chunk.cancel()
+            await asyncio.gather(next_chunk, return_exceptions=True)
+        if not completed:
+            await abort_once("stream_closed")
+        await upstream.aclose()
+
+
+class _LifecycleStreamingResponse(StreamingResponse):
+    """Streaming response whose body iterator exclusively owns ASGI receive.
+
+    Starlette's standard response starts a second disconnect listener on older
+    ASGI specs. That listener can consume ``http.disconnect`` before the route
+    lifecycle wrapper can target and abort the scheduler request. This response
+    delegates disconnect handling to ``_stream_with_lifecycle`` and always
+    closes the iterator when socket send fails.
+    """
+
+    async def __call__(self, scope, receive, send) -> None:
+        try:
+            await self.stream_response(send)
+        finally:
+            close = getattr(self.body_iterator, "aclose", None)
+            if callable(close):
+                await close()
+            if self.background is not None:
+                await self.background()
 
 
 async def _route_persona(
@@ -279,8 +392,8 @@ async def _route_persona(
         route_kind="persona.chat.completions",
     )
     if request.stream:
-        return StreamingResponse(
-            engine.stream(engine_request),
+        return _LifecycleStreamingResponse(
+            _stream_with_lifecycle(engine, engine_request, raw_request),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -555,9 +668,8 @@ async def _handle_sglang(
     engine_request.tools = tools
 
     if request.stream:
-        generator = engine.stream(engine_request)
-        return StreamingResponse(
-            generator,
+        return _LifecycleStreamingResponse(
+            _stream_with_lifecycle(engine, engine_request, raw_request),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )

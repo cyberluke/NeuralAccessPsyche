@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any, AsyncIterator, Dict, List, Optional, Protocol
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ---------------------------------------------------------------------------
@@ -19,16 +19,18 @@ class ChatMessage(BaseModel):
 class ChatCompletionRequest(BaseModel):
     """Public request model. Mirrors the OpenAI Chat Completions API."""
 
+    model_config = ConfigDict(allow_inf_nan=False)
+
     model: str
     messages: List[Dict[str, Any]]
-    temperature: Optional[float] = 1.0
-    top_p: Optional[float] = 1.0
-    max_tokens: Optional[int] = 256
+    temperature: Optional[float] = Field(1.0, ge=0.0, le=2.0)
+    top_p: Optional[float] = Field(1.0, ge=0.0, le=1.0)
+    max_tokens: Optional[int] = Field(256, ge=1, le=8192)
     stream: Optional[bool] = False
     stop: Optional[List[str]] = None
     seed: Optional[int] = None
-    frequency_penalty: Optional[float] = 0.0
-    presence_penalty: Optional[float] = 0.0
+    frequency_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0)
+    presence_penalty: Optional[float] = Field(0.0, ge=-2.0, le=2.0)
     response_format: Optional[Dict[str, Any]] = None
     tools: Optional[List[Dict[str, Any]]] = None
     tool_choice: Optional[Any] = None
@@ -38,7 +40,7 @@ class ChatCompletionRequest(BaseModel):
     runtime_request_id: Optional[str] = None
     public_model: Optional[str] = None
     route_kind: str = "chat.completions"
-    deadline_seconds: Optional[float] = None
+    deadline_seconds: Optional[float] = Field(None, gt=0.0, le=3600.0)
 
 
 class ChatCompletionChoice(BaseModel):
