@@ -1,5 +1,10 @@
 # Testing & Benchmarking Summary
 
+> **Historical test report.** Counts and production-readiness language below do
+> not describe the current exact commit and are not scientific validation.
+> Current exact-commit test evidence is generated under
+> `artifacts/nram_v5_verification/`; blocked mechanisms remain blocked.
+
 ## Overview
 This document summarizes the comprehensive testing and benchmarking work performed on the NeuralAccessPsyche system.
 

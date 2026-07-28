@@ -56,7 +56,7 @@ class RuthlessCTO(BasePersona):
     name = "ruthless_cto"
     output_schema = ReviewedHypothesis
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         hypotheses: List[InnovationHypothesis],
         repository_map: RepositoryMap,

@@ -1,6 +1,6 @@
 # NeuralAccessPsyche
 
-An **NRAM (Neural Random Access Memory) controlled local inference system**. NeuralAccessPsyche exposes an **OpenAI-compatible FastAPI server** in front of a **local SGLang inference server** running a quantized GGUF model on an NVIDIA RTX 4090 (Windows 11 → WSL2 → Docker). NRAM steers generation by injecting a **custom logit processor that modifies logits _before_ token sampling** — real pre-sampling control, not a prompt trick.
+An **NRAM (Neural Random Access Memory) controlled local inference system**. NeuralAccessPsyche exposes an **OpenAI-compatible FastAPI server** in front of a **local SGLang inference server** running Qwen3-14B-AWQ on an NVIDIA RTX 4090 (Windows 11 → WSL2 → Docker). Supported NRAM controls use a custom logit processor that modifies logits before sampling. Advanced representation, DExperts, semantic closed-loop, and tournament mechanisms are not implemented.
 
 ## What makes this different
 
@@ -19,8 +19,7 @@ OpenAI-compatible client
 NeuralAccessPsyche FastAPI (:8000)
    ├─ request validation + forbidden-field rejection
    ├─ persona policy compiler   (NRAMState → SteeringPolicy)
-   ├─ NRAM controller           (state + deterministic policy hash)
-   ├─ rhetorical planner        (llguidance structured plan)
+   ├─ versioned applied-state compiler and hash
    └─ token bias compiler       (lexemes → concrete token IDs)
         │  injects trusted custom_logit_processor + custom_params
         ▼
@@ -31,7 +30,7 @@ SGLang inference server (internal network, :30000, not published to host)
    SSE token stream back through FastAPI to the client
 ```
 
-The base model is **DeepSeek-R1-Distill-Qwen-7B (Q4_K_M GGUF)**, served through SGLang.
+The immutable base model is **Qwen/Qwen3-14B-AWQ**, snapshot `31c69efc29464b6bb0aee1398b5a7b50a99340c3`, served as `nram-qwen3-14b-awq` through the pinned SGLang runtime.
 
 For the full request flow, see [`docs/architecture.md`](docs/architecture.md).
 
@@ -52,16 +51,17 @@ The FastAPI gateway listens on `http://localhost:8000`. The SGLang server runs o
 
 > The local GGUF model is **mounted read-only** from the Windows drive (WSL path `/mnt/e/...`), not downloaded by the container. See [`docs/windows-wsl2-setup.md`](docs/windows-wsl2-setup.md).
 
-## Model aliases
+## Model identity and virtual routes
 
-Two primary aliases are exposed for the local 7B model:
+`GET /v1/models` enumerates only the immutable loaded identity:
 
 | Alias | NRAM steering | Description |
 |-------|:---:|-------------|
-| `deepseek-r1-qwen-7b-baseline` | off | Unsteered baseline — the raw local model. Use for A/B comparison. |
-| `nram-deepseek-r1-qwen-7b` | on | Same model with the NRAM persona policy + logit processor active. |
+| `nram-qwen3-14b-awq` | request dependent | Actual loaded Qwen checkpoint. An `nram` object enables the bounded processor path. |
 
-List them at runtime:
+The accepted `qwen3-14b-awq-baseline` and `persona-*` names are documented virtual routes over that same base checkpoint; they are not separate loaded models and are therefore not returned by `/v1/models`. Responses expose both public route identity and `actual_base_model` correlation.
+
+List the loaded identity at runtime:
 
 ```bash
 curl http://localhost:8000/v1/models -H "Authorization: Bearer YOUR_TOKEN"
@@ -76,11 +76,11 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://localhost:8000/v1",
-    api_key="YOUR_TOKEN",  # any Bearer token longer than 10 chars
+    api_key="YOUR_CONFIGURED_NRAM_API_KEY",
 )
 
 response = client.chat.completions.create(
-    model="nram-deepseek-r1-qwen-7b",
+    model="nram-qwen3-14b-awq",
     messages=[
         {"role": "user", "content": "Introduce a new tool for personal knowledge work."},
     ],
@@ -126,7 +126,7 @@ api/            FastAPI router + middleware (auth, rate limiting)
 core/
   contracts/    Pydantic contracts (OpenAI + NRAM schemas)
   engines/      SGLang engine (+ legacy fallback)
-  persona/      profiles, policy compiler, rhetorical planner
+  persona/      profiles and policy compiler
   steering/     NRAMLogitProcessor, tokenizer bias compiler, policy bounds
   nram_controller/  NRAM state controller + metrics
 utils/          validators, auth, rate limiter, api logger

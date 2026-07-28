@@ -56,7 +56,7 @@ class PsychedelicSynthesizer(BasePersona):
     name = "psychedelic_synthesizer"
     output_schema = InnovationHypothesis
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         repository_map: RepositoryMap,
         challenges: List[AssumptionChallenge],

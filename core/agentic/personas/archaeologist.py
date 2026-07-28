@@ -49,7 +49,7 @@ class Archaeologist(BasePersona):
     name = "archaeologist"
     output_schema = RepositoryMap
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         repository_path: str,
         repository_revision: str,

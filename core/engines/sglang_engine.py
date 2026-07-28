@@ -1,10 +1,14 @@
 """SGLang engine — OpenAI-compatible client with NRAM logit processor injection."""
 from __future__ import annotations
 
+import asyncio
+import hashlib
 import json
 import logging
+import os
 import re
 import time
+import unicodedata
 import uuid
 from typing import TYPE_CHECKING, Any, AsyncIterator, Dict, List, Optional
 
@@ -20,6 +24,10 @@ from core.contracts.openai import (
     Usage,
 )
 from core.engines.base import SGLANG_CAPABILITIES
+from core.contracts.nram_runtime import (
+    UNSUPPORTED_NRAM_FEATURES,
+    validate_tokenizer_ids,
+)
 from core.persona.compiler import compile_policy
 from core.persona.planner import build_rhetorical_plan, plan_to_prompt_fragment
 from core.persona.profiles import DEFAULT_PROFILE, PROFILES
@@ -34,16 +42,12 @@ logger = logging.getLogger(__name__)
 
 # Model alias → upstream model path mapping
 MODEL_ALIAS_MAP: Dict[str, str] = {
-    "nram-gpt-oss-20b": "openai/gpt-oss-20b",
-    "gpt-oss-20b-baseline": "openai/gpt-oss-20b",
-    "nram-deepseek-r1-qwen-7b": "nram-deepseek-r1-qwen-7b",
-    "deepseek-r1-qwen-7b-baseline": "nram-deepseek-r1-qwen-7b",
     "nram-qwen3-14b-awq": "nram-qwen3-14b-awq",
     "qwen3-14b-awq-baseline": "nram-qwen3-14b-awq",
 }
 
 # NRAM-enabled aliases
-NRAM_ENABLED_ALIASES = {"nram-gpt-oss-20b", "nram-deepseek-r1-qwen-7b", "nram-qwen3-14b-awq"}
+NRAM_ENABLED_ALIASES = {"nram-qwen3-14b-awq"}
 
 # Explicit allowlist of fields forwarded to SGLang
 _FORWARDABLE_FIELDS = {
@@ -61,22 +65,7 @@ _FORBIDDEN_CLIENT_FIELDS = {
 # These names describe mechanisms that require unavailable models, datasets,
 # hidden-state hooks, or branch runtimes. Silently ignoring them would create a
 # false scientific claim, so public requests fail explicitly.
-_UNSUPPORTED_NRAM_FEATURES = {
-    "dexperts",
-    "activation_addition",
-    "actadd",
-    "conceptor_steering",
-    "hidden_state_probes",
-    "latent_closed_loop",
-    "semantic_novelty_controller",
-    "evidence_guard",
-    "branch_tournament",
-    "reft",
-    "soft_prompts",
-    "attention_head_gating",
-    "kv_cache_firewall",
-    "gpu_native_semantic_control",
-}
+_UNSUPPORTED_NRAM_FEATURES = UNSUPPORTED_NRAM_FEATURES
 
 # Display names for the phenomenon mixer (English primary, Czech secondary for UI).
 _PHENOMENON_LABELS = {
@@ -263,8 +252,9 @@ class _StreamState:
     trailing prefix of the close tag while an open tag is pending.
     """
 
-    def __init__(self, public_model: str) -> None:
+    def __init__(self, public_model: str, correlation: Optional[Dict[str, Any]] = None) -> None:
         self._public_model = public_model
+        self._correlation = correlation
         self._buffer = ""
 
     def feed(self, data_line: str) -> List[str]:
@@ -280,6 +270,8 @@ class _StreamState:
             return []
 
         chunk["model"] = self._public_model
+        if self._correlation is not None:
+            chunk["nram_correlation"] = self._correlation
         out: List[str] = []
 
         for choice in chunk.get("choices", []):
@@ -342,11 +334,12 @@ class SGLangEngine:
     def __init__(
         self,
         base_url: str = "http://sglang:30000/v1",
-        model: str = "openai/gpt-oss-20b",
+        model: str = "nram-qwen3-14b-awq",
         tokenizer: Any = None,
         timeout: Optional[float] = None,
     ) -> None:
         self._base_url = base_url.rstrip("/")
+        self._abort_url = self._base_url.removesuffix("/v1") + "/abort_request"
         self._model = model
         self._tokenizer = tokenizer
         self._bias_compiler: Optional[TokenBiasCompiler] = None
@@ -363,6 +356,153 @@ class SGLangEngine:
     async def close(self) -> None:
         await self._client.aclose()
 
+    async def abort(self, scheduler_request_id: str, reason: str = "client_cancelled") -> None:
+        """Abort one real SGLang request through the official 0.5.16 endpoint."""
+        if not scheduler_request_id:
+            return
+        try:
+            response = await self._client.post(
+                self._abort_url,
+                json={"rid": scheduler_request_id, "abort_message": reason},
+                timeout=2.0,
+            )
+            response.raise_for_status()
+        except Exception:
+            logger.error(
+                "Failed to abort upstream SGLang request rid=%s reason=%s",
+                scheduler_request_id,
+                reason,
+                exc_info=True,
+            )
+
+    @staticmethod
+    def _normalize_hash_value(value: Any) -> Any:
+        """Normalize mapping order and text newlines for cross-platform hashes."""
+        if isinstance(value, dict):
+            return {
+                str(key): SGLangEngine._normalize_hash_value(item)
+                for key, item in sorted(value.items(), key=lambda pair: str(pair[0]))
+            }
+        if isinstance(value, (list, tuple)):
+            return [SGLangEngine._normalize_hash_value(item) for item in value]
+        if isinstance(value, str):
+            return value.replace("\r\n", "\n").replace("\r", "\n")
+        return value
+
+    def _applied_state_hash(
+        self,
+        request: ChatCompletionRequest,
+        payload: Dict[str, Any],
+    ) -> str:
+        """Hash the complete behaviorally relevant, resolved request state."""
+        processor_params = dict(payload.get("custom_params") or {})
+        processor_params.pop("request_id", None)
+        processor_params.pop("config_hash", None)
+        processor_params.pop("applied_state_schema", None)
+        applied = {
+            "schema": "nram.applied-state.v1",
+            "route": request.route_kind,
+            "public_model": request.public_model or request.model,
+            "actual_base_model": payload.get("model"),
+            "model_artifact": {
+                "configured_model": self._model,
+                "snapshot": os.environ.get("NRAM_MODEL_SNAPSHOT", "unknown"),
+            },
+            "tokenizer_artifact": {
+                "identity": os.environ.get(
+                    "NRAM_TOKENIZER_ID",
+                    str(getattr(self._tokenizer, "name_or_path", "unknown")),
+                ),
+                "hash": os.environ.get("NRAM_TOKENIZER_HASH", "unknown"),
+                "vocab_size": int(
+                    getattr(self._tokenizer, "vocab_size", 0) or len(self._tokenizer)
+                ),
+            },
+            "messages": payload.get("messages", []),
+            "sampling": {
+                key: payload.get(key)
+                for key in (
+                    "max_tokens", "temperature", "top_p", "seed", "stop",
+                    "frequency_penalty", "presence_penalty", "stream",
+                )
+            },
+            "grammar_or_response_format": payload.get("response_format"),
+            "processor": processor_params,
+            "defaults_version": "nram.sglang.defaults.v1",
+        }
+        normalized = self._normalize_hash_value(applied)
+        canonical = json.dumps(
+            normalized,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+    def _finalize_payload(
+        self,
+        request: ChatCompletionRequest,
+        payload: Dict[str, Any],
+        *,
+        stream: bool,
+    ) -> Dict[str, Any]:
+        """Apply effective defaults, trusted rid, observability, and final hash."""
+        payload["stream"] = stream
+        payload["rid"] = request.runtime_request_id or f"nram-scheduler-{uuid.uuid4().hex}"
+        if "presence_penalty" not in payload:
+            payload["presence_penalty"] = 0.8
+        if request.temperature is None:
+            payload["temperature"] = 0.7
+        if request.top_p is None:
+            payload["top_p"] = 0.8
+
+        params = payload.get("custom_params")
+        if params is not None:
+            # The supported non-stream OpenAI extension returns raw sampled IDs
+            # in meta_info.output_token_logprobs. Streaming rejects meta_info.
+            if params.get("telemetry_enabled") and not stream:
+                payload["logprobs"] = True
+                payload["top_logprobs"] = 0
+                payload["return_meta_info"] = True
+            params["applied_state_schema"] = "nram.applied-state.v1"
+            params["config_hash"] = self._applied_state_hash(request, payload)
+        return payload
+
+    @staticmethod
+    def _correlation(
+        request: ChatCompletionRequest,
+        payload: Dict[str, Any],
+        *,
+        sampled: Optional[List[List[Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        params = payload.get("custom_params")
+        if params is None:
+            return {
+                "scheduler_request_id": payload["rid"],
+                "public_model": request.public_model or request.model,
+                "actual_base_model": payload["model"],
+                "processor_intervened": False,
+                "sampled_token_ids": [],
+                "sampled_tokens": [],
+                "sample_join": "not_requested",
+            }
+        sampled = sampled or []
+        return {
+            "request_id": params["request_id"],
+            "scheduler_request_id": payload["rid"],
+            "config_hash": params["config_hash"],
+            "applied_state_schema": params["applied_state_schema"],
+            "public_model": request.public_model or request.model,
+            "actual_base_model": payload["model"],
+            "processor_intervened": True,
+            "sampled_token_ids": [int(item[1]) for item in sampled if len(item) >= 2],
+            "sampled_tokens": [str(item[2]) for item in sampled if len(item) >= 3],
+            "sample_join": "sglang_meta_info" if sampled else (
+                "unavailable_for_streaming" if payload.get("stream") else "not_requested"
+            ),
+        }
+
     def _is_nram_enabled(self, request: ChatCompletionRequest) -> bool:
         """Check if NRAM steering is enabled for this request."""
         if request.model in NRAM_ENABLED_ALIASES:
@@ -372,7 +512,31 @@ class SGLangEngine:
 
     def _resolve_upstream_model(self, request: ChatCompletionRequest) -> str:
         """Map public alias to upstream model name."""
-        return MODEL_ALIAS_MAP.get(request.model, self._model)
+        try:
+            return MODEL_ALIAS_MAP[request.model]
+        except KeyError as exc:
+            raise SGLangEngineError(
+                f"Model {request.model!r} is not backed by the loaded checkpoint.",
+                status_code=400,
+            ) from exc
+
+    def validate(self, request: ChatCompletionRequest) -> None:
+        """Preflight one request without planning, network I/O, or generation."""
+        self._resolve_upstream_model(request)
+        options = request.nram or {}
+        requested_unsupported = sorted(
+            key for key in _UNSUPPORTED_NRAM_FEATURES if options.get(key)
+        )
+        if requested_unsupported:
+            raise SGLangEngineError(
+                "Unsupported NRAM runtime feature(s): " + ", ".join(requested_unsupported),
+                status_code=400,
+            )
+        if self._tokenizer is not None:
+            try:
+                validate_tokenizer_ids(options, self._tokenizer)
+            except ValueError as exc:
+                raise SGLangEngineError(str(exc), status_code=400) from exc
 
     # ------------------------------------------------------------------
     # NRAM v5 multi-layer config builders
@@ -395,29 +559,42 @@ class SGLangEngine:
 
         config: Dict[str, Any] = {}
 
-        # Encode forbidden phrases to token IDs
+        # Encode tokenizer-aware variants. A configured phrase applies across
+        # leading-space/no-leading-space and Unicode normalization variants so
+        # callers do not need tokenizer-specific spellings.
         if forbidden_phrases and self._tokenizer:
-            forbidden_phrase_ids = []
+            forbidden_phrase_ids = set()
             for phrase in forbidden_phrases:
-                try:
-                    token_ids = self._tokenizer.encode(phrase, add_special_tokens=False)
-                    if token_ids:
-                        forbidden_phrase_ids.append(token_ids)
-                except Exception:
-                    pass
+                normalized = unicodedata.normalize("NFC", phrase)
+                stripped = normalized.strip()
+                variants = {normalized, stripped}
+                if stripped:
+                    variants.add(" " + stripped)
+                for variant in variants:
+                    try:
+                        token_ids = self._tokenizer.encode(variant, add_special_tokens=False)
+                        if token_ids:
+                            forbidden_phrase_ids.add(tuple(token_ids))
+                    except Exception:
+                        logger.debug("Tokenizer rejected forbidden phrase variant", exc_info=True)
             if forbidden_phrase_ids:
-                config["forbidden_phrase_ids"] = forbidden_phrase_ids
+                config["forbidden_phrase_ids"] = [list(ids) for ids in sorted(forbidden_phrase_ids)]
 
         # Source n-gram blocking
         if source_text and self._tokenizer:
             source_ngram_size = nram_opts.get("source_ngram_size", 8)
             try:
-                source_tokens = self._tokenizer.encode(source_text, add_special_tokens=False)
-                # Extract all n-grams from source
-                source_ngrams = []
-                for i in range(len(source_tokens) - source_ngram_size + 1):
-                    ngram = source_tokens[i:i + source_ngram_size]
-                    source_ngrams.append(ngram)
+                normalized = unicodedata.normalize("NFC", source_text)
+                stripped = normalized.strip()
+                source_variants = {normalized, stripped}
+                if stripped:
+                    source_variants.add(" " + stripped)
+                source_ngrams_set = set()
+                for variant in source_variants:
+                    source_tokens = self._tokenizer.encode(variant, add_special_tokens=False)
+                    for i in range(len(source_tokens) - source_ngram_size + 1):
+                        source_ngrams_set.add(tuple(source_tokens[i:i + source_ngram_size]))
+                source_ngrams = [list(ids) for ids in sorted(source_ngrams_set)]
                 if source_ngrams:
                     config["source_ngram_ids"] = source_ngrams
                     config["source_ngram_size"] = source_ngram_size
@@ -505,6 +682,11 @@ class SGLangEngine:
         """Build the upstream payload with explicit allowlist filtering."""
         # Reject forbidden client fields
         nram_opts = request.nram or {}
+        if self._tokenizer is not None:
+            try:
+                validate_tokenizer_ids(nram_opts, self._tokenizer)
+            except ValueError as exc:
+                raise SGLangEngineError(str(exc), status_code=400) from exc
         if _FORBIDDEN_CLIENT_FIELDS & set(nram_opts.keys()):
             raise SGLangEngineError(
                 "Forbidden field in nram options: processor injection is not allowed.",
@@ -563,6 +745,10 @@ class SGLangEngine:
 
             policy = compile_policy(state, max_tokens=request.max_tokens or 512, profile_name=profile_name)
             compiled = self._bias_compiler.compile(policy)
+            direct_forbidden_ids = nram_opts.get("forbidden_token_ids", [])
+            compiled.forbidden_token_ids = sorted(
+                set(compiled.forbidden_token_ids) | set(direct_forbidden_ids)
+            )
             if not nram_opts.get("profile_logit_steering_enabled", True):
                 compiled.positive_token_ids = []
                 compiled.negative_token_ids = []
@@ -599,11 +785,9 @@ class SGLangEngine:
             request_id = nram_opts.get("request_id") or f"nram-{uuid.uuid4().hex}"
             forced_token_id = nram_opts.get("forced_token_id")
             if forced_token_id is not None:
-                try:
-                    forced_token_id = int(forced_token_id)
-                except (TypeError, ValueError) as exc:
-                    raise SGLangEngineError("forced_token_id must be an integer", status_code=400) from exc
-                tokenizer_size = len(self._tokenizer)
+                if isinstance(forced_token_id, bool) or not isinstance(forced_token_id, int):
+                    raise SGLangEngineError("forced_token_id must be a strict integer", status_code=400)
+                tokenizer_size = int(getattr(self._tokenizer, "vocab_size", 0) or len(self._tokenizer))
                 if forced_token_id < 0 or forced_token_id >= tokenizer_size:
                     raise SGLangEngineError(
                         f"forced_token_id must be in [0, {tokenizer_size})",
@@ -670,63 +854,29 @@ class SGLangEngine:
         payload = self._build_upstream_payload(
             request, nram_enabled, developer_instruction, plan_fragment
         )
-        payload["stream"] = False
-
-        # Qwen3 best practice for quantized models: presence_penalty reduces
-        # endless repetitions. Use moderate value (0.8) to allow thematic repetition
-        # while preventing loops. Only apply if the client didn't explicitly set it.
-        if "presence_penalty" not in payload:
-            payload["presence_penalty"] = 0.8
-        # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
-        if request.temperature is None:
-            payload["temperature"] = 0.7
-        if request.top_p is None:
-            payload["top_p"] = 0.8
+        payload = self._finalize_payload(request, payload, stream=False)
 
         t_start = time.perf_counter()
         try:
-            resp = await self._client.post("/chat/completions", json=payload)
+            deadline = request.deadline_seconds
+            if deadline is None:
+                deadline = float(os.environ.get("NRAM_REQUEST_TIMEOUT_SECONDS", "300"))
+            async with asyncio.timeout(deadline):
+                resp = await self._client.post("/chat/completions", json=payload)
             resp.raise_for_status()
             data = resp.json()
 
             usage = Usage(**data.get("usage", {}))
             latency_ms = (time.perf_counter() - t_start) * 1000
 
-            # Feature 2: record provenance telemetry into the aggregator.
-            # Token origins are derived from the active phenomenon weights
-            # (applied_policy classification, not causal attribution).
-            try:
-                from core.nram.provenance_map import derive_origin_counts
-                from core.nram.telemetry_agg import telemetry_aggregator
-
-                nram_opts = request.nram or {}
-                phen_weights = nram_opts.get("phenomenon_weights") or {}
-                # Treat each active phenomenon (weight > threshold) as firing
-                # roughly proportional to its weight * completion token count.
-                completion_tokens = getattr(usage, "completion_tokens", 0) or 0
-                phen_counts = {
-                    pid: max(1, int(w * completion_tokens))
-                    for pid, w in phen_weights.items()
-                    if isinstance(w, (int, float)) and w > 0.05
-                }
-                model_tokens = max(0, completion_tokens - sum(phen_counts.values()))
-                origin_counts = derive_origin_counts(phen_counts, model_tokens)
-
-                session_id = nram_opts.get("session_id") or request.model
-                telemetry_aggregator.record(
-                    session_id=session_id,
-                    profile=nram_opts.get("profile", "baseline"),
-                    token_origins=origin_counts,
-                    latency_ms=latency_ms,
-                    phenomena=phen_counts,
-                )
-            except Exception:  # telemetry must never break inference
-                logger.debug("telemetry aggregation skipped", exc_info=True)
+            sampled = []
+            for choice in data.get("choices", []):
+                sampled.extend((choice.get("meta_info") or {}).get("output_token_logprobs", []))
 
             return ChatCompletionResponse(
                 id=data.get("id", f"chatcmpl-{uuid.uuid4()}"),
                 created=data.get("created", int(time.time())),
-                model=request.model,
+                model=request.public_model or request.model,
                 choices=[
                     ChatCompletionChoice(
                         index=c.get("index", 0),
@@ -743,15 +893,14 @@ class SGLangEngine:
                     for c in data.get("choices", [])
                 ],
                 usage=usage,
-                nram_correlation=(
-                    {
-                        "request_id": payload["custom_params"]["request_id"],
-                        "config_hash": payload["custom_params"]["config_hash"],
-                    }
-                    if "custom_params" in payload
-                    else None
-                ),
+                nram_correlation=self._correlation(request, payload, sampled=sampled),
             )
+        except TimeoutError as exc:
+            await self.abort(payload["rid"], reason="deadline_exceeded")
+            raise SGLangEngineError("SGLang request deadline exceeded", status_code=504) from exc
+        except asyncio.CancelledError:
+            await self.abort(payload["rid"], reason="downstream_cancelled")
+            raise
         except httpx.HTTPStatusError as e:
             raise SGLangEngineError(
                 f"SGLang returned {e.response.status_code}: {e.response.text[:500]}",
@@ -795,31 +944,29 @@ class SGLangEngine:
         payload = self._build_upstream_payload(
             request, nram_enabled, developer_instruction, plan_fragment
         )
-        payload["stream"] = True
+        payload = self._finalize_payload(request, payload, stream=True)
 
-        # Qwen3 best practice for quantized models: presence_penalty reduces
-        # endless repetitions. Use moderate value (0.8) to allow thematic repetition
-        # while preventing loops. Only apply if the client didn't explicitly set it.
-        if "presence_penalty" not in payload:
-            payload["presence_penalty"] = 0.8
-        # Qwen3 non-thinking mode recommends temperature=0.7, top_p=0.8.
-        if request.temperature is None:
-            payload["temperature"] = 0.7
-        if request.top_p is None:
-            payload["top_p"] = 0.8
-
+        completed = False
         try:
             async with self._client.stream(
                 "POST", "/chat/completions", json=payload
             ) as resp:
                 resp.raise_for_status()
-                stream_state = _StreamState(request.model)
+                correlation = self._correlation(request, payload)
+                stream_state = _StreamState(request.public_model or request.model, correlation)
                 async for line in resp.aiter_lines():
-                    if line.startswith("data: "):
+                    if line.strip() == "data: [DONE]":
+                        completed = True
+                        yield b"data: [DONE]\n\n"
+                    elif line.startswith("data: "):
                         for out_line in stream_state.feed(line):
                             yield (out_line + "\n\n").encode()
-                    elif line.strip() == "data: [DONE]":
-                        yield b"data: [DONE]\n\n"
+                if not completed:
+                    completed = True
+                    yield b"data: [DONE]\n\n"
+        except asyncio.CancelledError:
+            await self.abort(payload["rid"], reason="stream_cancelled")
+            raise
         except httpx.HTTPStatusError as e:
             error_chunk = {
                 "error": {
@@ -831,6 +978,7 @@ class SGLangEngine:
             }
             yield f"data: {json.dumps(error_chunk)}\n\n".encode()
             yield b"data: [DONE]\n\n"
+            completed = True
         except httpx.RequestError as e:
             error_chunk = {
                 "error": {
@@ -842,6 +990,10 @@ class SGLangEngine:
             }
             yield f"data: {json.dumps(error_chunk)}\n\n".encode()
             yield b"data: [DONE]\n\n"
+            completed = True
+        finally:
+            if not completed:
+                await self.abort(payload["rid"], reason="stream_closed")
 
     async def health(self) -> Dict[str, Any]:
         """Check SGLang health."""

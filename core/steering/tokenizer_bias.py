@@ -77,12 +77,13 @@ class TokenBiasCompiler:
 
     def __init__(self, tokenizer: Any) -> None:
         self._tokenizer = tokenizer
-        self._vocab_size = getattr(tokenizer, "vocab_size", None)
-        if self._vocab_size is None:
+        vocab_size = getattr(tokenizer, "vocab_size", None)
+        if vocab_size is None:
             try:
-                self._vocab_size = len(tokenizer)
+                vocab_size = len(tokenizer)
             except Exception:
-                self._vocab_size = 152064  # Qwen-family default
+                vocab_size = 152064  # Qwen-family default
+        self._vocab_size: int = int(vocab_size)
 
     def compile(self, policy: SteeringPolicy) -> CompiledTokenPolicy:
         """Compile lexemes to token IDs with diagnostics."""

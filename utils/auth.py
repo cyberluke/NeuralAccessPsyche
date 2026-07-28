@@ -1,13 +1,18 @@
 from fastapi import HTTPException, Security
 from fastapi.security.api_key import APIKeyHeader
 from typing import Dict
+import hmac
+import os
 
 api_key_header = APIKeyHeader(name="Authorization", auto_error=False)
 
 def verify_token(token: str) -> bool:
-    """Verify API token"""
-    # In production, this should check against a secure database
-    return token.startswith("Bearer ") and len(token) > 10
+    """Verify the configured local bearer token using constant-time comparison."""
+    expected = os.environ.get("NRAM_API_KEY", "dev-nram-key")
+    if not expected or not token or not token.startswith("Bearer "):
+        return False
+    supplied = token[len("Bearer "):]
+    return hmac.compare_digest(supplied.encode("utf-8"), expected.encode("utf-8"))
 
 def get_current_user(api_key: str = Security(api_key_header)) -> Dict:
     """Get current user from token"""

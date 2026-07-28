@@ -30,7 +30,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from core.nram.phenomena import (
     PHENOMENA,
@@ -76,9 +76,11 @@ class SessionUpdateRequest(BaseModel):
 
 
 class CompareRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
     prompt: str
-    model: str = "nram-deepseek-r1-qwen-7b"
-    baseline_model: str = "deepseek-r1-qwen-7b-baseline"
+    model: str = "nram-qwen3-14b-awq"
+    baseline_model: str = "qwen3-14b-awq-baseline"
     seed: Optional[int] = 271
     temperature: float = Field(0.6, ge=0.0, le=2.0)
     top_p: float = Field(0.95, ge=0.0, le=1.0)
@@ -108,14 +110,13 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
             "token_biasing": True,
             "token_masking": True,
             "repetition_penalty": True,
-            "structured_planning": True,
             "dynamic_logits": True,
-            "fragment_injection": True,
             "forced_token": True,
-            "session_state": True,
+            "session_profile_snapshot": True,
+            "session_memory_inference": False,
             "phenomena": True,
             "compare": True,
-            "event_streaming": True,
+            "causal_event_streaming": False,
         },
         "verified": {
             "pre_sampling_logit_modification": True,  # Forced-token proof passed
@@ -123,17 +124,11 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
             "structured_output": True,
             "forced_token_proof": True,
         },
-        "provenance_types": [
-            "model_generated",
-            "positive_logit_bias",
-            "negative_logit_bias",
-            "hard_mask",
-            "forced_injection",
-            "memory_recall",
-            "planner_constraint",
-            "postprocess",
-            "applied_policy",
-        ],
+        "provenance": {
+            "processor_log_events": "causal",
+            "response_counters": "non_causal_accounting",
+            "memory_recall": "not_implemented",
+        },
         "note": "NRAM metrics are simulation and control metrics, "
                 "NOT measurements of consciousness.",
     }
@@ -318,19 +313,20 @@ async def get_session_events(
     session_id: str,
     current_user: dict = Depends(get_current_user),
 ):
-    """Get token events for a session (placeholder — events are stored per-request)."""
+    """Get durable response correlations; processor events remain causal logs."""
     session = session_store.get(session_id)
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found")
 
-    # Events are currently stored per-request in telemetry.
-    # This endpoint returns the session's aggregate event counts.
+    from api.routes import _session_runtime_events
+
     return {
         "session_id": session_id,
         "request_count": session.request_count,
         "token_steering_counts": session.token_steering_counts,
         "phenomenon_counts": session.phenomenon_counts,
-        "events": [],  # Per-request events available via telemetry
+        "events": list(_session_runtime_events.get(session_id, [])),
+        "event_semantics": "response correlation/accounting; not synthetic causal attribution",
     }
 
 
@@ -339,7 +335,7 @@ async def stream_session_events(
     session_id: str,
     current_user: dict = Depends(get_current_user),
 ):
-    """Stream token events for a session in real-time (SSE)."""
+    """Return a bounded SSE snapshot; real-time causal event streaming is unavailable."""
     session = session_store.get(session_id)
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found")
@@ -348,12 +344,8 @@ async def stream_session_events(
         # Send initial state
         yield f"data: {json.dumps({'type': 'session_state', 'data': session.state.model_dump()})}\n\n"
 
-        # In production, this would stream real token events as they're generated.
-        # For now, send a heartbeat every 5 seconds.
-        for i in range(60):  # 5 minutes max
-            await asyncio.sleep(5)
-            yield f"data: {json.dumps({'type': 'heartbeat', 'sequence': i})}\n\n"
-
+        from api.routes import _session_runtime_events
+        yield f"data: {json.dumps({'type': 'response_correlations', 'data': _session_runtime_events.get(session_id, [])})}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
@@ -372,12 +364,18 @@ async def compare(
     request: CompareRequest,
     current_user: dict = Depends(get_current_user),
 ):
-    """Run baseline and NRAM generation with identical parameters."""
-    import httpx
+    """Run a paired baseline/NRAM comparison through the production engine."""
+    # Import metrics before preflight/generation so a bad production image
+    # fails without consuming either arm.
+    from evaluation.metrics import compute_all
+    from api.routes import ChatCompletionRequest, _to_engine_request
+    from core.engines.registry import get_sglang_engine
+    from utils.validators import validate_request
 
-    base_url = "http://sglang:30000/v1"
+    engine = get_sglang_engine()
+    if engine is None:
+        raise HTTPException(status_code=503, detail={"code": "engine_unavailable"})
 
-    # Shared parameters
     shared = {
         "messages": [{"role": "user", "content": request.prompt}],
         "max_tokens": request.max_tokens,
@@ -385,36 +383,41 @@ async def compare(
         "top_p": request.top_p,
         "seed": request.seed,
         "stream": False,
+        "tools": [],
     }
+    baseline_public = ChatCompletionRequest(model=request.baseline_model, nram=None, **shared)
+    controlled_options = {
+        **request.nram,
+        "enabled": True,
+        "include_telemetry": True,
+        "request_id": request.nram.get("request_id") or f"compare-{uuid.uuid4().hex}",
+    }
+    controlled_public = ChatCompletionRequest(model=request.model, nram=controlled_options, **shared)
+    validate_request(baseline_public)
+    validate_request(controlled_public)
 
-    async with httpx.AsyncClient(timeout=300.0) as client:
-        # Baseline
-        t0 = time.perf_counter()
-        baseline_resp = await client.post(
-            f"{base_url}/chat/completions",
-            json={**shared, "model": request.baseline_model},
-        )
-        baseline_ms = (time.perf_counter() - t0) * 1000
-        baseline_data = baseline_resp.json()
+    baseline_engine = _to_engine_request(
+        baseline_public,
+        baseline_public.messages,
+        route_kind="nram.compare.baseline",
+    )
+    controlled_engine = _to_engine_request(
+        controlled_public,
+        controlled_public.messages,
+        route_kind="nram.compare.controlled",
+    )
+    engine.validate(baseline_engine)
+    engine.validate(controlled_engine)
 
-        # NRAM
-        t0 = time.perf_counter()
-        nram_resp = await client.post(
-            f"{base_url}/chat/completions",
-            json={
-                **shared,
-                "model": request.model,
-                "nram": request.nram,
-            },
-        )
-        nram_ms = (time.perf_counter() - t0) * 1000
-        nram_data = nram_resp.json()
+    t0 = time.perf_counter()
+    baseline_response = await engine.complete(baseline_engine)
+    baseline_ms = (time.perf_counter() - t0) * 1000
+    t0 = time.perf_counter()
+    controlled_response = await engine.complete(controlled_engine)
+    nram_ms = (time.perf_counter() - t0) * 1000
 
-    baseline_content = baseline_data["choices"][0]["message"]["content"]
-    nram_content = nram_data["choices"][0]["message"]["content"]
-
-    # Compute metrics
-    from evaluation.metrics import compute_all
+    baseline_content = baseline_response.choices[0].message.content
+    nram_content = controlled_response.choices[0].message.content
     baseline_metrics = compute_all(baseline_content)
     nram_metrics = compute_all(nram_content)
 
@@ -430,17 +433,21 @@ async def compare(
         "baseline": {
             "output": baseline_content,
             "latency_ms": round(baseline_ms, 1),
-            "tokens": baseline_data.get("usage", {}).get("completion_tokens", 0),
-            "finish_reason": baseline_data["choices"][0].get("finish_reason", ""),
+            "tokens": baseline_response.usage.completion_tokens,
+            "finish_reason": baseline_response.choices[0].finish_reason,
             "metrics": baseline_metrics,
+            "processor_intervened": False,
+            "correlation": baseline_response.nram_correlation,
         },
         "nram": {
             "output": nram_content,
             "latency_ms": round(nram_ms, 1),
-            "tokens": nram_data.get("usage", {}).get("completion_tokens", 0),
-            "finish_reason": nram_data["choices"][0].get("finish_reason", ""),
+            "tokens": controlled_response.usage.completion_tokens,
+            "finish_reason": controlled_response.choices[0].finish_reason,
             "metrics": nram_metrics,
-            "profile": request.nram.get("profile", "visionary-psychedelic-keynote"),
+            "profile": (controlled_public.nram or {}).get("profile", "normal"),
+            "processor_intervened": True,
+            "correlation": controlled_response.nram_correlation,
         },
     }
 

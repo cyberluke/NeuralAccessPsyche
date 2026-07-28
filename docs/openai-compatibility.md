@@ -11,14 +11,14 @@ client = OpenAI(
 )
 ```
 
-**Authentication:** send a `Bearer` token in the `Authorization` header. The current validator accepts any token of the form `Bearer <...>` where the value is longer than 10 characters.
+**Authentication:** send `Bearer <NRAM_API_KEY>` in the `Authorization` header. The local configured token is compared exactly with a constant-time comparison; arbitrary long strings are rejected.
 
 ## Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/v1/chat/completions` | POST | Chat completions (streaming + non-streaming) |
-| `/v1/models` | GET | List available model aliases |
+| `/v1/models` | GET | List immutable loaded model identities (not virtual routes) |
 
 ## Supported request fields
 
@@ -45,12 +45,11 @@ These standard OpenAI fields are accepted on `/v1/chat/completions`:
 
 | Alias | NRAM | Upstream model |
 |-------|:---:|----------------|
-| `deepseek-r1-qwen-7b-baseline` | off | local DeepSeek-R1-Distill-Qwen-7B GGUF |
-| `nram-deepseek-r1-qwen-7b` | on | same model, with NRAM steering |
-| `gpt-oss-20b-baseline` | off | `openai/gpt-oss-20b` |
-| `nram-gpt-oss-20b` | on | `openai/gpt-oss-20b`, with NRAM steering |
+| `nram-qwen3-14b-awq` | request dependent | loaded Qwen3-14B-AWQ checkpoint |
+| `qwen3-14b-awq-baseline` | off | virtual unmodified route over the same loaded checkpoint |
+| `persona-*` | on | virtual profile route over `nram-qwen3-14b-awq` |
 
-Only the `nram-*` aliases activate the logit processor. For the baseline aliases, the `nram` object is ignored for steering.
+`/v1/models` returns only `nram-qwen3-14b-awq`; baseline/persona names are virtual routes, not immutable model identities. Responses and SSE chunks expose `public_model`, `actual_base_model`, and a server-generated `scheduler_request_id`. Baseline requests do not attach a processor.
 
 ## The `nram` extension object
 
@@ -59,7 +58,7 @@ Pass `nram` via the OpenAI SDK's `extra_body`. Every field is optional.
 | Field | Type | Default | Range | Meaning |
 |-------|------|---------|-------|---------|
 | `enabled` | bool | `true` | — | Turn NRAM steering on/off for an `nram-*` alias |
-| `profile` | string | `"visionary-psychedelic-keynote"` | — | Persona profile name |
+| `profile` | string | `"normal"` | known profile | Persona profile name |
 | `visionary_intensity` | float | `0.85` | 0.0–1.0 | Drive toward bold, future-oriented framing |
 | `contrarian_force` | float | `0.75` | 0.0–1.0 | Willingness to challenge accepted assumptions |
 | `product_obsession` | float | `0.90` | 0.0–1.0 | Density of concrete product detail |
@@ -75,7 +74,7 @@ Pass `nram` via the OpenAI SDK's `extra_body`. Every field is optional.
 
 The `profile` selects a base `NRAMState`; any other fields you pass act as **per-request overrides** on top of that profile. Defaults shown above are the `NRAMState` defaults; the built-in `visionary-psychedelic-keynote` profile uses higher values (e.g. `visionary_intensity=0.95`, `corporate_jargon_penalty=0.92`).
 
-> All values are clamped to `[0.0, 1.0]` server-side. Derived bias magnitudes are additionally bounded (positive ≤ 1.2, negative ≤ 2.5, repetition ≤ 2.0) before reaching the processor.
+> Unknown fields, unknown profiles, malformed nested shapes, non-finite values, out-of-range values, non-integer token IDs, tokenizer-undefined IDs, explicit force/mask conflicts, and unsupported advanced mechanisms are rejected with a 4xx response before generation. Values are not silently coerced or clamped at the public boundary.
 
 ### Forbidden fields
 
@@ -101,7 +100,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="nram-deepseek-r1-qwen-7b",
+    model="nram-qwen3-14b-awq",
     messages=[
         {"role": "user", "content": "Introduce a new tool for personal knowledge work."},
     ],
@@ -134,7 +133,7 @@ for chunk in stream:
 To compare steered vs. unsteered output on identical input, issue the same request against both aliases:
 
 ```python
-for alias in ("deepseek-r1-qwen-7b-baseline", "nram-deepseek-r1-qwen-7b"):
+for alias in ("qwen3-14b-awq-baseline", "nram-qwen3-14b-awq"):
     r = client.chat.completions.create(
         model=alias,
         messages=[{"role": "user", "content": prompt}],

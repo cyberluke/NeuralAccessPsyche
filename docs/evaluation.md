@@ -8,8 +8,8 @@ The harness runs each prompt through **two** configurations and compares the out
 
 | Arm | Model alias | NRAM |
 |-----|-------------|:---:|
-| **Baseline** | `deepseek-r1-qwen-7b-baseline` | off |
-| **Steered** | `nram-deepseek-r1-qwen-7b` | on |
+| **Baseline** | `qwen3-14b-awq-baseline` | off; virtual route over the loaded Qwen checkpoint |
+| **Steered** | `nram-qwen3-14b-awq` | on for supported `nram` controls |
 
 Both arms use the **same prompt set, same temperature, and same seed** so differences are attributable to steering, not sampling noise. Outputs are scored by **deterministic heuristics** (no LLM-as-judge required for the core metrics), so scores are reproducible.
 

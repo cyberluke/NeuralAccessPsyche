@@ -427,7 +427,7 @@ class _EvidenceExtractorPersona(BasePersona):
             "coherence_floor": 0.95,
         }
 
-    async def run(self, source_document: str, user_goal: str) -> List[ExtractedFact]:
+    async def run(self, source_document: str, user_goal: str) -> List[ExtractedFact]:  # type: ignore[override]
         system_prompt = (
             "You are a precision evidence extractor. Your task is to extract structured facts "
             "from documents. Extract ONLY factual claims, capabilities, and contradictions. "
@@ -484,7 +484,7 @@ class _ContrarianDeconstructorPersona(BasePersona):
             "coherence_floor": 0.85,
         }
 
-    async def run(
+    async def run(  # type: ignore[override]
         self, facts: List[ExtractedFact], user_goal: str
     ) -> List[ContrarianChallenge]:
         facts_text = "\n".join(f"- {f.claim}" for f in facts[:50])
@@ -538,7 +538,7 @@ class _ExpertPersona(BasePersona):
             "temperature": expert_config["temperature"],
         }
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         facts: List[ExtractedFact],
         challenges: List[ContrarianChallenge],
@@ -608,7 +608,7 @@ class _ConceptTournamentPersona(BasePersona):
             "coherence_floor": 0.9,
         }
 
-    async def run(self, expert_analyses: List[ExpertAnalysis]) -> ConceptTournamentResult:
+    async def run(self, expert_analyses: List[ExpertAnalysis]) -> ConceptTournamentResult:  # type: ignore[override]
         analyses_text = []
         for analysis in expert_analyses:
             analyses_text.append(
@@ -675,7 +675,7 @@ class _VisionaryComposerPersona(BasePersona):
             "novelty_target": 0.9,
         }
 
-    async def run(self, brief: ComposerBrief, user_goal: str) -> str:
+    async def run(self, brief: ComposerBrief, user_goal: str) -> str:  # type: ignore[override]
         # Build structured brief text — NO original paragraphs
         facts_text = "\n".join(f"- [{f.fact_type}] {f.claim}" for f in brief.facts[:50])
         citations_text = "\n".join(f"- {c}" for c in brief.citations[:20])

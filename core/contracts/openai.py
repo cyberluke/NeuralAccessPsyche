@@ -33,6 +33,12 @@ class ChatCompletionRequest(BaseModel):
     tools: Optional[List[Dict[str, Any]]] = None
     tool_choice: Optional[Any] = None
     nram: Optional[Dict[str, Any]] = None
+    # Trusted API-to-engine metadata. These fields are never accepted from the
+    # public request model and are not part of SGLang's forwardable allowlist.
+    runtime_request_id: Optional[str] = None
+    public_model: Optional[str] = None
+    route_kind: str = "chat.completions"
+    deadline_seconds: Optional[float] = None
 
 
 class ChatCompletionChoice(BaseModel):
@@ -57,7 +63,7 @@ class ChatCompletionResponse(BaseModel):
     usage: Usage = Field(default_factory=Usage)
     # Correlation metadata only. Causal telemetry is emitted by the processor
     # in the SGLang runtime and must be matched by these values.
-    nram_correlation: Optional[Dict[str, str]] = None
+    nram_correlation: Optional[Dict[str, Any]] = None
 
 
 class OpenAIError(BaseModel):

@@ -9,7 +9,7 @@ from it (Feature 4). Persona prompts instruct the model to emit the schema.
 """
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field
 
@@ -58,7 +58,7 @@ class VoidOutput(BaseModel):
 
 
 # Persona name -> output schema
-PERSONA_SCHEMAS = {
+PERSONA_SCHEMAS: Dict[str, Type[BaseModel]] = {
     "analyst": AnalystOutput,
     "explorer": ExplorerOutput,
     "dreamer": DreamerOutput,

@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from fastapi.testclient import TestClient
 
 
-AUTH_HEADER = {"Authorization": "Bearer dev-nram-key-12345678"}
+AUTH_HEADER = {"Authorization": "Bearer dev-nram-key"}
 
 
 @pytest.fixture
@@ -24,20 +24,18 @@ class TestModelsEndpoint:
         resp = client.get("/v1/models")
         assert resp.status_code == 401
 
-    def test_models_returns_both_aliases(self, client):
-        """GET /v1/models must list both baseline and NRAM aliases."""
+    def test_models_returns_only_loaded_immutable_identity(self, client):
+        """GET /v1/models must not advertise virtual or unloaded checkpoints."""
         resp = client.get("/v1/models", headers=AUTH_HEADER)
         assert resp.status_code == 200
         body = resp.json()
         assert "data" in body
 
         model_ids = {m["id"] for m in body["data"]}
-        assert "nram-gpt-oss-20b" in model_ids, (
-            "nram-gpt-oss-20b alias must be listed"
-        )
-        assert "deepseek-r1-qwen-7b-baseline" in model_ids or "gpt-oss-20b-baseline" in model_ids, (
-            "baseline alias must be listed"
-        )
+        assert model_ids == {"nram-qwen3-14b-awq"}
+        assert "nram-gpt-oss-20b" not in model_ids
+        assert "nram-deepseek-r1-qwen-7b" not in model_ids
+        assert "persona-peak" not in model_ids
 
     def test_models_have_required_fields(self, client):
         """Each model entry must have id, object, owned_by."""

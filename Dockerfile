@@ -36,6 +36,7 @@ COPY api/ ./api/
 COPY core/ ./core/
 COPY nram_sglang/ ./nram_sglang/
 COPY utils/ ./utils/
+COPY evaluation/ ./evaluation/
 COPY templates/ ./templates/
 COPY static/ ./static/
 

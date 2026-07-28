@@ -133,52 +133,6 @@ class BasePersona:
     def extract_json(raw: str) -> str:
         """Extract a JSON object/array from raw model output.
 
-        Handles markdown code fences and surrounding prose. Returns the
-        first balanced {...} or [...] block, or the raw string if none found.
-        """
-        text = raw.strip()
-
-        # Strip markdown code fences
-        if "```" in text:
-            lines = text.split("\n")
-            inside = []
-            in_fence = False
-            for line in lines:
-                if line.strip().startswith("```"):
-                    in_fence = not in_fence
-                    continue
-                if in_fence:
-                    inside.append(line)
-            if inside:
-                text = "\n".join(inside)
-
-        # Find first { or [
-        start_obj = text.find("{")
-        start_arr = text.find("[")
-        if start_obj == -1 and start_arr == -1:
-            return text
-
-        if start_arr == -1 or (start_obj != -1 and start_obj < start_arr):
-            start, open_char, close_char = start_obj, "{", "}"
-        else:
-            start, open_char, close_char = start_arr, "[", "]"
-
-        # Find matching closing bracket
-        depth = 0
-        for i in range(start, len(text)):
-            if text[i] == open_char:
-                depth += 1
-            elif text[i] == close_char:
-                depth -= 1
-                if depth == 0:
-                    return text[start:i + 1]
-
-        return text[start:]  # Unbalanced; return from start to end
-
-    @staticmethod
-    def extract_json(raw: str) -> str:
-        """Extract a JSON object/array from raw model output.
-
         Strips markdown code fences and surrounding prose, then returns the
         first balanced {...} or [...] block. Robust to reasoning preambles
         (already stripped by the NRAM API) and chatty wrappers.

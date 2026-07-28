@@ -29,7 +29,7 @@ class NRAMResponse(BaseModel):
     coherence_score: float = Field(ge=0.0, le=1.0, description="Response coherence rating")
 
 
-PROVIDER_CONFIGS = {
+PROVIDER_CONFIGS: Dict[str, Dict[str, Any]] = {
     "openai": {
         "name": "OpenAI",
         "default_model": "gpt-4o",

@@ -62,7 +62,8 @@ class SessionTelemetry:
             "phenomena_triggered": dict(self.phenomena_triggered),
             "last_request_at": self.last_request_at,
             "dominant_origin": max(
-                self.token_origin_counts, key=self.token_origin_counts.get
+                self.token_origin_counts,
+                key=lambda origin: self.token_origin_counts[origin],
             ) if self.token_origin_counts else None,
         }
 

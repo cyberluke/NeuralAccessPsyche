@@ -34,7 +34,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class NRAMMAFChatClient(BaseChatClient[Any] if MAF_AVAILABLE else object):
+class NRAMMAFChatClient(BaseChatClient[Any] if MAF_AVAILABLE else object):  # type: ignore[misc]
     """MAF BaseChatClient that routes through the NRAM API.
 
     Every agent created with this client gets NRAM steering, persona

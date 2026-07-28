@@ -22,8 +22,9 @@ except ImportError:
 class NRAMLogitProcessor(CustomLogitProcessor):
     """Custom logit processor that applies NRAM token biases before sampling.
 
-    Applied per-batch-row with strict isolation. All parameters are validated
-    and bounded. Out-of-range token IDs are silently ignored.
+    Applied per-batch-row with strict isolation. Public parameters are
+    validated before dispatch; defensive runtime parsing never coerces
+    fractional IDs and never recovers an all-mask row by arbitrary unmasking.
 
     NRAM v5 multi-layer inference control:
       Layer 2: Phrase constraints (forbidden phrases, source n-gram blocking)
@@ -199,6 +200,18 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                 logits[batch_index, :] = -float("inf")
                 logits[batch_index, forced_token_id] = forced_value
 
+            # Sampling an all-masked or NaN/+Inf row is undefined and can
+            # produce arbitrary tokens. Fail deterministically at the actual
+            # pre-sampling boundary; never make a token finite as "recovery".
+            final_row = logits[batch_index]
+            has_nan = final_row != final_row
+            has_positive_infinity = final_row == float("inf")
+            finite_candidates = (final_row > -float("inf")) & (final_row < float("inf"))
+            if self._tensor_any(has_nan) or self._tensor_any(has_positive_infinity):
+                raise RuntimeError("NRAM_NONFINITE_LOGIT_ROW")
+            if not self._tensor_any(finite_candidates):
+                raise RuntimeError("NRAM_NO_FINITE_CANDIDATE")
+
             if telemetry_enabled and row_before is not None:
                 self._emit_telemetry(
                     row_before=row_before,
@@ -318,7 +331,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         else:
             phase = "formulation"
         
-        target_entropy = phase_targets.get(phase, 4.0)
+        target_entropy = self._bounded_float(phase_targets.get(phase, 4.0), 0.0, 20.0)
         
         # Compute current entropy from the actual next-token distribution.
         row = logits[batch_index]
@@ -407,7 +420,9 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         else:
             phase_strength = (1.0 - progress) / 0.2 * 0.9
         
-        base_strength = concept_config.get("base_strength", 0.5)
+        base_strength = self._bounded_signed_float(
+            concept_config.get("base_strength", 0.5), 5.0
+        )
         injection_strength = base_strength * phase_strength
         
         for concept in concepts:
@@ -691,7 +706,17 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         if request is not None:
             request._nram_invocation_count = invocation
         max_steps = max(0, min(128, self._safe_int(params.get("telemetry_max_steps"), 16)))
-        if invocation > max_steps:
+        # The step limit bounds ordinary diagnostic events only. Explicit
+        # masks/forces/injections are causal evidence and must never disappear
+        # merely because they occur later in a request.
+        causal_target_event = bool(
+            masked_ids
+            or requested_forced_token_id is not None
+            or soft_event
+            or vector_event
+            or concept_event
+        )
+        if invocation > max_steps and not causal_target_event:
             return
 
         top_k = max(1, min(20, self._safe_int(params.get("telemetry_top_k"), 5)))
@@ -768,6 +793,12 @@ class NRAMLogitProcessor(CustomLogitProcessor):
     # ------------------------------------------------------------------
 
     @staticmethod
+    def _tensor_any(values: Any) -> bool:
+        """Backend-neutral `any` for NumPy test arrays and SGLang torch tensors."""
+        result = values.any()
+        return bool(result.item() if hasattr(result, "item") else result)
+
+    @staticmethod
     def _phase_schedule(params: Dict[str, Any], generated: int) -> Dict[str, float]:
         """Compute per-phase scaling multipliers.
 
@@ -810,11 +841,9 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             return result
 
         for value in values:
-            try:
-                token_id = int(value)
-            except (TypeError, ValueError):
+            if isinstance(value, bool) or not isinstance(value, int):
                 continue
-
+            token_id = value
             if 0 <= token_id < vocab_size:
                 result.append(token_id)
 
@@ -846,8 +875,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
 
     @staticmethod
     def _safe_int(value: Any, default: int = 0) -> int:
-        """Convert value to int, returning default on invalid input."""
-        try:
-            return int(value)
-        except (TypeError, ValueError):
+        """Accept a real integer only; never truncate fractional controls."""
+        if isinstance(value, bool) or not isinstance(value, int):
             return default
+        return value

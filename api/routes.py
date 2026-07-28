@@ -1,11 +1,24 @@
 from fastapi import APIRouter, HTTPException, Depends, WebSocket, Request
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional, Dict, Any
 from core.llm_handler import LLMHandler, InferenceError
 from core.nram import NRAM
-from core.config_suggester import NRAMConfigSuggester
+try:
+    from core.config_suggester import NRAMConfigSuggester
+except ImportError as _config_suggester_import_error:  # optional diagnostic dependency
+    _CONFIG_SUGGESTER_IMPORT_ERROR = str(_config_suggester_import_error)
+
+    class NRAMConfigSuggester:  # type: ignore[no-redef]
+        def __init__(self):
+            self._error = _CONFIG_SUGGESTER_IMPORT_ERROR
+
+        async def analyze_performance(self, state):
+            raise RuntimeError(f"Config suggester unavailable: {self._error}")
+
+        def update_config(self, config):
+            raise RuntimeError(f"Config suggester unavailable: {self._error}")
 from core.engines.registry import (
     get_sglang_engine,
     should_route_to_sglang,
@@ -32,26 +45,13 @@ templates = Jinja2Templates(directory="templates")
 config_suggester = NRAMConfigSuggester()
 searxng_client = SearXNGClient()
 
-# Supported model aliases
+# Public enumeration contains immutable loaded model identities only. Virtual
+# routes remain accepted but are disclosed separately by capabilities.
 MODEL_ALIASES = {
-    "nram-gpt-oss-20b": "nram-gpt-oss-20b",
-    "gpt-oss-20b-baseline": "gpt-oss-20b-baseline",
-    "deepseek-r1-qwen-7b-baseline": "deepseek-r1-qwen-7b-baseline",
-    "nram-deepseek-r1-qwen-7b": "nram-deepseek-r1-qwen-7b",
-    # Qwen3-14B-AWQ personas (selectable in agentic coding)
-    "qwen3-14b-awq-baseline": "qwen3-14b-awq-baseline",
     "nram-qwen3-14b-awq": "nram-qwen3-14b-awq",
-    # Persona models (route to NRAM profiles)
-    "persona-normal": "persona-normal",
-    "persona-microdose": "persona-microdose",
-    "persona-threshold": "persona-threshold",
-    "persona-psychedelic": "persona-psychedelic",
-    "persona-peak": "persona-peak",
-    "persona-dissociative": "persona-dissociative",
-    "persona-keynote": "persona-keynote",
-    # MoE orchestrator (queries multiple personas, synthesizes)
-    "nram-moe-orchestrator": "nram-moe-orchestrator",
 }
+
+_BASELINE_ALIASES = {"qwen3-14b-awq-baseline"}
 
 # Persona model -> NRAM profile mapping
 _PERSONA_MODEL_MAP = {
@@ -71,6 +71,8 @@ _MOE_DEFAULT_PERSONAS = [
 
 
 class ChatCompletionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
     model: str
     messages: List[Dict[str, str]]
     temperature: Optional[float] = 1.0
@@ -122,8 +124,121 @@ def _is_moe_model(model: str) -> bool:
     return model == "nram-moe-orchestrator"
 
 
-async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str, Any]:
+def _validate_model_identity(model: str) -> None:
+    accepted = set(MODEL_ALIASES) | _BASELINE_ALIASES | set(_PERSONA_MODEL_MAP) | {"nram-moe-orchestrator"}
+    if sglang_enabled() and model not in accepted:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "code": "model_not_loaded",
+                "param": "model",
+                "message": f"Model {model!r} is not backed by the loaded checkpoint.",
+            },
+        )
+
+
+def _apply_session_snapshot(request: ChatCompletionRequest) -> Optional[Any]:
+    """Apply one immutable session snapshot to this request, if requested."""
+    options = request.nram or {}
+    session_id = options.get("session_id")
+    if not session_id:
+        return None
+    from core.nram.session import session_store
+
+    session = session_store.get(session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail={"code": "session_not_found", "session_id": session_id})
+    snapshot = session.model_copy(deep=True)
+    options["profile"] = snapshot.profile.value
+    options["intensity"] = snapshot.intensity
+    from core.contracts.nram_runtime import PHENOMENA
+
+    options["phenomenon_weights"] = {
+        key: value
+        for key, value in snapshot.phenomenon_weights.items()
+        if key in PHENOMENA
+    }
+    omitted = sorted(set(snapshot.phenomenon_weights) - set(PHENOMENA))
+    if omitted:
+        _session_runtime_events.setdefault(snapshot.id, []).append(
+            {
+                "type": "unsupported_session_controls_omitted",
+                "controls": omitted,
+                "causal_processor_event": False,
+            }
+        )
+    request.nram = options
+    if request.seed is None and snapshot.seed is not None:
+        request.seed = snapshot.seed
+    return snapshot
+
+
+_session_runtime_events: Dict[str, List[Dict[str, Any]]] = {}
+
+
+def _record_session_result(snapshot: Optional[Any], response: Any) -> None:
+    """Record actual response accounting; do not synthesize processor origins."""
+    if snapshot is None:
+        return
+    usage = response.usage if hasattr(response, "usage") else None
+    completion_tokens = int(getattr(usage, "completion_tokens", 0) or 0)
+    snapshot_live = None
+    from core.nram.session import session_store
+
+    snapshot_live = session_store.get(snapshot.id)
+    if snapshot_live is None:
+        return
+    snapshot_live.update_state_after_request(
+        completion_tokens=completion_tokens,
+        phenomena_activated=[],
+        steering_events={"model_generated": completion_tokens},
+    )
+    correlation = getattr(response, "nram_correlation", None) or {}
+    _session_runtime_events.setdefault(snapshot.id, []).append(
+        {
+            "type": "response_correlation",
+            "causal_processor_event": False,
+            "scheduler_request_id": correlation.get("scheduler_request_id"),
+            "config_hash": correlation.get("config_hash"),
+            "sampled_token_ids": correlation.get("sampled_token_ids", []),
+            "completion_tokens": completion_tokens,
+        }
+    )
+
+
+async def _complete_with_lifecycle(engine: Any, engine_request: EngineRequest, raw_request: Optional[Request] = None):
+    """Abort SGLang if a non-stream client disconnects before completion."""
+    task = asyncio.create_task(engine.complete(engine_request))
+    if raw_request is None:
+        return await task
+
+    async def wait_for_disconnect() -> bool:
+        while not task.done():
+            if await raw_request.is_disconnected():
+                return True
+            await asyncio.sleep(0.05)
+        return False
+
+    watcher = asyncio.create_task(wait_for_disconnect())
+    done, _ = await asyncio.wait({task, watcher}, return_when=asyncio.FIRST_COMPLETED)
+    if watcher in done and watcher.result() and not task.done():
+        await engine.abort(engine_request.runtime_request_id, reason="client_disconnected")
+        task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
+        raise HTTPException(status_code=499, detail={"code": "client_disconnected"})
+    watcher.cancel()
+    await asyncio.gather(watcher, return_exceptions=True)
+    return await task
+
+
+async def _route_persona(
+    request: ChatCompletionRequest,
+    model: str,
+    raw_request: Optional[Request] = None,
+    session_snapshot: Optional[Any] = None,
+):
     """Route a persona-model request to SGLang with NRAM opts injected."""
+    validate_request(request)
     engine = get_sglang_engine()
     if engine is None:
         raise InferenceError("SGLang engine not available", code="engine_unavailable")
@@ -154,23 +269,36 @@ async def _route_persona(request: ChatCompletionRequest, model: str) -> Dict[str
     }
     if request.nram:
         nram_opts.update(request.nram)
-    request.nram = nram_opts
-
-    # CRITICAL: Switch model to NRAM-enabled alias so engine activates logit processor
-    public_model = request.model
-    request.model = "nram-qwen3-14b-awq"
-
-    engine_request = _to_engine_request(request, request.messages)
-    response = await engine.complete(engine_request)
-
+    internal = request.model_copy(deep=True)
+    internal.nram = nram_opts
+    internal.model = "nram-qwen3-14b-awq"
+    engine_request = _to_engine_request(
+        internal,
+        internal.messages,
+        public_model=model,
+        route_kind="persona.chat.completions",
+    )
+    if request.stream:
+        return StreamingResponse(
+            engine.stream(engine_request),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
+    response = await _complete_with_lifecycle(engine, engine_request, raw_request)
+    _record_session_result(session_snapshot, response)
     result = response.model_dump()
-    result["model"] = public_model  # Return original model name to client
-
+    result["model"] = model
     return result
 
 
 async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
-    """MoE orchestrator: query personas in parallel, synthesize final answer."""
+    """Bounded sequential persona orchestration; this is not model-level MoE."""
+    validate_request(request)
+    if request.stream:
+        raise HTTPException(
+            status_code=400,
+            detail={"code": "moe_streaming_not_supported", "message": "Orchestration is non-streaming."},
+        )
     engine = get_sglang_engine()
     if engine is None:
         raise InferenceError("SGLang engine not available", code="engine_unavailable")
@@ -181,19 +309,25 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
             user_content = msg.get("content", "")
             break
 
-    # Query each persona in parallel (allow substantial insights for strategic analysis)
     async def query_persona(profile: str):
         sub_request = _to_engine_request(request, request.messages)
-        # CRITICAL: Switch model to NRAM-enabled alias so engine activates logit processor
         sub_request.model = "nram-qwen3-14b-awq"
-        sub_request.nram = {"enabled": True, "profile": profile, "intensity": 0.9}
-        sub_request.max_tokens = 1024
+        sub_request.public_model = "nram-moe-orchestrator"
+        sub_request.route_kind = f"persona-orchestration.expert.{profile}"
+        sub_request.nram = {
+            **(request.nram or {}),
+            "enabled": True,
+            "profile": profile,
+        }
+        sub_request.max_tokens = request.max_tokens
         try:
             result = await engine.complete(sub_request)
-            # Keep FULL content for rich synthesis — no truncation
             return (profile, result.choices[0].message.content)
-        except Exception as e:
-            return (profile, f"[error: {e}]")
+        except Exception as exc:
+            raise SGLangEngineError(
+                f"Persona orchestration failed for {profile}: {exc}",
+                status_code=getattr(exc, "status_code", 502),
+            ) from exc
 
     # Deterministic single-request runtime: issue persona calls sequentially.
     # This route is an orchestration workflow, not DExperts or model-level MoE.
@@ -207,9 +341,7 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
         # Keep FULL content for rich synthesis — no truncation
         persona_summaries.append(f"[{profile} perspective]:\n{output}")
 
-    # Determine synthesis length based on user's request
-    requested_tokens = request.max_tokens or 2048
-    synthesis_max_tokens = max(1024, min(requested_tokens, 4096))  # Increased minimum from 512
+    synthesis_max_tokens = request.max_tokens
 
     synthesis_input = (
         f"Question: {user_content[:500]}\n\n"
@@ -227,10 +359,12 @@ async def _route_moe(request: ChatCompletionRequest) -> Dict[str, Any]:
     ]
     synth_request = _to_engine_request(request, synth_messages)
     synth_request.model = "nram-qwen3-14b-awq"
+    synth_request.public_model = "nram-moe-orchestrator"
+    synth_request.route_kind = "persona-orchestration.synthesis"
     synth_request.nram = {
+        **(request.nram or {}),
         "enabled": True,
         "profile": "visionary-peak",
-        "intensity": 0.7,
     }
     synth_request.max_tokens = synthesis_max_tokens
     synth_request.temperature = 0.5
@@ -263,11 +397,14 @@ async def websocket_endpoint(websocket: WebSocket):
 @router.post("/chat/completions")
 async def create_chat_completion(
     request: ChatCompletionRequest,
+    raw_request: Request,
     current_user: dict = Depends(get_current_user)
 ):
     """Handle chat completion requests — OpenAI-compatible, no fake 200 on failure."""
     try:
         validate_request(request)
+        _validate_model_identity(request.model)
+        session_snapshot = _apply_session_snapshot(request)
 
         # Reject client-supplied processor injection attempts
         nram_opts = request.nram or {}
@@ -285,7 +422,12 @@ async def create_chat_completion(
 
         # Route persona models (e.g., persona-peak -> NRAM peak profile)
         if _is_persona_model(request.model):
-            return await _route_persona(request, request.model)
+            return await _route_persona(
+                request,
+                request.model,
+                raw_request=raw_request,
+                session_snapshot=session_snapshot,
+            )
 
         # Route MoE orchestrator model
         if _is_moe_model(request.model):
@@ -299,7 +441,12 @@ async def create_chat_completion(
 
         # Route to SGLang engine when feature flag is active for this model
         if should_route_to_sglang(request.model):
-            return await _handle_sglang(request, messages)
+            return await _handle_sglang(
+                request,
+                messages,
+                raw_request=raw_request,
+                session_snapshot=session_snapshot,
+            )
 
         # Legacy path below
         # FIX defect 6: handle streaming requests
@@ -333,7 +480,13 @@ async def create_chat_completion(
         return _openai_error(500, str(e), "inference_error", "upstream_inference_failed")
 
 
-def _to_engine_request(request: ChatCompletionRequest, messages: list) -> EngineRequest:
+def _to_engine_request(
+    request: ChatCompletionRequest,
+    messages: list,
+    *,
+    public_model: Optional[str] = None,
+    route_kind: str = "chat.completions",
+) -> EngineRequest:
     """Convert the route request model into the engine contract request."""
     return EngineRequest(
         model=request.model,
@@ -350,6 +503,9 @@ def _to_engine_request(request: ChatCompletionRequest, messages: list) -> Engine
         tools=request.tools,
         tool_choice=request.tool_choice,
         nram=request.nram,
+        runtime_request_id=f"nram-scheduler-{uuid.uuid4().hex}",
+        public_model=public_model or request.model,
+        route_kind=route_kind,
     )
 
 
@@ -376,7 +532,13 @@ async def _stream_completion(request: ChatCompletionRequest, messages: list):
     return StreamingResponse(generate(), media_type="text/event-stream")
 
 
-async def _handle_sglang(request: ChatCompletionRequest, messages: list):
+async def _handle_sglang(
+    request: ChatCompletionRequest,
+    messages: list,
+    *,
+    raw_request: Optional[Request] = None,
+    session_snapshot: Optional[Any] = None,
+):
     """Route a request through the SGLang engine with tool call support."""
     engine = get_sglang_engine()
     if engine is None:
@@ -387,33 +549,7 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
             "engine_unavailable",
         )
 
-    # Add SearXNG tools if no tools specified
     tools = request.tools
-    if tools is None:
-        tools = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "searxng_search",
-                    "description": "Search the web for current information, market research, company analysis, or technology trends",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "query": {
-                                "type": "string",
-                                "description": "The search query"
-                            },
-                            "search_type": {
-                                "type": "string",
-                                "enum": ["general", "market_research", "company_analysis", "technology_trends"],
-                                "description": "Type of search: general web search, market research, company analysis, or technology trends"
-                            }
-                        },
-                        "required": ["query"]
-                    }
-                }
-            }
-        ]
 
     engine_request = _to_engine_request(request, messages)
     engine_request.tools = tools
@@ -426,7 +562,8 @@ async def _handle_sglang(request: ChatCompletionRequest, messages: list):
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
 
-    response = await engine.complete(engine_request)
+    response = await _complete_with_lifecycle(engine, engine_request, raw_request)
+    _record_session_result(session_snapshot, response)
     response_dict = response.model_dump()
 
     # Check if model wants to call a tool
@@ -499,19 +636,38 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
     return {
         "engine": "sglang" if engine_active else "legacy",
         "sglang_enabled": engine_active,
-        "served_aliases": list(MODEL_ALIASES.keys()),
+        "loaded_model_ids": list(MODEL_ALIASES.keys()),
+        "virtual_routes": {
+            "baseline_aliases": sorted(_BASELINE_ALIASES),
+            "persona_profiles": dict(_PERSONA_MODEL_MAP),
+            "persona_orchestration": "nram-moe-orchestrator",
+        },
+        "actual_base_model": "nram-qwen3-14b-awq",
         "controls": {
             "prompt_steering": True,
-            "structured_output_planning": True,
             "hard_token_masking": True,
             "soft_logit_biasing": True,
             "dynamic_repetition_penalty": True,
-            "activation_steering": False,
+            "phrase_and_source_masks": True,
+            "entropy_pid": True,
+            "vocabulary_logit_vectors": True,
         },
         "verified": {
-            "pre_sampling_logit_modification": False,
-            "forced_token_proof": False,
+            "pre_sampling_logit_modification": True,
+            "forced_token_proof": True,
             "streaming": True,
+        },
+        "blocked_not_implemented": [
+            "dexperts",
+            "representation_control",
+            "semantic_evidence_closed_loop",
+            "branch_and_tournament",
+            "full_causal_statistical_study",
+        ],
+        "telemetry": {
+            "processor_events": "causal_log_events",
+            "nonstream_sample_join": "sglang_meta_info",
+            "stream_sample_token_ids": "not_available_without_supported_post_sample_hook",
         },
     }
 

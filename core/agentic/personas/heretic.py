@@ -47,7 +47,7 @@ class Heretic(BasePersona):
     name = "heretic"
     output_schema = AssumptionChallenge  # Actually a list, but base class expects single
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         repository_map: RepositoryMap,
         user_goal: str,

@@ -471,11 +471,11 @@ with tab_pipeline:
                 st.error(f"Chyba při načítání stavu: {e}")
 
 # ---------------------------------------------------------------------------
-# Tab 5: Provenance dashboard (Feature 9)
+# Tab 5: Non-causal response accounting dashboard
 # ---------------------------------------------------------------------------
 with tab_telemetry:
-    st.markdown("### 📊 Token Provenance — jaké řízení způsobilo jaké tokeny")
-    st.caption("Applied-policy klasifikace: ukazuje aktivní steering vrstvu, ne kauzální důkaz.")
+    st.markdown("### 📊 Applied-policy / response accounting")
+    st.caption("Nekauzální souhrn odpovědí a konfigurovaných vrstev. Kauzální pre-sampling události jsou pouze NRAM_PROCESSOR_EVENT logy.")
 
     col_refresh, _ = st.columns([1, 4])
     if col_refresh.button("🔄 Načíst telemetrii"):
@@ -493,7 +493,7 @@ with tab_telemetry:
 
         dist = g.get("token_origin_distribution", {})
         if dist:
-            st.markdown("#### Globální distribuce původu tokenů")
+            st.markdown("#### Nekauzální distribuce applied-policy štítků")
             import pandas as pd
             df = pd.DataFrame(
                 [{"origin": k, "tokens": v} for k, v in sorted(dist.items(), key=lambda x: -x[1]) if v > 0]
@@ -502,7 +502,7 @@ with tab_telemetry:
                 st.bar_chart(df.set_index("origin"))
 
         if sessions:
-            st.markdown("#### Telemetrie dle sezení")
+            st.markdown("#### Response accounting dle sezení")
             for s in sessions[-10:]:
                 with st.expander(f"{s.get('session_id','?')} · {s.get('total_requests',0)} req · avg {s.get('avg_latency_ms',0)}ms"):
                     st.json({
@@ -512,7 +512,7 @@ with tab_telemetry:
                         "dominant": s.get("dominant_origin"),
                     })
         else:
-            st.info("Zatím žádná telemetrie. Spusť generování v Simulátoru.")
+            st.info("Zatím žádná response-accounting data.")
     else:
         st.error("Nelze načíst telemetrii.")
 

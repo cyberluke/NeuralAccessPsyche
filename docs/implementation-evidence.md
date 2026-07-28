@@ -1,5 +1,11 @@
 # Implementation Evidence Report
 
+> **Historical artifact — not current scientific evidence.** Model identities,
+> test counts, planner claims, and readiness statements below describe an older
+> runtime and must not be used as current proof. The active loaded model is
+> Qwen3-14B-AWQ. See `NRAM_V5_RUNTIME_WIRING.md`, `NRAM_V5_LIMITATIONS.md`, and
+> `ISSUE_LEDGER_NRAM_V5_SCIENTIFIC.md` for bounded current status.
+
 **Branch**: `feature/nram-sglang-steering`  
 **Starting commit**: `eaeae0228ed28b9fdf6175b62d9fb2b46b492011`  
 **Ending commit**: `0b9fc21` (latest)  

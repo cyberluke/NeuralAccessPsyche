@@ -145,7 +145,7 @@ def test_soft_window_and_sparse_vocabulary_vectors_have_local_signed_effects():
     assert result[0, 9] == 0
 
 
-def test_processor_telemetry_contains_direct_deltas_and_is_bounded(capsys):
+def test_processor_telemetry_never_truncates_explicit_forced_targets(capsys):
     processor = NRAMLogitProcessor()
     request = SimpleNamespace(output_ids=[], rid="scheduler-rid")
     params = _params(
@@ -165,7 +165,7 @@ def test_processor_telemetry_contains_direct_deltas_and_is_bounded(capsys):
     processor(torch.zeros((1, 10)), [params])
 
     lines = [line for line in capsys.readouterr().out.splitlines() if line]
-    assert len(lines) == 1
+    assert len(lines) == 2
     event = json.loads(lines[0].split("NRAM_PROCESSOR_EVENT ", 1)[1])
     assert event["request_id"] == "public-id"
     assert event["config_hash"] == "abc123"
@@ -174,3 +174,38 @@ def test_processor_telemetry_contains_direct_deltas_and_is_bounded(capsys):
     assert event["mask_count"] == 9
     assert event["post_top_k"][0]["token_id"] == 5
     assert result.argmax(dim=-1).item() == 5
+    second = json.loads(lines[1].split("NRAM_PROCESSOR_EVENT ", 1)[1])
+    assert second["invocation_count"] == 2
+    assert second["forced_token_id"] == 5
+
+
+def test_processor_telemetry_still_bounds_noncausal_steps(capsys):
+    processor = NRAMLogitProcessor()
+    request = SimpleNamespace(output_ids=[], rid="bounded")
+    params = _params(
+        __req__=request,
+        telemetry_enabled=True,
+        telemetry_max_steps=1,
+    )
+    processor(torch.zeros((1, 8)), [params])
+    processor(torch.zeros((1, 8)), [params])
+    lines = [line for line in capsys.readouterr().out.splitlines() if line]
+    assert len(lines) == 1
+
+
+def test_no_finite_candidate_and_nan_rows_fail_without_unmasking():
+    processor = NRAMLogitProcessor()
+    request = SimpleNamespace(output_ids=[], rid="numerical")
+    params = _params(__req__=request)
+
+    with pytest.raises(RuntimeError, match="NRAM_NO_FINITE_CANDIDATE"):
+        processor(torch.full((1, 8), -float("inf")), [params])
+    with pytest.raises(RuntimeError, match="NRAM_NONFINITE_LOGIT_ROW"):
+        processor(torch.tensor([[0.0, float("nan"), 1.0]]), [params])
+
+
+def test_fractional_token_ids_are_not_truncated_inside_processor():
+    processor = NRAMLogitProcessor()
+    params = _params(positive_token_ids=[1.5], positive_bias=1.0)
+    result = processor(torch.zeros((1, 4)), [params])
+    assert result.tolist() == [[0.0, 0.0, 0.0, 0.0]]

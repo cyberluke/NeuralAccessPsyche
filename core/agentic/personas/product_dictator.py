@@ -62,7 +62,7 @@ class ProductDictator(BasePersona):
     name = "product_dictator"
     output_schema = SelectedDirection
 
-    async def run(
+    async def run(  # type: ignore[override]
         self,
         hypotheses: List[InnovationHypothesis],
         reviews: List[ReviewedHypothesis],

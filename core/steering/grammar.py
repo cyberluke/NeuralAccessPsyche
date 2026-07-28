@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Type
+
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +69,7 @@ def compile_response_format(
     return response_format
 
 
-def pydantic_to_response_format(model_cls: type) -> Dict[str, Any]:
+def pydantic_to_response_format(model_cls: Type[BaseModel]) -> Dict[str, Any]:
     """Convert a Pydantic model class to an SGLang json_schema response_format."""
     schema = model_cls.model_json_schema()
     name = schema.get("title", model_cls.__name__)

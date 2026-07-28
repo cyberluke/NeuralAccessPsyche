@@ -9,9 +9,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from fastapi.testclient import TestClient
 
 # A valid Bearer token: starts with "Bearer " and len > 10
-AUTH_HEADER = {"Authorization": "Bearer dev-nram-key-12345678"}
+AUTH_HEADER = {"Authorization": "Bearer dev-nram-key"}
 # An invalid token: too short (len <= 10)
-BAD_AUTH_HEADER = {"Authorization": "Bearer x"}
+BAD_AUTH_HEADER = {"Authorization": "Bearer arbitrary-long-but-wrong-token"}
 
 
 @pytest.fixture

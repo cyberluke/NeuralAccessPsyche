@@ -4,7 +4,6 @@ import uuid
 import json
 import logging
 import numpy as np
-from openai import OpenAI
 import os
 from core.guidance_handler import GuidanceHandler
 
@@ -22,8 +21,6 @@ class InferenceError(Exception):
 
 class LLMHandler:
     def __init__(self):
-        # Initialize OpenAI client
-        self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         self.model = os.environ.get("DEFAULT_MODEL", "gpt-4o")
         self.guidance_handler = GuidanceHandler()
         self.consciousness_levels = {
@@ -32,7 +29,7 @@ class LLMHandler:
             "enlightened": 0.7,
             "transcendent": 0.9
         }
-        logger.info("LLMHandler initialized with OpenAI, NRAM, and Guidance integration")
+        logger.info("LLMHandler initialized with Guidance integration")
 
     async def generate_response(
         self,

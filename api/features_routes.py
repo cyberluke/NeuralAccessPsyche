@@ -255,9 +255,9 @@ async def get_session_memory(
     backend = _get_memory()
     block_ids = _session_memory_links.get(session_id, [])
     blocks = [backend.get_block(bid) for bid in block_ids]
-    blocks = [b for b in blocks if b is not None]
+    serialized = [block.model_dump(mode="json") for block in blocks if block is not None]
     return {
         "session_id": session_id,
-        "count": len(blocks),
-        "blocks": [b.model_dump(mode="json") for b in blocks],
+        "count": len(serialized),
+        "blocks": serialized,
     }

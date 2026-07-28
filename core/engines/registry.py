@@ -14,10 +14,6 @@ logger = logging.getLogger(__name__)
 
 # Aliases served by the SGLang engine (local models).
 SGLANG_ALIASES = {
-    "nram-gpt-oss-20b",
-    "gpt-oss-20b-baseline",
-    "deepseek-r1-qwen-7b-baseline",
-    "nram-deepseek-r1-qwen-7b",
     "nram-qwen3-14b-awq",
     "qwen3-14b-awq-baseline",
 }
@@ -51,7 +47,7 @@ def get_sglang_engine():
         return None
 
     base_url = os.environ.get("SGLANG_BASE_URL", "http://sglang:30000/v1")
-    model = os.environ.get("SGLANG_MODEL", "nram-deepseek-r1-qwen-7b")
+    model = os.environ.get("SGLANG_MODEL", "nram-qwen3-14b-awq")
 
     tokenizer = _load_tokenizer()
     

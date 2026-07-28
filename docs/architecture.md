@@ -7,9 +7,9 @@ This document describes the end-to-end request flow through NeuralAccessPsyche: 
 1. **Client → FastAPI** — An OpenAI-compatible client posts to `/v1/chat/completions` with a Bearer token.
 2. **Request validation** — `validate_request()` checks the schema. The `nram` extension object is inspected and **forbidden fields are rejected** (see [`security.md`](security.md)).
 3. **Persona policy compiler** — The selected persona profile (`NRAMState`) is compiled **deterministically** into a `SteeringPolicy` (positive / negative / forbidden lexemes, bias magnitudes, repetition penalty, developer instruction). Identical inputs produce identical policies (verifiable via `policy_hash`).
-4. **NRAM state controller** — The `NRAMController` holds the active profile, applies any per-request overrides, compiles the policy, and records the policy hash for reproducibility.
-5. **Rhetorical planner** — For NRAM-enabled requests, a **hidden** `llguidance` structured-output call produces a `VisionaryPlan` (uncomfortable truth, rejected assumption, human need, product revelation, …). The plan is turned into a prompt fragment and is **never shown to the end user**.
-6. **Token bias compiler** — The `TokenBiasCompiler` uses the exact model tokenizer to convert lexemes into concrete token IDs, skipping ambiguous multi-token fragments and **never** biasing punctuation, whitespace, or special tokens.
+4. **Applied-state compiler** — Resolves the profile, request controls, prompt intervention, route, sampling, grammar, model/tokenizer identity, and defaults into a versioned canonical hash.
+5. **Token bias compiler** — The `TokenBiasCompiler` uses the exact Qwen tokenizer to convert supported lexemes into concrete token IDs.
+6. **Lifecycle/correlation boundary** — The API assigns a server-generated SGLang `rid`, exposes public and actual base identities, and calls SGLang's official `/abort_request` on cancellation/deadline.
 7. **SGLang engine** — The engine builds an upstream payload from an explicit allowlist of fields, injects the **trusted** serialized `NRAMLogitProcessor` plus `custom_params` (token IDs + bounded bias values), and calls SGLang.
 8. **Custom logit processor** — Inside SGLang, `NRAMLogitProcessor.__call__` runs per batch row: it adds positive bias, subtracts negative bias, sets forbidden tokens to `-inf`, and applies a dynamic repetition penalty against recent output — **all before sampling**.
 9. **GPU decoding** — SGLang samples from the modified logits on the RTX 4090.
@@ -19,17 +19,15 @@ This document describes the end-to-end request flow through NeuralAccessPsyche: 
 flowchart TD
     Client[OpenAI-compatible client]
     API[NeuralAccessPsyche FastAPI]
-    Planner[llguidance rhetorical planner]
     NRAM[NRAM controller]
     Compiler[Token bias compiler]
     SGLang[SGLang]
     Processor[Custom logit processor]
-    Model[gpt-oss-20b]
+    Model[Qwen3-14B-AWQ]
     Stream[SSE response]
 
     Client --> API
-    API --> Planner
-    Planner --> NRAM
+    API --> NRAM
     NRAM --> Compiler
     Compiler --> API
     API --> SGLang
@@ -48,7 +46,7 @@ flowchart TD
 | Request validation | `utils/validators.py` | Schema validation of incoming requests |
 | Persona policy compiler | `core/persona/compiler.py` | `NRAMState` → `SteeringPolicy` (deterministic) |
 | NRAM controller | `core/nram_controller/controller.py` | Active profile, overrides, policy hash |
-| Rhetorical planner | `core/persona/planner.py` | Hidden structured `VisionaryPlan` via llguidance |
+| Optional planner helper | `core/persona/planner.py` | Not an advertised or required runtime mechanism; absence does not silently change logit controls |
 | Token bias compiler | `core/steering/tokenizer_bias.py` | Lexemes → concrete token IDs |
 | SGLang engine | `core/engines/sglang_engine.py` | Upstream payload, processor injection, SSE passthrough |
 | Logit processor | `core/steering/nram_logit_processor.py` | Pre-sampling logit modification inside SGLang |

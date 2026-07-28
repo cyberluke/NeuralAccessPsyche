@@ -38,6 +38,8 @@ def build_custom_params(
     telemetry_top_k: int = 5,
     forced_token_id: Optional[int] = None,
     forced_token_enabled: bool = False,
+    applied_state_hash: Optional[str] = None,
+    applied_state_schema: str = "nram.applied-state.v1",
 ) -> Dict[str, Any]:
     """Build the trusted custom_params dict for SGLang.
 
@@ -99,10 +101,15 @@ def build_custom_params(
         result["telemetry_max_steps"] = max(0, min(128, int(telemetry_max_steps)))
         result["telemetry_top_k"] = max(1, min(20, int(telemetry_top_k)))
 
-    # Hash the exact intervention configuration before adding correlation
-    # metadata. This is deterministic across API and inference containers.
-    canonical = json.dumps(result, sort_keys=True, separators=(",", ":"))
-    result["config_hash"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    # The engine normally supplies a hash of the complete resolved applied
+    # state (prompt, sampling, grammar, artifacts, route, and processor
+    # parameters). Keep the local fallback for direct unit callers and older
+    # integrations, but mark both forms with an explicit schema version.
+    result["applied_state_schema"] = applied_state_schema
+    if applied_state_hash is None:
+        canonical = json.dumps(result, sort_keys=True, separators=(",", ":"))
+        applied_state_hash = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    result["config_hash"] = applied_state_hash
     if request_id:
         result["request_id"] = str(request_id)[:128]
 

@@ -66,8 +66,8 @@ class TestPersonaAliasActivatesLogitProcessor:
     """Test that persona aliases correctly activate NRAM logit processor."""
 
     @pytest.mark.asyncio
-    async def test_route_persona_sets_internal_model(self):
-        """Verify _route_persona() sets request.model to nram-qwen3-14b-awq."""
+    async def test_route_persona_uses_internal_model_without_mutating_input(self):
+        """Persona routing uses Qwen internally and preserves caller state."""
         from api.routes import _route_persona, ChatCompletionRequest
         from core.engines.registry import reset_engine_cache
 
@@ -97,20 +97,20 @@ class TestPersonaAliasActivatesLogitProcessor:
         with patch("api.routes.get_sglang_engine", return_value=mock_engine):
             result = await _route_persona(request, "persona-peak")
 
-        # Verify internal model was switched
-        assert request.model == "nram-qwen3-14b-awq", (
-            "Internal model should be nram-qwen3-14b-awq, not persona-peak"
-        )
+        assert request.model == "persona-peak"
+        engine_request = mock_engine.complete.await_args.args[0]
+        assert engine_request.model == "nram-qwen3-14b-awq"
+        assert engine_request.public_model == "persona-peak"
 
         # Verify response returns public model name
         assert result["model"] == "persona-peak", (
             "Response should return public model name 'persona-peak'"
         )
 
-        # Verify NRAM options were injected
-        assert request.nram is not None, "NRAM options should be injected"
-        assert request.nram.get("enabled") is True, "NRAM should be enabled"
-        assert request.nram.get("profile") == "peak", "Profile should be 'peak'"
+        # Verify NRAM options were injected only into the immutable internal copy.
+        assert request.nram is None
+        assert engine_request.nram.get("enabled") is True
+        assert engine_request.nram.get("profile") == "peak"
 
     @pytest.mark.asyncio
     async def test_moe_subrequest_sets_internal_model(self):
@@ -225,18 +225,10 @@ class TestPersonaAliasActivatesLogitProcessor:
             )
 
     def test_nram_enabled_aliases_contains_actual_nram_models(self):
-        """Verify NRAM_ENABLED_ALIASES contains the actual NRAM models."""
+        """Only the checkpoint actually loaded by SGLang may be enabled."""
         from core.engines.sglang_engine import NRAM_ENABLED_ALIASES
 
-        expected = {
-            "nram-gpt-oss-20b",
-            "nram-deepseek-r1-qwen-7b",
-            "nram-qwen3-14b-awq",
-        }
-
-        assert expected.issubset(NRAM_ENABLED_ALIASES), (
-            f"NRAM_ENABLED_ALIASES should contain {expected}, got {NRAM_ENABLED_ALIASES}"
-        )
+        assert NRAM_ENABLED_ALIASES == {"nram-qwen3-14b-awq"}
 
 
 class TestTokenizerFailFast:
