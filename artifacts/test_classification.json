@@ -1,0 +1,323 @@
+{
+  "generated_at": "2026-07-28T21:26:00Z",
+  "commit": "b19992f",
+  "tests": [
+    {
+      "file": "tests/unit/test_existing_llm_handler.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 11
+    },
+    {
+      "file": "tests/unit/test_existing_nram.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 13
+    },
+    {
+      "file": "tests/unit/test_logit_processor.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 10
+    },
+    {
+      "file": "tests/unit/test_nram_state.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 8
+    },
+    {
+      "file": "tests/unit/test_nram_v5_final_remediation.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 12
+    },
+    {
+      "file": "tests/unit/test_nram_v5_phase2_runtime.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 15
+    },
+    {
+      "file": "tests/unit/test_nram_v5_remediation.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 18
+    },
+    {
+      "file": "tests/unit/test_nram_v5_runtime_controls.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 20
+    },
+    {
+      "file": "tests/unit/test_persona_compiler.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 9
+    },
+    {
+      "file": "tests/unit/test_phase_schedule.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 7
+    },
+    {
+      "file": "tests/unit/test_phenomena_mixer.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 11
+    },
+    {
+      "file": "tests/unit/test_planner.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 6
+    },
+    {
+      "file": "tests/unit/test_serialization.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 14
+    },
+    {
+      "file": "tests/unit/test_stream_reasoning.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 10
+    },
+    {
+      "file": "tests/unit/test_token_bias.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 8
+    },
+    {
+      "file": "tests/unit/test_workflow_store.py",
+      "classification": "unit",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 9
+    },
+    {
+      "file": "tests/contract/test_openai_chat_contract.py",
+      "classification": "contract",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 11
+    },
+    {
+      "file": "tests/contract/test_openai_models_contract.py",
+      "classification": "contract",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 3
+    },
+    {
+      "file": "tests/contract/test_sglang_engine_contract.py",
+      "classification": "contract",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 25
+    },
+    {
+      "file": "tests/integration/test_activation_addition.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 27
+    },
+    {
+      "file": "tests/integration/test_consciousness_quality.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 2
+    },
+    {
+      "file": "tests/integration/test_hallucination_guard.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 10
+    },
+    {
+      "file": "tests/integration/test_nram_v5_ab_testing.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 8
+    },
+    {
+      "file": "tests/integration/test_nram_v5_sprint3.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 12
+    },
+    {
+      "file": "tests/integration/test_persona_alias_logit_processor.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 15
+    },
+    {
+      "file": "tests/integration/test_streamlit_smoke.py",
+      "classification": "integration",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 1
+    },
+    {
+      "file": "tests/adversarial/test_end_to_end_logit_processor.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 4
+    },
+    {
+      "file": "tests/adversarial/test_moe_synthesis.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 4
+    },
+    {
+      "file": "tests/adversarial/test_phenomenon_activation.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 5
+    },
+    {
+      "file": "tests/adversarial/test_remediation_verification.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 12
+    },
+    {
+      "file": "tests/adversarial/test_req_injection.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 3
+    },
+    {
+      "file": "tests/adversarial/test_mandatory_falsification.py",
+      "classification": "adversarial",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 14
+    },
+    {
+      "file": "tests/runtime_adversary/test_capability_endpoint_falsification.py",
+      "classification": "runtime_adversary",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 15
+    },
+    {
+      "file": "tests/runtime_adversary/test_confirmed_runtime_defects.py",
+      "classification": "runtime_adversary",
+      "requires_gpu": true,
+      "requires_sglang": true,
+      "test_count": 8
+    },
+    {
+      "file": "tests/runtime_adversary/test_nram_v5_wiring_falsification.py",
+      "classification": "runtime_adversary",
+      "requires_gpu": false,
+      "requires_sglang": false,
+      "test_count": 31
+    },
+    {
+      "file": "tests/gpu/test_forced_token_proof.py",
+      "classification": "gpu",
+      "requires_gpu": true,
+      "requires_sglang": true,
+      "test_count": 1
+    },
+    {
+      "file": "tests/gpu/test_logit_controls.py",
+      "classification": "gpu",
+      "requires_gpu": true,
+      "requires_sglang": true,
+      "test_count": 2
+    },
+    {
+      "file": "tests/gpu/test_nram_hook_smoke.py",
+      "classification": "gpu",
+      "requires_gpu": true,
+      "requires_sglang": true,
+      "test_count": 6
+    },
+    {
+      "file": "tests/gpu/test_structural_controls.py",
+      "classification": "gpu",
+      "requires_gpu": true,
+      "requires_sglang": true,
+      "test_count": 6
+    }
+  ],
+  "summary": {
+    "unit": {
+      "files": 16,
+      "tests": 181,
+      "requires_gpu": false,
+      "requires_sglang": false
+    },
+    "contract": {
+      "files": 3,
+      "tests": 39,
+      "requires_gpu": false,
+      "requires_sglang": false
+    },
+    "integration": {
+      "files": 7,
+      "tests": 75,
+      "requires_gpu": false,
+      "requires_sglang": false
+    },
+    "adversarial": {
+      "files": 6,
+      "tests": 42,
+      "requires_gpu": false,
+      "requires_sglang": false
+    },
+    "runtime_adversary": {
+      "files": 3,
+      "tests": 54,
+      "requires_gpu": false,
+      "requires_sglang": false
+    },
+    "gpu": {
+      "files": 4,
+      "tests": 15,
+      "requires_gpu": true,
+      "requires_sglang": true
+    },
+    "total": {
+      "files": 39,
+      "tests": 406,
+      "requires_gpu": false,
+      "requires_sglang": false
+    }
+  }
+}

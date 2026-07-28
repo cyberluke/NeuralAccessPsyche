@@ -810,7 +810,7 @@ with tab_evidence:
         
         for mech_name in v5_mechanisms:
             mech = controls.get(mech_name, {})
-            if not mech:
+            if not mech or not isinstance(mech, dict):
                 continue
             
             state = mech.get("state", "UNKNOWN")

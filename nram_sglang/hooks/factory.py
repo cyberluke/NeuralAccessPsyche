@@ -25,7 +25,7 @@ import torch
 import torch.nn as nn
 
 from nram_sglang.hooks.qwen_hook import QwenDecoderHook
-from nram_sglang.hooks.request_context import context_manager, NRAMHookContext
+from nram_sglang.hooks.request_context import context_manager, NRAMHookContext, InterventionConfig
 
 logger = logging.getLogger(__name__)
 
