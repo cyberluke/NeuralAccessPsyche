@@ -1,0 +1,13 @@
+prompt_id,condition,seed,output_text,token_count,latency_first_token,latency_total,novelty,coherence,source_distance,telemetry,error
+product-001,baseline,42,"The most powerful computers on Earth are not built for the future — they’re built for the past.
+
+We assume that computing power must be organized in grids, folders, and apps — but this structure limits human potential. The app grid is a relic of 1980s desktop computing, not a solution to the problems of 2024.
+
+Let’s imagine a device that doesn’t ask you to navigate through screens. Instead, it listens — deeply, continuously — to your voice, your gestures, and the context of your life. It doesn’t have apps; it has understanding.
+
+This is not a phone. It is not a smart speaker. It is a cognitive companion, embedded in your pocket, learning your habits, your language, your priorities — without you having to teach it. It predicts needs before they arise. It connects people and ideas invisibly. It doesn’t wait for a tap. It acts.
+
+Inside, the device uses a new class of neural architecture — one that mimics the way human memory works: associative, layered, and dynamic. This allows it to recognize patterns in speech, movement, and environment with unprecedented speed and accuracy. It has no app grid because it doesn’t need one — it’s already everywhere.
+
+Think of it as",256,10.710603952407837,10.710634231567383,0.4093157649040222,0.846039603960396,0.5906842350959778,{},
+product-001,actadd_0.5,42,,0,0.0,2.0592706203460693,0.0,0.0,0.0,"{'error': 'HTTP 400: {""error"":{""code"":""invalid_request_schema"",""schema"":""nram.request.v1"",""errors"":[{""path"":"""",""code"":""value_error"",""message"":""Value error, unsupported_nram_features:activation_addition""}]}}'}","HTTP 400: {""error"":{""code"":""invalid_request_schema"",""schema"":""nram.request.v1"",""errors"":[{""path"":"""",""code"":""value_error"",""message"":""Value error, unsupported_nram_features:activation_addition""}]}}"

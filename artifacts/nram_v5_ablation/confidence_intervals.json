@@ -1,0 +1,137 @@
+{
+  "novelty": {
+    "baseline": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_0.5": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_1.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_2.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "conceptor_1.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    }
+  },
+  "coherence": {
+    "baseline": {
+      "mean": 0.6999999999999998,
+      "ci_95_lower": 0.6999999999999998,
+      "ci_95_upper": 0.6999999999999998
+    },
+    "actadd_0.5": {
+      "mean": 0.6999999999999998,
+      "ci_95_lower": 0.6999999999999998,
+      "ci_95_upper": 0.6999999999999998
+    },
+    "actadd_1.0": {
+      "mean": 0.6999999999999998,
+      "ci_95_lower": 0.6999999999999998,
+      "ci_95_upper": 0.6999999999999998
+    },
+    "actadd_2.0": {
+      "mean": 0.6999999999999998,
+      "ci_95_lower": 0.6999999999999998,
+      "ci_95_upper": 0.6999999999999998
+    },
+    "conceptor_1.0": {
+      "mean": 0.6999999999999998,
+      "ci_95_lower": 0.6999999999999998,
+      "ci_95_upper": 0.6999999999999998
+    }
+  },
+  "source_distance": {
+    "baseline": {
+      "mean": 0.5999999999999999,
+      "ci_95_lower": 0.5999999999999999,
+      "ci_95_upper": 0.5999999999999999
+    },
+    "actadd_0.5": {
+      "mean": 0.5999999999999999,
+      "ci_95_lower": 0.5999999999999999,
+      "ci_95_upper": 0.5999999999999999
+    },
+    "actadd_1.0": {
+      "mean": 0.5999999999999999,
+      "ci_95_lower": 0.5999999999999999,
+      "ci_95_upper": 0.5999999999999999
+    },
+    "actadd_2.0": {
+      "mean": 0.5999999999999999,
+      "ci_95_lower": 0.5999999999999999,
+      "ci_95_upper": 0.5999999999999999
+    },
+    "conceptor_1.0": {
+      "mean": 0.5999999999999999,
+      "ci_95_lower": 0.5999999999999999,
+      "ci_95_upper": 0.5999999999999999
+    }
+  },
+  "token_count": {
+    "baseline": {
+      "mean": 10.0,
+      "ci_95_lower": 10.0,
+      "ci_95_upper": 10.0
+    },
+    "actadd_0.5": {
+      "mean": 10.0,
+      "ci_95_lower": 10.0,
+      "ci_95_upper": 10.0
+    },
+    "actadd_1.0": {
+      "mean": 10.0,
+      "ci_95_lower": 10.0,
+      "ci_95_upper": 10.0
+    },
+    "actadd_2.0": {
+      "mean": 10.0,
+      "ci_95_lower": 10.0,
+      "ci_95_upper": 10.0
+    },
+    "conceptor_1.0": {
+      "mean": 10.0,
+      "ci_95_lower": 10.0,
+      "ci_95_upper": 10.0
+    }
+  },
+  "latency_total": {
+    "baseline": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_0.5": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_1.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "actadd_2.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    },
+    "conceptor_1.0": {
+      "mean": 0.5,
+      "ci_95_lower": 0.5,
+      "ci_95_upper": 0.5
+    }
+  }
+}

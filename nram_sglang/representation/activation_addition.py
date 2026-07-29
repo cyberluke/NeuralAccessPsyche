@@ -109,31 +109,31 @@ class ActivationAdditionRuntime:
             raise FileNotFoundError(f"Artifact not found: {artifact_path}")
         
         try:
-            from safetensors.torch import load_file
-            data = load_file(str(path))
+            from safetensors import safe_open
         except ImportError:
             raise ImportError("safetensors is required to load activation vectors")
         
-        # Extract vector
-        if "vector" not in data:
-            raise ValueError(f"Artifact missing 'vector' key: {artifact_path}")
-        
-        vector = data["vector"]
-        if not isinstance(vector, torch.Tensor):
-            raise ValueError(f"Vector is not a tensor: {type(vector)}")
-        
-        if vector.dim() != 1:
-            raise ValueError(f"Vector must be 1D, got shape {vector.shape}")
-        
-        # Extract metadata
-        metadata_str = data.get("metadata", "{}")
-        if isinstance(metadata_str, torch.Tensor):
-            metadata_str = metadata_str.item()
-        
-        try:
-            metadata = json.loads(metadata_str) if isinstance(metadata_str, str) else {}
-        except json.JSONDecodeError:
-            metadata = {}
+        # Extract vector and metadata using safe_open
+        with safe_open(str(path), framework="pt", device="cpu") as f:
+            # Check for vector tensor
+            if "vector" not in f.keys():
+                raise ValueError(f"Artifact missing 'vector' key: {artifact_path}")
+            
+            vector = f.get_tensor("vector")
+            if not isinstance(vector, torch.Tensor):
+                raise ValueError(f"Vector is not a tensor: {type(vector)}")
+            
+            if vector.dim() != 1:
+                raise ValueError(f"Vector must be 1D, got shape {vector.shape}")
+            
+            # Extract metadata from file-level metadata
+            metadata_dict = f.metadata() or {}
+            metadata_str = metadata_dict.get("metadata", "{}")
+            
+            try:
+                metadata = json.loads(metadata_str) if isinstance(metadata_str, str) else {}
+            except json.JSONDecodeError:
+                metadata = {}
         
         # Validate required metadata
         required_fields = ["model_hash", "tokenizer_hash", "layer", "pooling"]

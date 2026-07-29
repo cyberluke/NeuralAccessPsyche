@@ -1,0 +1,192 @@
+{
+  "novelty": {
+    "actadd_0.5": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_2.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "conceptor_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "coherence": {
+    "actadd_0.5": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_2.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "conceptor_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "source_distance": {
+    "actadd_0.5": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_2.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "conceptor_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "token_count": {
+    "actadd_0.5": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_2.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "conceptor_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "latency_total": {
+    "actadd_0.5": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "actadd_2.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "conceptor_1.0": {
+      "cohens_d": 0.0,
+      "t_statistic": NaN,
+      "t_pvalue": NaN,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": NaN,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  }
+}

@@ -358,7 +358,18 @@ class TestBranchTournament:
             BranchAndTournamentGenerator, TournamentConfig, BranchStatus,
         )
         config = TournamentConfig(num_branches=4, base_seed=42)
-        gen = BranchAndTournamentGenerator(config)
+        
+        # Use mock generation function for unit tests
+        def mock_gen_fn(branch_config):
+            from nram_sglang.representation.branch_tournament import BranchResult, BranchStatus
+            return BranchResult(
+                branch_id=branch_config.branch_id,
+                status=BranchStatus.COMPLETED,
+                generated_text=f"Mock output for {branch_config.branch_id}",
+                token_count=10,
+            )
+        
+        gen = BranchAndTournamentGenerator(config, generation_fn=mock_gen_fn)
 
         winner = gen.run_tournament("test prompt")
         assert winner is not None
@@ -370,7 +381,18 @@ class TestBranchTournament:
             BranchAndTournamentGenerator, TournamentConfig, BranchStatus,
         )
         config = TournamentConfig(num_branches=3)
-        gen = BranchAndTournamentGenerator(config)
+        
+        # Use mock generation function for unit tests
+        def mock_gen_fn(branch_config):
+            from nram_sglang.representation.branch_tournament import BranchResult, BranchStatus
+            return BranchResult(
+                branch_id=branch_config.branch_id,
+                status=BranchStatus.COMPLETED,
+                generated_text=f"Mock output for {branch_config.branch_id}",
+                token_count=10,
+            )
+        
+        gen = BranchAndTournamentGenerator(config, generation_fn=mock_gen_fn)
         gen.run_tournament("test")
 
         scored = [b for b in gen.branches if b.status == BranchStatus.SCORED]
@@ -381,7 +403,18 @@ class TestBranchTournament:
             BranchAndTournamentGenerator, TournamentConfig,
         )
         config = TournamentConfig(num_branches=4)
-        gen = BranchAndTournamentGenerator(config)
+        
+        # Use mock generation function for unit tests
+        def mock_gen_fn(branch_config):
+            from nram_sglang.representation.branch_tournament import BranchResult, BranchStatus
+            return BranchResult(
+                branch_id=branch_config.branch_id,
+                status=BranchStatus.COMPLETED,
+                generated_text=f"Mock output for {branch_config.branch_id}",
+                token_count=10,
+            )
+        
+        gen = BranchAndTournamentGenerator(config, generation_fn=mock_gen_fn)
         winner = gen.run_tournament("test")
 
         assert winner is not None
@@ -394,7 +427,18 @@ class TestBranchTournament:
             BranchAndTournamentGenerator, TournamentConfig,
         )
         config = TournamentConfig(num_branches=3, include_branch_evidence=True)
-        gen = BranchAndTournamentGenerator(config)
+        
+        # Use mock generation function for unit tests
+        def mock_gen_fn(branch_config):
+            from nram_sglang.representation.branch_tournament import BranchResult, BranchStatus
+            return BranchResult(
+                branch_id=branch_config.branch_id,
+                status=BranchStatus.COMPLETED,
+                generated_text=f"Mock output for {branch_config.branch_id}",
+                token_count=10,
+            )
+        
+        gen = BranchAndTournamentGenerator(config, generation_fn=mock_gen_fn)
         gen.run_tournament("test")
 
         result = gen.get_tournament_result()

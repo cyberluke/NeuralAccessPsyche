@@ -1,0 +1,38 @@
+{
+  "study_name": "NRAM v5 Scientific Ablation Study",
+  "timestamp": "2026-07-28T21:39:23.585905+00:00",
+  "model": "nram-qwen3-14b-awq",
+  "base_url": "http://localhost:8000",
+  "prompts_file": "evaluation/prompts.jsonl",
+  "num_prompts": 1,
+  "conditions": [
+    "baseline",
+    "actadd_0.5"
+  ],
+  "condition_descriptions": {
+    "baseline": "No NRAM intervention (pure baseline)",
+    "actadd_0.5": "Activation addition with strength=0.5"
+  },
+  "seeds": [
+    42
+  ],
+  "max_tokens": 256,
+  "temperature": 0.7,
+  "total_generations": 2,
+  "completed_generations": 2,
+  "errors": 1,
+  "metrics_computed": [
+    "novelty",
+    "coherence",
+    "source_distance",
+    "token_count",
+    "latency_total"
+  ],
+  "statistical_tests": [
+    "cohens_d",
+    "paired_t_test",
+    "wilcoxon_signed_rank",
+    "bootstrap_ci"
+  ],
+  "multiple_comparison_correction": "bonferroni"
+}

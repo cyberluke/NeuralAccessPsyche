@@ -1,0 +1,192 @@
+{
+  "novelty": {
+    "profile_normal": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_peak": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_psychedelic": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "concepts_injection": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "coherence": {
+    "profile_normal": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_peak": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_psychedelic": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "concepts_injection": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "source_distance": {
+    "profile_normal": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_peak": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_psychedelic": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "concepts_injection": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "token_count": {
+    "profile_normal": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_peak": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_psychedelic": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "concepts_injection": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  },
+  "latency_total": {
+    "profile_normal": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_peak": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "profile_psychedelic": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    },
+    "concepts_injection": {
+      "cohens_d": 0.0,
+      "t_statistic": 0.0,
+      "t_pvalue": 1.0,
+      "wilcoxon_statistic": 0.0,
+      "wilcoxon_pvalue": 1.0,
+      "t_pvalue_bonferroni": 1.0,
+      "wilcoxon_pvalue_bonferroni": 1.0
+    }
+  }
+}

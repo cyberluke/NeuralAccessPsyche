@@ -191,6 +191,28 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                     positive_ids, positive_bias,
                 )
 
+            # ---------------------------------------------------------------
+            # Coherence floor enforcement
+            # ---------------------------------------------------------------
+            coherence_floor = self._bounded_float(
+                params.get("coherence_floor", 0.0),
+                minimum=0.0,
+                maximum=1.0,
+            )
+            if coherence_floor > 0.0 and request is not None and generated > 10:
+                coherence = self._measure_coherence(request)
+                if coherence < coherence_floor:
+                    # Log warning and optionally reduce steering strength
+                    if telemetry_enabled:
+                        self._emit_coherence_warning(
+                            request_id=getattr(request, "rid", "unknown"),
+                            coherence=coherence,
+                            floor=coherence_floor,
+                            generated=generated,
+                        )
+                    # Reduce positive_bias to prevent further coherence degradation
+                    positive_bias *= 0.5
+
             # Explicit scientific forced-token control. It is disabled unless
             # both fields are supplied, and is applied last before sampling.
             forced_token_id = self._safe_int(params.get("forced_token_id"), -1)
@@ -891,3 +913,55 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         if isinstance(value, bool) or not isinstance(value, int):
             return default
         return value
+
+    @staticmethod
+    def _measure_coherence(request: Any) -> float:
+        """
+        Measure output coherence using trigram repetition ratio.
+
+        Returns a value in [0.0, 1.0] where 1.0 = perfectly coherent
+        (no repeated trigrams) and 0.0 = maximally incoherent (all trigrams
+        are repetitions).
+
+        This is a lightweight proxy — full coherence measurement would
+        require a separate model pass.
+        """
+        try:
+            output_ids = list(request.output_ids)
+        except (AttributeError, TypeError):
+            return 1.0  # Cannot measure, assume coherent
+
+        if len(output_ids) < 4:
+            return 1.0  # Too short to measure
+
+        # Build trigrams from output token IDs
+        trigrams = []
+        for i in range(len(output_ids) - 2):
+            trigram = (output_ids[i], output_ids[i + 1], output_ids[i + 2])
+            trigrams.append(trigram)
+
+        if not trigrams:
+            return 1.0
+
+        # Count unique vs total trigrams
+        unique_trigrams = set(trigrams)
+        coherence = len(unique_trigrams) / len(trigrams)
+        return max(0.0, min(1.0, coherence))
+
+    @staticmethod
+    def _emit_coherence_warning(
+        request_id: str,
+        coherence: float,
+        floor: float,
+        generated: int,
+    ) -> None:
+        """Emit a coherence warning event for telemetry."""
+        event = {
+            "schema": "nram.coherence.warning.v1",
+            "request_id": str(request_id)[:128],
+            "coherence": round(coherence, 4),
+            "floor": round(floor, 4),
+            "generated_tokens": generated,
+            "violation": coherence < floor,
+        }
+        print("NRAM_COHERENCE_EVENT " + json.dumps(event, sort_keys=True), flush=True)

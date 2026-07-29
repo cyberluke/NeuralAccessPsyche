@@ -1,0 +1,55 @@
+{
+  "commit": "815395e",
+  "phase": "Phase 11 (TRUE) - Runtime Adversarial Testing",
+  "timestamp": "2026-07-29T08:02:07Z",
+  
+  "performance_metrics": {
+    "test_execution_time_ms": 457,
+    "per_claim_timing": {
+      "claim_1_activation_addition_ms": 134,
+      "claim_2_conceptor_steering_ms": 51,
+      "claim_3_dexperts_ms": 17,
+      "claim_4_branch_tournament_ms": 1,
+      "claim_5_request_isolation_ms": 77,
+      "claim_6_coherence_floor_ms": 177
+    },
+    
+    "hook_latency": {
+      "baseline_hook_invocation_ns": 0,
+      "intervention_applied_ns": 0,
+      "reason": "No interventions execute, so no hook latency can be measured. Hooks are registered but return immediately when no context or no interventions are present.",
+      "note": "Hook overhead is effectively zero because no work is done."
+    },
+    
+    "intervention_overhead": {
+      "activation_addition_overhead_ms": 0.0,
+      "conceptor_overhead_ms": 0.0,
+      "dexperts_overhead_ms": 0.0,
+      "branch_tournament_overhead_ms": 0.0,
+      "reason": "All interventions are non-functional. No computation occurs, so overhead is zero.",
+      "implication": "The system has zero performance impact from NRAM features because they do not execute."
+    },
+    
+    "concurrency_overhead": {
+      "thread_test_overhead_ms": 50,
+      "async_test_overhead_ms": 27,
+      "note": "Concurrency tests completed quickly because no real work was done. Thread-local access is fast but unsafe for async."
+    },
+    
+    "memory_usage": {
+      "activation_vectors_loaded": 0,
+      "conceptors_loaded": 0,
+      "expert_models_loaded": 0,
+      "branch_outputs_stored": 0,
+      "reason": "No artifacts are loaded into memory. Memory footprint of NRAM features is zero.",
+      "implication": "System uses no additional memory for NRAM because features are non-functional."
+    },
+    
+    "summary": {
+      "total_overhead_ms": 0.0,
+      "performance_impact": "NONE",
+      "reason": "All NRAM v5 features are non-functional. They consume zero CPU, zero memory, and zero time because they never execute.",
+      "paradox": "The system appears to have excellent performance because broken features have zero overhead."
+    }
+  }
+}

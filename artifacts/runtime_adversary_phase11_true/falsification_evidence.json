@@ -1,0 +1,250 @@
+{
+  "commit": "815395e",
+  "phase": "Phase 11 (TRUE) - Runtime Adversarial Testing",
+  "timestamp": "2026-07-29T08:02:07Z",
+  "tester": "Runtime Adversary",
+  "methodology": "Static code analysis + runtime simulation + concurrency testing",
+  
+  "claims_falsified": 6,
+  "claims_total": 6,
+  
+  "evidence": {
+    "claim_1_activation_addition": {
+      "claim": "Activation Addition is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "code_analysis + runtime_simulation",
+      "findings": {
+        "global_runtime_vector_count": 0,
+        "startup_loads_vectors": false,
+        "api_routes_load_vectors": false,
+        "hook_receives_vector_data": false,
+        "delta_norm_without_vector": 0.0
+      },
+      "file_evidence": [
+        {
+          "file": "nram_sglang/representation/activation_addition.py",
+          "line": 317,
+          "finding": "Global instance activation_addition_runtime has empty _vectors dict at import time"
+        },
+        {
+          "file": "nram_sglang/hooks/startup.py",
+          "finding": "No code calls load_vector_from_safetensors() during startup"
+        },
+        {
+          "file": "nram_sglang/hooks/qwen_hook.py",
+          "lines": "309-364",
+          "finding": "_apply_activation_addition returns (None, 0.0) when params has no 'vector' key"
+        },
+        {
+          "file": "api/routes.py",
+          "finding": "No code loads activation vectors before passing request to processor"
+        }
+      ],
+      "root_cause": "Vectors are never loaded from artifacts. The runtime infrastructure exists but is never populated. No startup code, no API code, no request processing code loads vectors.",
+      "impact": "Activation addition is completely non-functional. Requests with activation_addition config produce zero intervention."
+    },
+    
+    "claim_2_conceptor_steering": {
+      "claim": "Conceptor Steering is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "code_analysis + runtime_simulation",
+      "findings": {
+        "global_runtime_conceptor_count": 0,
+        "startup_loads_conceptors": false,
+        "hook_receives_conceptor_data": false,
+        "delta_norm_without_conceptor_data": 0.0,
+        "conceptor_artifact_files_found": 0
+      },
+      "file_evidence": [
+        {
+          "file": "nram_sglang/representation/conceptor.py",
+          "line": 446,
+          "finding": "Global instance conceptor_runtime has empty _conceptors dict"
+        },
+        {
+          "file": "nram_sglang/hooks/qwen_hook.py",
+          "lines": "366-434",
+          "finding": "_apply_conceptor returns (None, 0.0) when params missing basis_vectors/singular_values"
+        },
+        {
+          "file": "nram_sglang/hooks/startup.py",
+          "finding": "No code loads conceptor artifacts during startup"
+        }
+      ],
+      "root_cause": "Conceptors are never loaded from artifacts. No .safetensors conceptor files exist. The runtime infrastructure is empty.",
+      "impact": "Conceptor steering is completely non-functional. Zero conceptor artifacts exist on disk."
+    },
+    
+    "claim_3_dexperts": {
+      "claim": "DExperts is CONFIGURED",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "code_analysis",
+      "findings": {
+        "dexperts_controller_instantiated_in_runtime": false,
+        "processor_has_dexperts_method": false,
+        "processor_source_references_dexperts": false,
+        "api_routes_wire_dexperts": false,
+        "control_plane_has_dexperts": false,
+        "dexperts_config_default_enabled": false
+      },
+      "file_evidence": [
+        {
+          "file": "core/steering/dexperts.py",
+          "line": 102,
+          "finding": "DExpertsController class exists but is never instantiated in runtime path"
+        },
+        {
+          "file": "nram_sglang/processor.py",
+          "finding": "NRAMLogitProcessor has no DExperts-related methods or logic"
+        },
+        {
+          "file": "api/routes.py",
+          "finding": "No code wires DExperts configuration from request to processor"
+        },
+        {
+          "file": "core/steering/request_control_plane.py",
+          "finding": "NRAMRequestControlPlane does not instantiate DExpertsController"
+        }
+      ],
+      "root_cause": "DExpertsController is defined but never instantiated. The logit processor has no DExperts logic. API routes do not wire DExperts config.",
+      "impact": "DExperts is completely unwired. Expert model loading, logit combination, and anti-expert logic never execute."
+    },
+    
+    "claim_4_branch_tournament": {
+      "claim": "Branch-and-Tournament is RUNTIME_OBSERVED",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "runtime_simulation",
+      "findings": {
+        "tournament_branch_count": 3,
+        "all_branches_empty": true,
+        "branch_texts": ["", "", ""],
+        "uses_default_generation_fn": true,
+        "default_fn_returns_placeholder": true,
+        "api_routes_wire_branch_tournament": false
+      },
+      "file_evidence": [
+        {
+          "file": "core/steering/branch_tournament.py",
+          "lines": "187-216",
+          "finding": "_generate_branch returns empty text when generator_fn is None"
+        },
+        {
+          "file": "nram_sglang/representation/branch_tournament.py",
+          "finding": "_default_generation_fn returns placeholder text '[branch_X_generated_text]'"
+        },
+        {
+          "file": "api/routes.py",
+          "finding": "No code wires BranchAndTournamentGenerator to real model generation"
+        }
+      ],
+      "root_cause": "Branch tournament uses placeholder generator that returns fake text. No real model generation occurs. API routes do not connect tournament to SGLang engine.",
+      "impact": "Branch-and-tournament produces placeholder text, not real model output. Tournament scoring operates on empty/fake data."
+    },
+    
+    "claim_5_request_isolation": {
+      "claim": "Request isolation works with batched execution",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "concurrency_testing",
+      "findings": {
+        "uses_thread_local": true,
+        "thread_test_correct": true,
+        "async_cross_contamination_detected": true,
+        "async_null_context_count": 3,
+        "async_race_condition_detected": true,
+        "sglang_uses_async_not_threads": true
+      },
+      "file_evidence": [
+        {
+          "file": "nram_sglang/hooks/request_context.py",
+          "line": 113,
+          "finding": "Uses threading.local() for request context storage"
+        },
+        {
+          "file": "nram_sglang/hooks/request_context.py",
+          "lines": "146-158",
+          "finding": "get_current_context_for_batch() just wraps thread-local, not batch-aware"
+        }
+      ],
+      "test_results": {
+        "thread_test": {
+          "description": "4 concurrent threads, each with own request context",
+          "result": "PASS - threads are isolated",
+          "details": "Each thread got its own context correctly"
+        },
+        "async_test": {
+          "description": "4 concurrent async tasks on same thread",
+          "result": "FAIL - cross-contamination detected",
+          "details": "Task 0 saw task 3's context (async-req-3), tasks 1-3 got null (race condition)"
+        }
+      },
+      "root_cause": "Thread-local storage is NOT safe for async execution. SGLang uses asyncio, not threading. All async tasks share the same thread-local, causing cross-contamination and race conditions.",
+      "impact": "Request isolation is broken for async batched execution. Interventions from one request can leak to another. Race conditions cause contexts to be null or wrong."
+    },
+    
+    "claim_6_coherence_floor": {
+      "claim": "coherence_floor is enforced",
+      "verdict": "FALSIFIED",
+      "confidence": "HIGH",
+      "evidence_type": "code_analysis",
+      "findings": {
+        "processor_measures_coherence": false,
+        "processor_references_coherence_floor": false,
+        "coherence_floor_in_call_method": false,
+        "min_coherence_used_in_runtime": false,
+        "coherence_enforcement_modules_found": 1,
+        "api_passes_coherence_floor_to_processor": false
+      },
+      "file_evidence": [
+        {
+          "file": "nram_sglang/processor.py",
+          "finding": "NRAMLogitProcessor has no coherence measurement or enforcement logic"
+        },
+        {
+          "file": "core/persona/profiles.py",
+          "finding": "coherence_floor is a profile parameter but not wired to runtime enforcement"
+        },
+        {
+          "file": "core/persona/compiler.py",
+          "line": 184,
+          "finding": "compile_policy maps coherence_floor -> min_coherence but min_coherence is unused"
+        },
+        {
+          "file": "core/steering/semantic_closed_loop.py",
+          "finding": "Only module mentioning coherence enforcement, but not wired to processor"
+        }
+      ],
+      "root_cause": "coherence_floor is a decorative parameter. It exists in profiles and is compiled to min_coherence, but no runtime code measures or enforces coherence. The logit processor has no coherence logic.",
+      "impact": "coherence_floor has no effect on generation. It is accepted as a parameter but never used. No coherence measurement occurs during inference."
+    }
+  },
+  
+  "summary": {
+    "total_claims_tested": 6,
+    "claims_falsified": 6,
+    "claims_not_falsified": 0,
+    "falsification_rate": "100%",
+    "confidence_level": "HIGH",
+    "testing_methodology": [
+      "Static code analysis of runtime paths",
+      "Runtime simulation of hook interventions",
+      "Concurrency testing with threads and async",
+      "Artifact file discovery",
+      "API route wiring verification"
+    ],
+    "key_findings": [
+      "All 6 claims from Forensic Reviewer (Phase 10 TRUE) are CONFIRMED BROKEN",
+      "Activation addition and conceptor steering have infrastructure but no data loading",
+      "DExperts is completely unwired - controller never instantiated",
+      "Branch-and-tournament uses placeholder generators returning fake text",
+      "Request isolation uses thread-local which is unsafe for async (SGLang's execution model)",
+      "coherence_floor is a decorative parameter with no runtime enforcement"
+    ],
+    "severity": "CRITICAL",
+    "recommendation": "All 6 defects require remediation before release. Features are non-functional."
+  }
+}

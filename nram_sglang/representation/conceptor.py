@@ -149,42 +149,43 @@ class ConceptorRuntime:
             raise FileNotFoundError(f"Artifact not found: {artifact_path}")
         
         try:
-            from safetensors.torch import load_file
-            data = load_file(str(path))
+            from safetensors import safe_open
         except ImportError:
             raise ImportError("safetensors is required to load conceptor artifacts")
         
-        # Extract tensors
-        if "basis_vectors" not in data:
-            raise ValueError(f"Artifact missing 'basis_vectors' key: {artifact_path}")
-        if "singular_values" not in data:
-            raise ValueError(f"Artifact missing 'singular_values' key: {artifact_path}")
-        
-        basis = data["basis_vectors"]
-        svs = data["singular_values"]
-        
-        if not isinstance(basis, torch.Tensor) or not isinstance(svs, torch.Tensor):
-            raise ValueError(f"basis_vectors and singular_values must be tensors")
-        
-        if basis.dim() != 2:
-            raise ValueError(f"basis_vectors must be 2D (rank, hidden_dim), got {basis.shape}")
-        if svs.dim() != 1:
-            raise ValueError(f"singular_values must be 1D (rank,), got {svs.shape}")
-        if basis.shape[0] != svs.shape[0]:
-            raise ValueError(
-                f"Rank mismatch: basis_vectors has {basis.shape[0]} rows, "
-                f"singular_values has {svs.shape[0]} elements"
-            )
-        
-        # Extract metadata
-        metadata_str = data.get("metadata", "{}")
-        if isinstance(metadata_str, torch.Tensor):
-            metadata_str = metadata_str.item()
-        
-        try:
-            metadata = json.loads(metadata_str) if isinstance(metadata_str, str) else {}
-        except json.JSONDecodeError:
-            metadata = {}
+        # Extract tensors and metadata using safe_open
+        with safe_open(str(path), framework="pt", device="cpu") as f:
+            # Check for required tensors
+            keys = f.keys()
+            if "basis_vectors" not in keys:
+                raise ValueError(f"Artifact missing 'basis_vectors' key: {artifact_path}")
+            if "singular_values" not in keys:
+                raise ValueError(f"Artifact missing 'singular_values' key: {artifact_path}")
+            
+            basis = f.get_tensor("basis_vectors")
+            svs = f.get_tensor("singular_values")
+            
+            if not isinstance(basis, torch.Tensor) or not isinstance(svs, torch.Tensor):
+                raise ValueError(f"basis_vectors and singular_values must be tensors")
+            
+            if basis.dim() != 2:
+                raise ValueError(f"basis_vectors must be 2D (rank, hidden_dim), got {basis.shape}")
+            if svs.dim() != 1:
+                raise ValueError(f"singular_values must be 1D (rank,), got {svs.shape}")
+            if basis.shape[0] != svs.shape[0]:
+                raise ValueError(
+                    f"Rank mismatch: basis_vectors has {basis.shape[0]} rows, "
+                    f"singular_values has {svs.shape[0]} elements"
+                )
+            
+            # Extract metadata from file-level metadata
+            metadata_dict = f.metadata() or {}
+            metadata_str = metadata_dict.get("metadata", "{}")
+            
+            try:
+                metadata = json.loads(metadata_str) if isinstance(metadata_str, str) else {}
+            except json.JSONDecodeError:
+                metadata = {}
         
         # Validate required metadata
         required_fields = ["model_hash", "tokenizer_hash", "layer", "aperture"]

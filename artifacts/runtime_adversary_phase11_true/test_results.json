@@ -1,0 +1,223 @@
+{
+  "commit": "815395e",
+  "timestamp": 1785312126.790129,
+  "total_time_ms": 456.8662643432617,
+  "summary": {
+    "falsified": 6,
+    "not_falsified": 0,
+    "errors": 0
+  },
+  "results": [
+    {
+      "claim_id": "Claim 1",
+      "claim_description": "Activation Addition is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "global_runtime_vector_count": 0,
+        "global_runtime_vector_ids": [],
+        "startup_loads_vectors": false,
+        "delta_without_vector": null,
+        "delta_norm_without_vector": 0.0,
+        "api_routes_load_vectors": false,
+        "artifact_files_found": 52,
+        "artifact_paths": [
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\runtime_verification\\phase4-20260728T204122Z\\03_activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\runtime_verification\\phase4-20260728T204504Z\\03_activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\runtime_verification\\phase4-20260728T204627Z\\03_activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical\\vector-negative.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical\\vector-positive.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical\\vector-zero.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical-rerun-clean\\vector-negative.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical-rerun-clean\\vector-positive.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\numerical-rerun-clean\\vector-zero.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\validation\\unsupported-activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-reverify-isolated-ad274a2-20260728T010200Z\\raw-http\\validation\\vectors-wrong-shape.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\numerical\\vector-negative.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\numerical\\vector-positive.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\numerical\\vector-zero.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\validation\\unsupported-activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\validation\\vectors-wrong-shape.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\nram-vocabulary_logit_vector_clip-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\nram-vocabulary_logit_vector_clip-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\nram-vocabulary_logit_vector_clip-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\nram-vocabulary_logit_vector_clip-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\nram-vocabulary_logit_vector_clip-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-coefficient-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-coefficient-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-coefficient-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-coefficient-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-coefficient-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-entry-weight-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-entry-weight-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-entry-weight-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-entry-weight-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation-current-image\\cases\\vector-entry-weight-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\nram-vocabulary_logit_vector_clip-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\nram-vocabulary_logit_vector_clip-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\nram-vocabulary_logit_vector_clip-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\nram-vocabulary_logit_vector_clip-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\nram-vocabulary_logit_vector_clip-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-coefficient-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-coefficient-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-coefficient-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-coefficient-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-coefficient-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-entry-weight-lower.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-entry-weight-nan.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-entry-weight-neginf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-entry-weight-posinf.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-final-8b79606-20260728T022420Z\\raw-http\\final-validation\\cases\\vector-entry-weight-upper.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\numerical\\vector-negative.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\numerical\\vector-positive.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\numerical\\vector-zero.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\numerical-invalid\\vector-tokenizer-padding-id.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\validation\\unsupported-activation_addition.json",
+          "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\nram_v5_verification\\runtime-adversary-fb3690d-20260727T224550Z\\raw-http\\validation\\vectors-wrong-shape.json"
+        ]
+      },
+      "file_references": [
+        "nram_sglang/representation/activation_addition.py:317",
+        "nram_sglang/hooks/startup.py",
+        "nram_sglang/hooks/qwen_hook.py:309-364",
+        "api/routes.py",
+        "api/nram_routes.py"
+      ],
+      "duration_ms": 134.28664207458496
+    },
+    {
+      "claim_id": "Claim 2",
+      "claim_description": "Conceptor Steering is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "global_runtime_conceptor_count": 0,
+        "global_runtime_conceptor_ids": [],
+        "delta_without_conceptor_data": null,
+        "delta_norm_without_conceptor_data": 0.0,
+        "startup_loads_conceptors": false,
+        "conceptor_artifact_files_found": 0,
+        "conceptor_artifact_paths": []
+      },
+      "file_references": [
+        "nram_sglang/representation/conceptor.py:446",
+        "nram_sglang/hooks/qwen_hook.py:366-434"
+      ],
+      "duration_ms": 50.92167854309082
+    },
+    {
+      "claim_id": "Claim 3",
+      "claim_description": "DExperts is CONFIGURED",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "dexperts_controller_instantiated_in_runtime": false,
+        "processor_has_dexperts_method": false,
+        "processor_source_references_dexperts": false,
+        "api_routes_wire_dexperts": false,
+        "control_plane_has_dexperts": false,
+        "dexperts_config_default_enabled": false,
+        "dexperts_config_expert_model_path": null
+      },
+      "file_references": [
+        "core/steering/dexperts.py:102",
+        "nram_sglang/processor.py",
+        "api/routes.py",
+        "core/steering/request_control_plane.py"
+      ],
+      "duration_ms": 16.62755012512207
+    },
+    {
+      "claim_id": "Claim 4",
+      "claim_description": "Branch-and-Tournament is RUNTIME_OBSERVED",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "tournament_branch_count": 3,
+        "tournament_winner_id": "branch_0",
+        "branch_texts": [
+          "",
+          "",
+          ""
+        ],
+        "all_branches_empty": true,
+        "has_placeholder_text": false,
+        "uses_default_generation_fn": true,
+        "default_generation_fn_source": "    def _default_generation_fn(self, config: BranchConfig) -> BranchResult:\n        \"\"\"\n        Default generation function (placeholder).\n        \n        In production, this is replaced by actual model generation\n        via the SGLang engine with branch-specific parameters.\n        \"\"\"\n        return BranchResult(\n            branch_id=config.branch_id,\n            status=BranchStatus.COMPLETED,\n            generated_text=f\"[branch_{config.branch_id}_generated_text]\",\n            token_count=",
+        "default_fn_returns_empty": true,
+        "api_routes_wire_branch_tournament": false
+      },
+      "file_references": [
+        "core/steering/branch_tournament.py:187-216",
+        "nram_sglang/representation/branch_tournament.py",
+        "api/routes.py"
+      ],
+      "duration_ms": 0.5843639373779297
+    },
+    {
+      "claim_id": "Claim 5",
+      "claim_description": "Request isolation works with batched execution",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "uses_thread_local": true,
+        "thread_local_type": "<class '_thread._local'>",
+        "thread_test_results": {
+          "req-0": "req-0",
+          "req-2": "req-2",
+          "req-1": "req-1",
+          "req-3": "req-3"
+        },
+        "thread_test_errors": [],
+        "all_threads_got_correct_context": true,
+        "sglang_uses_async_not_threads": true,
+        "thread_local_unreliable_with_async": true,
+        "batch_context_is_thread_local_wrapper": true,
+        "async_test_results": [
+          "async-req-3",
+          null,
+          null,
+          null
+        ],
+        "async_cross_contamination_detected": true,
+        "async_null_context_count": 3,
+        "async_race_condition_detected": true
+      },
+      "file_references": [
+        "nram_sglang/hooks/request_context.py:113",
+        "nram_sglang/hooks/request_context.py:146-158"
+      ],
+      "duration_ms": 77.11052894592285
+    },
+    {
+      "claim_id": "Claim 6",
+      "claim_description": "coherence_floor is enforced",
+      "verdict": "FALSIFIED",
+      "evidence": {
+        "processor_measures_coherence": false,
+        "processor_references_coherence_floor": false,
+        "coherence_floor_in_call_method": false,
+        "coherence_enforcement_modules_found": 1,
+        "coherence_enforcement_modules": [
+          "core\\steering\\semantic_closed_loop.py"
+        ],
+        "api_passes_coherence_floor_to_processor": false,
+        "profiles_with_coherence_floor": {
+          "NORMAL": 0.96,
+          "MICRODOSE": 0.9,
+          "THRESHOLD": 0.84,
+          "PSYCHEDELIC": 0.72,
+          "PEAK": 0.58,
+          "DISSOCIATIVE": 0.52
+        },
+        "coherence_floor_is_profile_parameter": true,
+        "compiler_maps_to_min_coherence": true,
+        "min_coherence_used_in_runtime": false
+      },
+      "file_references": [
+        "nram_sglang/processor.py",
+        "core\\steering\\semantic_closed_loop.py",
+        "api/routes.py",
+        "core/engines/sglang_engine.py",
+        "core/persona/profiles.py",
+        "core/persona/compiler.py:184"
+      ],
+      "duration_ms": 177.07085609436035
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "commit": "815395e",
+  "phase": "Phase 11 (TRUE) - Runtime Adversarial Testing",
+  "timestamp": "2026-07-29T08:02:07Z",
+  
+  "telemetry_analysis": {
+    "hook_telemetry_infrastructure": {
+      "exists": true,
+      "location": "nram_sglang/hooks/telemetry.py",
+      "events_defined": [
+        "NRAM_HOOK_INVOCATION",
+        "NRAM_INTERVENTION_APPLIED",
+        "NRAM_PROBE_EVENT"
+      ],
+      "emission_method": "print() to stdout with JSON payload"
+    },
+    
+    "claim_1_activation_addition_telemetry": {
+      "expected_events": ["NRAM_HOOK_INTERVENTION with intervention_type=activation_addition"],
+      "actual_events": [],
+      "reason": "No vectors loaded, so _apply_activation_addition returns (None, 0.0) before telemetry emission",
+      "file_evidence": "nram_sglang/hooks/qwen_hook.py:296-305 - telemetry only emitted when delta is not None"
+    },
+    
+    "claim_2_conceptor_telemetry": {
+      "expected_events": ["NRAM_HOOK_INTERVENTION with intervention_type=conceptor"],
+      "actual_events": [],
+      "reason": "No conceptors loaded, so _apply_conceptor returns (None, 0.0) before telemetry emission",
+      "file_evidence": "nram_sglang/hooks/qwen_hook.py:296-305"
+    },
+    
+    "claim_3_dexperts_telemetry": {
+      "expected_events": ["expert_model_loading", "combine_logits"],
+      "actual_events": [],
+      "reason": "DExpertsController never instantiated, no expert models loaded, no logit combination occurs",
+      "file_evidence": "core/steering/dexperts.py - class exists but never called"
+    },
+    
+    "claim_4_branch_tournament_telemetry": {
+      "expected_events": ["tournament_started", "branch_generated", "branch_scored", "winner_selected"],
+      "actual_events": [],
+      "reason": "Branch tournament uses placeholder generator, no real generation occurs, no telemetry wired",
+      "file_evidence": "core/steering/branch_tournament.py:187-216"
+    },
+    
+    "claim_5_request_isolation_telemetry": {
+      "expected_events": ["request_context_installed", "request_context_removed"],
+      "actual_events": [],
+      "reason": "Context manager has logging but no structured telemetry events for request lifecycle",
+      "file_evidence": "nram_sglang/hooks/request_context.py - uses logger.debug, not structured telemetry"
+    },
+    
+    "claim_6_coherence_floor_telemetry": {
+      "expected_events": ["coherence_measured", "coherence_below_floor", "steering_adjusted"],
+      "actual_events": [],
+      "reason": "No coherence measurement or enforcement code exists in runtime path",
+      "file_evidence": "nram_sglang/processor.py - no coherence logic"
+    },
+    
+    "summary": {
+      "total_telemetry_events_expected": 6,
+      "total_telemetry_events_observed": 0,
+      "telemetry_coverage": "0%",
+      "conclusion": "No hook telemetry events are emitted because the underlying interventions never execute. The telemetry infrastructure exists but is never triggered."
+    }
+  }
+}

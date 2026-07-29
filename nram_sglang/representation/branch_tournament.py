@@ -256,17 +256,64 @@ class BranchAndTournamentGenerator:
     
     def _default_generation_fn(self, config: BranchConfig) -> BranchResult:
         """
-        Default generation function (placeholder).
+        Default generation function using SGLang API.
         
-        In production, this is replaced by actual model generation
-        via the SGLang engine with branch-specific parameters.
+        Makes HTTP calls to the SGLang API with branch-specific parameters.
         """
-        return BranchResult(
-            branch_id=config.branch_id,
-            status=BranchStatus.COMPLETED,
-            generated_text=f"[branch_{config.branch_id}_generated_text]",
-            token_count=config.max_tokens,
-        )
+        try:
+            import httpx
+            
+            # Build request payload with branch-specific parameters
+            payload = {
+                "prompt": self.prompt if hasattr(self, 'prompt') else "",
+                "max_tokens": config.max_tokens,
+                "temperature": config.temperature,
+                "seed": config.seed,
+            }
+            
+            # Add NRAM parameters if present in intervention_genome
+            if config.intervention_genome:
+                payload["nram"] = config.intervention_genome
+            
+            # Make synchronous HTTP call to SGLang API
+            # Default to localhost:30000 if not configured
+            sglang_url = "http://localhost:30000/v1/completions"
+            
+            with httpx.Client(timeout=30.0) as client:
+                response = client.post(sglang_url, json=payload)
+                response.raise_for_status()
+                result = response.json()
+            
+            # Extract generated text
+            if "choices" in result and len(result["choices"]) > 0:
+                text = result["choices"][0].get("text", "")
+            else:
+                text = ""
+            
+            if not text:
+                raise ValueError("Empty response from SGLang API")
+            
+            return BranchResult(
+                branch_id=config.branch_id,
+                status=BranchStatus.COMPLETED,
+                generated_text=text,
+                token_count=len(text.split()),  # Rough token count
+            )
+        
+        except ImportError:
+            logger.error("httpx not available for SGLang API calls")
+            return BranchResult(
+                branch_id=config.branch_id,
+                status=BranchStatus.FAILED,
+                error="httpx not installed",
+            )
+        except Exception as e:
+            logger.error(f"Branch {config.branch_id} generation error: {e}")
+            return BranchResult(
+                branch_id=config.branch_id,
+                status=BranchStatus.FAILED,
+                error=f"Generation error: {str(e)}",
+            )
     
     def _default_scoring_fn(self, text: str) -> Dict[str, float]:
         """

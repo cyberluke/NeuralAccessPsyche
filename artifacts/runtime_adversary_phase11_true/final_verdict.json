@@ -1,0 +1,170 @@
+{
+  "commit": "815395e",
+  "phase": "Phase 11 (TRUE) - Runtime Adversarial Testing",
+  "timestamp": "2026-07-29T08:02:07Z",
+  "tester": "Runtime Adversary",
+  
+  "overall_verdict": "FAIL",
+  "confidence": "HIGH",
+  "severity": "CRITICAL",
+  
+  "executive_summary": "All 6 runtime claims from Forensic Reviewer (Phase 10 TRUE) are CONFIRMED BROKEN. The NRAM v5 feature set is non-functional at the runtime level. Features exist as code but are never wired into the execution path. The system appears to work because broken features have zero overhead and produce no errors.",
+  
+  "claims_tested": 6,
+  "claims_falsified": 6,
+  "claims_not_falsified": 0,
+  "falsification_rate": "100%",
+  
+  "claim_verdicts": [
+    {
+      "claim_id": "Claim 1",
+      "claim": "Activation Addition is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "Vectors never loaded from artifacts",
+      "impact": "Feature completely non-functional",
+      "file_evidence": [
+        "nram_sglang/representation/activation_addition.py:317",
+        "nram_sglang/hooks/startup.py",
+        "nram_sglang/hooks/qwen_hook.py:309-364"
+      ]
+    },
+    {
+      "claim_id": "Claim 2",
+      "claim": "Conceptor Steering is RUNTIME_WIRED",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "Conceptors never loaded, no artifact files exist",
+      "impact": "Feature completely non-functional",
+      "file_evidence": [
+        "nram_sglang/representation/conceptor.py:446",
+        "nram_sglang/hooks/qwen_hook.py:366-434"
+      ]
+    },
+    {
+      "claim_id": "Claim 3",
+      "claim": "DExperts is CONFIGURED",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "DExpertsController never instantiated in runtime path",
+      "impact": "Feature completely unwired",
+      "file_evidence": [
+        "core/steering/dexperts.py:102",
+        "nram_sglang/processor.py",
+        "api/routes.py"
+      ]
+    },
+    {
+      "claim_id": "Claim 4",
+      "claim": "Branch-and-Tournament is RUNTIME_OBSERVED",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "Placeholder generator returns fake text",
+      "impact": "Feature produces placeholder output, not real model generation",
+      "file_evidence": [
+        "core/steering/branch_tournament.py:187-216",
+        "nram_sglang/representation/branch_tournament.py"
+      ]
+    },
+    {
+      "claim_id": "Claim 5",
+      "claim": "Request isolation works with batched execution",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "Thread-local storage unsafe for async execution",
+      "impact": "Cross-request contamination and race conditions in async batching",
+      "file_evidence": [
+        "nram_sglang/hooks/request_context.py:113",
+        "nram_sglang/hooks/request_context.py:146-158"
+      ],
+      "test_evidence": {
+        "async_cross_contamination": true,
+        "async_race_condition": true,
+        "details": "Task 0 saw task 3's context, tasks 1-3 got null"
+      }
+    },
+    {
+      "claim_id": "Claim 6",
+      "claim": "coherence_floor is enforced",
+      "verdict": "FALSIFIED",
+      "severity": "CRITICAL",
+      "root_cause": "Decorative parameter with no runtime enforcement",
+      "impact": "coherence_floor has no effect on generation",
+      "file_evidence": [
+        "nram_sglang/processor.py",
+        "core/persona/compiler.py:184",
+        "core/persona/profiles.py"
+      ]
+    }
+  ],
+  
+  "defect_summary": {
+    "total_defects": 6,
+    "critical_defects": 6,
+    "high_defects": 0,
+    "medium_defects": 0,
+    "low_defects": 0,
+    
+    "defect_categories": {
+      "unwired_features": 3,
+      "missing_data_loading": 2,
+      "broken_isolation": 1,
+      "decorative_parameters": 1
+    }
+  },
+  
+  "risk_assessment": {
+    "release_readiness": "NOT READY",
+    "blocking_issues": 6,
+    "user_impact": "All NRAM v5 features are non-functional. Users requesting activation addition, conceptor steering, DExperts, or branch-and-tournament will receive no intervention. Request isolation is broken for async batching. coherence_floor parameter is ignored.",
+    "data_integrity_risk": "LOW - features fail silently with zero overhead",
+    "security_risk": "MEDIUM - request isolation broken, potential cross-contamination",
+    "reputation_risk": "HIGH - features advertised but non-functional"
+  },
+  
+  "recommendations": {
+    "immediate_actions": [
+      "Remediate all 6 defects before release",
+      "Add startup code to load activation vectors and conceptors from artifacts",
+      "Instantiate DExpertsController in runtime path",
+      "Wire BranchAndTournamentGenerator to real SGLang engine generation",
+      "Replace thread-local with async-safe context (e.g., contextvars)",
+      "Implement coherence measurement and enforcement in logit processor"
+    ],
+    "testing_recommendations": [
+      "Add integration tests that verify vector loading at startup",
+      "Add concurrency tests for async request isolation",
+      "Add end-to-end tests that verify intervention telemetry events",
+      "Add tests that verify branch tournament produces real model output"
+    ],
+    "documentation_recommendations": [
+      "Update feature documentation to reflect actual runtime status",
+      "Add known limitations section for non-functional features",
+      "Document remediation plan and timeline"
+    ]
+  },
+  
+  "next_phase": {
+    "phase": "Phase 12 (TRUE) - Release Gate",
+    "readiness": "BLOCKED",
+    "reason": "Cannot pass release gate with 6 critical defects. All defects must be remediated and re-verified.",
+    "estimated_remediation_effort": "2-3 days for full remediation and re-testing"
+  },
+  
+  "artifacts": {
+    "test_script": "artifacts/runtime_adversary_phase11_true/test_phase11_falsification.py",
+    "test_results": "artifacts/runtime_adversary_phase11_true/test_results.json",
+    "falsification_evidence": "artifacts/runtime_adversary_phase11_true/falsification_evidence.json",
+    "telemetry_analysis": "artifacts/runtime_adversary_phase11_true/telemetry_analysis.json",
+    "performance_metrics": "artifacts/runtime_adversary_phase11_true/performance_metrics.json",
+    "final_verdict": "artifacts/runtime_adversary_phase11_true/final_verdict.json"
+  },
+  
+  "signoff": {
+    "tester": "Runtime Adversary",
+    "mode": "runtime-adversary",
+    "timestamp": "2026-07-29T08:02:07Z",
+    "status": "COMPLETE",
+    "result": "6/6 claims falsified with concrete evidence"
+  }
+}

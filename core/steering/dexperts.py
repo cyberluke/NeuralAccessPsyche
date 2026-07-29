@@ -1,6 +1,8 @@
 """
 DExperts (Democratized Experts) implementation for NRAM v5.
 
+STATUS: NOT_IMPLEMENTED
+
 DExperts combines multiple expert models at inference time:
 - Base model: General-purpose language model
 - Expert model: Specialized for desired behavior (e.g., creativity, technical accuracy)
@@ -10,6 +12,28 @@ The final logits are computed as:
 logits = base_logits + alpha * (expert_logits - base_logits) - beta * (anti_expert_logits - base_logits)
 
 This allows dynamic steering without fine-tuning the base model.
+
+IMPLEMENTATION STATUS:
+----------------------
+DExperts is NOT IMPLEMENTED in the current runtime due to VRAM constraints.
+
+The RTX 4090 (24GB VRAM) cannot simultaneously load:
+- Base model (Qwen3-14B-AWQ): ~14GB
+- Expert model: ~14GB
+- Anti-expert model: ~14GB
+
+Sequential execution (making separate API calls for expert/anti-expert) would require
+significant architectural changes to the logit processor, which runs inside SGLang and
+cannot make HTTP calls back to itself.
+
+ALTERNATIVE APPROACHES:
+-----------------------
+1. Use smaller expert models (e.g., 7B or 3B) that fit in remaining VRAM
+2. Use activation addition or conceptor steering instead (already implemented)
+3. Wait for multi-GPU support or model quantization advances
+4. Implement prompt-based expert guidance (already available via persona profiles)
+
+This module is retained for future implementation but should not be used in production.
 """
 
 import torch
