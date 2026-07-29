@@ -59,10 +59,10 @@ services:
       # Disable thinking mode for faster, direct responses (Qwen3 best practice:
       # non-thinking mode uses Temperature=0.7, TopP=0.8, TopK=20).
       ENABLE_THINKING: "false"
-      # Hierarchical cache: offload KV cache to system RAM (128 GB DDR5) when VRAM
-      # is insufficient for the full 32k context. Ratio 2.0 means 2x the VRAM KV
-      # cache size is available in host memory.
-      HICACHE_RATIO: "2.0"
+      # Hierarchical cache: offload KV cache to system RAM when VRAM is insufficient.
+      # Reduced from 2.0 to 1.0 to fit within available host memory (~6.5 GB free).
+      # Ratio 1.0 means 1x the VRAM KV cache size is available in host memory.
+      HICACHE_RATIO: "1.0"
       HICACHE_WRITE_POLICY: write_through_selective
       SGLANG_HOST: 0.0.0.0
       SGLANG_PORT: "30000"
