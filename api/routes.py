@@ -843,10 +843,10 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
                 ],
             },
             "dexperts": {
-                "state": "CONFIGURED",
-                "runtime_wired": True,
+                "state": "NOT_IMPLEMENTED",
+                "runtime_wired": False,
                 "mechanism": "expert_anti_expert_logit_combination",
-                "note": "DExperts controller implemented, awaiting runtime integration with SGLang",
+                "note": "DExperts requires 3 simultaneous model instances (base + expert + anti-expert). RTX 4090 24GB VRAM cannot fit 3x Qwen3-14B. Sequential execution strategy documented but not implemented. See core/steering/dexperts.py for details.",
             },
             "batch_context": {
                 "state": "CAUSALLY_PROVEN",
