@@ -1,0 +1,59 @@
+{
+  "phase": 11,
+  "timestamp": 1785309261.5002058,
+  "total_tests": 8,
+  "passed": 7,
+  "failed": 1,
+  "critical_defects": [
+    {
+      "defect": "disabled_nram_control_failure",
+      "severity": "CRITICAL",
+      "detail": "enabled=False does not disable NRAM steering",
+      "baseline_length": 489,
+      "disabled_length": 419
+    }
+  ],
+  "security_issues": [],
+  "results": [
+    {
+      "test": "disabled_nram_control",
+      "status": "FAIL",
+      "detail": "Outputs differ - NRAM still active when disabled"
+    },
+    {
+      "test": "security_processor_injection",
+      "status": "PASS",
+      "detail": "Forbidden field rejected with 400"
+    },
+    {
+      "test": "security_unsupported_features",
+      "status": "PASS",
+      "detail": "DExperts rejected with 400"
+    },
+    {
+      "test": "error_invalid_model",
+      "status": "PASS",
+      "detail": "Invalid model rejected with 400"
+    },
+    {
+      "test": "error_invalid_token_ids",
+      "status": "PASS",
+      "detail": "Out-of-vocab token ID rejected with 400"
+    },
+    {
+      "test": "edge_empty_messages",
+      "status": "PASS",
+      "detail": "Empty messages rejected with 400"
+    },
+    {
+      "test": "edge_long_prompt",
+      "status": "PASS",
+      "detail": "Long prompt handled with status 200"
+    },
+    {
+      "test": "stress_concurrent",
+      "status": "PASS",
+      "detail": "10/10 requests successful"
+    }
+  ]
+}
