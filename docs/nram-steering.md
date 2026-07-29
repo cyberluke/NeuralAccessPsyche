@@ -82,7 +82,9 @@ The word *psychedelic* here is a precise parameter, not a license for incoherenc
 - **`associative_distance`** controls how far apart the linked concepts may sit — i.e. **cross-domain connections** (tying a hardware detail to a human ritual, a sensory metaphor to a product claim).
 - Higher associative distance means **more unexpected-but-meaningful links**, constrained by **`coherence_floor`**, which sets the minimum coherence the output must retain.
 
-So "psychedelic" means **novel, cross-domain associations that still serve the argument** — explicitly *not* random word salad, mysticism, or empty hype (all of which the developer instruction forbids). The `coherence_floor` and the structured plan exist specifically to keep conceptual novelty from degrading factual coherence.
+So "psychedelic" means **novel, cross-domain associations that still serve the argument** — explicitly *not* random word salad, mysticism, or empty hype (all of which the developer instruction forbids). The `coherence_floor` and the structured plan are designed to keep conceptual novelty from degrading factual coherence.
+
+**Known Limitation**: Phase 6 ablation study (commit ba52bbe) shows the `coherence_floor` mechanism does not prevent coherence degradation. All NRAM profiles significantly reduce coherence (Cohen's d = -0.52 to -1.62, p < 0.001). See `docs/DOCUMENTATION_AUDIT_REPORT.md` for full analysis.
 
 ## Summary
 

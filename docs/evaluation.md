@@ -1,6 +1,8 @@
 # Evaluation
 
-NeuralAccessPsyche steering is validated by an **A/B evaluation harness** that compares the NRAM-steered alias against the unsteered baseline on identical prompts. The goal is to prove the persona changes style *without* degrading substance — and to report the result honestly.
+NeuralAccessPsyche steering is validated by an **A/B evaluation harness** that compares the NRAM-steered alias against the unsteered baseline on identical prompts. The goal is to prove the persona changes style and to measure the trade-offs honestly.
+
+**Known Limitation**: Phase 6 ablation study (commit ba52bbe) shows all NRAM profiles significantly reduce coherence (Cohen's d = -0.52 to -1.62, p < 0.001). The `coherence_floor` mechanism does not prevent this degradation. See `docs/DOCUMENTATION_AUDIT_REPORT.md` for full analysis.
 
 ## The A/B harness (`evaluation/`)
 
