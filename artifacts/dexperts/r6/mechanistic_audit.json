@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-07-30T13:21:43.380014Z",
+  "r5_source": "artifacts\\dexperts\\r5\\mechanistic_proof.json",
+  "findings": {
+    "kl_divergence_is_target_logprob": true,
+    "scaling_is_quadratic": true,
+    "signed_separation_positive": true,
+    "missing_true_kl_computation": true,
+    "missing_prompt_clustering": true
+  },
+  "recommendations": [
+    "Implement true KL divergence over full vocabulary",
+    "Rename metrics to reflect actual measurements",
+    "Add synthetic oracle test",
+    "Implement prompt-level cluster bootstrap",
+    "Compute signed attribute separation with confidence intervals"
+  ]
+}

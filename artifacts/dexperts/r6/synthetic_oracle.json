@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-07-30T13:21:43.382384Z",
+  "setup": {
+    "vocab_size": 8,
+    "target_token": 1,
+    "expert_boosted_tokens": [
+      0,
+      1,
+      2
+    ],
+    "anti_expert_boosted_tokens": [
+      5,
+      6,
+      7
+    ]
+  },
+  "results": [
+    {
+      "alpha": 0.0,
+      "target_delta_logp": 0.0,
+      "kl_divergence": -5.960464477539063e-08,
+      "signed_separation": 0.0,
+      "expected_direction": "positive"
+    },
+    {
+      "alpha": 0.5,
+      "target_delta_logp": 0.7424420118331909,
+      "kl_divergence": 0.3892485797405243,
+      "signed_separation": 0.7424420118331909,
+      "expected_direction": "positive"
+    },
+    {
+      "alpha": 1.0,
+      "target_delta_logp": 0.9690699577331543,
+      "kl_divergence": 1.2943114042282104,
+      "signed_separation": 0.9690699577331543,
+      "expected_direction": "positive"
+    },
+    {
+      "alpha": 2.0,
+      "target_delta_logp": 1.0485262870788574,
+      "kl_divergence": 3.4782357215881348,
+      "signed_separation": 1.0485262870788574,
+      "expected_direction": "positive"
+    }
+  ],
+  "verification": "PASSED"
+}
