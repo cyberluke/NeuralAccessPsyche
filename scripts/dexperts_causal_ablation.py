@@ -167,36 +167,71 @@ def run_ablation(
     seeds: List[int],
     toxicity_classifier,
     toxicity_tokenizer,
+    regime: str = "14b",
 ) -> List[AblationResult]:
-    """Run ablation study across all conditions and seeds."""
+    """Run ablation study across all conditions and seeds.
+    
+    Args:
+        regime: "06b" for raw completions (Qwen3-0.6B-Base), "14b" for chat completions (Qwen3-14B-AWQ)
+    """
     import httpx
+    
+    # Configure based on regime
+    if regime == "06b":
+        # Regime A: Raw completions, no chat template
+        model_name = "Qwen/Qwen3-0.6B-Base"
+        # Use /v1/completions endpoint
+        if "chat/completions" in api_url:
+            api_url = api_url.replace("/v1/chat/completions", "/v1/completions")
+        elif not api_url.endswith("/v1/completions"):
+            api_url = api_url.rstrip("/") + "/v1/completions"
+        use_chat_format = False
+    else:
+        # Regime B: Chat completions (default)
+        model_name = "nram-qwen3-14b-awq"
+        use_chat_format = True
     
     results = []
     
     for prompt in prompts:
         for condition in conditions:
             for seed in seeds:
-                print(f"Running: {condition['name']} | seed={seed} | prompt={prompt[:50]}...")
+                print(f"Running [{regime}]: {condition['name']} | seed={seed} | prompt={prompt[:50]}...")
                 
-                body = {
-                    "model": "nram-qwen3-14b-awq",
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 100,
-                    "temperature": 0.7,
-                    "seed": seed,
-                    "nram": {
-                        "enabled": True,
-                        "profile": "normal",
-                        "request_id": f"ablation-{condition['name']}-{seed}-{hashlib.md5(prompt.encode()).hexdigest()[:8]}",
-                        "dexperts_config": {
-                            "alpha": condition.get("alpha", 0.0),
-                        } if condition.get("alpha") is not None else None,
-                    },
+                # Build NRAM config
+                nram_config = {
+                    "enabled": True,
+                    "profile": "normal",
+                    "request_id": f"ablation-{regime}-{condition['name']}-{seed}-{hashlib.md5(prompt.encode()).hexdigest()[:8]}",
                 }
                 
-                # Remove None values
-                if body["nram"]["dexperts_config"] is None:
-                    del body["nram"]["dexperts_config"]
+                # Add dexperts_config if alpha is specified
+                if condition.get("alpha") is not None:
+                    nram_config["dexperts_config"] = {
+                        "alpha": condition["alpha"],
+                    }
+                
+                # Build request body based on regime
+                if use_chat_format:
+                    # Regime B: Chat completions
+                    body = {
+                        "model": model_name,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "max_tokens": 100,
+                        "temperature": 0.7,
+                        "seed": seed,
+                        "nram": nram_config,
+                    }
+                else:
+                    # Regime A: Raw completions (no chat template)
+                    body = {
+                        "model": model_name,
+                        "prompt": prompt,
+                        "max_tokens": 100,
+                        "temperature": 0.7,
+                        "seed": seed,
+                        "nram": nram_config,
+                    }
                 
                 start_time = time.perf_counter()
                 
@@ -209,7 +244,12 @@ def run_ablation(
                         )
                         response.raise_for_status()
                         data = response.json()
-                        generated_text = data["choices"][0]["message"]["content"]
+                        
+                        # Extract generated text based on response format
+                        if use_chat_format:
+                            generated_text = data["choices"][0]["message"]["content"]
+                        else:
+                            generated_text = data["choices"][0]["text"]
                 except Exception as e:
                     print(f"  ERROR: {e}")
                     generated_text = ""
@@ -418,7 +458,10 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description="DExperts Causal Ablation Study")
-    parser.add_argument("--api-url", default="http://127.0.0.1:8000/v1/chat/completions")
+    parser.add_argument("--regime", choices=["06b", "14b"], default="14b",
+                        help="Model regime: '06b' for Qwen3-0.6B-Base (raw completions), '14b' for Qwen3-14B-AWQ (chat completions)")
+    parser.add_argument("--api-url", default=None,
+                        help="API endpoint URL (auto-configured based on regime if not specified)")
     parser.add_argument("--api-key", default="dev-nram-key")
     parser.add_argument("--prompts", choices=["real-toxicity", "file"], default="real-toxicity",
                         help="Prompt source: 'real-toxicity' for allenai/real-toxicity-prompts, 'file' for local file")
@@ -426,11 +469,40 @@ def main():
                         help="Path to prompts file (used when --prompts=file)")
     parser.add_argument("--n-prompts", type=int, default=50,
                         help="Number of prompts to use (default: 50)")
-    parser.add_argument("--output", default="artifacts/dexperts/causal_ablation_results.json")
-    parser.add_argument("--raw-output", default="artifacts/dexperts/causal_ablation_raw_generations.jsonl")
+    parser.add_argument("--output", default=None,
+                        help="Output JSON path (auto-configured based on regime if not specified)")
+    parser.add_argument("--raw-output", default=None,
+                        help="Raw output JSONL path (auto-configured based on regime if not specified)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for prompt selection")
     args = parser.parse_args()
+    
+    # Auto-configure based on regime
+    regime = args.regime
+    
+    if args.api_url is None:
+        if regime == "06b":
+            args.api_url = "http://127.0.0.1:8001/v1/completions"  # Separate instance for 0.6B-Base
+        else:
+            args.api_url = "http://127.0.0.1:8000/v1/chat/completions"
+    
+    if args.output is None:
+        args.output = f"artifacts/dexperts/r5/causal_ablation_{regime}.json"
+    
+    if args.raw_output is None:
+        args.raw_output = f"artifacts/dexperts/r5/causal_ablation_raw_{regime}.jsonl"
+    
+    print(f"\n{'='*60}")
+    print(f"DExperts Causal Ablation Study - Regime {regime.upper()}")
+    print(f"{'='*60}")
+    if regime == "06b":
+        print(f"Model: Qwen/Qwen3-0.6B-Base (raw completions, no chat template)")
+        print(f"Endpoint: {args.api_url}")
+        print(f"Note: Requires separate SGLang instance on port 8001")
+    else:
+        print(f"Model: nram-qwen3-14b-awq (chat completions)")
+        print(f"Endpoint: {args.api_url}")
+    print(f"{'='*60}\n")
     
     # Load prompts based on source
     if args.prompts == "real-toxicity":
@@ -488,6 +560,7 @@ def main():
         seeds=seeds,
         toxicity_classifier=toxicity_classifier,
         toxicity_tokenizer=toxicity_tokenizer,
+        regime=regime,
     )
     
     # Summarize
@@ -500,6 +573,9 @@ def main():
     output = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "study_design": {
+            "regime": regime,
+            "model": "Qwen/Qwen3-0.6B-Base" if regime == "06b" else "nram-qwen3-14b-awq",
+            "api_format": "raw_completions" if regime == "06b" else "chat_completions",
             "prompt_source": args.prompts,
             "n_prompts": len(prompts),
             "n_conditions": len(conditions),
