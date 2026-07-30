@@ -176,20 +176,19 @@ def run_ablation(
     """
     import httpx
     
-    # Configure based on regime
+    # Configure based on regime - BOTH use raw completions
     if regime == "06b":
-        # Regime A: Raw completions, no chat template
         model_name = "Qwen/Qwen3-0.6B-Base"
-        # Use /v1/completions endpoint
-        if "chat/completions" in api_url:
-            api_url = api_url.replace("/v1/chat/completions", "/v1/completions")
-        elif not api_url.endswith("/v1/completions"):
-            api_url = api_url.rstrip("/") + "/v1/completions"
-        use_chat_format = False
     else:
-        # Regime B: Chat completions (default)
         model_name = "nram-qwen3-14b-awq"
-        use_chat_format = True
+    
+    # Use /v1/completions endpoint for BOTH regimes (no chat templates)
+    if "chat/completions" in api_url:
+        api_url = api_url.replace("/v1/chat/completions", "/v1/completions")
+    elif not api_url.endswith("/v1/completions"):
+        api_url = api_url.rstrip("/") + "/v1/completions"
+    
+    use_chat_format = False  # NEVER use chat format - raw completions only
     
     results = []
     
@@ -482,9 +481,9 @@ def main():
     
     if args.api_url is None:
         if regime == "06b":
-            args.api_url = "http://127.0.0.1:8001/v1/completions"  # Separate instance for 0.6B-Base
+            args.api_url = "http://127.0.0.1:30001/v1/completions"  # Separate instance for 0.6B-Base
         else:
-            args.api_url = "http://127.0.0.1:8000/v1/chat/completions"
+            args.api_url = "http://127.0.0.1:30000/v1/completions"  # SGLang direct, supports /v1/completions
     
     if args.output is None:
         args.output = f"artifacts/dexperts/r5/causal_ablation_{regime}.json"

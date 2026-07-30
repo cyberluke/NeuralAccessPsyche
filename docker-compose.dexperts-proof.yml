@@ -5,52 +5,53 @@
 #
 # Purpose: Verify DExperts algorithm correctness with small base model
 # Critical: NO system prompts, NO chat template, NO safety steering
-
-version: '3.8'
+#
+# Usage:
+#   docker compose -f docker-compose.dexperts-proof.yml up -d
+#   # Wait for healthy, then run:
+#   python scripts/dexperts_causal_ablation.py --regime 06b --n-prompts 50
 
 services:
-  # SGLang inference server with DExperts runtime
   sglang-dexperts-proof:
     build:
-      context: ./inference/sglang
-      dockerfile: Dockerfile
-    container_name: nram-sglang-dexperts-proof
+      context: .
+      dockerfile: inference/sglang/Dockerfile
+    container_name: nram-sglang-06b
     runtime: nvidia
+    ipc: host
+    shm_size: "16gb"
     environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-      - CUDA_VISIBLE_DEVICES=0
-      - SGLANG_MODEL_PATH=/models/Qwen3-0.6B-Base
-      - SGLANG_MODEL_REVISION=da87bfb608c14b7cf20ba1ce41287e8de496c0cd
-      - SGLANG_DTYPE=float16
-      - SGLANG_PORT=30000
+      - MODEL_PATH=/root/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/snapshots/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+      - TOKENIZER_PATH=/root/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B-Base/snapshots/da87bfb608c14b7cf20ba1ce41287e8de496c0cd
+      - SERVED_MODEL_NAME=qwen3-0.6b-base
+      - MODEL_TYPE=auto
+      - LOAD_FORMAT=auto
+      - QUANTIZATION=none
+      - CONTEXT_LENGTH=2048
+      - MEM_FRACTION_STATIC=0.85
+      - GRAMMAR_BACKEND=xgrammar
+      - ENABLE_THINKING=false
+      - REASONING_PARSER=qwen3
+      - HICACHE_RATIO=0.0
+      - HICACHE_WRITE_POLICY=write_through_selective
       - SGLANG_HOST=0.0.0.0
-      - SGLANG_CONTEXT_LENGTH=2048
-      - NRAM_DEXPerts_ENABLED=true
-      - NRAM_DEXPerts_ALPHA=1.0
-      - NRAM_DEXPerts_EXPERT_ADAPTER=/adapters/nontoxic
-      - NRAM_DEXPerts_ANTI_EXPERT_ADAPTER=/adapters/toxic
-      - NRAM_DEXPerts_BASE_SUPPORT_FILTER_K=0
-      - NRAM_DEXPerts_BASE_SUPPORT_FILTER_P=1.0
-      - NRAM_DEXPerts_MAX_CONTEXT_LENGTH=4096
-      - NRAM_TOKENIZER_PATH=/models/Qwen3-0.6B-Base
-      - NRAM_LOG_LEVEL=INFO
+      - SGLANG_PORT=30000
+      - MAX_RUNNING_REQUESTS=1
+      - CUDA_GRAPH_BS_DECODE=
+      - NRAM_ENABLE_HOOKS=false
     volumes:
-      # Model weights (read-only)
-      - ${MODEL_PATH:-E:/_MODELS/huggingface/hub}:/models:ro
-      # DExperts adapters (read-only)
+      # Mount entire HF cache so symlinks resolve correctly
+      - E:/_MODELS/huggingface:/root/.cache/huggingface:ro
       - ./artifacts/dexperts/adapters:/adapters:ro
-      # Artifacts output (writable)
-      - ./artifacts/dexperts/r5/proof:/artifacts:rw
-      # Logs output (writable)
-      - ./logs/sglang-dexperts-proof:/logs:rw
+      - hf-cache-06b:/root/.cache/huggingface_write
     ports:
-      - "30001:30000"  # SGLang API (offset to avoid conflict with main server)
+      - "127.0.0.1:30001:30000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
-      interval: 30s
+      test: ["CMD", "python3", "/opt/nram/healthcheck.py"]
+      interval: 15s
       timeout: 10s
-      retries: 3
-      start_period: 120s  # Give time for model loading
+      retries: 60
+      start_period: 120s
     deploy:
       resources:
         reservations:
@@ -58,97 +59,12 @@ services:
             - driver: nvidia
               device_ids: ['0']
               capabilities: [gpu]
-    command: >
-      python -m sglang.launch_server
-      --model-path /models/Qwen3-0.6B-Base
-      --revision da87bfb608c14b7cf20ba1ce41287e8de496c0cd
-      --dtype float16
-      --host 0.0.0.0
-      --port 30000
-      --context-length 2048
-      --disable-cuda-graph
-      --trust-remote-code
-
-  # NRAM API server (proof mode)
-  nram-api-dexperts-proof:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nram-api-dexperts-proof
-    environment:
-      - NRAM_ENGINE=sglang
-      - SGLANG_BASE_URL=http://sglang-dexperts-proof:30000
-      - SGLANG_MODEL=Qwen3-0.6B-Base
-      - NRAM_TOKENIZER_PATH=/models/Qwen3-0.6B-Base
-      - NRAM_DEXPerts_ENABLED=true
-      - NRAM_DEXPerts_ALPHA=1.0
-      - NRAM_DEXPerts_EXPERT_ADAPTER=/adapters/nontoxic
-      - NRAM_DEXPerts_ANTI_EXPERT_ADAPTER=/adapters/toxic
-      - NRAM_PROOF_MODE=true  # Disable safety steering
-      - NRAM_USE_CHAT_TEMPLATE=false
-      - NRAM_ADD_SPECIAL_TOKENS=false
-      - NRAM_LOG_LEVEL=INFO
-    volumes:
-      # Model weights (read-only, for tokenizer)
-      - ${MODEL_PATH:-E:/_MODELS/huggingface/hub}:/models:ro
-      # DExperts adapters (read-only)
-      - ./artifacts/dexperts/adapters:/adapters:ro
-      # Artifacts output (writable)
-      - ./artifacts/dexperts/r5/proof:/artifacts:rw
-      # Logs output (writable)
-      - ./logs/nram-api-dexperts-proof:/app/logs:rw
-    ports:
-      - "8001:8000"  # NRAM API (offset to avoid conflict with main server)
-    depends_on:
-      sglang-dexperts-proof:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    command: >
-      uvicorn main:app
-      --host 0.0.0.0
-      --port 8000
-      --reload
-
-  # Evaluation script runner
-  dexperts-evaluation:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nram-dexperts-evaluation
-    environment:
-      - NRAM_API_URL=http://nram-api-dexperts-proof:8000
-      - EVALUATION_CONFIG=/configs/dexperts_qwen06b.yaml
-      - EVALUATION_OUTPUT_DIR=/artifacts
-      - EVALUATION_NUM_SAMPLES=100
-      - EVALUATION_SEED=42
-    volumes:
-      # Configuration files (read-only)
-      - ./config/experiments:/configs:ro
-      # Evaluation prompts (read-only)
-      - ./evaluation/prompts.jsonl:/prompts/prompts.jsonl:ro
-      # Artifacts output (writable)
-      - ./artifacts/dexperts/r5/proof:/artifacts:rw
-      # Logs output (writable)
-      - ./logs/evaluation:/logs:rw
-    depends_on:
-      nram-api-dexperts-proof:
-        condition: service_healthy
-    command: >
-      python scripts/run_dexperts_evaluation.py
-      --config /configs/dexperts_qwen06b.yaml
-      --output-dir /artifacts
-      --num-samples 100
-      --seed 42
+    restart: unless-stopped
 
 networks:
   default:
     name: nram-dexperts-proof-network
 
 volumes:
-  # No persistent volumes needed for proof regime
-  # All outputs go to bind mounts
+  hf-cache-06b:
+    name: neuralaccesspsyche_hf-cache-06b
