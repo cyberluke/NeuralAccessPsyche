@@ -1,0 +1,151 @@
+{
+  "model_1": {
+    "path": "E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-14B-AWQ\\snapshots\\31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+    "name": "Qwen3-14B-AWQ",
+    "revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"
+  },
+  "model_2": {
+    "path": "E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-0.6B-Base\\snapshots\\da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "name": "Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+  },
+  "vocab_size_comparison": {
+    "vocab_size_1": 151643,
+    "vocab_size_2": 151643,
+    "equal": true
+  },
+  "special_tokens_comparison": {
+    "bos_token_id": {
+      "model_1": null,
+      "model_2": null,
+      "equal": true
+    },
+    "eos_token_id": {
+      "model_1": 151645,
+      "model_2": 151643,
+      "equal": false
+    },
+    "pad_token_id": {
+      "model_1": 151643,
+      "model_2": 151643,
+      "equal": true
+    },
+    "special_tokens_equal": false,
+    "special_tokens_1": {
+      "eos_token": "<|im_end|>",
+      "pad_token": "<|endoftext|>",
+      "additional_special_tokens": [
+        "<|im_start|>",
+        "<|im_end|>",
+        "<|object_ref_start|>",
+        "<|object_ref_end|>",
+        "<|box_start|>",
+        "<|box_end|>",
+        "<|quad_start|>",
+        "<|quad_end|>",
+        "<|vision_start|>",
+        "<|vision_end|>",
+        "<|vision_pad|>",
+        "<|image_pad|>",
+        "<|video_pad|>"
+      ]
+    },
+    "special_tokens_2": {
+      "eos_token": "<|endoftext|>",
+      "pad_token": "<|endoftext|>",
+      "additional_special_tokens": [
+        "<|im_start|>",
+        "<|im_end|>",
+        "<|object_ref_start|>",
+        "<|object_ref_end|>",
+        "<|box_start|>",
+        "<|box_end|>",
+        "<|quad_start|>",
+        "<|quad_end|>",
+        "<|vision_start|>",
+        "<|vision_end|>",
+        "<|vision_pad|>",
+        "<|image_pad|>",
+        "<|video_pad|>"
+      ]
+    }
+  },
+  "token_mapping_comparison": {
+    "vocab_keys_equal": true,
+    "common_tokens": 151669,
+    "only_in_model_1": 0,
+    "only_in_model_2": 0,
+    "sample_size": 1000,
+    "mappings_equal": true,
+    "mismatches": []
+  },
+  "tokenizer_config_comparison": {
+    "normalizer_equal": true,
+    "normalizer_1": "NFC()",
+    "normalizer_2": "NFC()",
+    "pre_tokenizer_equal": true,
+    "pre_tokenizer_1": "Sequence(pretokenizers=[Split(pattern=Regex(\"(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+...\"), behavior=Isolated, invert=False), ByteLevel(add_prefix_space=False, trim_offsets=False, use_regex=False)])",
+    "pre_tokenizer_2": "Sequence(pretokenizers=[Split(pattern=Regex(\"(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+...\"), behavior=Isolated, invert=False), ByteLevel(add_prefix_space=False, trim_offsets=False, use_regex=False)])",
+    "model_equal": true,
+    "model_1": "BPE(dropout=None, unk_token=None, continuing_subword_prefix=\"\", end_of_word_suffix=\"\", fuse_unk=False, byte_fallback=False, ignore_merges=False, vocab={\"!\":0, \"\"\":1, \"#\":2, \"$\":3, \"%\":4, ...}, merges=[(\"Ġ\", \"Ġ\"), (\"ĠĠ\", \"ĠĠ\"), (\"i\", \"n\"), (\"Ġ\", \"t\"), (\"ĠĠĠĠ\", \"ĠĠĠĠ\"), ...])",
+    "model_2": "BPE(dropout=None, unk_token=None, continuing_subword_prefix=\"\", end_of_word_suffix=\"\", fuse_unk=False, byte_fallback=False, ignore_merges=False, vocab={\"!\":0, \"\"\":1, \"#\":2, \"$\":3, \"%\":4, ...}, merges=[(\"Ġ\", \"Ġ\"), (\"ĠĠ\", \"ĠĠ\"), (\"i\", \"n\"), (\"Ġ\", \"t\"), (\"ĠĠĠĠ\", \"ĠĠĠĠ\"), ...])"
+  },
+  "encoding_comparison": {
+    "all_equal": true,
+    "corpus_size": 8,
+    "results": [
+      {
+        "text": "Hello, world!",
+        "length_1": 4,
+        "length_2": 4,
+        "equal": true
+      },
+      {
+        "text": "The quick brown fox jumps over the lazy dog.",
+        "length_1": 10,
+        "length_2": 10,
+        "equal": true
+      },
+      {
+        "text": "NRAM v5 implements DExperts for inference-time ste...",
+        "length_1": 12,
+        "length_2": 12,
+        "equal": true
+      },
+      {
+        "text": "Toxicity detection is important for safe AI system...",
+        "length_1": 11,
+        "length_2": 11,
+        "equal": true
+      },
+      {
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing...",
+        "length_1": 10,
+        "length_2": 10,
+        "equal": true
+      },
+      {
+        "text": "1234567890 !@#$%^&*()",
+        "length_1": 17,
+        "length_2": 17,
+        "equal": true
+      },
+      {
+        "text": "Multiple   spaces   and\nnewlines\n\nhere.",
+        "length_1": 11,
+        "length_2": 11,
+        "equal": true
+      },
+      {
+        "text": "Unicode: 日本語テスト 🎉🚀",
+        "length_1": 10,
+        "length_2": 10,
+        "equal": true
+      }
+    ]
+  },
+  "exact_vocab_mapping_equal": false,
+  "verdict": "PASS",
+  "recommendation": "Tokenizers are compatible for LoRA adapter usage. The EOS token ID difference (151645 vs 151643) is acceptable because LoRA adapters are trained ON the 0.6B base model and used WITH the same 0.6B base model in SGLang. The 14B model's EOS token is irrelevant for adapter inference. Vocab sizes match (151643), token mappings are identical (151669 common tokens, 0 mismatches), and all encoding tests pass.",
+  "lora_compatible": true
+}

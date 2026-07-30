@@ -1,0 +1,76 @@
+{
+  "phase": "R2",
+  "commit": "94b531b",
+  "timestamp": "2026-07-29T13:38:00Z",
+  "telemetry_events_analyzed": {
+    "hook_invocation": {
+      "schema": "nram.hook.invocation.v1",
+      "emitted_by": "nram_sglang/hooks/qwen_hook.py:132",
+      "fields": ["request_id", "hook_id", "module_name", "layer_index", "phase", "decode_step", "invocation_count", "hidden_shape", "hidden_dtype", "hidden_device", "hidden_norm_before", "hidden_norm_after", "intervention_delta_norm", "active_intervention_ids"],
+      "status": "IMPLEMENTED",
+      "evidence": "QwenDecoderHook.__call__ emits HookTelemetry.emit_hook_invocation() at line 132 when context.telemetry_enabled is True"
+    },
+    "intervention_applied": {
+      "schema": "nram.hook.intervention.v1",
+      "emitted_by": "nram_sglang/hooks/qwen_hook.py:298",
+      "fields": ["request_id", "intervention_id", "intervention_type", "layer_index", "strength", "delta_norm"],
+      "status": "IMPLEMENTED",
+      "evidence": "_apply_intervention() emits HookTelemetry.emit_intervention_applied() at line 298 when delta is not None"
+    },
+    "probe_event": {
+      "schema": "nram.hook.probe.v1",
+      "emitted_by": "nram_sglang/hooks/qwen_hook.py:472",
+      "fields": ["timestamp", "request_id", "probe_id", "layer_index", "score"],
+      "status": "IMPLEMENTED",
+      "evidence": "_apply_probe() emits probe event at line 472 and prints NRAM_PROBE_EVENT to stdout"
+    },
+    "coherence_warning": {
+      "schema": "nram.coherence.warning.v1",
+      "emitted_by": "nram_sglang/processor.py:952",
+      "fields": ["request_id", "coherence", "floor", "generated_tokens", "violation"],
+      "status": "IMPLEMENTED",
+      "evidence": "_emit_coherence_warning() emits event at line 952 when coherence < coherence_floor"
+    }
+  },
+  "telemetry_verification": {
+    "hook_telemetry_enabled": {
+      "requirement": "Telemetry events emitted when context.telemetry_enabled=True",
+      "status": "VERIFIED",
+      "evidence": "qwen_hook.py:130 checks context.telemetry_enabled before emitting"
+    },
+    "delta_norm_measurement": {
+      "requirement": "Hook measures intervention delta_norm (magnitude of hidden state change)",
+      "status": "VERIFIED",
+      "evidence": "qwen_hook.py:112 computes total_delta_norm, line 145 emits intervention_delta_norm"
+    },
+    "bounded_telemetry": {
+      "requirement": "Telemetry events are bounded to prevent memory exhaustion",
+      "status": "VERIFIED",
+      "evidence": "request_context.py:103 checks len(self.telemetry_events) >= self.telemetry_max_steps before appending"
+    }
+  },
+  "runtime_observability": {
+    "stdout_events": [
+      "NRAM_PROBE_EVENT - emitted by _apply_probe() at qwen_hook.py:482",
+      "NRAM_HOOK_INTERVENTION - would be emitted by HookTelemetry (not explicitly printed to stdout in current code)"
+    ],
+    "log_events": [
+      "Logger info: 'Loaded activation vector: {name}' at startup.py:87",
+      "Logger info: 'Loaded conceptor: {name}' at startup.py:96",
+      "Logger info: 'NRAM v5: Loaded {vectors_loaded} vectors, {conceptors_loaded} conceptors' at startup.py:105",
+      "Logger info: 'NRAM v5: Registered {count} forward hooks on model' at startup.py:40"
+    ],
+    "docker_log_capture": {
+      "status": "NOT_TESTED",
+      "reason": "Docker container not running during Phase R2 verification",
+      "recommendation": "Phase R3 should verify telemetry appears in docker compose logs sglang"
+    }
+  },
+  "summary": {
+    "telemetry_infrastructure": "IMPLEMENTED",
+    "events_defined": 4,
+    "events_verified_in_code": 4,
+    "events_verified_at_runtime": 0,
+    "note": "Telemetry infrastructure is implemented and wired into hooks/processor. Runtime verification requires Docker container with active requests."
+  }
+}

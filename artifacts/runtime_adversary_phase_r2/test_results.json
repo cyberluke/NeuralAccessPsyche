@@ -1,0 +1,76 @@
+{
+  "activation_addition_artifacts": {
+    "test": "activation_addition_artifacts",
+    "checks": [
+      {"check": "safetensors_files_exist", "passed": true, "detail": "Found 5 .safetensors files: coherence_direction, creative_subspace, creativity_direction, novelty_coherence, novelty_vs_paraphrase"},
+      {"check": "file_is_real_safetensors", "passed": true, "detail": "All 5 files have valid safetensors binary headers (not JSON)"},
+      {"check": "tensor_loadable", "passed": true, "detail": "All tensors loadable: 3 vectors (5120,), 2 conceptor pairs (16,5120)+(16,)"},
+      {"check": "load_nram_artifacts_vectors", "passed": true, "detail": "vectors_loaded=3, conceptors_loaded=2"},
+      {"check": "vectors_stored_in_runtime", "passed": true, "detail": "Stored: coherence_direction, creativity_direction, novelty_vs_paraphrase"},
+      {"check": "vector_metadata_complete", "passed": true, "detail": "All 3 vectors have model_hash, tokenizer_hash, layer, pooling, etc."}
+    ],
+    "passed": true,
+    "verdict": "PASSED - Real safetensors artifacts exist, load correctly, and populate runtime"
+  },
+  "conceptor_artifacts": {
+    "test": "conceptor_artifacts",
+    "checks": [
+      {"check": "conceptor_tensors_valid", "passed": true, "detail": "creative_subspace: basis(16,5120)+sv(16,); novelty_coherence: basis(16,5120)+sv(16,)"},
+      {"check": "conceptor_metadata_complete", "passed": true, "detail": "Both have aperture, model_hash, tokenizer_hash, layer, rank, hidden_size"},
+      {"check": "conceptors_loaded_at_startup", "passed": true, "detail": "conceptors_loaded=2"},
+      {"check": "conceptors_stored_in_runtime", "passed": true, "detail": "Stored: creative_subspace, novelty_coherence"}
+    ],
+    "passed": true,
+    "verdict": "PASSED - Real conceptor artifacts exist, load correctly, and populate runtime"
+  },
+  "dexperts_not_implemented": {
+    "test": "dexperts_not_implemented",
+    "checks": [
+      {"check": "dexperts_has_not_implemented_marker", "passed": true, "detail": "NOT_IMPLEMENTED found in core/steering/dexperts.py docstring"},
+      {"check": "dexperts_has_explanation", "passed": true, "detail": "VRAM constraint explanation present"},
+      {"check": "dexperts_not_in_active_routes", "passed": false, "detail": "api/routes.py:845-850 claims dexperts state=CONFIGURED, runtime_wired=True - MISLEADING"},
+      {"check": "dexperts_no_functional_next_token_logits", "passed": true, "detail": "DExpertsController has no next_token_logits method"}
+    ],
+    "passed": false,
+    "verdict": "PARTIAL - Source code honestly marked NOT_IMPLEMENTED, but API capabilities endpoint misleadingly reports state=CONFIGURED and runtime_wired=True"
+  },
+  "branch_tournament_real_api": {
+    "test": "branch_tournament_real_api",
+    "checks": [
+      {"check": "uses_http_client", "passed": true, "detail": "Uses httpx.Client for API calls"},
+      {"check": "calls_completions_api", "passed": true, "detail": "Calls http://localhost:30000/v1/completions"},
+      {"check": "no_placeholder_text", "passed": true, "detail": "No [branch_X_generated_text] placeholders"},
+      {"check": "branch_variation", "passed": true, "detail": "Each branch gets different seed and temperature"},
+      {"check": "has_real_scorer", "passed": true, "detail": "scoring_fn and score_branch implemented"}
+    ],
+    "passed": true,
+    "verdict": "PASSED - Real SGLang API calls, no placeholder text, proper branch variation and scoring"
+  },
+  "request_isolation_contextvars": {
+    "test": "request_isolation_contextvars",
+    "checks": [
+      {"check": "uses_contextvars_not_threading_local", "passed": false, "detail": "FALSE POSITIVE: threading.local() appears only in comments explaining design, actual code uses ContextVar"},
+      {"check": "contextvar_properly_typed", "passed": true, "detail": "ContextVar[Optional[NRAMHookContext]] at line 121"},
+      {"check": "async_isolation_task_a", "passed": true, "detail": "Task A correctly saw request_id=test_a"},
+      {"check": "async_isolation_task_b", "passed": true, "detail": "Task B correctly saw request_id=test_b"},
+      {"check": "no_cross_contamination", "passed": true, "detail": "Both tasks properly isolated"}
+    ],
+    "passed": true,
+    "verdict": "PASSED (corrected) - contextvars.ContextVar properly used, runtime async isolation test confirms no cross-contamination. threading.local() appears only in explanatory comments."
+  },
+  "coherence_floor": {
+    "test": "coherence_floor",
+    "checks": [
+      {"check": "measure_coherence_method_exists", "passed": true, "detail": "_measure_coherence at processor.py:918"},
+      {"check": "uses_trigram_measurement", "passed": true, "detail": "Trigram-based: builds 3-token tuples from output_ids"},
+      {"check": "coherence_floor_param_read", "passed": true, "detail": "params.get('coherence_floor', 0.0) at line 198"},
+      {"check": "coherence_feedback_loop", "passed": true, "detail": "positive_bias *= 0.5 when coherence < floor (line 214)"},
+      {"check": "coherence_telemetry_event", "passed": true, "detail": "_emit_coherence_warning emits nram.coherence.warning.v1 events"},
+      {"check": "coherence_unique_trigrams", "passed": true, "detail": "100 unique tokens -> coherence=1.0"},
+      {"check": "coherence_repeated_trigrams", "passed": true, "detail": "10 repeated tokens -> coherence=0.125"},
+      {"check": "coherence_monotonic", "passed": true, "detail": "0.125 < 1.0 confirms monotonic behavior"}
+    ],
+    "passed": true,
+    "verdict": "PASSED - Trigram repetition ratio implemented, feedback loop reduces positive_bias, telemetry events emitted, runtime behavior correct"
+  }
+}

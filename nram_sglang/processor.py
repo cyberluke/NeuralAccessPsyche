@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 try:
@@ -17,6 +18,18 @@ except ImportError:
         """API-side compatibility base; SGLang supplies the real class."""
 
         pass
+
+# Lazy import for DExperts runtime to avoid serialization issues
+_DExpertsRuntime = None
+def _get_dexperts_runtime_class():
+    global _DExpertsRuntime
+    if _DExpertsRuntime is None:
+        try:
+            from core.steering.dexperts_runtime import DExpertsRuntime
+            _DExpertsRuntime = DExpertsRuntime
+        except ImportError:
+            _DExpertsRuntime = None
+    return _DExpertsRuntime
 
 
 class NRAMLogitProcessor(CustomLogitProcessor):
@@ -30,6 +43,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
       Layer 2: Phrase constraints (forbidden phrases, source n-gram blocking)
       Layer 3: Entropy control (PID servo with phase-based targets)
       Layer 3: Concept injection (dynamic concept capsules)
+      Layer 4: DExperts toxicity steering (LoRA adapter switching)
     
     Phenomenon mixer — each phenomenon maps to a concrete logit operation:
       overlap          → boost recent output token IDs (self-reinforcing bleed)
@@ -40,6 +54,44 @@ class NRAMLogitProcessor(CustomLogitProcessor):
       dissolution      → scale logits toward zero (dissolve all steering structure)
       insight          → periodic positive_bias spikes at 25/50/75% of generation
     """
+    
+    # Class-level DExperts runtime (set at server startup, not serialized)
+    _dexperts_runtime: Any = None
+    
+    @classmethod
+    def initialize_dexperts(cls, base_model: Any, tokenizer: Any, device: str = "cuda") -> None:
+        """Initialize DExperts runtime at server startup.
+        
+        This must be called once during SGLang server initialization, before
+        any requests are processed. The runtime is stored as a class variable
+        and is NOT serialized with dill.
+        
+        Args:
+            base_model: The base language model (already loaded by SGLang)
+            tokenizer: The tokenizer
+            device: Device to use (default: "cuda")
+        """
+        DExpertsRuntimeClass = _get_dexperts_runtime_class()
+        if DExpertsRuntimeClass is None:
+            print("NRAM: DExperts runtime not available (import failed)", flush=True)
+            return
+        
+        cls._dexperts_runtime = DExpertsRuntimeClass(base_model, tokenizer, device)
+        
+        # Load adapters from default paths
+        expert_path = "artifacts/dexperts/adapters/nontoxic"
+        anti_expert_path = "artifacts/dexperts/adapters/toxic"
+        
+        if os.path.exists(expert_path) and os.path.exists(anti_expert_path):
+            try:
+                cls._dexperts_runtime.load_adapters(expert_path, anti_expert_path)
+                print(f"NRAM: DExperts adapters loaded from {expert_path} and {anti_expert_path}", flush=True)
+            except Exception as e:
+                print(f"NRAM: Failed to load DExperts adapters: {e}", flush=True)
+                cls._dexperts_runtime = None
+        else:
+            print(f"NRAM: DExperts adapter paths not found, runtime not loaded", flush=True)
+            cls._dexperts_runtime = None
 
     def __call__(self, logits: Any, custom_param_list: Optional[List[Dict[str, Any]]] = None) -> Any:
         if not custom_param_list:
@@ -192,6 +244,39 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                 )
 
             # ---------------------------------------------------------------
+            # Layer 4: DExperts toxicity steering (LoRA adapter switching)
+            # ---------------------------------------------------------------
+            dexperts_config = params.get("dexperts_config")
+            dexperts_telemetry = None
+            if dexperts_config and self._dexperts_runtime is not None:
+                alpha = self._bounded_float(dexperts_config.get("alpha", 1.0), 0.0, 10.0)
+                request_id = str(params.get("request_id", ""))
+                
+                # Extract input_ids from request object (SGLang provides this)
+                input_ids = None
+                attention_mask = None
+                if request is not None:
+                    input_ids = getattr(request, "input_ids", None)
+                    attention_mask = getattr(request, "attention_mask", None)
+                
+                # Apply DExperts formula: z_combined = z_base + alpha * (z_expert - z_anti_expert)
+                if input_ids is not None and self._dexperts_runtime._loaded:
+                    try:
+                        combined_logits, dexperts_telemetry = self._dexperts_runtime.apply_dexperts(
+                            base_logits=logits[batch_index],
+                            input_ids=input_ids,
+                            attention_mask=attention_mask,
+                            alpha=alpha,
+                            request_id=request_id,
+                            position=generated,
+                        )
+                        logits[batch_index] = combined_logits
+                    except Exception as e:
+                        # DExperts failure should not crash the request
+                        print(f"NRAM: DExperts apply failed: {e}", flush=True)
+                        dexperts_telemetry = {"applied": False, "error": str(e)}
+
+            # ---------------------------------------------------------------
             # Coherence floor enforcement
             # ---------------------------------------------------------------
             coherence_floor = self._bounded_float(
@@ -263,7 +348,18 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                     forced_token_id=forced_token_id if forced_applied else None,
                     requested_forced_token_id=requested_forced_token_id,
                     vocab_size=vocab_size,
+                    dexperts_telemetry=dexperts_telemetry,
                 )
+
+            # ---------------------------------------------------------------
+            # Request state cleanup: release DExperts state when request finishes
+            # ---------------------------------------------------------------
+            if request is not None and self._dexperts_runtime is not None:
+                finished = getattr(request, "finished", False)
+                if finished:
+                    request_id = str(params.get("request_id", ""))
+                    if request_id:
+                        self._dexperts_runtime.release_state(request_id)
 
         return logits
 
@@ -734,6 +830,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         forced_token_id: Optional[int],
         requested_forced_token_id: Optional[int],
         vocab_size: int,
+        dexperts_telemetry: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Emit one bounded JSON event from the actual processor invocation."""
         invocation = int(getattr(request, "_nram_invocation_count", 0)) + 1
@@ -749,6 +846,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             or soft_event
             or vector_event
             or concept_event
+            or dexperts_telemetry
         )
         if invocation > max_steps and not causal_target_event:
             return
@@ -819,6 +917,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             "soft_injections": soft_event,
             "vocabulary_logit_vectors": vector_event,
             "concept_capsules": concept_event,
+            "dexperts": dexperts_telemetry,
         }
         print("NRAM_PROCESSOR_EVENT " + json.dumps(event, sort_keys=True), flush=True)
 

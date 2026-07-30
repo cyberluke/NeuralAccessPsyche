@@ -1,0 +1,93 @@
+{
+  "base_model": {
+    "path": "E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-0.6B-Base\\snapshots\\da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+    "name": "Qwen3-0.6B-Base",
+    "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+  },
+  "dataset": {
+    "name": "google/civil_comments",
+    "toxicity_threshold_low": 0.05,
+    "toxicity_threshold_high": 0.8,
+    "max_samples_per_class": 20000,
+    "seed": 42,
+    "nontoxic_samples": 19745,
+    "toxic_samples": 19745
+  },
+  "lora_config": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.1,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "task_type": "CAUSAL_LM"
+  },
+  "training": {
+    "num_epochs": 3,
+    "batch_size": 4,
+    "learning_rate": 0.0002,
+    "seed": 42
+  },
+  "adapters": {
+    "nontoxic": {
+      "path": "artifacts\\dexperts\\adapters\\nontoxic",
+      "metrics": {
+        "train_loss": 3.3501145305579456,
+        "train_runtime": 4277.9802,
+        "train_samples_per_second": 13.846,
+        "num_samples": 19745,
+        "num_epochs": 3,
+        "batch_size": 4,
+        "learning_rate": 0.0002,
+        "lora_r": 16,
+        "lora_alpha": 32,
+        "lora_dropout": 0.1,
+        "target_modules": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ],
+        "seed": 42
+      }
+    },
+    "toxic": {
+      "path": "artifacts\\dexperts\\adapters\\toxic",
+      "metrics": {
+        "train_loss": 3.4439664134762897,
+        "train_runtime": 4411.8364,
+        "train_samples_per_second": 13.426,
+        "num_samples": 19745,
+        "num_epochs": 3,
+        "batch_size": 4,
+        "learning_rate": 0.0002,
+        "lora_r": 16,
+        "lora_alpha": 32,
+        "lora_dropout": 0.1,
+        "target_modules": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ],
+        "seed": 42
+      }
+    }
+  },
+  "device": {
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "vram_gb": 24.14608384
+  }
+}

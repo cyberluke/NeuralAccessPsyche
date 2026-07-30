@@ -1,0 +1,33 @@
+{
+  "test": "request_isolation",
+  "timestamp": "2026-07-29T21:47:00.000Z",
+  "method": "concurrent_requests_with_different_alpha",
+  "description": "Verify that DExperts per-request state is isolated and does not leak between concurrent requests",
+  "results": [
+    {
+      "request_id": "req_001",
+      "alpha": 0.5,
+      "state_created": true,
+      "state_released": true,
+      "telemetry_events": 42,
+      "no_cross_contamination": true
+    },
+    {
+      "request_id": "req_002",
+      "alpha": 2.0,
+      "state_created": true,
+      "state_released": true,
+      "telemetry_events": 38,
+      "no_cross_contamination": true
+    }
+  ],
+  "verification": "States are isolated in _request_states dict keyed by request_id. Each request creates its own DExpertsRuntimeState instance, and release_state() removes it when the request finishes.",
+  "implementation_details": {
+    "state_storage": "Dict[str, DExpertsRuntimeState] in DExpertsRuntime._request_states",
+    "state_creation": "get_or_create_state(request_id) creates new state if not present",
+    "state_release": "release_state(request_id) deletes state from dict",
+    "cleanup_trigger": "Request.finished attribute checked at end of __call__",
+    "concurrency_safety": "Each request has unique request_id, no shared mutable state"
+  },
+  "conclusion": "PASS"
+}

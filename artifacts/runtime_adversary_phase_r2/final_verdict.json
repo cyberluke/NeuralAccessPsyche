@@ -1,0 +1,82 @@
+{
+  "phase": "R2",
+  "commit": "94b531b",
+  "timestamp": "2026-07-29T13:40:00Z",
+  "verdict": "CONDITIONAL_PASS",
+  "summary": "5/6 claims fully verified. 1 claim partially verified with documentation inconsistency discovered. No critical runtime defects remain.",
+  "claims": {
+    "activation_addition": {
+      "status": "VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "Real safetensors artifacts (5 files), load_nram_artifacts() loads 3 vectors + 2 conceptors, runtime populated correctly",
+      "artifacts_verified": [
+        "artifacts/nram_vectors/coherence_direction.safetensors",
+        "artifacts/nram_vectors/creativity_direction.safetensors",
+        "artifacts/nram_vectors/novelty_vs_paraphrase.safetensors"
+      ]
+    },
+    "conceptor_steering": {
+      "status": "VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "Real conceptor artifacts with basis_vectors and singular_values, load correctly into conceptor_runtime",
+      "artifacts_verified": [
+        "artifacts/nram_vectors/creative_subspace.safetensors",
+        "artifacts/nram_vectors/novelty_coherence.safetensors"
+      ]
+    },
+    "dexperts": {
+      "status": "PARTIALLY_VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "Source code honestly marked NOT_IMPLEMENTED with VRAM explanation, but API capabilities endpoint misleadingly reports state=CONFIGURED, runtime_wired=True",
+      "defect": {
+        "id": "R2-001",
+        "severity": "MEDIUM",
+        "location": "api/routes.py:845-850",
+        "description": "API capabilities endpoint claims dexperts state=CONFIGURED, runtime_wired=True, contradicting source NOT_IMPLEMENTED status",
+        "recommendation": "Change to state=NOT_IMPLEMENTED, runtime_wired=False"
+      }
+    },
+    "branch_tournament": {
+      "status": "VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "Uses httpx.Client to call /v1/completions, no placeholder text, proper branch variation (seed, temperature), real scoring function"
+    },
+    "request_isolation": {
+      "status": "VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "contextvars.ContextVar properly used (not threading.local), runtime async isolation test confirms no cross-contamination between concurrent tasks"
+    },
+    "coherence_floor": {
+      "status": "VERIFIED",
+      "confidence": "HIGH",
+      "evidence": "Trigram repetition ratio implemented at processor.py:918, feedback loop reduces positive_bias when coherence < floor, telemetry events emitted, runtime tests confirm correct behavior (unique=1.0, repeated=0.125)"
+    }
+  },
+  "defects_found": [
+    {
+      "id": "R2-001",
+      "severity": "MEDIUM",
+      "category": "documentation_inconsistency",
+      "claim": "DExperts marked as NOT_IMPLEMENTED",
+      "issue": "API capabilities endpoint at api/routes.py:845-850 reports dexperts state=CONFIGURED, runtime_wired=True, contradicting source code NOT_IMPLEMENTED status",
+      "impact": "API clients may believe DExperts is functional when it is not",
+      "recommendation": "Update api/routes.py to report state=NOT_IMPLEMENTED, runtime_wired=False"
+    }
+  ],
+  "tests_created": [
+    "artifacts/runtime_adversary_phase_r2/test_phase_r2_verification.py"
+  ],
+  "artifacts_created": [
+    "artifacts/runtime_adversary_phase_r2/test_results.json",
+    "artifacts/runtime_adversary_phase_r2/falsification_evidence.json",
+    "artifacts/runtime_adversary_phase_r2/telemetry_analysis.json",
+    "artifacts/runtime_adversary_phase_r2/final_verdict.json"
+  ],
+  "next_step": "Phase R3 Release Gate - verify R2-001 fix and perform end-to-end runtime verification with Docker container",
+  "release_readiness": {
+    "critical_defects": 0,
+    "medium_defects": 1,
+    "low_defects": 0,
+    "recommendation": "Fix R2-001 before release, but not a blocker for Phase R3"
+  }
+}
