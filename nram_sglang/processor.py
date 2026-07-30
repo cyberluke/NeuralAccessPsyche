@@ -53,6 +53,12 @@ class NRAMLogitProcessor(CustomLogitProcessor):
       synesthesia      → deterministic cross-activation noise on scattered vocab
       dissolution      → scale logits toward zero (dissolve all steering structure)
       insight          → periodic positive_bias spikes at 25/50/75% of generation
+    
+    CRITICAL: Canonical DExperts decoding order requires:
+    1. Capture UNMODIFIED base logits
+    2. Apply DExperts formula on unmodified base logits
+    3. Apply base support truncation
+    4. Then apply other steering operations
     """
     
     # Class-level DExperts runtime (set at server startup, not serialized)
@@ -104,12 +110,85 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                 continue
 
             telemetry_enabled = bool(params.get("telemetry_enabled", False))
+            
+            # ---------------------------------------------------------------
+            # CRITICAL: Capture UNMODIFIED base logits BEFORE any steering
+            # This is required for canonical DExperts decoding order.
+            # ---------------------------------------------------------------
+            unmodified_base_logits = logits[batch_index].clone()
+            
             row_before = logits[batch_index].clone() if telemetry_enabled else None
             masked_ids: List[int] = []
             entropy_event: Optional[Dict[str, Any]] = None
             soft_event: List[Dict[str, Any]] = []
             vector_event: List[Dict[str, Any]] = []
             concept_event: List[Dict[str, Any]] = []
+            dexperts_telemetry: Optional[Dict[str, Any]] = None
+
+            # ---------------------------------------------------------------
+            # Layer 4: DExperts toxicity steering — APPLIED FIRST
+            # Canonical decoding order requires DExperts to operate on
+            # UNMODIFIED base logits, before other steering.
+            # ---------------------------------------------------------------
+            dexperts_config = params.get("dexperts_config")
+            if dexperts_config and self._dexperts_runtime is not None:
+                alpha = self._bounded_float(dexperts_config.get("alpha", 1.0), 0.0, 10.0)
+                request_id = str(params.get("request_id", ""))
+                
+                # Extract input_ids from request object (SGLang provides this)
+                request = params.get("__req__")
+                input_ids = None
+                attention_mask = None
+                if request is not None:
+                    input_ids = getattr(request, "input_ids", None)
+                    attention_mask = getattr(request, "attention_mask", None)
+                
+                # Apply DExperts formula on UNMODIFIED base logits:
+                # z_combined = z_base + alpha * (z_expert - z_anti_expert)
+                if input_ids is not None and self._dexperts_runtime.loaded:
+                    try:
+                        # Get DExperts parameters for base support truncation
+                        dexperts_filter_k = self._safe_int(
+                            dexperts_config.get("filter_k", 0), 0
+                        )
+                        dexperts_filter_p = self._bounded_float(
+                            dexperts_config.get("filter_p", 1.0), 0.0, 1.0
+                        )
+                        
+                        combined_logits, dexperts_telemetry = self._dexperts_runtime.apply_dexperts(
+                            base_logits=unmodified_base_logits,  # Use UNMODIFIED base logits
+                            input_ids=input_ids,
+                            attention_mask=attention_mask,
+                            alpha=alpha,
+                            request_id=request_id,
+                            position=0,  # Will be updated by runtime
+                        )
+                        
+                        # Apply base support truncation (canonical DExperts decoding order)
+                        # Compute base support from unmodified base logits BEFORE expert perturbation
+                        if dexperts_telemetry.get("applied", False):
+                            base_support_mask = self._compute_base_support(
+                                unmodified_base_logits,
+                                filter_k=dexperts_filter_k,
+                                filter_p=dexperts_filter_p,
+                            )
+                            
+                            # Mask tokens outside base support in combined logits
+                            combined_logits = combined_logits.masked_fill(
+                                ~base_support_mask, -float("inf")
+                            )
+                            
+                            # Record base support size in telemetry
+                            base_support_size = int(base_support_mask.sum().item())
+                            dexperts_telemetry["base_support_size"] = base_support_size
+                            dexperts_telemetry["base_support_filter_k"] = dexperts_filter_k
+                            dexperts_telemetry["base_support_filter_p"] = dexperts_filter_p
+                        
+                        logits[batch_index] = combined_logits
+                    except Exception as e:
+                        # DExperts failure should not crash the request
+                        print(f"NRAM: DExperts apply failed: {e}", flush=True)
+                        dexperts_telemetry = {"applied": False, "error": str(e)}
 
             positive_ids = self._safe_ids(
                 params.get("positive_token_ids", []),
@@ -172,7 +251,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                 ))
 
             # ---------------------------------------------------------------
-            # Base steering (existing)
+            # Base steering (existing) — applied AFTER DExperts
             # ---------------------------------------------------------------
             if positive_ids and positive_bias > 0:
                 logits[batch_index, positive_ids] += positive_bias
@@ -242,39 +321,6 @@ class NRAMLogitProcessor(CustomLogitProcessor):
                     request, generated, max_tokens, progress,
                     positive_ids, positive_bias,
                 )
-
-            # ---------------------------------------------------------------
-            # Layer 4: DExperts toxicity steering (LoRA adapter switching)
-            # ---------------------------------------------------------------
-            dexperts_config = params.get("dexperts_config")
-            dexperts_telemetry = None
-            if dexperts_config and self._dexperts_runtime is not None:
-                alpha = self._bounded_float(dexperts_config.get("alpha", 1.0), 0.0, 10.0)
-                request_id = str(params.get("request_id", ""))
-                
-                # Extract input_ids from request object (SGLang provides this)
-                input_ids = None
-                attention_mask = None
-                if request is not None:
-                    input_ids = getattr(request, "input_ids", None)
-                    attention_mask = getattr(request, "attention_mask", None)
-                
-                # Apply DExperts formula: z_combined = z_base + alpha * (z_expert - z_anti_expert)
-                if input_ids is not None and self._dexperts_runtime._loaded:
-                    try:
-                        combined_logits, dexperts_telemetry = self._dexperts_runtime.apply_dexperts(
-                            base_logits=logits[batch_index],
-                            input_ids=input_ids,
-                            attention_mask=attention_mask,
-                            alpha=alpha,
-                            request_id=request_id,
-                            position=generated,
-                        )
-                        logits[batch_index] = combined_logits
-                    except Exception as e:
-                        # DExperts failure should not crash the request
-                        print(f"NRAM: DExperts apply failed: {e}", flush=True)
-                        dexperts_telemetry = {"applied": False, "error": str(e)}
 
             # ---------------------------------------------------------------
             # Coherence floor enforcement
@@ -364,6 +410,61 @@ class NRAMLogitProcessor(CustomLogitProcessor):
         return logits
 
     # ------------------------------------------------------------------
+    # Canonical DExperts: Base support truncation
+    # ------------------------------------------------------------------
+    def _compute_base_support(
+        self,
+        base_logits: Any,
+        filter_k: int = 0,
+        filter_p: float = 1.0,
+    ) -> Any:
+        """Compute base support mask from unmodified base logits.
+        
+        Base support = tokens that would survive top-k and top-p filtering
+        on the unmodified base logits.
+        
+        Args:
+            base_logits: Unmodified base logits (1D tensor)
+            filter_k: Top-k filter (0 = disabled)
+            filter_p: Top-p (nucleus) filter (1.0 = disabled)
+        
+        Returns:
+            Boolean mask of shape (vocab_size,) where True = in base support
+        """
+        import torch
+        
+        vocab_size = base_logits.shape[-1]
+        mask = torch.ones(vocab_size, dtype=torch.bool, device=base_logits.device)
+        
+        # Apply top-k filter
+        if filter_k > 0 and filter_k < vocab_size:
+            topk_values, topk_indices = torch.topk(base_logits, k=filter_k)
+            topk_mask = torch.zeros(vocab_size, dtype=torch.bool, device=base_logits.device)
+            topk_mask[topk_indices] = True
+            mask = mask & topk_mask
+        
+        # Apply top-p (nucleus) filter
+        if filter_p < 1.0 and filter_p > 0.0:
+            # Sort logits in descending order
+            sorted_logits, sorted_indices = torch.sort(base_logits, descending=True)
+            sorted_probs = torch.softmax(sorted_logits, dim=-1)
+            cumulative_probs = torch.cumsum(sorted_probs, dim=-1)
+            
+            # Find tokens to remove (cumulative probability > filter_p)
+            # Shift right so first token is always included
+            sorted_indices_to_remove = cumulative_probs > filter_p
+            sorted_indices_to_remove[1:] = sorted_indices_to_remove[:-1].clone()
+            sorted_indices_to_remove[0] = False
+            
+            # Convert back to original indices
+            indices_to_remove = sorted_indices[sorted_indices_to_remove]
+            topp_mask = torch.ones(vocab_size, dtype=torch.bool, device=base_logits.device)
+            topp_mask[indices_to_remove] = False
+            mask = mask & topp_mask
+        
+        return mask
+
+    # ------------------------------------------------------------------
     # Layer 2: Phrase constraints
     # ------------------------------------------------------------------
     def _apply_phrase_constraints(
@@ -439,6 +540,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             batch_index: Batch index
             entropy_config: Entropy control configuration
             progress: Generation progress (0.0 to 1.0)
+            request: Request object
         """
         # Phase-based target entropy
         phase_targets = entropy_config.get("phase_targets", {
@@ -536,6 +638,7 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             vocab_size: Vocabulary size
             concept_config: Concept injection configuration
             progress: Generation progress (0.0 to 1.0)
+            request: Request object
         """
         concepts = concept_config.get("concepts", [])
         if not concepts:

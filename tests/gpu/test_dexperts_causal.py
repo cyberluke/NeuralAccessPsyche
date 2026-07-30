@@ -25,7 +25,7 @@ import httpx
 import pytest
 import torch
 
-from core.steering.dexperts_runtime import DExpertsRuntime, DExpertsRuntimeState
+from core.steering.dexperts_runtime import DExpertsRuntime, DExpertsRuntimeState, DExpertsRequestState
 
 
 API_URL = os.getenv("NRAM_TEST_API_URL", "http://127.0.0.1:8000/v1/chat/completions")
@@ -63,45 +63,52 @@ class TestDExpertsRuntimeUnit:
 
     def test_runtime_state_isolation(self):
         """Test 8: Adapter state doesn't leak between requests."""
+        import threading
         runtime = DExpertsRuntime.__new__(DExpertsRuntime)
         runtime._request_states = {}
+        runtime._state_lock = threading.Lock()
         
         # Create states for two different requests
         state1 = runtime.get_or_create_state("req_001")
         state2 = runtime.get_or_create_state("req_002")
         
         assert state1 is not state2
-        assert state1.request_id == "req_001"
-        assert state2.request_id == "req_002"
+        assert state1.runtime_request_id == "req_001"
+        assert state2.runtime_request_id == "req_002"
         
         # Modify state1
         state1.alpha = 2.0
-        state1.step_count = 10
+        state1.step = 10
         
         # state2 should be unaffected
         assert state2.alpha == 1.0  # default
-        assert state2.step_count == 0
+        assert state2.step == 0
         
         # Release state1
         runtime.release_state("req_001")
         assert "req_001" not in runtime._request_states
         assert "req_002" in runtime._request_states
+        
+        # Clean up state2 to reset global metrics
+        runtime.release_state("req_002")
 
     def test_runtime_state_reset(self):
         """Test that state reset clears step count and telemetry."""
-        state = DExpertsRuntimeState(request_id="test")
-        state.step_count = 5
+        state = DExpertsRequestState(runtime_request_id="test")
+        state.step = 5
         state.telemetry_events.append({"test": True})
         
         state.reset()
-        assert state.step_count == 0
+        assert state.step == 0
         assert len(state.telemetry_events) == 0
 
     def test_runtime_not_loaded_returns_base_logits(self):
         """Test that apply_dexperts returns base logits when not loaded."""
+        import threading
         runtime = DExpertsRuntime.__new__(DExpertsRuntime)
         runtime._loaded = False
         runtime._request_states = {}
+        runtime._state_lock = threading.Lock()
         
         base_logits = torch.randn(1, 100)
         result, telemetry = runtime.apply_dexperts(
@@ -115,17 +122,28 @@ class TestDExpertsRuntimeUnit:
 
     def test_runtime_get_status(self):
         """Test get_status returns correct information."""
+        import threading
         runtime = DExpertsRuntime.__new__(DExpertsRuntime)
         runtime._loaded = False
         runtime.device = "cuda"
+        runtime.dtype = torch.float16
         runtime.expert_adapter_path = None
         runtime.anti_expert_adapter_path = None
         runtime._request_states = {}
+        runtime._state_lock = threading.Lock()
+        runtime.expert_adapter_sha256 = None
+        runtime.anti_expert_adapter_sha256 = None
+        runtime._tokenizer_verified = False
+        runtime.MAX_CONTEXT_LENGTH = 4096
+        runtime.MAX_CONCURRENT_REQUESTS = 64
+        runtime.STALE_STATE_TIMEOUT_S = 300.0
+        runtime.backbone_model_id = None
+        runtime.backbone_revision = None
         
         status = runtime.get_status()
         assert status["loaded"] is False
         assert status["device"] == "cuda"
-        assert status["active_requests"] == 0
+        assert status["active_dexperts_requests"] == 0
 
     def test_alpha_zero_produces_no_steering(self):
         """Test 1: alpha=0 reproduces base distribution."""

@@ -1,0 +1,100 @@
+# NRAM V5 R5 - DExperts Regime A: Mechanism Proof
+# 
+# Purpose: Verify DExperts algorithm correctness with small base model
+# Model: Qwen3-0.6B-Base (raw completion, no safety steering)
+# 
+# This regime uses a small, unaligned base model to demonstrate that
+# DExperts actually modifies logits and produces measurable effects.
+# 
+# Critical: NO system/developer prompts, NO chat template, NO safety steering.
+# Only raw text completion to prove the mechanism works.
+
+# Model configuration
+model:
+  name: "Qwen/Qwen3-0.6B-Base"
+  revision: "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+  dtype: "float16"
+  device: "cuda"
+  max_context_length: 2048  # 0.6B-Base context window
+
+# DExperts configuration
+dexperts:
+  enabled: true
+  alpha: 1.0  # Steering strength
+  beta: 0.5   # Anti-expert weight (if using separate beta)
+  
+  # Expert adapters (LoRA)
+  expert_adapter:
+    path: "artifacts/dexperts/adapters/nontoxic"
+    description: "Non-toxic expert (trained on clean text)"
+  
+  anti_expert_adapter:
+    path: "artifacts/dexperts/adapters/toxic"
+    description: "Toxic anti-expert (trained on toxic text)"
+  
+  # Base support truncation (canonical decoding order)
+  base_support:
+    filter_k: 0    # Top-k filter (0 = disabled)
+    filter_p: 1.0  # Top-p filter (1.0 = disabled)
+  
+  # Context bounds
+  max_context_length: 4096  # DExperts-specific limit
+  reject_on_overflow: true  # Reject request if exceeds limit
+  
+  # Telemetry
+  telemetry:
+    enabled: true
+    log_every_n_tokens: 1
+    include_logits: false  # Too large for production
+    include_kv_cache_stats: true
+
+# Generation configuration
+generation:
+  # Raw completion mode (NO chat template, NO system prompts)
+  use_chat_template: false
+  add_special_tokens: false
+  
+  # Sampling parameters
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  max_new_tokens: 100
+  repetition_penalty: 1.0
+  
+  # Fixed seed for reproducibility
+  seed: 42
+
+# Evaluation configuration
+evaluation:
+  # Metrics to collect
+  metrics:
+    - perplexity
+    - toxicity_score
+    - semantic_coherence
+    - expert_anti_expert_divergence
+  
+  # Toxicity detection model
+  toxicity_model:
+    name: "facebook/roberta-hate-speech-dynabench-r4-target"
+    revision: "main"
+  
+  # Semantic coherence model
+  coherence_model:
+    name: "sentence-transformers/all-MiniLM-L6-v2"
+    revision: "main"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  log_dexperts_deltas: true
+  log_base_support_size: true
+  log_kv_cache_positions: true
+
+# Safety configuration
+safety:
+  # No safety steering in mechanism proof regime
+  enable_safety_system_prompt: false
+  enable_content_filter: false
+  
+  # But still log toxicity for analysis
+  log_toxicity_scores: true
