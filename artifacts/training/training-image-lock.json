@@ -1,1 +1,1 @@
-{"schema":1,"image":"nram-training:qwen3-14b-lora-UNAVAILABLE","digest":"UNAVAILABLE","base_digest":"UNAVAILABLE","platform":"linux/amd64","sm":["89","90"],"status":"BUILD_NOT_RUN"}
+{"schema":1,"image":"<namespace>/nram-training:qwen3-14b-lora-48f05c1","digest":"UNAVAILABLE","base_image":"nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04","base_digest":"sha256:3986465b3dd3b4d602c07061f2cff417e0bfb24810129408d4eb12e111015a6c","platform":"linux/amd64","sm":["89","90"],"status":"BUILD_NOT_RUN_DOCKERHUB_NAMESPACE_REQUIRED"}

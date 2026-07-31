@@ -1,0 +1,49 @@
+{
+  "base_model": "Qwen/Qwen3-14B",
+  "base_model_revision": "UNAVAILABLE",
+  "fixture": "synthetic-small-delta",
+  "fixture_sha256": "7a809b63bb315440891080f8ffa9c26e1c1db0db159f64f0ccc9ee4c8faa2200",
+  "markers": [
+    "TEST_ONLY",
+    "NOT_FOR_SCIENTIFIC_USE"
+  ],
+  "seed": 42,
+  "target_modules": {
+    "down_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "gate_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "k_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "o_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "q_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "up_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    },
+    "v_proj": {
+      "alpha": 32,
+      "delta": true,
+      "rank": 16
+    }
+  },
+  "weights": "NOT_INCLUDED; construct from meta/config only"
+}

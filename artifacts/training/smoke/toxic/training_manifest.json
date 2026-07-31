@@ -36,7 +36,7 @@
   "resume": "auto",
   "schema": 1,
   "smoke": true,
-  "status": "READY_FOR_RUNTIME",
+  "status": "TEST_ONLY;NOT_FOR_SCIENTIFIC_USE",
   "tokenizer_revision": "main",
   "training_image": "UNAVAILABLE"
 }

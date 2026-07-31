@@ -1,1 +1,28 @@
-{"schema":1,"repository_url":"UNAVAILABLE","branch":"UNAVAILABLE","training_code_sha":"UNAVAILABLE","required_files":["nram_training","training/Dockerfile","requirements-training.lock","compose.lora.yaml"],"training_image":{"reference":"UNAVAILABLE","digest":"UNAVAILABLE"},"inference_image":{"reference":"lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda","digest":"sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda"},"models":["Qwen/Qwen3-14B","Qwen/Qwen3-14B-AWQ"],"dataset_manifest":"UNAVAILABLE","persistent_paths":["/models","/outputs"],"cpu_bootstrap":"python -m nram_training smoke","h100_preflight":"UNAVAILABLE","h100_production":"UNAVAILABLE","local_gates":{"cpu":"PENDING"},"remaining_blockers":["GPU/Docker runtime unavailable"]}
+{
+  "schema": 1,
+  "repository_url": "https://github.com/cyberluke/NeuralAccessPsyche.git",
+  "branch": "nram-v5-implementation",
+  "training_code_sha": "48f05c1",
+  "required_files": ["nram_training", "training/Dockerfile", "requirements-training.lock", "training/buildx.sh", "compose.lora.yaml"],
+  "training_image": {
+    "reference": "<namespace>/nram-training:qwen3-14b-lora-48f05c1",
+    "digest": "UNAVAILABLE; resolve after Docker Hub namespace authentication"
+  },
+  "inference_image": {
+    "reference": "lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda",
+    "digest": "sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda"
+  },
+  "models": {
+    "training_parent": {"repository": "Qwen/Qwen3-14B", "revision": "UNAVAILABLE; resolve immutable HF commit before training"},
+    "deployment_awq": {"repository": "Qwen/Qwen3-14B-AWQ", "revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"},
+    "tokenizer_revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"
+  },
+  "dataset_manifest": {"path": "artifacts/training/dataset-manifest.json", "sha256": "UNAVAILABLE; inspect-data must resolve dataset revision"},
+  "persistent_paths": ["/models", "/outputs", "/root/.cache/huggingface"],
+  "cpu_bootstrap": "python -m nram_training doctor && python -m nram_training smoke",
+  "h100_preflight": "docker run --rm --gpus all -v $PWD:/workspace <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training doctor && python -m nram_training validate",
+  "h100_production": "docker run --rm --gpus all -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training train --adapter nontoxic --resume auto && python -m nram_training train --adapter toxic --resume auto",
+  "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "RUNNING/UNAVAILABLE", "gpu_runtime": "UNAVAILABLE", "sglang_awq_lora": "UNAVAILABLE"},
+  "remaining_blockers": ["RTX GPU runtime unavailable", "Docker image build/push not complete", "Qwen3-14B immutable training revision and dataset manifest unresolved", "private Docker Hub namespace unavailable"],
+  "prohibited": ["Do not attach Qwen3-0.6B adapters to Qwen3-14B", "Do not launch the 50-prompt causal ablation", "Do not push weights, datasets, adapters, caches, or credentials"]
+}
