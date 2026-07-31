@@ -12,7 +12,7 @@ def validate_parent(model_name: str) -> None:
         raise ValueError("production parent must be Qwen/Qwen3-14B")
 
 def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto", smoke: bool = False,
-          model_name: str | None = None, max_steps: int | None = None) -> dict:
+          model_name: str | None = None, max_steps: int | None = None, tiny: bool = False) -> dict:
     cfg = config_for(adapter)
     smoke = smoke or model_name == "Qwen/Qwen3-0.6B"
     if model_name is not None:
@@ -21,6 +21,8 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
         cfg = replace(cfg, base_model=model_name, model_revision="main", tokenizer_revision="main")
     if not (smoke and cfg.base_model == "Qwen/Qwen3-0.6B"):
         validate_parent(cfg.base_model)
+    if tiny:
+        cfg = replace(cfg, batch_size=1, epochs=1)
     out = Path(output_dir) / adapter; out.mkdir(parents=True, exist_ok=True)
     if smoke and cfg.base_model == "Qwen/Qwen3-14B":
         manifest = make_manifest(cfg.as_dict()) | {"adapter": adapter, "resume": resume, "smoke": True,
@@ -59,6 +61,8 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
         threshold = cfg.low_toxicity_threshold if adapter == "nontoxic" else cfg.high_toxicity_threshold
         dataset = dataset.filter(lambda row: row.get("toxicity") is not None and
             (row["toxicity"] <= threshold if adapter == "nontoxic" else row["toxicity"] >= threshold))
+        if tiny:
+            dataset = dataset.select(range(min(1, len(dataset))))
     dataset = dataset.map(lambda row: _format_row(row, tokenizer, cfg.max_length), remove_columns=dataset.column_names)
     class _GradientEvidence(TrainerCallback):
         finite = False
@@ -75,7 +79,7 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
     gradient_evidence = _GradientEvidence()
     args = TrainingArguments(output_dir=str(out), num_train_epochs=cfg.epochs,
         per_device_train_batch_size=cfg.batch_size, learning_rate=cfg.learning_rate, bf16=True,
-        gradient_checkpointing=not smoke, save_strategy="steps", save_steps=100, save_total_limit=2,
+        gradient_checkpointing=not smoke, save_strategy="steps", save_steps=1 if tiny else 100, save_total_limit=2,
         report_to="none", remove_unused_columns=False, seed=cfg.seed,
         max_steps=max_steps if max_steps is not None else -1)
     trainer = Trainer(model=model, args=args, train_dataset=dataset,
@@ -87,6 +91,8 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
     tokenizer.save_pretrained(out / "adapter")
     manifest = make_manifest(cfg.as_dict()) | {"adapter": adapter, "resume": resume,
         "checkpoint": checkpoint, "status": "TEST_ONLY;NOT_FOR_SCIENTIFIC_USE" if smoke else "TRAINED",
+        "tiny_integration": tiny, "checkpoint_saved": bool(list(out.glob("checkpoint-*"))),
+        "adapter_reloadable": (out / "adapter" / "adapter_config.json").exists(),
         "train_loss": result.training_loss, "global_step": trainer.state.global_step,
         "cuda_device": torch.cuda.get_device_name(0), "cuda": True,
         "lora_gradients_finite": gradient_evidence.finite,

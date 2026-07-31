@@ -71,3 +71,19 @@ as acceptance evidence.
 - Peak allocator telemetry was not persisted by the current trainer/runtime
   harness; startup memory and no-OOM evidence are recorded above.
 - This evidence does not authorize the prohibited 50-prompt causal ablation.
+
+## RTX follow-up generation
+
+- Strong fixture: `artifacts/training/fixtures/strong-delta`, deterministic rank 2,
+  seed `20260731`, scale `8.0`, finite norm `21424.61201497445`.
+- Offline zero/strong tensor verification passed; hashes differ and both
+  fixtures match Qwen3-14B dimensions, targets, and model revision.
+- Eight fixed prompts were exercised in base → zero → strong-delta → base order.
+- `LORA_LOADED=PASS`, `LORA_ROUTED=PASS`,
+  `OPENAI_ENDPOINT_OBSERVABLE=PASS`, `NATIVE_ENDPOINT_OBSERVABLE=UNAVAILABLE`.
+- `LORA_NUMERICALLY_ACTIVE=INCONCLUSIVE`: strong-delta matched zero on all
+  exposed scalars, while repeated base matched the post-adapter result,
+  indicating shared cache/state coupling. This is not classified as inactive.
+- Raw request/response bodies: `artifacts/training/rtx-strong-lora-probe.json`.
+- Tiny BF16 14B gate: `TIMEOUT` after 600 seconds before loss/checkpoint;
+  see `artifacts/training/rtx-14b-tiny-gate.json`. Toxic was not launched.

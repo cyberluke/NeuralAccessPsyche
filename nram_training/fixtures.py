@@ -42,3 +42,38 @@ def generate_fixture(output_dir: str | Path, *, delta: bool = False, seed: int =
     except ImportError:
         payload["tensor_artifact"] = "UNAVAILABLE; generate inside training image"
     atomic_json(target / "fixture_manifest.json", payload); return path
+
+def generate_strong_fixture(output_dir: str | Path, *, seed: int = 20260731) -> Path:
+    """Create a small, deterministic rank-2 diagnostic adapter for RTX probes."""
+    cfg = TrainingConfig(); out = Path(output_dir)
+    target = out / "strong-delta"; target.mkdir(parents=True, exist_ok=True)
+    rank = 2; scale = 8.0
+    dims = {"q_proj": (5120, 5120), "k_proj": (1024, 5120), "v_proj": (1024, 5120),
+            "o_proj": (5120, 5120), "gate_proj": (13824, 5120), "up_proj": (13824, 5120),
+            "down_proj": (5120, 13824)}
+    payload = {"fixture": "synthetic-strong-delta", "markers": list(MARKERS),
+        "base_model": cfg.base_model, "base_model_revision": cfg.model_revision,
+        "seed": seed, "rank": rank, "delta_scale": scale,
+        "target_modules": list(cfg.target_modules), "weights": "rank-2 TEST_ONLY tensors"}
+    config = {"base_model_name_or_path": cfg.base_model, "peft_type": "LORA", "task_type": "CAUSAL_LM",
+        "r": rank, "lora_alpha": rank, "lora_dropout": 0.0, "bias": "none",
+        "target_modules": list(cfg.target_modules), "inference_mode": True,
+        "fixture": payload["fixture"], "markers": list(MARKERS), "base_model_revision": cfg.model_revision}
+    atomic_json(target / "adapter_config.json", config)
+    try:
+        import torch
+        from safetensors.torch import save_file
+        torch.manual_seed(seed); tensors = {}
+        for layer in range(40):
+            for module in cfg.target_modules:
+                out_dim, in_dim = dims[module]
+                prefix = f"base_model.model.model.layers.{layer}."
+                prefix += "self_attn." if module in ("q_proj", "k_proj", "v_proj", "o_proj") else "mlp."
+                tensors[prefix + module + ".lora_A.weight"] = torch.randn(rank, in_dim) * scale
+                tensors[prefix + module + ".lora_B.weight"] = torch.randn(out_dim, rank) * scale
+        save_file(tensors, str(target / "adapter_model.safetensors"), metadata={"format": "pt", "fixture": payload["fixture"]})
+    except ImportError:
+        payload["tensor_artifact"] = "UNAVAILABLE; generate inside training image"
+    payload["fixture_sha256"] = canonical_hash(payload)
+    atomic_json(target / "fixture_manifest.json", payload)
+    return target

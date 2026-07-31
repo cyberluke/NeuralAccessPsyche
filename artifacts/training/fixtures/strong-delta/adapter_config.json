@@ -1,0 +1,25 @@
+{
+  "base_model_name_or_path": "Qwen/Qwen3-14B",
+  "base_model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "bias": "none",
+  "fixture": "synthetic-strong-delta",
+  "inference_mode": true,
+  "lora_alpha": 2,
+  "lora_dropout": 0.0,
+  "markers": [
+    "TEST_ONLY",
+    "NOT_FOR_SCIENTIFIC_USE"
+  ],
+  "peft_type": "LORA",
+  "r": 2,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "task_type": "CAUSAL_LM"
+}

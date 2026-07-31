@@ -10,7 +10,7 @@ services:
       SOURCE_MICROBATCH_SIZE: "1"
     gpus: !override all
     entrypoint: ["python3", "-m", "sglang.launch_server"]
-    command: ["--model-path", "/models", "--tokenizer-path", "/models", "--served-model-name", "nram-qwen3-14b-awq", "--context-length", "32768", "--mem-fraction-static", "0.72", "--quantization", "awq", "--enable-lora", "--max-lora-rank", "16", "--lora-target-modules", "q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj", "--lora-paths", "zero=/fixtures/zero", "small-delta=/fixtures/small-delta", "--max-loras-per-batch", "3", "--max-running-requests", "3", "--disable-overlap-schedule", "--host", "0.0.0.0", "--port", "30000"]
+    command: ["--model-path", "/models", "--tokenizer-path", "/models", "--served-model-name", "nram-qwen3-14b-awq", "--context-length", "32768", "--mem-fraction-static", "0.72", "--quantization", "awq", "--enable-lora", "--max-lora-rank", "16", "--lora-target-modules", "q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj", "--lora-paths", "zero=/fixtures/zero", "strong-delta=/fixtures/strong-delta", "--max-loras-per-batch", "3", "--max-running-requests", "3", "--disable-overlap-schedule", "--host", "0.0.0.0", "--port", "30000"]
     volumes:
       - ./artifacts/training/fixtures/zero:/fixtures/zero:ro
-      - ./artifacts/training/fixtures/small-delta:/fixtures/small-delta:ro
+      - ./artifacts/training/fixtures/strong-delta:/fixtures/strong-delta:ro

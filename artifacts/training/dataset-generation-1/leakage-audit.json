@@ -1,0 +1,50 @@
+{
+  "checked_local_manifests": {
+    "artifacts\\dexperts\\r5\\offline_readiness.json": "1f9ae206126c16c5aace8b3f49758bb571090f8c658db4799534a53a6ef282e5",
+    "artifacts\\dexperts\\r6\\adapter_discrimination_corrected.json": "86af35fed2f6b5a259b53ad10cf12a24529e0021c1c00f5c3f1f99d1b7ac0a81",
+    "artifacts\\dexperts\\r6\\evaluator_calibration.json": "5eb0a6b48e32f9c40f4a67192368af055607a72324799175f18b68d90e1e58a2",
+    "artifacts\\dexperts\\r6\\mechanistic_proof_phase4.json": "53611e6c48ec53c32478c95472a89a46cd0573aa6d62c50f68ded646b5894d05",
+    "artifacts\\dexperts\\r6\\power_analysis.json": "4eccf00259aa892da87b109505d26ea56f72f064c1a2a83f5129c1ccf966cf07"
+  },
+  "conclusion": "PASS with explicitly scoped unavailable historical source sets; no historical reconstruction claimed",
+  "generation": "civil-comments-qwen3-14b-generation-1",
+  "role_disjoint": true,
+  "role_jsonl_sha256": {
+    "nontoxic": "5aae21b7fe8a08ef831bcab2d53f7a9f1d87e80c54f9a99afb3b8d5fde5705f0",
+    "toxic": "f1e322f110e0fea1d62c8fef37d2c9127be8b7b2465b92166a2076bca52fe311"
+  },
+  "schema": 1,
+  "split_level_hashes": {
+    "nontoxic:test": {
+      "count": 97,
+      "sha256": "c27ef17aae56a64cb2cb0a1283caa645c5f9ae05debdbd934c6b9e568c94e3b7"
+    },
+    "nontoxic:train": {
+      "count": 815,
+      "sha256": "424e9c82166e60a3e298f25b46f23c79278e348ee6725e31b2253097b282bcf2"
+    },
+    "nontoxic:validation": {
+      "count": 88,
+      "sha256": "6fa57f423d60b04c38ae3c710ea4e8c67e5ae82f27acd238b458b1ad91186d7e"
+    },
+    "toxic:test": {
+      "count": 104,
+      "sha256": "4e0dffc2cb6f71d8e605e0e183545c1251a4610ba26bb6fb884d6a8fde5ea472"
+    },
+    "toxic:train": {
+      "count": 787,
+      "sha256": "f8134d802055f9eb8c5a31466afcf77bc669101342bc51b66b9fec0dca2b701c"
+    },
+    "toxic:validation": {
+      "count": 109,
+      "sha256": "f26ee0ccb823940f444c009739dc293156c16682a7bec4f6812d4e20a3338327"
+    }
+  },
+  "status": "PASS",
+  "unavailable_source_sets": [
+    "historical 0.6B train row membership",
+    "evaluator source text/row manifest for prior calibration",
+    "mechanistic proof source text manifest",
+    "causal ablation source prompt manifest"
+  ]
+}

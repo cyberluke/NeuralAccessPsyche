@@ -1,0 +1,15 @@
+{
+  "status": "INCONCLUSIVE",
+  "LORA_LOADED": "PASS",
+  "LORA_ROUTED": "PASS",
+  "LORA_NUMERICALLY_ACTIVE": "INCONCLUSIVE",
+  "OPENAI_ENDPOINT_OBSERVABLE": "PASS",
+  "NATIVE_ENDPOINT_OBSERVABLE": "UNAVAILABLE",
+  "prompt_count": 8,
+  "ordering": "base -> zero -> strong-delta -> base",
+  "base_zero": "not identical within a clean interpretation because the repeated-base result changed after adapter requests",
+  "strong_delta": "identical to zero on all eight exposed selected-token logprob observations",
+  "contamination": "repeated base matched the post-adapter result for each prompt, indicating shared radix/cache contamination or equivalent endpoint state coupling",
+  "raw_artifact": "artifacts/training/rtx-strong-lora-probe.json",
+  "interpretation": "The endpoint exposes identities and finite logprob/top-logprob scalars, but the pinned public path does not provide clean numerical activation proof. This is not classified as LORA_NUMERICALLY_ACTIVE=FAIL solely from endpoint non-observability."
+}

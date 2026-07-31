@@ -1,0 +1,19 @@
+{
+  "status": "TIMEOUT",
+  "role_attempted": "nontoxic",
+  "role_not_attempted": "toxic",
+  "command": "docker run --rm --gpus all --ipc=host --shm-size=8g neuralaccesspsyche-nram-training:local-a1810b7 train --adapter nontoxic --output-dir /outputs --max-steps 1 --tiny",
+  "configuration": {
+    "parent": "Qwen/Qwen3-14B",
+    "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "dtype": "bfloat16",
+    "gradient_checkpointing": true,
+    "microbatch": 1,
+    "max_steps": 1,
+    "device": "NVIDIA GeForce RTX 4090"
+  },
+  "elapsed_bound_seconds": 600,
+  "observed": "Container remained alive with trainer process and approximately 1.7 GiB resident memory but produced no trainer output, loss, checkpoint, or adapter reload evidence before the bound.",
+  "cleanup": "Exact gate container terminated; toxic role was not launched because sequential prerequisite did not pass.",
+  "scientific_interpretation": "No CUDA OOM was observed; this is an execution timeout, not a pass and not evidence that the BF16 parent fits."
+}

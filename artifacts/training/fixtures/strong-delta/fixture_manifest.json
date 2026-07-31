@@ -1,0 +1,23 @@
+{
+  "base_model": "Qwen/Qwen3-14B",
+  "base_model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "delta_scale": 8.0,
+  "fixture": "synthetic-strong-delta",
+  "fixture_sha256": "6f4588ff6e649fa5ab65baff7905568a65aedb0ce30a04678b18c85945d146f2",
+  "markers": [
+    "TEST_ONLY",
+    "NOT_FOR_SCIENTIFIC_USE"
+  ],
+  "rank": 2,
+  "seed": 20260731,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "weights": "rank-2 TEST_ONLY tensors"
+}
