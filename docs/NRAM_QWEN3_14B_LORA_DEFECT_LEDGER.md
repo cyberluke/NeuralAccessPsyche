@@ -9,4 +9,5 @@
 | D-005 | Deterministic zero-versus-small-delta logprob effect was not detected | OPEN HIGH; supported pinned SGLang scoring path returns identical zero/small values; native `/generate` returned HTTP 500 |
 | D-006 | Historical Civil Comments membership cannot be reconstructed | OPEN HIGH; original script persisted text only after shuffled sampling/deduplication and no row IDs or split manifest exist; status is `DATASET_PROVENANCE_UNRECOVERABLE` |
 | D-007 | Strong-delta public probe does not yield clean numerical activation proof | OPEN HIGH; identities route and CSGMV loads, but strong equals zero and repeated base inherits post-adapter result, consistent with cache/state coupling; status `INCONCLUSIVE`, not inactive |
-| D-008 | Tiny BF16 Qwen3-14B RTX gate timed out | OPEN HIGH; nontoxic one-step container exceeded 600 seconds without loss/checkpoint/reload evidence; toxic role not launched |
+| D-008 | Tiny BF16 Qwen3-14B RTX gate is not applicable | RESOLVED AS NOT_APPLICABLE; unquantized Qwen3-14B BF16 parent alone exceeds RTX 4090 VRAM; no retry performed |
+| D-009 | Cold-server strong-delta remains numerically equal to base | OPEN HIGH; cache-disabled sequence and three fresh single-adapter servers agree; pinned public runtime exposes no scalar A/B pointer or forward checksum, so inactivity is not claimed |

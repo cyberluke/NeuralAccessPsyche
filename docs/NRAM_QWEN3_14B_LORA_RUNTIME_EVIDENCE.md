@@ -85,5 +85,23 @@ as acceptance evidence.
   exposed scalars, while repeated base matched the post-adapter result,
   indicating shared cache/state coupling. This is not classified as inactive.
 - Raw request/response bodies: `artifacts/training/rtx-strong-lora-probe.json`.
-- Tiny BF16 14B gate: `TIMEOUT` after 600 seconds before loss/checkpoint;
-  see `artifacts/training/rtx-14b-tiny-gate.json`. Toxic was not launched.
+- Tiny BF16 14B gate: `NOT_APPLICABLE`; the unquantized Qwen3-14B BF16
+  parent alone exceeds RTX 4090 VRAM. No BF16 retry was performed.
+
+### Final cache-disabled diagnostic
+
+- Temporary overlay: `compose.lora.diagnostic.yaml`; production Compose files
+  were not modified and were restored after the probe.
+- Disabled radix/prefix cache, CUDA graphs, chunked prefix cache, HiCache,
+  LMCache, and CPU offload; retained one running request and overlap disabled.
+- Eight base → zero → strong-delta → base sequences were finite and identity-clean.
+  Base equaled zero and repeated base on every prompt; strong-delta equaled base
+  on every prompt.
+- Three cold-server probes independently produced the same selected token and
+  logprob for base, zero, and strong-delta. This rules out cross-request cache
+  contamination, but does not prove inactive LoRA because the pinned public
+  runtime exposes no A/B pointer checksum or forward scalar checksum.
+- Source inspection confirms `lora_id` reaches scheduler requests, is included
+  in the batch/cache key, and feeds LoRA `weight_indices` into CSGMV A/B kernels.
+- Evidence: `artifacts/training/rtx-cache-disabled-lora-summary.json` and the
+  raw response/server-log artifacts listed there.

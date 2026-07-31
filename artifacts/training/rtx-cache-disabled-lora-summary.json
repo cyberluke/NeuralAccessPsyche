@@ -1,0 +1,40 @@
+{
+  "status": "INCONCLUSIVE_NUMERICALLY",
+  "overlay": "temporary compose.lora.diagnostic.yaml",
+  "flags": ["--disable-radix-cache", "--disable-cuda-graph", "--disable-chunked-prefix-cache"],
+  "hierarchical_cache": false,
+  "cpu_offload_gb": 0,
+  "max_running_requests": 1,
+  "ordering": "base -> zero -> strong-delta -> base",
+  "prompt_count": 8,
+  "cache_disabled_result": {
+    "base_zero": "identical on all prompts",
+    "initial_base_repeated_base": "identical on all prompts",
+    "strong_delta_difference": "none on all prompts",
+    "finite_scalars": true,
+    "adapter_identity_contamination": false
+  },
+  "cold_server_result": {
+    "base_logprob": -0.00022003613412380219,
+    "zero_logprob": -0.00022003613412380219,
+    "strong_delta_logprob": -0.00022003613412380219,
+    "selected_token": "<think>",
+    "finite": true,
+    "identical_tokenized_prompt": true
+  },
+  "raw_artifacts": {
+    "sequence": "artifacts/training/rtx-cache-disabled-lora-probe.json",
+    "server_log": "artifacts/training/rtx-cache-disabled-sglang.log",
+    "cold_base": "artifacts/training/cold-base.json",
+    "cold_zero": "artifacts/training/cold-zero.json",
+    "cold_strong": "artifacts/training/cold-strong.json",
+    "cold_logs": ["artifacts/training/cold-base-server.log", "artifacts/training/cold-zero-server.log", "artifacts/training/cold-strong-server.log"]
+  },
+  "source_path_evidence": {
+    "request_adapter_to_scheduler": "scheduler copies recv_req.lora_id into scheduler request",
+    "non_base_index": "source forwards lora_id into batch lora_id and weight_indices dispatch; per-request numeric index is not exposed by runtime telemetry",
+    "csgmv_ab": "server args select lora_backend=csgmv; source A/B kernels consume weight_indices and adapter weight tensors; pointer checksums are not exposed",
+    "runtime_modification": "none"
+  },
+  "classification": "Cold-server equality rules out cross-request cache contamination. It does not prove inactive LoRA because the pinned public runtime exposes no scalar A/B pointer or forward checksum."
+}
