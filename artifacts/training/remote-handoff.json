@@ -24,11 +24,24 @@
   "persistent_paths": ["/models", "/outputs", "/root/.cache/huggingface"],
   "cpu_bootstrap": "python -m nram_training doctor && python -m nram_training smoke",
   "lightning_cpu_build": "docker buildx build --platform linux/amd64 --load -t neuralaccesspsyche-nram-training:lightning-cpu -f training/Dockerfile .",
-  "h100_preflight": "docker run --rm --gpus all -v $PWD:/workspace neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training doctor && docker run --rm --gpus all -v $PWD:/workspace neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training validate",
+  "h100_preflight": {
+    "authorization": "AUTHORIZED_ONLY",
+    "processes": [
+      {"gpu": 0, "adapter": "nontoxic", "steps": 20, "checkpoint_step": 10, "resume_from": 10},
+      {"gpu": 1, "adapter": "toxic", "steps": 20, "checkpoint_step": 10, "resume_from": 10}
+    ],
+    "constraints": ["independent processes", "no DDP", "no torchrun", "shared read-only model/dataset cache", "isolated outputs/checkpoints/logs"],
+    "image": "neuralaccesspsyche-nram-training:lightning-cpu",
+    "status": "BLOCKED_WITH_EXACT_FAILURES",
+    "blocker": "Current host exposes only GPU 0 NVIDIA GeForce RTX 4090 (23028 MiB); no H100 GPU 1 is available.",
+    "observed_command": "nvidia-smi --query-gpu=index,name,memory.total,driver_version --format=csv,noheader",
+    "observed_result": "0, NVIDIA GeForce RTX 4090, 23028 MiB, 591.86",
+    "required_unblock": "Run the isolated GPU 0/GPU 1 commands on a host with two H100s and the pinned training image plus shared read-only caches."
+  },
   "h100_parallel_training": "docker run --rm --gpus device=0 -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training train --adapter nontoxic --resume auto & docker run --rm --gpus device=1 -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training train --adapter toxic --resume auto",
   "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "PASS: local linux/amd64 image loaded as neuralaccesspsyche-nram-training:local-a1810b7", "gpu_runtime": "PASS: Docker --gpus all RTX 4090 CUDA probe and Qwen3-0.6B nontoxic/toxic smoke", "strong_lora_fixture": "PASS: offline norm/hash/dimension verification", "sglang_awq_lora": "INCONCLUSIVE_NUMERICALLY: cache-disabled and three cold-server probes all finite and identity-clean, strong-delta equal to base", "new_dataset_manifest": "PASS: 1000 rows per role with split/text hashes", "leakage_audit": "PASS with explicitly unavailable historical source sets", "tiny_14b_rtx": "NOT_APPLICABLE: unquantized Qwen3-14B BF16 parent exceeds RTX 4090 VRAM; no retry"},
   "runtime_evidence": "docs/NRAM_QWEN3_14B_LORA_RUNTIME_EVIDENCE.md",
-  "authorization": {"LORA_NUMERICALLY_ACTIVE": "INCONCLUSIVE", "NEW_DATASET_MANIFEST": "PASS", "LEAKAGE_AUDIT": "PASS_SCOPED", "TRAINING_IMAGE": "PASS", "CHECKPOINT_RESUME": "PASS_FOR_0.6B_ONLY", "BOTH_ROLE_CONFIGS": "PASS_FOR_0.6B_ONLY", "H100_TRAINING_AUTHORIZED": "NO"},
-  "remaining_blockers": ["LORA_NUMERICALLY_ACTIVE_INCONCLUSIVE", "tiny Qwen3-14B BF16 RTX gate timed out before checkpoint/reload evidence", "historical source sets unavailable for leakage comparison; new generation is not a reconstruction"],
+  "authorization": {"LORA_NUMERICALLY_ACTIVE": "UNDETERMINED; FIRST_TOKEN_PROBE_INVALID", "CACHE_CONTAMINATION": "RULED_OUT", "FIRST_TOKEN_LORA_SENSITIVITY": "INVALID", "NEW_DATASET_MANIFEST": "PASS", "LEAKAGE_AUDIT": "PASS_SCOPED", "TRAINING_IMAGE": "PASS", "CHECKPOINT_RESUME": "PASS_FOR_0.6B_ONLY", "BOTH_ROLE_CONFIGS": "PASS_FOR_0.6B_ONLY", "H100_PREFLIGHT": "AUTHORIZED_ONLY", "H100_TRAINING_AUTHORIZED": "NO"},
+  "remaining_blockers": ["H100 20-step preflight blocked: host has only RTX 4090 and no H100 GPU 1", "Transformers and corrected AWQ+SGLang numerical-effect gates not yet proven for both roles", "historical source sets unavailable for leakage comparison; new generation is not a reconstruction"],
   "prohibited": ["Do not attach Qwen3-0.6B adapters to Qwen3-14B", "Do not launch the 50-prompt causal ablation", "Do not push weights, datasets, adapters, caches, or credentials"]
 }

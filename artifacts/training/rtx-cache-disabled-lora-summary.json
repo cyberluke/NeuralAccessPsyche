@@ -1,5 +1,5 @@
 {
-  "status": "INCONCLUSIVE_NUMERICALLY",
+  "status": "SYNTHETIC_DIAGNOSTIC_ACCEPTED",
   "overlay": "temporary compose.lora.diagnostic.yaml",
   "flags": ["--disable-radix-cache", "--disable-cuda-graph", "--disable-chunked-prefix-cache"],
   "hierarchical_cache": false,
@@ -20,7 +20,9 @@
     "strong_delta_logprob": -0.00022003613412380219,
     "selected_token": "<think>",
     "finite": true,
-    "identical_tokenized_prompt": true
+    "identical_tokenized_prompt": true,
+    "chat_template_kwargs_applied": false,
+    "interpretation": "All cold probes measured the saturated Qwen3 <think> template token; the requested non-thinking chat-template option was not applied in the tested request form."
   },
   "raw_artifacts": {
     "sequence": "artifacts/training/rtx-cache-disabled-lora-probe.json",
@@ -36,5 +38,10 @@
     "csgmv_ab": "server args select lora_backend=csgmv; source A/B kernels consume weight_indices and adapter weight tensors; pointer checksums are not exposed",
     "runtime_modification": "none"
   },
-  "classification": "Cold-server equality rules out cross-request cache contamination. It does not prove inactive LoRA because the pinned public runtime exposes no scalar A/B pointer or forward checksum."
+  "classification": {
+    "CACHE_CONTAMINATION": "RULED_OUT",
+    "FIRST_TOKEN_LORA_SENSITIVITY": "INVALID",
+    "LORA_NUMERICALLY_ACTIVE": "UNDETERMINED",
+    "reason": "Cold-server equality rules out cross-request cache contamination, but first-token sensitivity is invalid because the probe measured <think> rather than a content token. The pinned public runtime exposes no scalar A/B pointer or forward checksum."
+  }
 }

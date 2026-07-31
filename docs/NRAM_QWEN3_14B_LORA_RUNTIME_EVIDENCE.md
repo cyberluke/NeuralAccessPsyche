@@ -98,10 +98,26 @@ as acceptance evidence.
   Base equaled zero and repeated base on every prompt; strong-delta equaled base
   on every prompt.
 - Three cold-server probes independently produced the same selected token and
-  logprob for base, zero, and strong-delta. This rules out cross-request cache
-  contamination, but does not prove inactive LoRA because the pinned public
-  runtime exposes no A/B pointer checksum or forward scalar checksum.
+  logprob for base, zero, and strong-delta. `CACHE_CONTAMINATION=RULED_OUT`.
+  `FIRST_TOKEN_LORA_SENSITIVITY=INVALID`: every probe selected the saturated
+  Qwen3 `<think>` template token because the requested non-thinking chat-template
+  option was not applied in the tested request form. This does not prove inactive
+  LoRA. The corrected future request must send top-level
+  `chat_template_kwargs: {"enable_thinking": false}` and compare at least 16
+  generated content-token positions.
 - Source inspection confirms `lora_id` reaches scheduler requests, is included
   in the batch/cache key, and feeds LoRA `weight_indices` into CSGMV A/B kernels.
 - Evidence: `artifacts/training/rtx-cache-disabled-lora-summary.json` and the
   raw response/server-log artifacts listed there.
+
+### H100 preflight authorization
+
+- `e48ad5f` is accepted as the final local synthetic diagnostic evidence.
+- The RTX BF16 Qwen3-14B gate is `NOT_APPLICABLE`; it is not retried.
+- Only a two-process, 20-optimizer-step H100 preflight is authorized: GPU 0
+  `nontoxic`, GPU 1 `toxic`, no DDP or `torchrun`, isolated outputs, checkpoint
+  at step 10, resume to step 20, PEFT reload, and teacher-forced numerical
+  deltas on eight validation sequences.
+- Full parallel H100 training remains unauthorized until both preflight
+  adapters show numerical effect in Transformers and through pinned AWQ +
+  SGLang using the corrected top-level chat-template argument.
