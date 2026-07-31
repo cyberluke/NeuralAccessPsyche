@@ -43,7 +43,7 @@ services:
       # Static memory fraction = weights + KV cache. Lowered from 0.80 -> 0.72
       # to free ~1.9 GB of VRAM headroom so DECODE CUDA graph capture succeeds
       # (capture needs scratch VRAM; without it decode runs at <1 tok/s).
-      # ~17.3 GB static leaves ~7.8 GB for KV (plenty for 32k single-stream).
+      # 24 GB - 17.3 GB = approximately 6.7 GB available (measured values unchanged).
       MEM_FRACTION_STATIC: "0.72"
       # Decode CUDA graph batch sizes (space-separated). Small list = fast,
       # low-VRAM capture. Covers 1-8 concurrent generations. Empty = no graphs.

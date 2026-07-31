@@ -1,0 +1,42 @@
+{
+  "adapter": "nontoxic",
+  "code_revision": "UNAVAILABLE",
+  "config": {
+    "assistant_only_loss": true,
+    "base_model": "Qwen/Qwen3-14B",
+    "batch_size": 4,
+    "dataset": "google/civil_comments",
+    "dataset_revision": "main",
+    "epochs": 3,
+    "high_toxicity_threshold": 0.8,
+    "learning_rate": 0.0002,
+    "lora_alpha": 32,
+    "lora_dropout": 0.1,
+    "lora_r": 16,
+    "low_toxicity_threshold": 0.05,
+    "max_length": 512,
+    "packing": true,
+    "seed": 42,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "thinking": false,
+    "tokenizer_revision": "main"
+  },
+  "dataset_hash": "UNAVAILABLE",
+  "immutable": true,
+  "manifest_sha256": "e3bd751f90ad58827fa25a02d050d07a7071063bf911b19882e8bdd8f6009265",
+  "model_revision": "UNAVAILABLE",
+  "resume": "auto",
+  "schema": 1,
+  "smoke": true,
+  "status": "READY_FOR_RUNTIME",
+  "tokenizer_revision": "main",
+  "training_image": "UNAVAILABLE"
+}
