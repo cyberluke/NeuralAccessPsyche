@@ -2,7 +2,7 @@
   "schema": 1,
   "repository_url": "https://github.com/cyberluke/NeuralAccessPsyche.git",
   "branch": "nram-v5-implementation",
-  "training_code_sha": "48f05c1",
+  "training_code_sha": "a1810b7",
   "required_files": ["nram_training", "training/Dockerfile", "requirements-training.lock", "training/buildx.sh", "compose.lora.yaml"],
   "training_image": {
     "reference": "<namespace>/nram-training:qwen3-14b-lora-48f05c1",
@@ -22,7 +22,8 @@
   "cpu_bootstrap": "python -m nram_training doctor && python -m nram_training smoke",
   "h100_preflight": "docker run --rm --gpus all -v $PWD:/workspace <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training doctor && python -m nram_training validate",
   "h100_production": "docker run --rm --gpus all -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training train --adapter nontoxic --resume auto && python -m nram_training train --adapter toxic --resume auto",
-  "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "RUNNING/UNAVAILABLE", "gpu_runtime": "UNAVAILABLE", "sglang_awq_lora": "UNAVAILABLE"},
-  "remaining_blockers": ["RTX GPU runtime unavailable", "Docker image build/push not complete", "Qwen3-14B immutable training revision and dataset manifest unresolved", "private Docker Hub namespace unavailable"],
+  "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "PASS: local linux/amd64 image loaded as neuralaccesspsyche-nram-training:local-a1810b7", "gpu_runtime": "PASS: Docker --gpus all RTX 4090 CUDA probe and Qwen3-0.6B nontoxic/toxic smoke", "sglang_awq_lora": "PASS: pinned 0.5.16 AWQ base/zero/small-delta plus concurrent three-way probe"},
+  "runtime_evidence": "docs/NRAM_QWEN3_14B_LORA_RUNTIME_EVIDENCE.md",
+  "remaining_blockers": ["Docker Hub namespace and registry digest unavailable", "Qwen3-14B immutable training revision and dataset manifest unresolved"],
   "prohibited": ["Do not attach Qwen3-0.6B adapters to Qwen3-14B", "Do not launch the 50-prompt causal ablation", "Do not push weights, datasets, adapters, caches, or credentials"]
 }

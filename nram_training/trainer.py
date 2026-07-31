@@ -1,5 +1,6 @@
 """Shared production LoRA trainer with lazy ML imports."""
 import os
+from dataclasses import replace
 from pathlib import Path
 from .config import AdapterRole, config_for
 from .manifests import atomic_json, make_manifest
@@ -10,19 +11,28 @@ def validate_parent(model_name: str) -> None:
     if model_name != "Qwen/Qwen3-14B":
         raise ValueError("production parent must be Qwen/Qwen3-14B")
 
-def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto", smoke: bool = False) -> dict:
-    cfg = config_for(adapter); validate_parent(cfg.base_model)
+def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto", smoke: bool = False,
+          model_name: str | None = None, max_steps: int | None = None) -> dict:
+    cfg = config_for(adapter)
+    smoke = smoke or model_name == "Qwen/Qwen3-0.6B"
+    if model_name is not None:
+        if not smoke or model_name != "Qwen/Qwen3-0.6B":
+            raise ValueError("only TEST_ONLY smoke may override the production Qwen3-14B parent")
+        cfg = replace(cfg, base_model=model_name)
+    if not (smoke and cfg.base_model == "Qwen/Qwen3-0.6B"):
+        validate_parent(cfg.base_model)
     out = Path(output_dir) / adapter; out.mkdir(parents=True, exist_ok=True)
-    if smoke:
+    if smoke and cfg.base_model == "Qwen/Qwen3-14B":
         manifest = make_manifest(cfg.as_dict()) | {"adapter": adapter, "resume": resume, "smoke": True,
-            "status": "TEST_ONLY;NOT_FOR_SCIENTIFIC_USE"}
+            "status": "TEST_ONLY;NOT_FOR_SCIENTIFIC_USE;CPU_FIXTURE_ONLY"}
         atomic_json(out / "training_manifest.json", manifest)
         return manifest
     try:
         import torch
         from datasets import load_dataset
         from peft import LoraConfig, TaskType, get_peft_model
-        from transformers import AutoModelForCausalLM, AutoTokenizer, DataCollatorForTokenClassification, Trainer, TrainingArguments
+        from transformers import (AutoModelForCausalLM, AutoTokenizer,
+            DataCollatorForTokenClassification, Trainer, TrainingArguments, TrainerCallback)
     except ImportError as exc:
         raise RuntimeError("training requires the pinned training image dependencies") from exc
     if not torch.cuda.is_available():
@@ -36,23 +46,52 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
     model = get_peft_model(model, LoraConfig(r=cfg.lora_r, lora_alpha=cfg.lora_alpha,
         lora_dropout=cfg.lora_dropout, target_modules=list(cfg.target_modules), bias="none",
         task_type=TaskType.CAUSAL_LM))
-    dataset = load_dataset(cfg.dataset, revision=cfg.dataset_revision, split="train")
-    threshold = cfg.low_toxicity_threshold if adapter == "nontoxic" else cfg.high_toxicity_threshold
-    dataset = dataset.filter(lambda row: row.get("toxicity") is not None and
-        (row["toxicity"] <= threshold if adapter == "nontoxic" else row["toxicity"] >= threshold))
+    # PEFT freezes the base model.  Gradient checkpointing otherwise sees no
+    # grad-requiring input and produces a detached loss during backward.
+    if hasattr(model, "enable_input_require_grads"):
+        model.enable_input_require_grads()
+    if smoke:
+        from datasets import Dataset
+        rows = [{"text": f"TEST_ONLY {adapter} example {i}"} for i in range(8)]
+        dataset = Dataset.from_list(rows)
+    else:
+        dataset = load_dataset(cfg.dataset, revision=cfg.dataset_revision, split="train")
+        threshold = cfg.low_toxicity_threshold if adapter == "nontoxic" else cfg.high_toxicity_threshold
+        dataset = dataset.filter(lambda row: row.get("toxicity") is not None and
+            (row["toxicity"] <= threshold if adapter == "nontoxic" else row["toxicity"] >= threshold))
     dataset = dataset.map(lambda row: _format_row(row, tokenizer, cfg.max_length), remove_columns=dataset.column_names)
+    class _GradientEvidence(TrainerCallback):
+        finite = False
+        nonzero = False
+
+        def on_pre_optimizer_step(self, args, state, control, model=None, **kwargs):
+            if model is None:
+                return
+            gradients = [p.grad.detach() for n, p in model.named_parameters()
+                         if "lora_" in n and p.grad is not None]
+            self.finite = bool(gradients) and all(torch.isfinite(g).all().item() for g in gradients)
+            self.nonzero = bool(gradients) and any(torch.count_nonzero(g).item() for g in gradients)
+
+    gradient_evidence = _GradientEvidence()
     args = TrainingArguments(output_dir=str(out), num_train_epochs=cfg.epochs,
         per_device_train_batch_size=cfg.batch_size, learning_rate=cfg.learning_rate, bf16=True,
-        gradient_checkpointing=True, save_strategy="steps", save_steps=100, save_total_limit=2,
-        report_to="none", remove_unused_columns=False, seed=cfg.seed)
+        gradient_checkpointing=not smoke, save_strategy="steps", save_steps=100, save_total_limit=2,
+        report_to="none", remove_unused_columns=False, seed=cfg.seed,
+        max_steps=max_steps if max_steps is not None else -1)
     trainer = Trainer(model=model, args=args, train_dataset=dataset,
-        data_collator=DataCollatorForTokenClassification(tokenizer=tokenizer, padding=True))
+        data_collator=DataCollatorForTokenClassification(tokenizer=tokenizer, padding=True),
+        callbacks=[gradient_evidence])
     checkpoint = None if resume != "auto" else _latest_checkpoint(out)
     result = trainer.train(resume_from_checkpoint=checkpoint)
     model.save_pretrained(out / "adapter")
     tokenizer.save_pretrained(out / "adapter")
     manifest = make_manifest(cfg.as_dict()) | {"adapter": adapter, "resume": resume,
-        "checkpoint": checkpoint, "status": "TRAINED", "train_loss": result.training_loss}
+        "checkpoint": checkpoint, "status": "TEST_ONLY;NOT_FOR_SCIENTIFIC_USE" if smoke else "TRAINED",
+        "train_loss": result.training_loss, "global_step": trainer.state.global_step,
+        "cuda_device": torch.cuda.get_device_name(0), "cuda": True,
+        "lora_gradients_finite": gradient_evidence.finite,
+        "lora_gradient_nonzero": gradient_evidence.nonzero,
+        "base_parameters_frozen": all(not p.requires_grad for n, p in model.named_parameters() if "lora_" not in n)}
     atomic_json(out / "training_manifest.json", manifest)
     return manifest
 
