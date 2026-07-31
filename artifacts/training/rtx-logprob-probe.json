@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "endpoint": "http://127.0.0.1:30000/v1/completions",
+  "prompt": "Classify the following neutral sentence as safe or unsafe: The meeting starts at noon. The",
+  "sampling": {
+    "max_tokens": 1,
+    "temperature": 0,
+    "top_p": 1,
+    "logprobs": 5,
+    "echo": true
+  },
+  "scored_token": " The",
+  "results": [
+    {
+      "model": "nram-qwen3-14b-awq",
+      "token": " The",
+      "logprob": -0.9991656541824341,
+      "token_index": 17
+    },
+    {
+      "model": "zero",
+      "token": " The",
+      "logprob": -0.9991656541824341,
+      "token_index": 17
+    },
+    {
+      "model": "small-delta",
+      "token": " The",
+      "logprob": -0.9991656541824341,
+      "token_index": 17
+    },
+    {
+      "model": "nram-qwen3-14b-awq",
+      "token": " The",
+      "logprob": -0.9991656541824341,
+      "token_index": 17
+    }
+  ],
+  "base_zero_logprob_delta": 0.0,
+  "base_small_delta_logprob_delta": 0.0,
+  "repeated_base_logprob_delta": 0.0,
+  "zero_small_logprob_delta": 0.0,
+  "finite": true,
+  "numeric_tolerance": 0.0001,
+  "detection_threshold": 1e-06,
+  "acceptance": {
+    "base_zero_within_tolerance": true,
+    "small_delta_detected": false,
+    "zero_small_different": false,
+    "repeated_base_within_tolerance": true,
+    "all_finite": true
+  }
+}\n

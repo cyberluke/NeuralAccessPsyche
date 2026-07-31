@@ -6,9 +6,10 @@ AdapterRole = Literal["nontoxic", "toxic"]
 @dataclass(frozen=True)
 class TrainingConfig:
     base_model: str = "Qwen/Qwen3-14B"
+    model_revision: str = "40c069824f4251a91eefaf281ebe4c544efd3e18"
     dataset: str = "google/civil_comments"
-    dataset_revision: str = "main"
-    tokenizer_revision: str = "main"
+    dataset_revision: str = "f2970eb3a55777454c94069077cc8d9b5866312d"
+    tokenizer_revision: str = "40c069824f4251a91eefaf281ebe4c544efd3e18"
     max_length: int = 512
     packing: bool = True
     assistant_only_loss: bool = True

@@ -18,7 +18,7 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
     if model_name is not None:
         if not smoke or model_name != "Qwen/Qwen3-0.6B":
             raise ValueError("only TEST_ONLY smoke may override the production Qwen3-14B parent")
-        cfg = replace(cfg, base_model=model_name)
+        cfg = replace(cfg, base_model=model_name, model_revision="main", tokenizer_revision="main")
     if not (smoke and cfg.base_model == "Qwen/Qwen3-0.6B"):
         validate_parent(cfg.base_model)
     out = Path(output_dir) / adapter; out.mkdir(parents=True, exist_ok=True)
@@ -39,7 +39,7 @@ def train(adapter: AdapterRole, output_dir: str | Path, *, resume: str = "auto",
         raise RuntimeError("GPU training requires CUDA; refusing CPU fallback for Qwen3-14B")
     torch.manual_seed(cfg.seed)
     tokenizer = AutoTokenizer.from_pretrained(cfg.base_model, revision=cfg.tokenizer_revision)
-    model = AutoModelForCausalLM.from_pretrained(cfg.base_model, revision="main", torch_dtype=torch.bfloat16,
+    model = AutoModelForCausalLM.from_pretrained(cfg.base_model, revision=cfg.model_revision, torch_dtype=torch.bfloat16,
                                                  device_map="auto", attn_implementation="sdpa")
     for parameter in model.parameters():
         parameter.requires_grad_(False)

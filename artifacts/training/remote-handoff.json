@@ -5,25 +5,29 @@
   "training_code_sha": "a1810b7",
   "required_files": ["nram_training", "training/Dockerfile", "requirements-training.lock", "training/buildx.sh", "compose.lora.yaml"],
   "training_image": {
-    "reference": "<namespace>/nram-training:qwen3-14b-lora-48f05c1",
-    "digest": "UNAVAILABLE; resolve after Docker Hub namespace authentication"
+    "reference": "neuralaccesspsyche-nram-training:local-a1810b7",
+    "digest": "sha256:7cb3745b4127a3f625c3ab440c788614d6c7ecd1e315470cc70daf917fda5ca9",
+    "publication": "REGISTRY_PUBLICATION=NOT_CONFIGURED"
   },
   "inference_image": {
     "reference": "lmsysorg/sglang@sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda",
     "digest": "sha256:2a4e0bfde6eb75a2b6ccdda0296494747bb8643e6a88da14c1e6c87035d49cda"
   },
   "models": {
-    "training_parent": {"repository": "Qwen/Qwen3-14B", "revision": "UNAVAILABLE; resolve immutable HF commit before training"},
+    "training_parent": {"repository": "Qwen/Qwen3-14B", "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18"},
     "deployment_awq": {"repository": "Qwen/Qwen3-14B-AWQ", "revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"},
-    "tokenizer_revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"
+    "tokenizer_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "training_config_and_chat_template_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "awq_derivation": "Qwen/Qwen3-14B-AWQ tags base_model:Qwen/Qwen3-14B and base_model:quantized:Qwen/Qwen3-14B"
   },
-  "dataset_manifest": {"path": "artifacts/training/dataset-manifest.json", "sha256": "UNAVAILABLE; inspect-data must resolve dataset revision"},
+  "dataset_manifest": {"path": "artifacts/training/dataset-manifest.json", "sha256": "377cddffbabe490e50d05003ee6bcc735678822d6dffd9e519a5f0797206a916", "status": "DATASET_PROVENANCE_UNRECOVERABLE"},
   "persistent_paths": ["/models", "/outputs", "/root/.cache/huggingface"],
   "cpu_bootstrap": "python -m nram_training doctor && python -m nram_training smoke",
-  "h100_preflight": "docker run --rm --gpus all -v $PWD:/workspace <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training doctor && python -m nram_training validate",
-  "h100_production": "docker run --rm --gpus all -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface <namespace>/nram-training:qwen3-14b-lora-48f05c1> python -m nram_training train --adapter nontoxic --resume auto && python -m nram_training train --adapter toxic --resume auto",
-  "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "PASS: local linux/amd64 image loaded as neuralaccesspsyche-nram-training:local-a1810b7", "gpu_runtime": "PASS: Docker --gpus all RTX 4090 CUDA probe and Qwen3-0.6B nontoxic/toxic smoke", "sglang_awq_lora": "PASS: pinned 0.5.16 AWQ base/zero/small-delta plus concurrent three-way probe"},
+  "lightning_cpu_build": "docker buildx build --platform linux/amd64 --load -t neuralaccesspsyche-nram-training:lightning-cpu -f training/Dockerfile .",
+  "h100_preflight": "docker run --rm --gpus all -v $PWD:/workspace neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training doctor && docker run --rm --gpus all -v $PWD:/workspace neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training validate",
+  "h100_parallel_training": "docker run --rm --gpus device=0 -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training train --adapter nontoxic --resume auto & docker run --rm --gpus device=1 -v /persistent/nram:/outputs -v /persistent/hf:/root/.cache/huggingface neuralaccesspsyche-nram-training:lightning-cpu python -m nram_training train --adapter toxic --resume auto",
+  "local_gates": {"cpu_tests": "PASS: 4 passed", "compileall": "PASS", "compose_config": "PASS", "training_image_build": "PASS: local linux/amd64 image loaded as neuralaccesspsyche-nram-training:local-a1810b7", "gpu_runtime": "PASS: Docker --gpus all RTX 4090 CUDA probe and Qwen3-0.6B nontoxic/toxic smoke", "sglang_awq_lora": "PARTIAL: pinned 0.5.16 AWQ base/zero/small-delta requests and concurrent three-way probe passed; deterministic zero-vs-small logprob effect gate failed"},
   "runtime_evidence": "docs/NRAM_QWEN3_14B_LORA_RUNTIME_EVIDENCE.md",
-  "remaining_blockers": ["Docker Hub namespace and registry digest unavailable", "Qwen3-14B immutable training revision and dataset manifest unresolved"],
+  "remaining_blockers": ["DATASET_PROVENANCE_UNRECOVERABLE", "small-delta LoRA computation effect not proven by the supported pinned SGLang logprob path"],
   "prohibited": ["Do not attach Qwen3-0.6B adapters to Qwen3-14B", "Do not launch the 50-prompt causal ablation", "Do not push weights, datasets, adapters, caches, or credentials"]
 }

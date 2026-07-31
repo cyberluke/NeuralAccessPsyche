@@ -1,8 +1,9 @@
 {
   "base_model": "Qwen/Qwen3-14B",
-  "base_model_revision": "UNAVAILABLE",
+  "base_model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+  "delta_scale": 0.0,
   "fixture": "synthetic-zero",
-  "fixture_sha256": "9d81c5fd03fa8eea39f64e69fefec09a5702e96171e3599e251cdf7eb440a70d",
+  "fixture_sha256": "619e52fe6af50226a860cf391c7bdcd4ba05dd4be7cb79e1d8a9955b9e26b208",
   "markers": [
     "TEST_ONLY",
     "NOT_FOR_SCIENTIFIC_USE"

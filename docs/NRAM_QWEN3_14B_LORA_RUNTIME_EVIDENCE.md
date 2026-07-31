@@ -1,7 +1,8 @@
 # NRAM Qwen3-14B LoRA runtime evidence
 
-Evidence collected locally on 2026-07-31 from commit `a1810b7` plus the
-runtime fixes in the focused evidence commit.
+Evidence collected locally on 2026-07-31 from the pinned runtime and the
+focused evidence commits. The final deterministic sensitivity gate is recorded
+as failed; request reachability is not treated as proof of computation change.
 
 ## Training smoke
 
@@ -38,6 +39,19 @@ evidence commit.
 - Three concurrent requests for base, zero, and small-delta completed without
   HTTP errors or cross-request model identity contamination
 
+### Deterministic logprob gate
+
+- Probe artifact: `artifacts/training/rtx-logprob-probe.json`
+- Base versus zero: `0.0` (within `0.0001` tolerance)
+- Repeated base: `0.0` (within tolerance)
+- Base versus small-delta: `0.0` (no effect detected)
+- Zero versus small-delta: `0.0` (no effect detected)
+- All returned values were finite.
+- Verdict: `SMALL_DELTA_LOGPROB_GATE=FAIL`; the pinned OpenAI-compatible path
+  did not prove that the synthetic nonzero adapter changed the scored token.
+  The native `/generate` attempt returned HTTP 500, and completion echo
+  logprobs are rejected by this SGLang build.
+
 The first direct probe intentionally exposed that repeated argparse flags
 overwrite values. The corrected Compose contract was verified in the parsed
 `ServerArgs`; the rejected first probe is retained as defect provenance, not
@@ -45,8 +59,15 @@ as acceptance evidence.
 
 ## Limitations
 
-- Registry image digest, immutable Qwen3-14B training revision, and dataset
-  manifest are unresolved and remain `UNAVAILABLE`.
+- Training model, tokenizer, config, and chat-template revision:
+  `40c069824f4251a91eefaf281ebe4c544efd3e18`.
+- Civil Comments repository revision:
+  `f2970eb3a55777454c94069077cc8d9b5866312d`.
+- Historical dataset membership is `DATASET_PROVENANCE_UNRECOVERABLE`: the
+  original script persisted text only after shuffled sampling and deduplication,
+  with no row IDs, split membership, or calibration manifest.
+- Registry publication is `REGISTRY_PUBLICATION=NOT_CONFIGURED`; local image
+  readiness is independent of registry publication.
 - Peak allocator telemetry was not persisted by the current trainer/runtime
   harness; startup memory and no-OOM evidence are recorded above.
 - This evidence does not authorize the prohibited 50-prompt causal ablation.

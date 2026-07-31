@@ -1,0 +1,26 @@
+{
+  "status": "DATASET_PROVENANCE_UNRECOVERABLE",
+  "dataset": "google/civil_comments",
+  "dataset_revision": "f2970eb3a55777454c94069077cc8d9b5866312d",
+  "available_schema": ["text", "toxicity", "severe_toxicity", "obscene", "threat", "insult", "identity_attack", "sexual_explicit"],
+  "source_script": "scripts/train_dexperts_lora.py",
+  "recorded_filtering": {
+    "source_split": "train",
+    "nontoxic_threshold": "toxicity <= 0.05",
+    "toxic_threshold": "toxicity >= 0.80",
+    "nan_toxicity": "excluded",
+    "max_samples_per_class": 20000,
+    "shuffle_seed": 42
+  },
+  "recorded_deduplication": {
+    "normalization": "text.strip().lower()",
+    "digest": "MD5",
+    "applied_after_sampling": true
+  },
+  "recorded_balancing": "classes were truncated to the smaller post-deduplication class using seeded sampling",
+  "canonical_ids": "UNRECOVERABLE: source script retained text only and persisted no dataset row IDs",
+  "split_membership": "UNRECOVERABLE: no train/validation/calibration membership artifact was persisted",
+  "split_hashes": "UNRECOVERABLE",
+  "manifest_basis": "repository inspection of the source script and immutable Hugging Face dataset metadata; not a reconstruction of historical rows",
+  "do_not_use_for_training": true
+}
