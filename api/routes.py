@@ -30,6 +30,7 @@ from core.tools.searxng_client import SearXNGClient
 from utils.validators import validate_request
 from utils.auth import get_current_user
 from utils.api_logger import api_metrics
+from core.steering.dexperts_feature import dexperts_enabled
 import logging
 import json
 import asyncio
@@ -748,7 +749,7 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
     
     # Evidence states: CAUSALLY_PROVEN, EXECUTING, CONFIGURED, NOT_VERIFIED
     # Based on actual test results from tests/unit/test_nram_v5_phase2_runtime.py
-    return {
+    capabilities = {
         "engine": "sglang" if engine_active else "legacy",
         "sglang_enabled": engine_active,
         "loaded_model_ids": list(MODEL_ALIASES.keys()),
@@ -842,12 +843,6 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
                     "test_tournament_result_includes_evidence",
                 ],
             },
-            "dexperts": {
-                "state": "NOT_IMPLEMENTED",
-                "runtime_wired": False,
-                "mechanism": "expert_anti_expert_logit_combination",
-                "note": "DExperts requires 3 simultaneous model instances (base + expert + anti-expert). RTX 4090 24GB VRAM cannot fit 3x Qwen3-14B. Sequential execution strategy documented but not implemented. See core/steering/dexperts.py for details.",
-            },
             "batch_context": {
                 "state": "CAUSALLY_PROVEN",
                 "runtime_wired": True,
@@ -879,6 +874,14 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
             "stream_sample_token_ids": "not_available_without_supported_post_sample_hook",
         },
     }
+    if dexperts_enabled():
+        capabilities["controls"]["dexperts"] = {
+            "state": "NOT_IMPLEMENTED",
+            "runtime_wired": False,
+            "mechanism": "expert_anti_expert_logit_combination",
+            "note": "DExperts is opt-in via NRAM_DEXPERTS_ENABLED and remains subject to its existing runtime readiness gates.",
+        }
+    return capabilities
 
 
 @router.get("/nram/token-policy/{profile}")

@@ -39,6 +39,7 @@ from core.persona.profiles import DEFAULT_PROFILE, PROFILES
 from nram_sglang.processor import NRAMLogitProcessor
 from core.steering.serialization import build_custom_params, serialize_processor
 from core.steering.tokenizer_bias import TokenBiasCompiler
+from core.steering.dexperts_feature import dexperts_enabled as dexperts_runtime_enabled
 
 if TYPE_CHECKING:
     from core.contracts.nram import NRAMState
@@ -824,8 +825,8 @@ class SGLangEngine:
         DExperts applies expert/anti-expert logit modulation.
         Returns None if not enabled.
         """
-        dexperts_enabled = nram_opts.get("dexperts", False)
-        if not dexperts_enabled:
+        requested = nram_opts.get("dexperts", False)
+        if not requested or not dexperts_runtime_enabled():
             return None
 
         return {

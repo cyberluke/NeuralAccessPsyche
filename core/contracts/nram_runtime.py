@@ -20,6 +20,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
+from core.steering.dexperts_feature import dexperts_enabled
 
 
 NRAM_SCHEMA_VERSION = "nram.request.v1"
@@ -42,14 +43,15 @@ UNSUPPORTED_NRAM_FEATURES = {
     "attention_head_gating",
     "kv_cache_firewall",
     "gpu_native_semantic_control",
-    # Note: The following features are now runtime-wired through logit processor:
+    # Note: The following features are runtime-wired through the logit processor
+    # when their explicit runtime gates permit them:
     # - activation_addition, actadd
     # - conceptor_steering
     # - hidden_state_probes
     # - latent_closed_loop
     # - semantic_novelty_controller, evidence_guard
     # - branch_tournament
-    # - dexperts
+    # - dexperts (NRAM_DEXPERTS_ENABLED=true only)
     # These are configured via the logit processor and work at token-level.
     # True hidden-state hooks require local model execution (future architecture).
 }
@@ -246,6 +248,11 @@ class NRAMOptions(StrictRuntimeModel):
 
     @model_validator(mode="after")
     def validate_conflicts_and_unsupported(self) -> "NRAMOptions":
+        if (
+            (self.dexperts is True or bool(self.dexperts_config))
+            and not dexperts_enabled()
+        ):
+            raise ValueError("DEXPERTS_DISABLED")
         enabled_unsupported = [
             name for name in sorted(UNSUPPORTED_NRAM_FEATURES)
             if getattr(self, name, None) is True

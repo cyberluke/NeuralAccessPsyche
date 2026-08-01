@@ -105,5 +105,14 @@ def validate_request(request: Any) -> bool:
     try:
         request.nram = normalize_nram_options(request.nram)
     except Exception as exc:
+        validation_messages = " ".join(
+            str(item.get("msg", "")) for item in getattr(exc, "errors", lambda: [])()
+        )
+        if "DEXPERTS_DISABLED" in str(exc) or "DEXPERTS_DISABLED" in validation_messages:
+            _reject(
+                "DExperts is disabled by NRAM_DEXPERTS_ENABLED",
+                "DEXPERTS_DISABLED",
+                "nram.dexperts",
+            )
         raise HTTPException(status_code=400, detail=stable_validation_error(exc)) from exc
     return True

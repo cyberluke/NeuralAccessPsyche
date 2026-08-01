@@ -27,6 +27,7 @@ from core.steering.representation_config import (
 from core.steering.latent_closed_loop import ClosedLoopConfig, LatentClosedLoopController
 from core.steering.semantic_closed_loop import SemanticLoopConfig, SemanticClosedLoopController
 from core.steering.branch_tournament import BranchSearchConfig, BranchTournamentEngine
+from core.steering.dexperts_feature import dexperts_enabled
 
 logger = logging.getLogger(__name__)
 
@@ -169,7 +170,7 @@ class NRAMRequestControlPlane:
     
     def get_active_capabilities(self) -> Dict[str, Dict[str, Any]]:
         """Get status of all active capabilities."""
-        return {
+        capabilities = {
             "structural": {
                 "available": True,
                 "configured": self.config.structural.enabled,
@@ -206,13 +207,15 @@ class NRAMRequestControlPlane:
                 "active": self.config.search.enabled and self._active,
                 "runtime_backend": "generation_orchestrator",
             },
-            "dexperts": {
+        }
+        if dexperts_enabled():
+            capabilities["dexperts"] = {
                 "available": True,
                 "configured": self.config.dexperts.enabled,
                 "active": self.config.dexperts.enabled and self._active,
                 "runtime_backend": "multi_model_inference",
-            },
-        }
+            }
+        return capabilities
     
     def get_telemetry_summary(self) -> Dict[str, Any]:
         """Get telemetry summary for the request."""

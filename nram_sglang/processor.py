@@ -10,6 +10,7 @@ import json
 import math
 import os
 from typing import Any, Dict, List, Optional, Set, Tuple
+from core.steering.dexperts_feature import dexperts_enabled
 
 try:
     from sglang.srt.sampling.custom_logit_processor import CustomLogitProcessor
@@ -77,6 +78,10 @@ class NRAMLogitProcessor(CustomLogitProcessor):
             tokenizer: The tokenizer
             device: Device to use (default: "cuda")
         """
+        if not dexperts_enabled():
+            cls._dexperts_runtime = None
+            return
+
         DExpertsRuntimeClass = _get_dexperts_runtime_class()
         if DExpertsRuntimeClass is None:
             print("NRAM: DExperts runtime not available (import failed)", flush=True)
