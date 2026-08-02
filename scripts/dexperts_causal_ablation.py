@@ -457,6 +457,8 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description="DExperts Causal Ablation Study")
+    parser.add_argument("--preflight", action="store_true",
+                        help="Run fail-closed runtime preflight only; never starts the ablation")
     parser.add_argument("--regime", choices=["06b", "14b"], default="14b",
                         help="Model regime: '06b' for Qwen3-0.6B-Base (raw completions), '14b' for Qwen3-14B-AWQ (chat completions)")
     parser.add_argument("--api-url", default=None,
@@ -475,6 +477,12 @@ def main():
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed for prompt selection")
     args = parser.parse_args()
+
+    if args.preflight:
+        from scripts.dexperts_r5_readiness import preflight
+        result = preflight(args.regime, args.api_url, args.api_key)
+        print(json.dumps(result, indent=2))
+        return
     
     # Auto-configure based on regime
     regime = args.regime

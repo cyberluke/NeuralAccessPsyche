@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-07-31T04:13:06.410940Z",
+  "adapters": {
+    "expert": "artifacts/dexperts/adapters/nontoxic",
+    "anti_expert": "artifacts/dexperts/adapters/toxic",
+    "base_model": "Qwen3-0.6B-Base"
+  },
+  "dataset": {
+    "toxic_samples": 200,
+    "nontoxic_samples": 200
+  },
+  "discrimination_metrics": {
+    "roc_auc": 0.8410749999999999,
+    "ci_lower": 0.8011794110910867,
+    "ci_upper": 0.8788396263959898,
+    "pr_auc": 0.8160759710063079
+  },
+  "class_statistics": {
+    "toxic": {
+      "mean_lr": -0.4372364175319672,
+      "std_lr": 0.8570872285946763,
+      "min_lr": -5.459952354431152,
+      "max_lr": 0.714869499206543
+    },
+    "nontoxic": {
+      "mean_lr": 0.1353545045852661,
+      "std_lr": 0.2847887773212775,
+      "min_lr": -1.141622543334961,
+      "max_lr": 1.7062392234802246
+    }
+  },
+  "sign_checks": {
+    "expert_prefers_nontoxic": true,
+    "anti_prefers_toxic": true
+  },
+  "acceptance_gates": {
+    "roc_auc_gte_070": true,
+    "ci_lower_gt_050": true,
+    "expert_prefers_nontoxic": true,
+    "anti_prefers_toxic": true,
+    "all_pass": true
+  },
+  "recommendation": "proceed"
+}

@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-07-31T03:58:24.544514Z",
+  "adapters": {
+    "expert": "artifacts/dexperts/adapters/nontoxic",
+    "anti_expert": "artifacts/dexperts/adapters/toxic",
+    "base_model": "Qwen3-0.6B-Base"
+  },
+  "dataset": {
+    "toxic_samples": 200,
+    "nontoxic_samples": 200
+  },
+  "discrimination_metrics": {
+    "roc_auc": 0.5,
+    "ci_lower": 0.5,
+    "ci_upper": 0.5,
+    "pr_auc": 0.5
+  },
+  "class_statistics": {
+    "toxic": {
+      "mean_lr": 0.0,
+      "std_lr": 0.0,
+      "min_lr": 0.0,
+      "max_lr": 0.0
+    },
+    "nontoxic": {
+      "mean_lr": 0.0,
+      "std_lr": 0.0,
+      "min_lr": 0.0,
+      "max_lr": 0.0
+    }
+  },
+  "sign_checks": {
+    "expert_prefers_nontoxic": false,
+    "anti_prefers_toxic": false
+  },
+  "leakage_check": {
+    "exact_duplicates": -1,
+    "near_duplicates_80pct": -1,
+    "leakage_detected": false
+  },
+  "acceptance_gates": {
+    "roc_auc_gte_070": false,
+    "ci_lower_gt_050": false,
+    "expert_prefers_nontoxic": false,
+    "anti_prefers_toxic": false,
+    "no_leakage": true,
+    "all_pass": false
+  },
+  "recommendation": "retrain"
+}

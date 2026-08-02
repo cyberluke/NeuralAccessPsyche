@@ -1,0 +1,324 @@
+{
+  "timestamp": "2026-07-30T15:09:01.770458Z",
+  "config": {
+    "primary_alpha": 1.0,
+    "significance_level": 0.05,
+    "target_power": 0.9,
+    "n_bootstrap": 10000,
+    "candidate_ns": [
+      50,
+      75,
+      100,
+      150,
+      200,
+      300,
+      500,
+      750,
+      1000
+    ],
+    "effect_scenarios": [
+      1.0,
+      0.75,
+      0.5
+    ],
+    "attrition_rate": 0.1
+  },
+  "pilot_effect": {
+    "mean_toxic": -0.7820836796494202,
+    "mean_nontoxic": -0.6812239935440297,
+    "std_toxic": 0.40660211302775734,
+    "std_nontoxic": 0.5679558451462187,
+    "n_toxic": 50,
+    "n_nontoxic": 50,
+    "signed_gap": 0.10085968610539042,
+    "cohens_d": 0.20420557403235248,
+    "hedges_g": 0.20263877934668226,
+    "ci_lower": -0.09711608018408782,
+    "ci_upper": 0.29250983152797877
+  },
+  "power_curves": {
+    "effect_1.0": [
+      {
+        "n_per_class": 50,
+        "power_simulation": 0.544,
+        "power_analytical": 0.17281470255467496,
+        "minimum_detectable_effect": 0.3234847691186481
+      },
+      {
+        "n_per_class": 75,
+        "power_simulation": 0.671,
+        "power_analytical": 0.2371921410203939,
+        "minimum_detectable_effect": 0.26321304286418035
+      },
+      {
+        "n_per_class": 100,
+        "power_simulation": 0.811,
+        "power_analytical": 0.3008232321415235,
+        "minimum_detectable_effect": 0.22756074361388817
+      },
+      {
+        "n_per_class": 150,
+        "power_simulation": 0.945,
+        "power_analytical": 0.4219373472538784,
+        "minimum_detectable_effect": 0.18548866895442415
+      },
+      {
+        "n_per_class": 200,
+        "power_simulation": 0.984,
+        "power_analytical": 0.5307850864526928,
+        "minimum_detectable_effect": 0.1605030216093174
+      },
+      {
+        "n_per_class": 300,
+        "power_simulation": 0.998,
+        "power_analytical": 0.7043755398539998,
+        "minimum_detectable_effect": 0.13094060421928105
+      },
+      {
+        "n_per_class": 500,
+        "power_simulation": 1.0,
+        "power_analytical": 0.8971900431689156,
+        "minimum_detectable_effect": 0.10135857334796779
+      },
+      {
+        "n_per_class": 750,
+        "power_simulation": 1.0,
+        "power_analytical": 0.9768102770957662,
+        "minimum_detectable_effect": 0.08273142254370232
+      },
+      {
+        "n_per_class": 1000,
+        "power_simulation": 1.0,
+        "power_analytical": 0.9953930724282667,
+        "minimum_detectable_effect": 0.07163562136158425
+      }
+    ],
+    "effect_0.75": [
+      {
+        "n_per_class": 50,
+        "power_simulation": 0.435,
+        "power_analytical": 0.11802594370831788,
+        "minimum_detectable_effect": 0.3234847691186481
+      },
+      {
+        "n_per_class": 75,
+        "power_simulation": 0.572,
+        "power_analytical": 0.15385125343273015,
+        "minimum_detectable_effect": 0.26321304286418035
+      },
+      {
+        "n_per_class": 100,
+        "power_simulation": 0.703,
+        "power_analytical": 0.1900133675615253,
+        "minimum_detectable_effect": 0.22756074361388817
+      },
+      {
+        "n_per_class": 150,
+        "power_simulation": 0.875,
+        "power_analytical": 0.2622903151600386,
+        "minimum_detectable_effect": 0.18548866895442415
+      },
+      {
+        "n_per_class": 200,
+        "power_simulation": 0.951,
+        "power_analytical": 0.33307157970654316,
+        "minimum_detectable_effect": 0.1605030216093174
+      },
+      {
+        "n_per_class": 300,
+        "power_simulation": 0.993,
+        "power_analytical": 0.46530823516819925,
+        "minimum_detectable_effect": 0.13094060421928105
+      },
+      {
+        "n_per_class": 500,
+        "power_simulation": 1.0,
+        "power_analytical": 0.6769913447627207,
+        "minimum_detectable_effect": 0.10135857334796779
+      },
+      {
+        "n_per_class": 750,
+        "power_simulation": 1.0,
+        "power_analytical": 0.8422995630929058,
+        "minimum_detectable_effect": 0.08273142254370232
+      },
+      {
+        "n_per_class": 1000,
+        "power_simulation": 1.0,
+        "power_analytical": 0.9282692258401094,
+        "minimum_detectable_effect": 0.07163562136158425
+      }
+    ],
+    "effect_0.5": [
+      {
+        "n_per_class": 50,
+        "power_simulation": 0.339,
+        "power_analytical": 0.0797540257110329,
+        "minimum_detectable_effect": 0.3234847691186481
+      },
+      {
+        "n_per_class": 75,
+        "power_simulation": 0.447,
+        "power_analytical": 0.09524724373080376,
+        "minimum_detectable_effect": 0.26321304286418035
+      },
+      {
+        "n_per_class": 100,
+        "power_simulation": 0.588,
+        "power_analytical": 0.11091158694030548,
+        "minimum_detectable_effect": 0.22756074361388817
+      },
+      {
+        "n_per_class": 150,
+        "power_simulation": 0.752,
+        "power_analytical": 0.14263470090451885,
+        "minimum_detectable_effect": 0.18548866895442415
+      },
+      {
+        "n_per_class": 200,
+        "power_simulation": 0.872,
+        "power_analytical": 0.17469850290892175,
+        "minimum_detectable_effect": 0.1605030216093174
+      },
+      {
+        "n_per_class": 300,
+        "power_simulation": 0.972,
+        "power_analytical": 0.23906279948142517,
+        "minimum_detectable_effect": 0.13094060421928105
+      },
+      {
+        "n_per_class": 500,
+        "power_simulation": 0.996,
+        "power_analytical": 0.3644231798379799,
+        "minimum_detectable_effect": 0.10135857334796779
+      },
+      {
+        "n_per_class": 750,
+        "power_simulation": 1.0,
+        "power_analytical": 0.506416393980923,
+        "minimum_detectable_effect": 0.08273142254370232
+      },
+      {
+        "n_per_class": 1000,
+        "power_simulation": 1.0,
+        "power_analytical": 0.6262946700558291,
+        "minimum_detectable_effect": 0.07163562136158425
+      }
+    ]
+  },
+  "recommended_n_per_class": 300,
+  "recommended_n_generated": 334,
+  "confirmatory_manifest": {
+    "timestamp": "2026-07-30T15:09:01.770185Z",
+    "pilot_source": "artifacts/dexperts/r5/mechanistic_proof.json",
+    "pilot_prompts_used": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "confirmatory_prompts_reserved": "must be disjoint from pilot",
+    "dataset": "allenai/real-toxicity-prompts",
+    "split": "train",
+    "random_seed": 12345,
+    "recommended_n_analyzable": 300,
+    "recommended_n_generated": 334,
+    "attrition_rate": 0.1
+  }
+}

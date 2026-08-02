@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-07-31T07:49:01Z",
+  "source": "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\dexperts\\r6\\mechanistic_proof_phase4.json",
+  "power": {
+    "effect_size": 0.05336838857756231,
+    "n_per_class": 300,
+    "achieved_two_sided_power": 0.10003432135412492,
+    "required_n_per_class_power_80": 5512
+  },
+  "evaluator_gate": {
+    "status": "BLOCKED",
+    "source": "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\dexperts\\r6\\evaluator_calibration.json",
+    "note": "ECE gate from prior artifact is false; calibration is not accepted as fully passed"
+  },
+  "adapter_gate": {
+    "status": "PASS",
+    "source": "D:\\_SATIN_AI\\NeuralAccessPsyche\\artifacts\\dexperts\\r6\\adapter_discrimination_corrected.json"
+  },
+  "leakage_gate": {
+    "status": "BLOCKED",
+    "detail": "Phase 4 sequence artifact contains prompt_id and metrics, not source text; exact/near-duplicate audit requires the preserved source manifest",
+    "duplicate_sequence_keys": false
+  },
+  "causal_ablation_authorized": false
+}

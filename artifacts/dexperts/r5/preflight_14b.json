@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-07-31T07:49:21Z",
+  "regime": "14b",
+  "expected": {
+    "model": "nram-qwen3-14b-awq",
+    "revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+    "endpoint": "http://127.0.0.1:30000/v1/completions",
+    "format": "raw_completions",
+    "tokenizer_revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+  },
+  "endpoint": "http://127.0.0.1:30000/v1/completions",
+  "checks": [
+    {
+      "name": "server_health",
+      "status": "PASS",
+      "detail": "HTTP 200; "
+    },
+    {
+      "name": "reported_model_identity",
+      "status": "PASS",
+      "detail": "reported=['nram-qwen3-14b-awq'], expected=nram-qwen3-14b-awq"
+    },
+    {
+      "name": "base_model_revision",
+      "status": "BLOCKED",
+      "detail": "Revision is not exposed by the OpenAI models contract; server-side metadata is required"
+    },
+    {
+      "name": "expert_adapter_hash",
+      "status": "PASS",
+      "detail": "sha256=f2b5aef5961cc1c852820d0dd17359e6320f4330350f5ea607f1460f37c7628e; weight_files=['adapter_model.safetensors']"
+    },
+    {
+      "name": "expert_role_assignment",
+      "status": "PASS",
+      "detail": "role=nontoxic"
+    },
+    {
+      "name": "expert_base_compatibility",
+      "status": "BLOCKED",
+      "detail": "base=E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-0.6B-Base\\snapshots\\da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    {
+      "name": "anti_expert_adapter_hash",
+      "status": "PASS",
+      "detail": "sha256=889f528baa1070b7c5f5b7720b3ae0cfdfa5349f493abfd656fe515a5f3c0471; weight_files=['adapter_model.safetensors']"
+    },
+    {
+      "name": "anti_expert_role_assignment",
+      "status": "PASS",
+      "detail": "role=toxic"
+    },
+    {
+      "name": "anti_expert_base_compatibility",
+      "status": "BLOCKED",
+      "detail": "base=E:\\_MODELS\\huggingface\\hub\\models--Qwen--Qwen3-0.6B-Base\\snapshots\\da87bfb608c14b7cf20ba1ce41287e8de496c0cd"
+    },
+    {
+      "name": "endpoint_compatibility",
+      "status": "PASS",
+      "detail": "endpoint=http://127.0.0.1:30000/v1/completions; expected suffix=/v1/completions"
+    },
+    {
+      "name": "tokenizer_compatibility",
+      "status": "BLOCKED",
+      "detail": "Tokenizer/model fingerprint comparison requires the serving instance to report tokenizer revision and vocabulary hash"
+    },
+    {
+      "name": "output_schema_compatibility",
+      "status": "BLOCKED",
+      "detail": "A successful generation probe is required; preflight never substitutes a synthetic response"
+    },
+    {
+      "name": "deterministic_configuration",
+      "status": "PASS",
+      "detail": "Seeds [42, 123, 456], temperature=0.7, max_tokens=100 are captured by the experiment contract"
+    },
+    {
+      "name": "activation_behavior",
+      "status": "BLOCKED",
+      "detail": "Requires deterministic runtime control probe; health alone is insufficient"
+    },
+    {
+      "name": "deactivation_behavior",
+      "status": "BLOCKED",
+      "detail": "Requires deterministic runtime control probe; health alone is insufficient"
+    },
+    {
+      "name": "swapped_adapter_behavior",
+      "status": "BLOCKED",
+      "detail": "Requires deterministic runtime control probe; health alone is insufficient"
+    }
+  ],
+  "status": "BLOCKED"
+}

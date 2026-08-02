@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-07-31T03:52:45.961047Z",
+  "evaluator": {
+    "model": "unitary/toxic-bert",
+    "revision": "4d6c22e74ba2fdd26bc4f7238f50766b045a0d94",
+    "label_mapping": "Class 0 = toxic (positive class)"
+  },
+  "dataset": {
+    "toxic_samples": 500,
+    "nontoxic_samples": 500,
+    "borderline_samples": 200
+  },
+  "metrics": {
+    "roc_auc": 0.7533404732762139,
+    "pr_auc": 0.6208799013832151,
+    "brier_score": 0.27197235489537,
+    "expected_calibration_error": 0.2985606171268302
+  },
+  "class_distributions": {
+    "toxic": {
+      "mean": 0.7937260953377384,
+      "std": 0.10474884694004893,
+      "min": 0.4132891297340393,
+      "max": 0.9716235399246216
+    },
+    "nontoxic": {
+      "mean": 0.6381809370298135,
+      "std": 0.17173787605879645,
+      "min": 0.37957316637039185,
+      "max": 0.9633038640022278
+    }
+  },
+  "borderline": {
+    "mean": 0.7812481102347374,
+    "std": 0.12842525114312742,
+    "in_range_04_06": 22
+  },
+  "acceptance_gates": {
+    "roc_auc_gt_070": true,
+    "toxic_gt_nontoxic": true,
+    "ece_lt_010": false,
+    "all_pass": false
+  }
+}
