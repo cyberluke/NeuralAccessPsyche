@@ -31,6 +31,7 @@ from utils.validators import validate_request
 from utils.auth import get_current_user
 from utils.api_logger import api_metrics
 from core.steering.dexperts_feature import dexperts_enabled
+from core.contracts.observability import NRAMStreamEvent, ObservabilityLevel, StreamEventType
 import logging
 import json
 import asyncio
@@ -394,7 +395,7 @@ async def _route_persona(
     )
     if request.stream:
         return _LifecycleStreamingResponse(
-            _stream_with_lifecycle(engine, engine_request, raw_request),
+            _sse_observability(_stream_with_lifecycle(engine, engine_request, raw_request), request),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -520,6 +521,19 @@ async def create_chat_completion(
         _validate_model_identity(request.model)
         session_snapshot = _apply_session_snapshot(request)
 
+        # Observability is an explicit per-request opt-in. Minimal mode is
+        # intentionally represented by absence of telemetry fields upstream.
+        if request.nram and request.nram.get("observability_level"):
+            try:
+                level = ObservabilityLevel(str(request.nram["observability_level"]).lower())
+            except ValueError:
+                raise HTTPException(status_code=400, detail={"code": "invalid_observability_level"})
+            if level != ObservabilityLevel.MINIMAL:
+                request.nram["include_telemetry"] = True
+                request.nram.setdefault("request_id", f"nram-{uuid.uuid4().hex}")
+                request.nram["telemetry_top_k"] = min(20 if level == ObservabilityLevel.TRACE else 5,
+                                                       int(request.nram.get("telemetry_top_k", 5)))
+
         # Reject client-supplied processor injection attempts
         nram_opts = request.nram or {}
         _FORBIDDEN_FIELDS = {
@@ -623,6 +637,76 @@ def _to_engine_request(
     )
 
 
+def _sse_observability(source: Any, request: ChatCompletionRequest):
+    """Add opt-in NRAM events alongside, never instead of, OpenAI SSE chunks."""
+    raw_level = (request.nram or {}).get("observability_level")
+    if not raw_level:
+        return source
+    try:
+        level = ObservabilityLevel(str(raw_level).lower())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail={"code": "invalid_observability_level"}) from exc
+    if level == ObservabilityLevel.MINIMAL:
+        return source
+
+    async def generate():
+        started = time.perf_counter()
+        request_id = (request.nram or {}).get("request_id") or f"nram-{uuid.uuid4().hex}"
+        method = (request.nram or {}).get("method") or (request.nram or {}).get("profile")
+        sequence = 0
+
+        def make_event(event_type: StreamEventType, payload: Dict[str, Any]) -> bytes:
+            nonlocal sequence
+            item = NRAMStreamEvent(
+                request_id=request_id,
+                sequence_number=sequence,
+                monotonic_timestamp_ms=(time.perf_counter() - started) * 1000,
+                event_type=event_type,
+                method=method,
+                observability_level=level,
+                payload=payload,
+            )
+            sequence += 1
+            return ("event: nram\ndata: " + item.model_dump_json() + "\n\n").encode()
+
+        yield make_event(StreamEventType.REQUEST_STARTED, {"availability": "enabled"})
+        position = 0
+        last_ms = 0.0
+        try:
+            async for raw in source:
+                text = raw.decode("utf-8", errors="replace") if isinstance(raw, bytes) else str(raw)
+                for line in text.splitlines():
+                    if not line.startswith("data: ") or line.strip() == "data: [DONE]":
+                        continue
+                    try:
+                        chunk = json.loads(line[6:].strip())
+                    except json.JSONDecodeError:
+                        yield make_event(StreamEventType.WARNING, {"message": "malformed_upstream_event"})
+                        continue
+                    for choice in chunk.get("choices", []):
+                        fragment = (choice.get("delta") or {}).get("content")
+                        if fragment:
+                            now_ms = (time.perf_counter() - started) * 1000
+                            yield make_event(StreamEventType.TOKEN, {
+                                "token_position": position,
+                                "token_id": None,
+                                "token_text": fragment,
+                                "emitted_at_ms": now_ms,
+                                "inter_token_latency_ms": None if position == 0 else now_ms - last_ms,
+                                "classification": "STOCHASTIC_OR_UNCLASSIFIED",
+                                "availability_reason": "streaming_upstream_does_not_expose_sampled_token_ids",
+                            })
+                            position += 1
+                            last_ms = now_ms
+                yield raw
+            yield make_event(StreamEventType.REQUEST_COMPLETED, {"token_count": position})
+        except Exception as exc:
+            yield make_event(StreamEventType.REQUEST_FAILED, {"message": str(exc)[:500]})
+            raise
+
+    return generate()
+
+
 async def _stream_completion(request: ChatCompletionRequest, messages: list):
     """Adapt the legacy non-SGLang handler to a valid one-chunk SSE stream."""
     async def generate():
@@ -670,7 +754,7 @@ async def _handle_sglang(
 
     if request.stream:
         return _LifecycleStreamingResponse(
-            _stream_with_lifecycle(engine, engine_request, raw_request),
+            _sse_observability(_stream_with_lifecycle(engine, engine_request, raw_request), request),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -881,6 +965,21 @@ async def nram_capabilities(current_user: dict = Depends(get_current_user)):
             "mechanism": "expert_anti_expert_logit_combination",
             "note": "DExperts is opt-in via NRAM_DEXPERTS_ENABLED and remains subject to its existing runtime readiness gates.",
         }
+    capabilities["methods"] = [
+        name for name, value in capabilities["controls"].items()
+        if isinstance(value, bool) and value
+        or isinstance(value, dict) and value.get("runtime_wired") is True
+    ]
+    capabilities["observability"] = {
+        "schema_version": "nram.stream-observability.v1",
+        "levels": [level.value for level in ObservabilityLevel],
+        "default": "minimal",
+        "telemetry_opt_in": True,
+        "stream_token_ids": False,
+        "stream_token_ids_reason": "upstream_sglang_stream_does_not_expose_sampled_token_ids",
+        "top_k_max": {"standard": 5, "research": 5, "trace": 20},
+        "event_types": [event.value for event in StreamEventType],
+    }
     return capabilities
 
 
